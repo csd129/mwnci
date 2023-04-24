@@ -1,0 +1,8 @@
+#!/usr/bin/env mwnci
+any_string="The quick red fox jumped over the lazy brown dogs"
+len_string =  len(any_string)
+i=0
+while (i <= len_string) {
+    printf("%s\n", substr(any_string, 0, i))
+    i++
+}

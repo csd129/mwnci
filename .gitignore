@@ -1,0 +1,8 @@
+mwnci
+*/*~
+*~
+.idea/
+Makefile
+emacs/mwnci.el
+evaluator/include.go
+includes/Makefile

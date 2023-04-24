@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+a=1
+b=float(a)
+printf("b=%f\n", b)
+

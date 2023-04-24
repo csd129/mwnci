@@ -1,0 +1,153 @@
+function pow(num, power) {
+    return num ** power;
+}
+
+function cumulative(arr) {
+    prev=0
+    foreach i in 0..(len(arr)-1) {
+        num=arr[i] + prev
+	arr=aset(arr, i, num)
+	prev=num
+    }
+    return arr;
+}
+
+function average(ave_array) {
+    if (!checkfunctype("average", "array", ave_array, 1)) {
+        exit(1)
+    }
+    return float(sum(ave_array) / float(len(ave_array)));
+}
+
+function isprime(num=0) {
+    if (!checkfunctype("isprime", "integer", num, 1)) {
+        exit(1)
+    }
+    if (num < 2) {return false;}
+    foreach i in 2..(int(sqrt(num))) {
+        if ((num % i) == 0) {return false;}
+    }
+    return true;
+}
+
+function factorial(n) {
+    if (!checkfunctype("factorial", "integer", n, 1)) {
+        exit(1)
+    }
+    result=1
+    fnum=n
+    while (n >= 1) {
+        result *= n
+        if (result < 0) {
+            println("factorial(), result too large for ",fnum,"!")
+            exit(1)
+        }
+        n--
+    }
+    return result;
+}
+
+function degrees(radian) {
+    return (radian * (180/PI));
+}
+
+function radians(deg) {
+    return (deg * (PI / 180));
+}
+
+function divmod(a,b) {
+    if (!checkfunctype("divmod", "integer", a, 1)) {
+        exit(1)
+    }
+    if (!checkfunctype("divmod", "integer", b, 2)) {
+        exit(1)
+    }    
+    arr=[]
+    quotient=a/b
+    remainder=a%b
+    arr=push(arr, quotient)
+    arr=push(arr, remainder)
+    return arr;
+}
+
+function hypot(p, q) {
+    p=abs(p)
+    q=abs(q)
+
+    if (p < q) {
+        t = p
+        p = q
+        q = t
+    }
+
+    if (p == 0) {
+        return 0;
+    }
+
+    q = q / p
+    return p * sqrt(1+q*q);
+}
+
+function round(rnum) {
+    intnum=int(rnum)
+    if (rnum > 0) {
+        remain=float(rnum-intnum)
+	if (remain > 0.4) {
+	    result=float(intnum + 1)
+	} else {
+	    result=float(intnum)
+	}
+    } else {
+	remain=float(rnum+abs(intnum))
+	if (remain < -0.4) {
+	    result=float(intnum - 1)
+	} else {
+	    result=intnum
+	}
+    }
+    return result;
+}
+
+function highest(a, b) {
+    return (a > b) ? a : b;
+}
+
+function lowest(a, b) {
+    return (a < b) ? a : b;
+}
+
+function float.round() {
+    return round(self);
+}
+
+function integer.isprime() {
+    return isprime(self);
+}
+
+function integer.factorial() {
+    return factorial(self);
+}
+
+function object.degrees() {
+    return degrees(self);
+}
+
+function object.radians() {
+    return radians(self);
+}
+
+function integer.divmod(divid) {
+    return divmod(self, divid);
+}
+
+function array.average() {
+    return average(self);
+}
+
+function array.cumulative() {
+    return cumulative(self);
+}
+
+function object.pow(power) {
+    return pow(self, power);
+}

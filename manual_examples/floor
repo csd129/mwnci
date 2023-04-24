@@ -1,0 +1,2 @@
+#!/usr/bin/env mwnci
+println(floor(12.12345))

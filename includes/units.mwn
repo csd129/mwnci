@@ -1,0 +1,233 @@
+// Temperature conversions
+
+// Fahrenheit to Celsius
+function f2c(f) {
+    return float(float(f)-32) * 5/9;
+}
+
+// Celsius to Fahrenheit
+function c2f(c) {
+    return float(float(c) * 9/5) + 32;
+}
+
+// Fahrenheit to Kelvin
+function f2k(f) {
+    return float(float(f)-32)*5/9+273.15;
+}
+
+// Celsius to Kelvin
+function c2k(c) {
+    return float(float(c)+273.15);
+}
+
+// Kelvin to Celsius
+function k2c(k) {
+    return float(float(k)-273.15);
+}
+
+// Kelvin to Fahrenheit
+function k2f(k) {
+    return float((float(k)-273.15)*9/5+32);
+}
+
+// Distance conversion
+
+// Millimetres to Inches
+function mm2i(mm) {
+    return float(float(mm) / 25.4);
+}
+
+// Centimetres to Inches
+function cm2i(cm) {
+    return float(float(cm) / 2.54);
+}
+
+// Millimetres to Centimetres
+function mm2cm(mm) {
+    return float(mm) / 10;
+}
+
+// Centimetres to Millimetres
+function cm2mm(cm) {
+    return float(cm) * 10;
+}
+
+// Metres to Inches
+function m2i(m) {
+    return float(float(m) * 39.37);
+}
+
+// Metres to Feet
+function m2ft(m) {
+    return float(m*3.280839895);
+}
+
+// Metres to Yards
+function m2yd(m) {
+    return float(m2ft(m)/3);
+}
+
+// Kilometres to Inches
+function km2i(k) {
+    return float(m2i(k)*1000.0);
+}
+
+// Kilometres to Feet
+function km2ft(k) {
+    inches=km2i(k)
+    return float(inches / 12.0);
+}
+
+// Kilometres to Yards
+function km2yd(k) {
+    metre=float(k)*1000
+    return m2yd(metre);
+}
+
+// Kilometers to Miles
+function km2mi(k) {
+    return float(float(k)/1.609);
+}
+
+// Metres to Miles
+function m2mi(m) {
+    kilo=float(m / 1000.0)
+    return float(km2mi(kilo));
+}
+
+// Miles to Feet
+function mi2ft(m) {
+    return float(float(m)*5280);
+}
+
+// Miles to Inches
+function mi2i(m) {
+    return float(m*63360);
+}
+
+// Miles to Kilometres
+function mi2km(m) {
+    return float(float(m)*1.609);
+}
+
+// Miles to Yards
+function mi2yd(m) {
+    return float(float(m)*1760);
+}
+
+// Inches to Millimetres
+function i2mm(i) {
+    return float(float(i)*25.4);
+}
+
+// Inches to Centimetres
+function i2cm(i) {
+    return float(float(i)*2.54);
+}
+
+// Inches to Metres
+function i2m(i) {
+    return float(float(i)*0.0254);
+}
+
+function object.i2m() {
+    return i2m(self);
+}
+function object.i2cm() {
+    return i2cm(self);
+}
+
+function object.i2mm() {
+    return i2mm(self);
+}
+
+function object.f2c() {
+    return f2c(self);
+}
+
+function object.c2f() {
+    return c2f(self);
+}
+
+function object.f2k() {
+    return f2k(self);
+}
+
+function object.c2k() {
+    return c2k(self);
+}
+
+function object.k2c() {
+    return k2c(self);
+}
+
+function object.k2f() {
+    return k2f(self);
+}
+
+function object.mm2i() {
+    return mm2i(self);
+}
+
+function object.cm2i() {
+    return cm2i(self);
+}
+
+function object.cm2mm() {
+    return cm2mm(self);
+}
+
+function object.m2i() {
+    return m2i(self);
+}
+
+function object.m2ft() {
+    return m2ft(self);
+}
+
+function object.m2yd() {
+    return m2yd(self);
+}
+
+function object.km2i() {
+    return km2i(self);
+}
+
+function object.km2yd() {
+    return km2yd(self);
+}
+
+function object.km2mi() {
+    return km2mi(self);
+}
+
+function object.km2ft() {
+    return km2ft(self);
+}
+function object.m2mi() {
+    return m2mi(self);
+}
+
+function object.mi2km() {
+    return mi2km(self);
+}
+
+function object.mi2yd() {
+    return mi2yd(self);
+}
+
+function object.mi2ft() {
+    return mi2ft(self);
+}
+
+function object.mi2km() {
+    return mi2km(self);
+}
+
+function object.mi2i() {
+    return mi2km(self);
+}
+
+function object.mm2cm() {
+    return mm2cm(self);
+}

@@ -1,0 +1,3 @@
+#!/usr/bin/env mwnci
+printf("Current PID is: %d\n", getpid())
+printf("The parent ID is: %d\n", getppid())

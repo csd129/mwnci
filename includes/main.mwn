@@ -1,0 +1,676 @@
+/*
+ Maths constants - add more here if needed
+*/
+const      PI=3.141592653589793;
+const       E=2.718281828459045;
+const     TAU=PI*2;
+const     PHI=1.618033988749894;
+const   SQRT2=1.414213562373095;
+const   SQRTE=1.648721270700128;
+const  SQRTPI=1.772453850905516;
+const SQRTPHI=1.272019649514068;
+const     LN2=0.693147180559945;
+const   LOG2E=1/LN2;
+const    LN10=2.302585092994045;
+const LOGH10E=1/LN10;
+
+
+/*
+ File-objects for STDIN, STDOUT, and STDERR.
+
+ Rather than opening these by name/path we have magic-strings which
+ are recognized by our "open" primitive.
+*/
+
+const STDIN=open( "!STDIN!" );
+const STDOUT=open( "!STDOUT!" );
+const STDERR=open( "!STDERR!" );
+
+
+function checkfunctype(func, expected, received, argnum=1) {
+    rectype=type(received)
+    if (rectype != expected) {
+        println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `",
+            toupper(expected), "` got `", toupper(rectype), "`")
+        return false;
+    }
+    return true;
+}
+
+function asctime(secs=-1, format="") {
+    if (secs == -1 && len(format) == 0) {
+        println("Error calling `asctime` : ERROR: TypeError: asctime() takes at least 1 arguments at most 2 (0 given)")
+        exit(1)
+    }
+    if (!checkfunctype("asctime", "integer", secs, 1)) {
+        exit(1)
+    }
+    if (!checkfunctype("asctime", "string", format, 2)) {
+        exit(1)
+    }
+
+    secs_cmdline=sprintf("--date=@%d", secs)
+    if (len(format) > 0) {
+        format_cmd=sprintf("+\"%s\"", format)
+    } else {
+        format_cmd="+\"%a %b %d %H:%M:%S %Y\""
+    }
+    cmd="/bin/date " + secs_cmdline + " " + format_cmd   
+    return trim(system(cmd));
+}
+
+function interpol(data, text) {
+    if (!checkfunctype("interpol", "hash", data, 1)) {
+        exit(1)
+    }
+    if (!checkfunctype("interpol", "string", text, 2)) {
+        exit(1)
+    }
+    foreach key in keys(data) {
+        rstring="${"+key+"}"
+        text=replaceall(text, rstring, string(data[key]))
+    }
+    return text;
+}
+
+function procexists(pid=-1) {
+    if (!checkfunctype("procexists", "integer", pid, 1)) {
+        exit(1)
+    }
+    procpid=sprintf("/proc/%d", pid)
+    if (file(procpid)) {return true;}
+    return false;
+}
+
+function map(marray,fnc) {
+   let result = [];
+   foreach item in marray {
+      let result = push( result, fnc(item) );
+   }
+   return result;
+}
+
+
+function isalpha(data) {
+    if (!isnumber(data)) {
+        return true;
+    }
+    return false;
+}
+
+function getfileblock(start_block, end_block, filename) {
+    if (!checkfunctype("getfileblock", "string", start_block, 1)) {
+        exit(1)
+    }
+    if (!checkfunctype("getfileblock", "string", end_block, 2)) {
+        exit(1)
+    }
+    if (!checkfunctype("getfileblock", "string", filename, 3)) {
+        exit(1)
+    }
+    if (!file(filename)) {
+        println("Can't open ", filename)
+        return false;
+    }
+    file_output=split(cat(filename), "\n")
+    getblock(start_block, end_block, file_output)
+}
+
+function getblock(start_block, end_block, array_name) {
+    if (!checkfunctype("getblock", "string", start_block, 1)) {
+        exit(1)
+    }
+    if (!checkfunctype("getblock", "string", end_block, 2)) {
+        exit(1)
+    }
+    if (!checkfunctype("getblock", "array", array_name, 3)) {
+        exit(1)
+    }
+    found_line=[]
+    inblock=false
+    foreach line in array_name {
+        if (match(start_block, line)) {
+            inblock=true
+        } else {
+            if (match(end_block, line)) {
+                found_line=push(found_line, line)
+                inblock=false
+            }
+        }
+        if (inblock) {
+            found_line=push(found_line, line)
+        }
+    }
+    return found_line;
+}
+
+function head(data, lines=0) {
+    type_string=false
+    if (type(data) == "string") {
+        data=split(data, "\n")
+        type_string=true
+    }
+    tdata=[]
+    if (lines == 0) {lines = 10}
+    l=len(data)
+    if (lines >= l) {
+        if (type_string) {
+            return(join(data, "\n"));
+        }
+        return data;
+    }
+    count=0
+    while (count < lines) {
+        tdata=push(tdata, data[count])
+        count++
+    }
+    if (type_string) {
+        return(join(tdata, "\n"));
+    }
+    return tdata;
+}
+
+function tail(data, lines=0) {
+    type_string=false
+    if (type(data) == "string") {
+        data=split(data, "\n")
+	type_string=true
+    }
+    tdata=[]
+    if (lines == 0) {lines = 10}
+    l=len(data)
+    if (lines >= l) {
+        if (type_string) {
+            return(join(data, "\n"));
+        }
+        return data;
+    }
+    count=l-lines
+    while (count < l) {
+        tdata=push(tdata, data[count])
+        count++
+    }
+    if (type_string) {
+        return(join(tdata, "\n"));
+    }
+    return tdata;
+}
+
+function min(arr=[]) {
+    if (!checkfunctype("min", "array", arr, 1)) {
+        exit(1)
+    }
+    arr_len=len(arr)
+    if (arr_len == 0) {
+        return 0;
+    }
+    arr=arr.sort()
+    return arr[0];
+}
+
+function max(arr=[]) {
+    if (!checkfunctype("max", "array", arr, 1)) {
+        exit(1)
+    }
+    arr_len=len(arr)
+    if (arr_len == 0) {
+        return 0;
+    }
+    arr=arr.sort()
+    return arr[arr_len - 1];
+}
+
+function sec2time(seconds=0) {
+    elapse={}
+    T=seconds
+    D=T/60/60/24
+    H=(T/60/60)%24
+    M=(T/60)%60
+    S=T%60
+    elapse=set(elapse, "Day", D)
+    elapse=set(elapse, "Hour", H)
+    elapse=set(elapse, "Min", M)
+    elapse=set(elapse, "Sec", S)
+    return elapse;
+}
+
+function contains(line="", search="") {
+    if (index(line, search) != -1) {
+        return true;
+    }
+    return false;
+}
+
+// Binary to Decimal
+function bin2dec(b_number) {
+    number=string(b_number)
+    length=len(number)
+    number=reverse(number)
+    counter=0
+    foreach i, x in number {
+        if (int(x) == 1) {counter += 2 ** i}
+    }
+    return counter;
+}
+
+// Binary to Hexadecimal
+function bin2hex(b_number) {
+    dec=bin2dec(b_number)
+    return hex(dec);
+}
+
+// Binary to Octal
+function bin2oct(b_number) {
+    dec=bin2dec(b_number)
+    return oct(dec);
+}
+
+// Hexadecimal to Decimal
+function hex2dec(h_number) {
+    hexnums={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "a": 10, "b": 11, "c":12 , "d":13 ,"e": 14, "f": 15}
+    number=tolower(reverse(string(h_number)))
+    number=trimsuffix(number, "x0")
+    counter=0
+    foreach i, x in number {
+    	nindex=string(x)
+	hnum=hexnums[nindex]
+        sum = hnum * (16 ** i)
+	counter += sum
+    }
+    return counter;
+}
+
+// Hexadecimal to Binary
+function hex2bin(h_number) {
+    return bin(hex2dec(h_number));
+}
+
+// Hexadecimal to Octal
+function hex2oct(h_number) {
+    return oct(hex2dec(h_number));
+}
+
+// Octal to Decimal
+function oct2dec(o_number) {
+    number=reverse(string(o_number))
+    counter=0
+    foreach i, x in number {
+        counter += int(x) * (8 ** i)
+    }
+    return counter;
+}
+
+// Octal to Hexadecimal
+function oct2hex(o_number) {
+    return hex(oct2dec(o_number));
+}
+
+// Octal to Binary
+function oct2bin(o_number) {
+    return bin(oct2dec(o_number));
+}
+
+function string.contains(search) {
+    return contains(self, self);
+}
+
+function array.head(lines=0) {
+    return head(self, lines);
+}
+
+function array.tail(lines=0) {
+    return tail(self, lines);
+}
+
+function string.tail(lines=0) {
+    return tail(self, lines);
+}
+
+function array.issorted() {
+    return issorted(self);
+}
+
+function array.min() {
+   return min(self);
+}
+
+function array.max() {
+    return max(self);
+}
+
+function array.map(fnc) {
+    return map(self, fnc);
+}
+
+function find(data, search) {
+    return index(data, search);
+}
+
+function array.find(item) {
+    return index(self, item);
+}
+
+function string.find(item) {
+    return index(self, item);
+}
+
+function array.index(item) {
+    return index(self, item);
+}
+
+function string.index(item) {
+    return index(self, item);
+}
+
+
+function array.join( char ) {
+    return join(self, char)
+}
+
+
+function object.abs() {
+    return abs(self);
+}
+
+function object.asctime(format="") {
+    if (len(format) == 0) {
+        return asctime(self);
+    }
+    return asctime(self,format);
+}
+
+function string.basename() {
+    return basename(self);
+}
+
+function string.lookupcname() {
+    return lookupcname(self);
+}
+
+function string.lookupip() {
+    return lookupip(self);
+}
+
+function string.lookuphost() {
+    return lookuphost(self);
+}
+
+function integer.bin() {
+    return bin(self);
+}
+
+function string.cat() {
+    return cat(self);
+}
+
+function object.ceil() {
+    return ceil(self)
+}
+
+function hash.delete(key) {
+    return delete(self, key);
+}
+
+function string.dirpath() {
+    return dirpath(self);
+}
+
+function string.exists() {
+    return exists(self);
+}
+
+function string.fields() {
+    return fields(self);
+}
+
+function string.file(dummy) {
+    return file(self, dummy);
+}
+
+function array.first() {
+    return first(self);
+}
+
+function object.float() {
+    return float(self);
+}
+
+function object.floor() {
+    return floor(self);
+}
+
+function string.getenv() {
+    return getenv(self);
+}
+
+function float.int() {
+   return (int(self));
+}
+
+function string.isnumber() {
+    return isnumber(self);
+}
+
+function hash.keys() {
+    return keys(self);
+}
+
+function array.last() {
+    return last(self);
+}
+
+function array.shift(num=0) {
+    return shift(self, num)
+}
+
+function object.len() {
+    return len(self);
+}
+
+function string.tolower() {
+    return tolower(self);
+}
+
+function string.ltrim(trimmer="") {
+    if (trimmer == "") {
+        return ltrim(self);
+    }
+    return ltrim(self, trimmer);
+}
+
+function string.rtrim(trimmer="") {
+    if (trimmer == "") {
+        return rtrim(self);
+    }
+    return rtrim(self, trimmer);
+}
+
+function string.match(search) {
+    return match(search, self);
+}
+
+function string.replaceall( old, new ) {
+   return replaceall(self, old, new);
+}
+
+function string.replace(old, new, amount) {
+    return replace(self, old, new, amount);
+}
+
+function string.trim() {
+   return trim(self);
+}
+
+function string.toupper() {
+   return toupper(self);
+}
+
+function object.reverse() {
+    return reverse(self);
+}
+
+function string.substr(start,long) {
+   return substr(self, start, long);
+}
+
+function object.string() {
+   return string(self);
+}
+
+function string.split(separator="") {
+    return split(self, separator);
+}
+
+function string.chmod(mode="") {
+    if (len(mode) == 0) {
+        mode="600"
+    }
+    return chmod(self, mode);
+}
+
+function string.repeat(count=0, separator="") {
+    return repeat(self, count, separator);
+}
+
+function array.swap( a, b ) {
+  return swap(self, a, b);
+}
+
+function array.sort() {
+  return sort(self);
+}
+
+function rsort(arr) {
+    arr=sort(arr)
+    return arr.reverse();
+}
+
+function usort(arr) {
+    return sort(uniq(arr)); 
+}
+
+function array.usort() {
+    return usort(self);
+}
+
+function array.rsort() {
+    return rsort(self);
+}
+
+function ucount(sarray=[]) {
+    h={}
+    sarray=sort(sarray)
+    length=len(sarray)
+    i=0
+    j=0
+    while (i < length) {
+        if (sarray[i] != sarray[i+1]) {
+            h =  (i == 0) ? set(h, sarray[i], j+1) : set(h, sarray[i], j)
+            j=0
+        }
+        i++
+        j++
+    }
+    return h;
+}
+
+function array.uniq() {
+    return uniq(self);
+}
+
+function array.ucount() {
+    return ucount(self);
+}
+
+function string.listcidrips() {
+    return listcidrips(self);
+}
+
+function string.isincidr(cidr) {
+    return isincidr(cidr, self);
+}
+
+function object.isalpha() {
+    return isalpha(self);
+}
+
+function string.lookuptxt() {
+    return lookuptxt(self);
+}
+
+function string.checkip() {
+    return checkip(self);
+}
+
+function string.trimsuffix(suff) {
+    return trimsuffix(self, suff);
+}
+
+function string.trimprefix(pref) {
+    return trimprefix(self, pref);
+}
+
+function string.cut(piv) {
+    return cut(self, piv);
+}
+
+function string.hasprefix(data) {
+    return hasprefix(self, data);
+}
+
+function string.hassuffix(data) {
+    return hassuffix(self, data);
+}
+
+function integer.procexists() {
+    return procexists(self);
+}
+
+function array.sum() {
+    return sum(self);
+}
+
+function array.shuffle() {
+    return shuffle(self);
+}
+
+function string.interpol(data) {
+    return interpol(data, self);
+}
+
+function object.bin2dec() {
+    return bin2dec(self);
+}
+
+function object.bin2hex() {
+    return bin2hex(self);
+}
+
+function object.bin2oct() {
+    return bin2oct(self);
+}
+
+function object.hex2dec() {
+    return hex2dec(self);
+}
+
+function object.hex2bin() {
+    return hex2bin(self);
+}
+
+function object.hex2oct() {
+    return hex2oct(self);
+}
+
+function object.oct2dec() {
+    return oct2dec(self);
+}
+
+function object.oct2hex() {
+    return oct2hex(self);
+}
+
+function object.oct2bin() {
+    return oct2bin(self);
+}
+

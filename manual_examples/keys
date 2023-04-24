@@ -1,0 +1,6 @@
+#!/usr/bin/env mwnci
+my_hash={"Name": "Eccles", "DOB": "01/02/01", "Dog": "Pedro"}
+println(keys(my_hash))
+foreach key in keys(my_hash) {
+    println(key, "   ", my_hash[key])
+}

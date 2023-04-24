@@ -1,0 +1,7 @@
+#!/usr/bin/env mwnci
+include("grp")
+gnum=127
+group=getgrgid(gnum)
+println("Group ", gnum, " shows: ", group)
+
+

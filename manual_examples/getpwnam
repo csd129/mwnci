@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+include("pwd")
+user="root"
+pw_entry=getpwnam(user)
+println("The password entry for ", user, " is ", pw_entry)

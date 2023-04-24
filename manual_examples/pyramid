@@ -1,0 +1,24 @@
+#!/usr/bin/env mwnci
+rows=5
+runit=true
+foreach i in 1..rows {
+    k=0
+    foo=rows-i
+    foreach space in 1..foo {
+        print("  ")
+    }
+    while (runit) {
+        print("* ")
+	k++
+	bar=(2*i)-1
+
+// the language doesn't support 'break', so we
+// break out with setting runit to false
+
+	if (k == bar) {
+	    runit=false
+	}
+    }
+    println()
+    runit=true
+}

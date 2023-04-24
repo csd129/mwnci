@@ -1,0 +1,3 @@
+#!/usr/bin/env mwnci
+domain_info=lookupip("news.bbc.co.uk")
+println(domain_info)

@@ -1,0 +1,15 @@
+#!/usr/bin/env mwnci
+
+//
+// This program dumps the command-line arguments the script received.
+//
+
+let a = args();
+
+print( "We received ", len(a), " arguments to our script.\n" );
+
+let i = 0;
+while ( i < len(a) ) {
+   print( "\t", i, " " , a[i], "\n");
+   i++
+}

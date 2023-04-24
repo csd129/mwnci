@@ -1,0 +1,75 @@
+function getpwent(users="") {
+    if (!checkfunctype("getpwent", "string", users, 1)) {
+        exit(1)
+    }
+    if (len(users) == 0) {
+        println("Error calling `getpwent`: ERROR: TypeError: getpwent() takes exactly 1 argument (0 given)")
+	exit(1)
+    }
+    set userhash={}
+    userinfo=getpwnam(users)
+    if (userinfo) {
+        gecos=split(userinfo[4], ",")
+		userhash=set(userhash, "Gecos", gecos)
+		userhash=set(userhash, "User", userinfo[0])
+		userhash=set(userhash, "Uid", userinfo[2])
+		userhash=set(userhash, "Gid", userinfo[3])
+		userhash=set(userhash, "Home", userinfo[5])
+        shell = (len(userinfo[6]) == 0) ? "/bin/sh" : userinfo[6]
+	    userhash=set(userhash, "Shell", shell)
+    } else {
+        return false;
+    }
+    return userhash;
+}
+
+function getpwnam(Gid="") {
+    if (!checkfunctype("getpwnam", "string", Gid, 1)) {
+        exit(1)
+    }
+    if (Gid == "") {
+        println("Error calling `getpwnam`: ERROR: TypeError: getpwnam() takes exactly 1 argument (0 given)")
+        exit(1)
+    }
+    PasswdFile="/etc/passwd"
+    Search=sprintf("^%s:", Gid)
+    Lines=regexp(Search, PasswdFile)
+    if (len(Lines) == 0) {return false;}
+    foreach Line in Lines {
+        SplitLine=split(trim(Line), ":")
+	    return SplitLine;
+    }
+}
+
+function getpwuid(Uid=-1) {
+    if (!checkfunctype("getpwuid", "integer", Uid, 1)) {
+        exit(1)
+    }
+    if (Uid == -1) {
+        println("Error calling `getpwuid`: ERROR: TypeError: getpwuid() takes exactly 1 argument (0 given)")
+        exit(1)
+    }
+    PasswdFile="/etc/passwd"
+    Search=sprintf(":%d:", Uid)
+    Lines=regexp(Search, PasswdFile)
+    if (len(Lines) == 0) {return false;}
+    foreach Line in Lines {
+        SplitLine=split(trim(Line), ":")
+        if (int(SplitLine[2]) == Uid) {
+	        return SplitLine;
+	    }
+    }
+    return false;
+}
+
+function string.getpwent() {
+    return getpwent(self);
+}
+
+function string.getpwnam() {
+    return getpwnam(self);
+}
+
+function integer.getpwuid() {
+    return getpwuid(self);
+}

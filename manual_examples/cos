@@ -1,0 +1,49 @@
+#!/usr/bin/env mwnci
+print("Cosine Waveform: \n\n")
+print("     -1 -0.5   0   0.5   1\n")
+print("     +----+----+----+----+\n")
+i=0.0
+while (i <= 3.2) {
+    printf("%4.2f ", i)
+    cosine=cos(i)
+    plot=int(10 * cosine) + 10
+    if (plot < 10) {
+        before=""
+	j=1
+	while (j <= plot) {
+	    before= before + " "
+	    j++
+	}
+	after=""
+	j = plot
+	while (j < 9) {
+	    after=after + " "
+	    j++
+	}
+	print(before, "*", after, "|")
+	printf("              cosine = %+8.6f\n", cosine)
+    } else {
+        if (plot == 10) {
+	    print("          *")
+	    printf("              cosine = %+8.6f\n", cosine)
+	} else {
+	        print("          |")
+		before=""
+		j=11
+		while (j < plot) {
+		    before=before + " "
+		    j++
+		}
+		print(before, "*")
+		after=""
+		j=plot+1
+		while (j <= 24) {
+		    after=after + " "
+		    j++
+		}
+		print(after)
+		printf("cosine = %+8.6f\n", cosine)
+        }
+    }
+    i += 0.1
+}

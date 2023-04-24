@@ -1,0 +1,7 @@
+#!/usr/bin/env mwnci
+if (exists("/tmp/foo")) {
+    exit(0)
+}
+exit(1) 
+
+

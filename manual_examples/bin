@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+num=25
+binary=bin(num)
+println("Decimal 25 is ", binary, " in binary")
+

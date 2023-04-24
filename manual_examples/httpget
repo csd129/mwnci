@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+include("http")
+http_data=httpget("https://api.ipify.org")
+println(http_data)

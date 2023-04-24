@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+include("grp")
+gname="root"
+group=getgrnam(gname)
+println("Group ", gname, " shows: ", group)

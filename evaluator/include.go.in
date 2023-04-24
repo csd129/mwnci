@@ -1,0 +1,57 @@
+package evaluator
+
+import (
+	"os"
+	"fmt"
+	"strings"
+	"mwnci/object"
+	"mwnci/lexer"
+	"mwnci/parser"
+	"mwnci/typing"
+)
+
+func Include(env *object.Environment, args ...object.Object) object.Object {
+	if err := typing.Check(
+		"include", args,
+		typing.ExactArgs(1),
+		typing.WithTypes(object.STRING_OBJ),
+	); err != nil {
+		return newError(err.Error())
+	}
+
+	import_file:=args[0].Inspect()
+	includes:=""
+	if len(import_file) == 0 {
+		return newError("ArgError: include() expects a file identifier, none given")
+	}
+	imp_filename:=fmt.Sprintf("%s.mwn", import_file)
+	userincludes:=os.Getenv("INCLUDEPATH")
+	if len(userincludes) == 0 {
+		includes="@INCLUDE@:."
+	} else {
+		includes=fmt.Sprintf("%s:%s", userincludes, "@INCLUDE@:." )
+	}
+	incpaths:=strings.Split(includes, ":")
+	for _, ipath := range incpaths {
+		import_file=fmt.Sprintf("%s/%s", ipath, imp_filename)
+		data, err := os.ReadFile(import_file)
+		if err == nil {
+			l := lexer.New(string(data))
+			p := parser.New(l)
+			program := p.ParseProgram()
+			if len(p.Errors()) == 0 {
+				return (Eval(program, env))
+			}
+			fmt.Printf("Error parsing eval-string: %s", string(data))
+			os.Exit(1)
+		}
+	}
+	return newError("Unable to open file %s", imp_filename)
+}
+
+func init() {
+	RegisterBuiltin("include",
+		func(env *object.Environment, args ...object.Object) object.Object {
+			return (Include(env, args...))
+		})
+}

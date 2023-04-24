@@ -1,0 +1,9 @@
+#!/usr/bin/env mwnci
+println(" n    Oct   Hex")
+println("---  ----  ----")
+i=1
+while (i <= 25) {
+    line=sprintf("%3d  %4o  %4X", i, i ,i)
+    println(line)
+    i++
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+println("Hello World!")
+sleep(5)
+println("Goodbye World!")

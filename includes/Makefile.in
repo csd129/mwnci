@@ -1,0 +1,17 @@
+FILES=file.mwn main.mwn proc.mwn certs.mwn http.mwn net.mwn \
+      os.mwn ps.mwn sysstat.mwn pwd.mwn grp.mwn math.mwn units.mwn
+
+INCLUDEDIR=@INCLUDE@
+INSTALL=install
+OWNER=@OWNER@
+GROUP=@GROUP@
+INSTALL_OPTS=--compare -o ${OWNER} -g ${GROUP}
+
+dummy:
+
+install: ${FILES}
+	mkdir -p ${INCLUDEDIR}
+	${INSTALL} ${INSTALL_OPTS} -m 644 -t ${INCLUDEDIR} ${FILES}
+
+clean:
+	rm -f *~ \#*\#	

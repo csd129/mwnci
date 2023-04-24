@@ -1,0 +1,31 @@
+package evaluator
+
+import (
+	"mwnci/object"
+	"mwnci/typing"
+	"strings"
+)
+
+func RTrim(args ...object.Object) object.Object {
+	if err := typing.Check(
+		"rtrim", args,
+		typing.RangeOfArgs(1,2),
+		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
+	); err != nil {
+		return newError(err.Error())
+	}
+	trimmer:=" \n\t\r"
+	line := args[0].(*object.String).Value
+	if len(args) == 2 {
+		trimmer = args[1].(*object.String).Value
+	}
+	s := strings.TrimRight(line, trimmer)
+	return &object.String{Value: s}
+}
+
+func init() {
+	RegisterBuiltin("rtrim",
+		func(env *object.Environment, args ...object.Object) object.Object {
+			return (RTrim(args...))
+		})
+}

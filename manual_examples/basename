@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+path="/usr/bin/file"
+println("basename of ",path, ": ", basename(path))
+println("basename of this script : ", basename(args()[0]))
+println("path.basename() : " , path.basename())

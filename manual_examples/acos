@@ -1,0 +1,13 @@
+#!/usr/bin/env mwnci
+
+num = 0.0
+printf("radians\t\tcos()\t\tacos(cos())\troundoff error\n")
+printf("-------\t\t-----\t\t-----------\t--------------\n")
+
+while (num <= 3.1) {
+    cosine=cos(num)
+    argument=acos(cosine)
+    error=argument - num
+    printf("%+1.1f\t\t%+1.6f\t%+1.6f\t%+1.6f\n", num, cosine, argument, error)
+    num += 0.1
+}

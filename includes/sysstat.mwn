@@ -1,0 +1,109 @@
+function getcpu() {
+    command="`mpstat -P ALL`"
+    out=eval(command)
+    cpu_output=split(trim(out["stdout"]), "\n")
+    cpu_output=shift(cpu_output,3)
+    cpu_hash={}
+    foreach line in cpu_output {
+        line_list=fields(line)
+        line_key=line_list[1]
+        line_data={}
+        line_data=set(line_data, "usr", line_list[2])
+        line_data=set(line_data, "nice", line_list[3])
+        line_data=set(line_data, "sys", line_list[4])
+        line_data=set(line_data, "iowait", line_list[5])
+        line_data=set(line_data, "irq", line_list[6])
+        line_data=set(line_data, "soft", line_list[7])
+        line_data=set(line_data, "steal", line_list[8])
+        line_data=set(line_data, "guest", line_list[9])
+        line_data=set(line_data, "gnice", line_list[10])
+        line_data=set(line_data, "idle", line_list[11])
+        cpu_hash=set(cpu_hash, line_key, line_data)
+    }
+    return cpu_hash;
+};
+
+function diskstat(argy="") {
+    if (!checkfunctype("diskstat", "string", argy, 1)) {
+        exit(1)
+    }
+    item="ALL"
+    if (len(argy) > 0) {
+        item=argy
+    }
+    command=sprintf("`iostat -d -p %s`", item)
+    out=eval(command)
+    disk_output=split(trim(out["stdout"]), "\n")
+    disk_stat=shift(disk_output,3)
+    disk_hash={}
+    foreach line in disk_stat {
+        line_list=fields(line)
+        line_key=line_list[0]
+        line_data={}
+        line_data=set(line_data, "tps", line_list[1])
+        line_data=set(line_data, "kBreads", line_list[2])
+        line_data=set(line_data, "kBwrtns", line_list[3])
+        line_data=set(line_data, "kBdscds", line_list[4])
+        line_data=set(line_data, "kBread", line_list[5])
+        line_data=set(line_data, "kBwrtn", line_list[6])
+        line_data=set(line_data, "kBdscd", line_list[7])
+        disk_hash=set(disk_hash, line_key, line_data)
+    }
+    return disk_hash;
+};
+
+function pidstat(name="") {
+    if (!checkfunctype("pidstat", "string", name, 1)) {
+        exit(1)
+    }
+    ps_array=[]
+    ps_pos=0
+    cmd="pidstat"
+    if (name != "") {cmd=cmd + " -C " + name}
+    run_cmd="`" + cmd + "`"
+    foo=eval(run_cmd)
+    pidsplit=split(foo["stdout"], "\n")
+    output_len=len(pidsplit)
+    count=3
+    while (count <= (output_len -1)) {
+        if (len(pidsplit[count]) > 0) {
+            splitline=fields(pidsplit[count])
+	        pwline=split(getpwuid(int(splitline[1]))[0], ":")
+	        newline=pwline[0]
+	        pos=2
+	        length=len(splitline)-1
+	        while (pos <= length) {
+	            newline=newline + " " + splitline[pos]
+	            pos++
+	        }
+	        ps_array=push(ps_array, newline)
+        }
+        count++
+    }
+    return ps_array;
+};
+
+function cpucount() {
+    return len(keys(getcpu())) - 1;
+};
+
+function ifstat(iface="") {
+    if (!checkfunctype("ifstat", "string", iface, 1)) {
+        exit(1)
+    }
+    ifarray=[]
+    ifdata=split(system("sar -n DEV"), "\n")
+    ifdata=shift(ifdata,3)
+    foreach line in ifdata {
+        flines=fields(line)
+	    if (len(iface) == 0) {
+            ifarray=push(ifarray, line)
+	    } else {
+	        if (flines[1] == iface) {
+                ifarray=push(ifarray, line)
+	        }
+	    }
+    }
+    return ifarray;
+};
+

@@ -1,0 +1,2 @@
+#!/usr/bin/env mwnci
+println(int(3.14))

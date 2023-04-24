@@ -1,0 +1,6 @@
+#!/usr/bin/env mwnci
+if (getenv("PATH") != "") {
+    println(getenv("PATH"))
+} else {
+    println("Variable not set")
+}

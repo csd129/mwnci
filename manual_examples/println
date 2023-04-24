@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+println("Hello ", "world!")
+println("Hello world!")
+print("Hello ")
+println("world!")

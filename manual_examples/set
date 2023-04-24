@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+my_hash={"Name": "Eccles", "DOB": "01/02/01"}
+println(my_hash)
+my_hash=set(my_hash, "Dog", "Pedro")
+println(my_hash)

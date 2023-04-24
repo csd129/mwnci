@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+include("http")
+http_data=httpstat("https://google.com")
+println(http_data)
