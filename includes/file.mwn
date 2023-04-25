@@ -136,7 +136,7 @@ function isowner(filename="", user="") {
         uid=int(getuid())
     } else {
         if (match("[a-z]", user)) {
-            uid=int(split(getpwnam(user)[0], ":")[2])
+            uid=int(getpwnam(user)[2])
 	    } else {
 	        uid=int(user)
         }
@@ -166,7 +166,7 @@ function isgroup(filename="", grp="") {
         gid=int(getgid())
     } else {
         if (match("[a-z]", grp)) {
-            gid=int(split(getgrnam(grp)[0], ":")[2])
+            gid=int(getgrnam(grp)[2])
 	    } else {
 	        gid=int(grp)
         }
