@@ -47,7 +47,7 @@ func File(args ...object.Object) object.Object {
 	case syscall.S_IFBLK:
 		fileType = "BLOCK"
 	case syscall.S_IFCHR:
-		fileType = "SPECIAL"
+		fileType = "CHR"
 	case syscall.S_IFIFO:
 		fileType = "FIFO"
 	case syscall.S_IFLNK:

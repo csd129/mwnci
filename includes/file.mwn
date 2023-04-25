@@ -40,8 +40,8 @@ function isdir(filename="") {
     return false;
 }
 
-function isspec(filename="") {
-    if (FileType(filename) == "SPECIAL") {return true;}
+function ischr(filename="") {
+    if (FileType(filename) == "CHR") {return true;}
     return false;
 }
 
