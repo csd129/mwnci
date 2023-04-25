@@ -203,7 +203,7 @@ function isdoable(filename="", bit) {
 	    return false;
 	}
     }
-    if (int(other == 1)) {
+    if (int(other) == 1) {
         return true;
     }
     return false;
