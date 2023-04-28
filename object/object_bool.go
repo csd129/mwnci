@@ -64,3 +64,27 @@ func (b *Boolean) InvokeMethod(method string, env Environment, args ...Object) O
 func (b *Boolean) ToInterface() interface{} {
 	return b.Value
 }
+
+func (b *Boolean) Int() int {
+        if b.Value {
+                return 1
+        }
+        return 0
+}
+
+func (b *Boolean) Compare(other Object) int {
+        if obj, ok := other.(*Boolean); ok {
+                return b.Int() - obj.Int()
+        }
+        return 1
+}
+
+func (b *Boolean) String() string {
+        return b.Inspect()
+}
+
+// Clone creates a new copy
+func (b *Boolean) Clone() Object {
+        return &Boolean{Value: b.Value}
+}
+

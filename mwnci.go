@@ -5,7 +5,7 @@
 // features.  For example we support file-based I/O, regular expressions,
 // the ternary operator, and more.
 //
-// For full details please consult the project homepage https://github.com/skx/monkey/
+// For full details please consult the project homepage http://mwnci.ploogie.co.uk
 package main
 
 import (
