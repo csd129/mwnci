@@ -9,6 +9,7 @@ A [_current guide_](http://mwnci.ploogie.co.uk) is available, though still work 
  ```
  git clone https://github.com/csd129/mwnci.git
  edit config.conf
+ ./configure
  make install
  ```
 
