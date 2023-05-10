@@ -1,9 +1,6 @@
 package evaluator
 
 import (
-	"fmt"
-	"os"
-
 	"mwnci/object"
 	"mwnci/typing"
 	"github.com/chzyer/readline"
@@ -20,13 +17,13 @@ func Input(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 	prompt:=""
-	line:=""
 	if len(args) == 1 {
-		prompt := args[0].(*object.String).Value
-		fmt.Fprintf(os.Stdout, prompt)
+		prompt = args[0].(*object.String).Value
+	} else {
+		prompt= "> "
 	}
-
-	rl, err := readline.New(string(prompt))
+	line := ""
+	rl, err := readline.New(prompt)
 	if err != nil {
 		return newError(err.Error())
 	}
@@ -36,7 +33,7 @@ func Input(args ...object.Object) object.Object {
 		if err != nil {
 			break
 		}
-	return &object.String{Value: string(line)}
+		return &object.String{Value: string(line)}
 	}
 	return &object.String{Value: string(line)}
 }
