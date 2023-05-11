@@ -1,5 +1,5 @@
-FILES=file.mwn main.mwn proc.mwn certs.mwn http.mwn net.mwn \
-      os.mwn ps.mwn sysstat.mwn pwd.mwn grp.mwn math.mwn units.mwn
+FILES=certs.mwn file.mwn grp.mwn http.mwn main.mwn \
+	math.mwn net.mwn os.mwn ps.mwn pwd.mwn units.mwn
 
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
