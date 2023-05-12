@@ -1,0 +1,26 @@
+function getcpu() {
+    command="`mpstat -P ALL`"
+    out=eval(command)
+    cpu_output=split(trim(out["stdout"]), "\n")
+    cpu_output=shift(cpu_output,3)
+    cpu_hash={}
+    foreach line in cpu_output {
+        line_list=fields(line)
+        line_key=line_list[1]
+        line_data={}
+        line_data=set(line_data, "usr", float(line_list[2]))
+        line_data=set(line_data, "nice", float(line_list[3]))
+        line_data=set(line_data, "sys", float(line_list[4]))
+        line_data=set(line_data, "iowait", float(line_list[5]))
+        line_data=set(line_data, "irq", float(line_list[6]))
+        line_data=set(line_data, "soft", float(line_list[7]))
+        line_data=set(line_data, "steal", float(line_list[8]))
+        line_data=set(line_data, "guest", float(line_list[9]))
+        line_data=set(line_data, "gnice", float(line_list[10]))
+        line_data=set(line_data, "idle", float(line_list[11]))
+	busy=sprintf("%.2f", 100.00 - float(line_list[11]))
+	line_data=set(line_data, "busy", float(busy))
+        cpu_hash=set(cpu_hash, line_key, line_data)
+    }
+    return cpu_hash;
+};
