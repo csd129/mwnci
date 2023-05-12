@@ -51,7 +51,7 @@ function pidcpu(opts="") {
 
 function pidmem(ops="") {
     include("pwd")
-    CMD="ps -o pid,user,%mem,command ax"
+    CMD="ps -o pid,user,%cpu,%mem,command ax"
     if (len(ops) == 0) {ops="[a-z]"}
     a=trim(system(CMD))
     a=rest(a.split("\n"))
@@ -60,12 +60,13 @@ function pidmem(ops="") {
         mem_hash={}
 	sline=fields(line)
         if (len(ops) > 1) {
-	    if (match(ops, sline[3])) {
+	    if (match(ops, sline[4])) {
 	        uid=getpwnam(sline[1])[2]
 	        mem_hash=set(mem_hash, "uid",     int(uid))
 	        mem_hash=set(mem_hash, "pid",     int(sline[0]))
-	        mem_hash=set(mem_hash, "mem",     float(sline[2]))
-	        mem_hash=set(mem_hash, "command", sline[3])
+		mem_hash=set(mem_hash, "cpu",     float(sline[2]))
+	        mem_hash=set(mem_hash, "mem",     float(sline[3]))
+	        mem_hash=set(mem_hash, "command", sline[4])
 	        mem_array=push(mem_array, mem_hash)
 	   }
         }
