@@ -7,7 +7,7 @@ import (
 // push something onto an array
 func pushFun(args ...object.Object) object.Object {
 	if len(args) != 2 {
-		return newError("wrong number of arguments. got=%d, want=1",
+		return newError("wrong number of arguments. got=%d, want=2",
 			len(args))
 	}
 	if args[0].Type() != object.ARRAY_OBJ {

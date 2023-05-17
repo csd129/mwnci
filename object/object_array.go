@@ -120,9 +120,14 @@ func (a *Array) Less(i, j int) bool {
         return false
 }
 
-
 func (a *Array) Swap(i, j int) {
 	a.Elements[i], a.Elements[j] = a.Elements[j], a.Elements[i]
+}
+
+func (a *Array) Insert(i int, j Object) {
+	a.Elements=append(a.Elements, j)
+	copy(a.Elements[i+1:], a.Elements[i:])
+	a.Elements[i]=j
 }
 
 func (a *Array) Aset(i int , j Object) {

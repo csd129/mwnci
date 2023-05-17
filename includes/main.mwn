@@ -28,10 +28,10 @@ const STDERR=open( "!STDERR!" );
 
 
 function checkfunctype(func, expected, received, argnum=1) {
-    rectype=type(received)
-    if (rectype != expected) {
+    ReceivedType=type(received)
+    if (ReceivedType != expected) {
         println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `",
-            toupper(expected), "` got `", toupper(rectype), "`")
+            toupper(expected), "` got `", toupper(ReceivedType), "`")
         return false;
     }
     return true;
@@ -377,6 +377,14 @@ function object.asctime(format="") {
         return asctime(self);
     }
     return asctime(self,format);
+}
+
+function array.aset(element=-1, value="") {
+    return aset(self, element, value);
+}
+
+function array.insert(element=-1, value="") {
+    return insert(self, element, value);
 }
 
 function string.basename() {
