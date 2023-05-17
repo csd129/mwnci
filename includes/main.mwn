@@ -387,6 +387,10 @@ function array.insert(element=-1, value="") {
     return insert(self, element, value);
 }
 
+function array.extend(NextArray=[]) {
+    return extend(self, NextArray);
+}
+
 function string.basename() {
     return basename(self);
 }
