@@ -69,7 +69,8 @@ function m2yd(m) {
 
 // Kilometres to Inches
 function km2i(k) {
-    return float(m2i(k)*1000.0);
+    miles=km2mi(k)
+    return float(mi2i(miles));
 }
 
 // Kilometres to Feet
