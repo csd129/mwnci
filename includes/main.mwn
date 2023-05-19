@@ -387,6 +387,10 @@ function array.insert(element=-1, value="") {
     return insert(self, element, value);
 }
 
+function array.remove(element=-1) {
+    return remove(self, element);
+}
+
 function array.extend(NextArray=[]) {
     return extend(self, NextArray);
 }
