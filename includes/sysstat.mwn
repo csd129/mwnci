@@ -18,8 +18,8 @@ function getcpu() {
         line_data=set(line_data, "guest", float(line_list[9]))
         line_data=set(line_data, "gnice", float(line_list[10]))
         line_data=set(line_data, "idle", float(line_list[11]))
-	busy=sprintf("%.2f", 100.00 - float(line_list[11]))
-	line_data=set(line_data, "busy", float(busy))
+        busy=sprintf("%.2f", 100.00 - float(line_list[11]))
+        line_data=set(line_data, "busy", float(busy))
         cpu_hash=set(cpu_hash, line_key, line_data)
     }
     return cpu_hash;
@@ -36,8 +36,8 @@ function pidcpu(opts="") {
     foreach line in a {
         cpu_hash={}
         sline=fields(line)
-	cpu_hash=set(cpu_hash, "uid",     int(sline[1]))
-	cpu_hash=set(cpu_hash, "pid",     int(sline[2]))
+        cpu_hash=set(cpu_hash, "uid",     int(sline[1]))
+        cpu_hash=set(cpu_hash, "pid",     int(sline[2]))
 	cpu_hash=set(cpu_hash, "usr",     float(sline[3]))
 	cpu_hash=set(cpu_hash, "system",  float(sline[4]))
 	cpu_hash=set(cpu_hash, "guest",   float(sline[5]))
@@ -68,7 +68,7 @@ function pidmem(ops="") {
 	        mem_hash=set(mem_hash, "mem",     float(sline[3]))
 	        mem_hash=set(mem_hash, "command", sline[4])
 	        mem_array=push(mem_array, mem_hash)
-	   }
+            }
         }
     }
     return mem_array;
