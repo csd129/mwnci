@@ -1,0 +1,36 @@
+package evaluator
+
+import (
+	//	"sort"
+	//	"strings"
+
+	"mwnci/object"
+	"mwnci/typing"
+)
+
+func Count(args ...object.Object) object.Object {
+	if err := typing.Check(
+		"count", args,
+		typing.ExactArgs(2),
+	); err != nil {
+		return newError(err.Error())
+	}
+
+	counter := 0
+	if haystack, ok := args[0].(*object.Array); ok {
+		needle := args[1].(object.Comparable)
+		for i := range haystack.Elements {
+			if needle.Compare(haystack.Elements[i]) == 0 {
+				counter++
+			}
+		}
+	}
+	return &object.Integer{Value: int64(counter)}
+}
+
+func init() {
+	RegisterBuiltin("count",
+		func(env *object.Environment, args ...object.Object) object.Object {
+			return (Count(args...))
+		})
+}
