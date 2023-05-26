@@ -5,8 +5,11 @@
 ;;; Code:
 
 (defvar mwnci-constants
-  '("true"
-    "false"))
+  '("true" "false" "PI" "E" "TAU" "PHI"
+    "SQRT2" "SQRTE" "SQRTPI" "SQRTPHI"
+    "LN2" "LOG2E" "LN10" "LOGH10E"
+    "STDIN" "STDOUT" "STDERR"
+    ))
 
 (defvar mwnci-keywords
   '(
