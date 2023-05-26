@@ -38,13 +38,13 @@ function pidcpu(opts="") {
         sline=fields(line)
         cpu_hash=set(cpu_hash, "uid",     int(sline[1]))
         cpu_hash=set(cpu_hash, "pid",     int(sline[2]))
-	cpu_hash=set(cpu_hash, "usr",     float(sline[3]))
-	cpu_hash=set(cpu_hash, "system",  float(sline[4]))
-	cpu_hash=set(cpu_hash, "guest",   float(sline[5]))
-	cpu_hash=set(cpu_hash, "wait",    float(sline[6]))
-	cpu_hash=set(cpu_hash, "cpu",     float(sline[7]))
-	cpu_hash=set(cpu_hash, "command", sline[9])
-	cpu_array=push(cpu_array, cpu_hash)
+        cpu_hash=set(cpu_hash, "usr",     float(sline[3]))
+        cpu_hash=set(cpu_hash, "system",  float(sline[4]))
+        cpu_hash=set(cpu_hash, "guest",   float(sline[5]))
+        cpu_hash=set(cpu_hash, "wait",    float(sline[6]))
+        cpu_hash=set(cpu_hash, "cpu",     float(sline[7]))
+        cpu_hash=set(cpu_hash, "command", sline[9])
+        cpu_array=push(cpu_array, cpu_hash)
     }
     return cpu_array;
 }
