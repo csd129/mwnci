@@ -578,6 +578,9 @@ function array.rsort() {
 }
 
 function ucount(arr=[]) {
+    if (!checkfunctype("ucount", "array", arr, 1)) {
+        exit(1)
+    }
     u_hash={}
     u=uniq(arr)
     foreach n in u {

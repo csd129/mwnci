@@ -1,9 +1,6 @@
 package evaluator
 
 import (
-	//	"sort"
-	//	"strings"
-
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -24,7 +21,11 @@ func Count(args ...object.Object) object.Object {
 				counter++
 			}
 		}
+	} else {
+		return newError(
+			"TypeError: count() expected argument #1 to be `array` got `%s`",args[0].Type(),)
 	}
+
 	return &object.Integer{Value: int64(counter)}
 }
 
