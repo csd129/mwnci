@@ -5,7 +5,7 @@ import (
 )
 
 // push something onto an array
-func pushFun(args ...object.Object) object.Object {
+func fpushFun(args ...object.Object) object.Object {
 	if len(args) != 2 {
 		return newError("wrong number of arguments. got=%d, want=2",
 			len(args))
@@ -15,16 +15,13 @@ func pushFun(args ...object.Object) object.Object {
 			args[0].Type())
 	}
 	arr := args[0].(*object.Array)
-	length := len(arr.Elements)
-	newElements := make([]object.Object, length+1)
-	copy(newElements, arr.Elements)
-	newElements[length] = args[1]
-	return &object.Array{Elements: newElements}
+	arr.Append(args[1])
+	return arr
 }
 
 func init() {
 	RegisterBuiltin("push",
 		func(env *object.Environment, args ...object.Object) object.Object {
-			return (pushFun(args...))
+			return (fpushFun(args...))
 		})
 }
