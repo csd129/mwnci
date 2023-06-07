@@ -583,13 +583,13 @@ function ucount(arr=[]) {
     }
     Output="{"
     TempFile="/tmp/unique." + string(getpid())
-    Command=sprintf("sort %s | uniq -c| awk '{print \"@\"$2\"@: \"$1\",\"}'", TempFile)
+    Command=sprintf("cat %s | sed -e s/^/\"@@:@@\"/g | sort |uniq -c| awk -F\"@@:@@\" '{print \"\@\@\"$2\"\@\@: \"$1\",\"}'", TempFile)
     writetofile(TempFile, "w", arr)
     foo=trim(system(Command))
     unlink(TempFile)
     Output=Output + foo +"}"
     Output=replace(Output, ",}", "}",1)
-    Output=replaceall(Output, "@", "\"")
+    Output=replaceall(Output, "@@", "\"")
     return eval(Output);
 }
 
