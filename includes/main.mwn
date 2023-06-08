@@ -582,21 +582,11 @@ function ucount(arr=[]) {
         exit(1)
     }
     TempFile="/tmp/unique." + string(getpid())
-<<<<<<< HEAD
-    Command=sprintf("cat %s | sed -e s/^/\"@@:@@\"/g | sort |uniq -c| awk -F\"@@:@@\" '{print \"\@\@\"$2\"\@\@: \"$1\",\"}'", TempFile)
-=======
     Command=sprintf("cat %s | sed -e s/^/\"@@:@@\"/g | sort |uniq -c", TempFile)
     BuildLine="{"
->>>>>>> 4ff7783 (Probably fixed ucount() [again])
     writetofile(TempFile, "w", arr)
     foo=split(trim(system(Command)), "\n")
     unlink(TempFile)
-<<<<<<< HEAD
-    Output=Output + foo +"}"
-    Output=replace(Output, ",}", "}",1)
-    Output=replaceall(Output, "@@", "\"")
-    return eval(Output);
-=======
     DataLen=len(foo)-1
     foreach Index,line in foo {
         CutLine=cut(line, "@@:@@")
@@ -610,7 +600,6 @@ function ucount(arr=[]) {
 	}	    
     }
     return eval(BuildLine);
->>>>>>> 4ff7783 (Probably fixed ucount() [again])
 }
 
 function array.uniq() {
