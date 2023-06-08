@@ -577,31 +577,6 @@ function array.rsort() {
     return rsort(self);
 }
 
-function ucount(arr=[]) {
-    if (!checkfunctype("ucount", "array", arr, 1)) {
-        exit(1)
-    }
-    TempFile="/tmp/unique." + string(getpid())
-    Command=sprintf("cat %s | sed -e s/^/\"@@:@@\"/g | sort |uniq -c", TempFile)
-    BuildLine="{"
-    writetofile(TempFile, "w", arr)
-    foo=split(trim(system(Command)), "\n")
-    unlink(TempFile)
-    DataLen=len(foo)-1
-    foreach Index,line in foo {
-        CutLine=cut(line, "@@:@@")
-	Number=int(trim(CutLine[0]))
-	Data=string(trim(CutLine[1]))
-	HashString=sprintf("\"%s\": %d", Data, Number)
-	if (Index < DataLen) {
-	    BuildLine=BuildLine + HashString + ","
-	} else {
-	    BuildLine=BuildLine + HashString + "}"
-	}	    
-    }
-    return eval(BuildLine);
-}
-
 function array.uniq() {
     return uniq(self);
 }

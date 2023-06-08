@@ -2,6 +2,7 @@ package evaluator
 
 import (
 	"fmt"
+	"strings"
 	"mwnci/object"
 	"mwnci/lexer"
 	"mwnci/parser"
@@ -17,9 +18,10 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 	//	dict := make(map[string]int)
+	var b strings.Builder
 	arr := args[0].(*object.Array)
 	dict := make(map[string]int)
-	longstring:="{"
+	b.WriteString("{")
 	for _,data := range arr.Elements{
 		HashData := fmt.Sprintf("%v", data)
 		dict[HashData] = dict[HashData] + 1
@@ -33,10 +35,13 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 		} else {
 			buildline = fmt.Sprintf("\"%v\": %v}", k, v)
 		}
-		longstring=fmt.Sprintf("%v%v", longstring, buildline)
+
+		fmt.Fprintf(&b, "%v", buildline)
 		counter++
 	}
-	l := lexer.New(string(longstring))
+	
+	longstring:=fmt.Sprintf("%v", b.String())
+	l := lexer.New(longstring)
 	p := parser.New(l)
 	program := p.ParseProgram()
 	if len(p.Errors()) == 0 {
@@ -47,7 +52,7 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 }
 
 func init() {
-	RegisterBuiltin("yewcount",
+	RegisterBuiltin("ucount",
 		func(env *object.Environment, args ...object.Object) object.Object {
 			return (Ucount(env, args...))
 		})
