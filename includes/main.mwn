@@ -581,16 +581,36 @@ function ucount(arr=[]) {
     if (!checkfunctype("ucount", "array", arr, 1)) {
         exit(1)
     }
-    Output="{"
     TempFile="/tmp/unique." + string(getpid())
+<<<<<<< HEAD
     Command=sprintf("cat %s | sed -e s/^/\"@@:@@\"/g | sort |uniq -c| awk -F\"@@:@@\" '{print \"\@\@\"$2\"\@\@: \"$1\",\"}'", TempFile)
+=======
+    Command=sprintf("cat %s | sed -e s/^/\"@@:@@\"/g | sort |uniq -c", TempFile)
+    BuildLine="{"
+>>>>>>> 4ff7783 (Probably fixed ucount() [again])
     writetofile(TempFile, "w", arr)
-    foo=trim(system(Command))
+    foo=split(trim(system(Command)), "\n")
     unlink(TempFile)
+<<<<<<< HEAD
     Output=Output + foo +"}"
     Output=replace(Output, ",}", "}",1)
     Output=replaceall(Output, "@@", "\"")
     return eval(Output);
+=======
+    DataLen=len(foo)-1
+    foreach Index,line in foo {
+        CutLine=cut(line, "@@:@@")
+	Number=int(trim(CutLine[0]))
+	Data=string(trim(CutLine[1]))
+	HashString=sprintf("\"%s\": %d", Data, Number)
+	if (Index < DataLen) {
+	    BuildLine=BuildLine + HashString + ","
+	} else {
+	    BuildLine=BuildLine + HashString + "}"
+	}	    
+    }
+    return eval(BuildLine);
+>>>>>>> 4ff7783 (Probably fixed ucount() [again])
 }
 
 function array.uniq() {
