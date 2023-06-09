@@ -346,6 +346,10 @@ function find(data, search) {
     return index(data, search);
 }
 
+function array.push(item) {
+    return push(self, item);
+}
+
 function array.find(item) {
     return index(self, item);
 }
