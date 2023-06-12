@@ -2,11 +2,11 @@ package evaluator
 
 import (
 	"fmt"
-	"strings"
-	"mwnci/object"
 	"mwnci/lexer"
+	"mwnci/object"
 	"mwnci/parser"
 	"mwnci/typing"
+	"strings"
 )
 
 func Ucount(env *object.Environment, args ...object.Object) object.Object {
@@ -22,13 +22,13 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 	arr := args[0].(*object.Array)
 	dict := make(map[string]int)
 	b.WriteString("{")
-	for _,data := range arr.Elements{
+	for _, data := range arr.Elements {
 		HashData := fmt.Sprintf("%v", data)
 		dict[HashData] = dict[HashData] + 1
 	}
 	counter := 1
-	buildline:=""
-	dictlen:=len(dict)
+	buildline := ""
+	dictlen := len(dict)
 	for k, v := range dict {
 		if counter != dictlen {
 			buildline = fmt.Sprintf("\"%v\": %v,", k, v)
@@ -39,16 +39,16 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 		fmt.Fprintf(&b, "%v", buildline)
 		counter++
 	}
-	
-	longstring:=fmt.Sprintf("%v", b.String())
+
+	longstring := fmt.Sprintf("%v", b.String())
 	l := lexer.New(longstring)
 	p := parser.New(l)
 	program := p.ParseProgram()
 	if len(p.Errors()) == 0 {
 		return (Eval(program, env))
 	}
-	
-	return FALSE
+
+	return NULL
 }
 
 func init() {

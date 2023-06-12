@@ -14,18 +14,17 @@ func First(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	
 
 	arr := args[0].(*object.Array)
 	if len(arr.Elements) > 0 {
 		return arr.Elements[0]
 	}
-	return &object.String{Value: ""}
+	return FALSE
 }
 
 func init() {
-RegisterBuiltin("first",
-func(env *object.Environment, args ...object.Object) object.Object {
-return (First(args...))
-})
+	RegisterBuiltin("first",
+		func(env *object.Environment, args ...object.Object) object.Object {
+			return (First(args...))
+		})
 }
