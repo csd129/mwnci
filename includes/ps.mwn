@@ -24,7 +24,22 @@ function getpstate(pid=0) {
 }
 
 function process() {
-    return trim(system("ps aux"));
+    CmdHash={}
+    ProcessTable={}
+    Processes=split(trim(system("ps aux | tail +2")), "\n")
+    foreach process in Processes {
+    	Cmd=""
+        line=fields(process)
+	counter=10
+	while (counter < len(line)) {
+	    Cmd=Cmd + " " + line[counter]
+	    counter++
+	}
+	Cmd=trim(Cmd)
+	CmdHash={"USER": line[0], "CPU": line[2], "MEM": line[3], "VSZ": line[4], "RSS": line[5], "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
+	ProcessTable=set(ProcessTable, int(line[1]), CmdHash)
+    }
+    return ProcessTable;
 }
 
 function pnametopid(name="") {
@@ -32,14 +47,18 @@ function pnametopid(name="") {
     if (!checkfunctype("pnametopid", "string", name, 1)) {
         exit(1)
     }
-    if (name == "") {
+    if (name=="") {
         println("Error calling `pnametopid`: ERROR: TypeError: pnametopid() expected argument #1 to be `STRING` got `NULL`")
-        exit(1)
+	exit(1)
     }
-    foreach line in split(process(), "\n") {
-        tester=fields(line)
-        if (basename(tester[10]) == name) {
-            parray=push(parray, tester[1])
+    Processes=process()
+    PIDs=sort(keys(Processes))
+    foreach Pid in PIDs {
+        CommandLine=Processes[Pid]["COMMAND"]
+	CmdArray=fields(CommandLine)
+	Command=basename(CmdArray[0])
+        if (Command == name) {
+	   push(parray, Pid)
 	}
     }
     if (len(parray) > 0) {
@@ -55,16 +74,12 @@ function getpname(pid=0) {
     if (pid == 0) {
         pid=getpid()
     }
-    allprocs=split(trim(process()), "\n")
-    allprocs=rest(allprocs)
-    foreach proc in allprocs {
-        sproc=fields(proc)
-	if (pid == int(sproc[1])) {
-            cmd=sproc[10]
-	    return fields(cmd)[0];
-	}
+    Processes=process()
+    if (!Processes[pid]) {
+        return false;
     }
-    return false;
+    CommandLine=fields(Processes[pid]["COMMAND"])
+    return CommandLine[0];
 }
 
 function cpuproc() {
