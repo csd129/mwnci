@@ -17,14 +17,13 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	//	dict := make(map[string]int)
 	var b strings.Builder
 	arr := args[0].(*object.Array)
 	dict := make(map[string]int)
 	b.WriteString("{")
 	for _, data := range arr.Elements {
 		HashData := fmt.Sprintf("%v", data)
-		dict[HashData] = dict[HashData] + 1
+		dict[HashData]++
 	}
 	counter := 1
 	buildline := ""

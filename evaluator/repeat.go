@@ -24,9 +24,9 @@ func Repeat(args ...object.Object) object.Object {
 	i := int64(1)
 	for i <= l {
 		if i < l {
-			long_string = long_string + s + sep
+			long_string += s + sep
 		} else {
-			long_string = long_string + s
+			long_string += s
 		}
 		i++
 	}
