@@ -1,7 +1,0 @@
-#!/usr/bin/env mwnci
-a=[]
-a=push(a, 100)
-println(a)
-a=aset(a, 0, 200)
-println(a)
-a=aset(a, 2, "Fred")

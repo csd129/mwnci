@@ -391,8 +391,8 @@ function hash.set(element="", value="") {
     return set(self, element, value)
 }
 
-function array.aset(element=-1, value="") {
-    return aset(self, element, value);
+function array.set(element=-1, value="") {
+    return set(self, element, value);
 }
 
 function array.insert(element=-1, value="") {

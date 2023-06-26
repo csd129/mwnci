@@ -6,7 +6,7 @@ function cumulative(arr) {
     prev=0
     foreach i in 0..(len(arr)-1) {
         num=arr[i] + prev
-	arr=aset(arr, i, num)
+	arr=set(arr, i, num)
 	prev=num
     }
     return arr;
