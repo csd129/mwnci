@@ -241,7 +241,7 @@ function contains(line="", search="") {
     return false;
 }
 
-function union(arr1=[], arr2=[]) {
+function union(a=[], b=[]) {
     return uniq(extend(a,b));
 }
 
