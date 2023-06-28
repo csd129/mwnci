@@ -1,0 +1,6 @@
+#!/usr/bin/env mwnci
+data=[{"Name": "Jim Spriggs", "Age": 70, "Address": "10 Bushy Spon"}, {"Name": "Ned Seagoon", "Age": 50, "Address": "No. 4, The Dustbin"}]
+text="${Name} is aged ${Age} and lives at ${Address}"
+foreach entry in data {
+    println(interpol(entry, text))
+}
