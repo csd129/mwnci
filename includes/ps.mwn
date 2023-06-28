@@ -1,13 +1,13 @@
 function getpstate(pid=0) {
-   states={"R": "running",
-           "S": "sleeping",
-	   "D": "disk sleep",
-	   "T": "stopped",
-	   "t": "tracing stop",
-	   "X": "dead",
-	   "Z": "zombie",
-	   "P": "parked",
-	   "I": "idle"}
+    states={"R": "running",
+            "S": "sleeping",
+	        "D": "disk sleep",
+            "T": "stopped",
+            "t": "tracing stop",
+            "X": "dead",
+            "Z": "zombie",
+            "P": "parked",
+            "I": "idle"}
     if (!checkfunctype("getpname", "integer", pid, 1)) {
         exit(1)
     }
@@ -30,14 +30,14 @@ function process() {
     foreach process in Processes {
     	Cmd=""
         line=fields(process)
-	counter=10
-	while (counter < len(line)) {
-	    Cmd=Cmd + " " + line[counter]
-	    counter++
-	}
-	Cmd=trim(Cmd)
-	CmdHash={"USER": line[0], "CPU": line[2], "MEM": line[3], "VSZ": line[4], "RSS": line[5], "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
-	ProcessTable=set(ProcessTable, int(line[1]), CmdHash)
+	    counter=10
+	    while (counter < len(line)) {
+	        Cmd=Cmd + " " + line[counter]
+	        counter++
+	    }
+	    Cmd=trim(Cmd)
+	    CmdHash={"USER": line[0], "CPU": line[2], "MEM": line[3], "VSZ": line[4], "RSS": line[5], "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
+	    ProcessTable=set(ProcessTable, int(line[1]), CmdHash)
     }
     return ProcessTable;
 }
@@ -55,11 +55,11 @@ function pnametopid(name="") {
     PIDs=sort(keys(Processes))
     foreach Pid in PIDs {
         CommandLine=Processes[Pid]["COMMAND"]
-	CmdArray=fields(CommandLine)
-	Command=basename(CmdArray[0])
+	    CmdArray=fields(CommandLine)
+	    Command=basename(CmdArray[0])
         if (Command == name) {
-	   push(parray, Pid)
-	}
+	        push(parray, Pid)
+	    }
     }
     if (len(parray) > 0) {
         return parray;
