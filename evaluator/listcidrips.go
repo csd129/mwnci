@@ -1,11 +1,11 @@
 package evaluator
 
 import (
-	"net"
 	"fmt"
-	"strings"
 	"mwnci/object"
 	"mwnci/typing"
+	"net"
+	"strings"
 )
 
 func Listcidr(args ...object.Object) object.Object {
@@ -23,11 +23,12 @@ func Listcidr(args ...object.Object) object.Object {
 	if err != nil {
 		return newError(err.Error())
 	}
-	iplist := ""
+	var iplist strings.Builder
 	for ip := ip.Mask(ipnet.Mask); ipnet.Contains(ip); ipinc(ip) {
-		iplist = fmt.Sprintf("%v %v", iplist, ip)
+		fmt.Fprintf(&iplist, "%v ", ip)
 	}
-	trimmed := strings.Trim(iplist, " \n\t\r")
+	full_list := fmt.Sprintf("%v", iplist.String())
+	trimmed := strings.Trim(full_list, " \n\t\r")
 	tokens := strings.Fields(trimmed)
 	elements := make([]object.Object, len(tokens))
 	for i, token := range tokens {
