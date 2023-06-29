@@ -2,10 +2,10 @@ package evaluator
 
 import (
 	"fmt"
-	"os"
-	"strings"
 	"mwnci/object"
 	"mwnci/typing"
+	"os"
+	"strings"
 )
 
 // Cat ...
@@ -23,9 +23,11 @@ func Cat(args ...object.Object) object.Object {
 	if err != nil {
 		return newError("IOError: error reading from file %s: %s", filename, err)
 	}
-	ndata:=fmt.Sprintf("%s", data)
-	ndata=strings.TrimSuffix(ndata, "\n")
-	return &object.String{Value: string(ndata)}}
+	ndata := fmt.Sprintf("%s", data)
+	ndata = strings.TrimSuffix(ndata, "\n")
+	return &object.String{Value: string(ndata)}
+}
+
 func init() {
 	RegisterBuiltin("cat",
 		func(env *object.Environment, args ...object.Object) object.Object {

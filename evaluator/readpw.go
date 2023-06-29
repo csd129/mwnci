@@ -1,31 +1,39 @@
 package evaluator
 
 import (
-    "syscall"
-    "mwnci/object"
-    "mwnci/typing"
-    "golang.org/x/term"
+	"fmt"
+	"mwnci/object"
+	"mwnci/typing"
+	"syscall"
+
+	"golang.org/x/term"
 )
 
 func Readpw(args ...object.Object) object.Object {
-    if err := typing.Check(
-        "readpw", args,
-	typing.ExactArgs(0),
-    ); err != nil {
-        return newError(err.Error())
-    }
-
-    bytePassword, err := term.ReadPassword(int(syscall.Stdin))
-    if err != nil {
-        return newError(err.Error())
-    }
-    password := string(bytePassword)
-    return &object.String{Value: password}
+	if err := typing.Check(
+		"readpw", args,
+		typing.RangeOfArgs(0, 1),
+	); err != nil {
+		return newError(err.Error())
+	}
+	prompt := ""
+	if len(args) == 1 {
+		prompt = args[0].(*object.String).Value
+	} else {
+		prompt = "> "
+	}
+	fmt.Print(prompt)
+	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		return newError(err.Error())
+	}
+	password := string(bytePassword)
+	return &object.String{Value: password}
 }
 
 func init() {
-    RegisterBuiltin("readpw",
-        func(env *object.Environment, args ...object.Object) object.Object {
-	    return (Readpw(args...))
-	})
+	RegisterBuiltin("readpw",
+		func(env *object.Environment, args ...object.Object) object.Object {
+			return (Readpw(args...))
+		})
 }

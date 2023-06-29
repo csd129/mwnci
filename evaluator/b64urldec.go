@@ -1,10 +1,10 @@
 package evaluator
 
 import (
-       b64 "encoding/base64"
-       "fmt"
-       "mwnci/object"
-       "mwnci/typing"
+	b64 "encoding/base64"
+	"fmt"
+	"mwnci/object"
+	"mwnci/typing"
 )
 
 func B64urldec(args ...object.Object) object.Object {
@@ -14,8 +14,7 @@ func B64urldec(args ...object.Object) object.Object {
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
 		return newError(err.Error())
-	}     
-
+	}
 
 	data := args[0].Inspect()
 	sDec, _ := b64.URLEncoding.DecodeString(data)

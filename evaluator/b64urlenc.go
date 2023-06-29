@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-       b64 "encoding/base64"
-       "mwnci/object"
-       "mwnci/typing"
+	b64 "encoding/base64"
+	"mwnci/object"
+	"mwnci/typing"
 )
 
 func B64urlenc(args ...object.Object) object.Object {
@@ -13,8 +13,7 @@ func B64urlenc(args ...object.Object) object.Object {
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
 		return newError(err.Error())
-	}     
-
+	}
 
 	data := args[0].Inspect()
 	sEnc := b64.URLEncoding.EncodeToString([]byte(data))
