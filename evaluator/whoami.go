@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"os/user"
 	"mwnci/object"
 	"mwnci/typing"
+	"os/user"
 )
 
 func Whoami(args ...object.Object) object.Object {
@@ -15,15 +15,14 @@ func Whoami(args ...object.Object) object.Object {
 	}
 	user, err := user.Current()
 	if err != nil {
-	   return newError(err.Error())
+		return newError(err.Error())
 	}
-	username := user.Username
-	return &object.String{Value: username}
+	return &object.String{Value: user.Username}
 }
 
 func init() {
 	RegisterBuiltin("whoami",
 		func(env *object.Environment, args ...object.Object) object.Object {
-			return(Whoami(args...))
+			return (Whoami(args...))
 		})
 }
