@@ -16,8 +16,7 @@ func TrimSuff(args ...object.Object) object.Object {
 	}
 	line := args[0].(*object.String).Value
 	suffix := args[1].(*object.String).Value
-	s := strings.TrimSuffix(line, suffix)
-	return &object.String{Value: s}
+	return &object.String{Value: strings.TrimSuffix(line, suffix)}
 }
 
 func init() {

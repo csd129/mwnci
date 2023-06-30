@@ -1,10 +1,10 @@
 package evaluator
 
 import (
-	"time"
 	"math/rand"
 	"mwnci/object"
 	"mwnci/typing"
+	"time"
 )
 
 func ShuffleFun(args ...object.Object) object.Object {
@@ -16,11 +16,11 @@ func ShuffleFun(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 	foo := args[0].(*object.Array)
-	length:=len(foo.Elements)
+	length := len(foo.Elements)
 	newa := foo.Copy()
 	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(length, func(i, j int) { newa.Swap(i, j)})
-	return newa 
+	rand.Shuffle(length, func(i, j int) { newa.Swap(i, j) })
+	return newa
 }
 
 func init() {

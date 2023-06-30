@@ -16,8 +16,7 @@ func Trimprefix(args ...object.Object) object.Object {
 	}
 	line := args[0].(*object.String).Value
 	prefix := args[1].(*object.String).Value
-	s := strings.TrimPrefix(line, prefix)
-	return &object.String{Value: s}
+	return &object.String{Value: strings.TrimPrefix(line, prefix)}
 }
 
 func init() {
