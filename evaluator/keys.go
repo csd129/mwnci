@@ -10,13 +10,9 @@ func hashKeys(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"keys", args,
 		typing.ExactArgs(1),
+		typing.WithTypes(object.HASH_OBJ),
 	); err != nil {
 		return newError(err.Error())
-	}
-
-	if args[0].Type() != object.HASH_OBJ {
-		return newError("argument to `keys` must be HASH, got=%s",
-			args[0].Type())
 	}
 
 	// The object we're working with

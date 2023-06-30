@@ -9,6 +9,7 @@ func ArrayInsert(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"insert", args,
 		typing.ExactArgs(3),
+		typing.WithTypes(object.ARRAY_OBJ, object.INTEGER_OBJ),
 	); err != nil {
 		return newError(err.Error())
 	}
