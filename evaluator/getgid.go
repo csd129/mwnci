@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"os"
 	"mwnci/object"
 	"mwnci/typing"
+	"os"
 )
 
 // Getgid ...
@@ -15,8 +15,7 @@ func Getgid(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	pid := os.Getgid()
-	return &object.Integer{Value: int64(pid)}
+	return &object.Integer{Value: int64(os.Getgid())}
 }
 
 func init() {

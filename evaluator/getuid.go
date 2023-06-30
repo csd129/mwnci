@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"os"
 	"mwnci/object"
 	"mwnci/typing"
+	"os"
 )
 
 // Getuid ...
@@ -14,8 +14,7 @@ func Getuid(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	pid := os.Getuid()
-	return &object.Integer{Value: int64(pid)}
+	return &object.Integer{Value: int64(os.Getuid())}
 }
 
 func init() {
@@ -24,4 +23,3 @@ func init() {
 			return (Getuid(args...))
 		})
 }
-

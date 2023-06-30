@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"os"
 	"mwnci/object"
 	"mwnci/typing"
+	"os"
 )
 
 // Getegid ...
@@ -14,8 +14,7 @@ func Getegid(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	pid := os.Getegid()
-	return &object.Integer{Value: int64(pid)}
+	return &object.Integer{Value: int64(os.Getegid())}
 }
 
 func init() {
