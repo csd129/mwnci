@@ -17,7 +17,6 @@ func Replaceall(args ...object.Object) object.Object {
 	line := args[0].(*object.String).Value
 	search := args[1].(*object.String).Value
 	rep := args[2].(*object.String).Value
-	//out := strings.ReplaceAll(line, search, rep)
 	return &object.String{Value: strings.ReplaceAll(line, search, rep)}
 }
 
