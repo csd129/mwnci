@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"strings"
 	"mwnci/object"
 	"mwnci/typing"
+	"strings"
 )
 
 func Replace(args ...object.Object) object.Object {
@@ -18,8 +18,7 @@ func Replace(args ...object.Object) object.Object {
 	search := args[1].(*object.String).Value
 	rep := args[2].(*object.String).Value
 	count := int(args[3].(*object.Integer).Value)
-	out := strings.Replace(line, search, rep, count)
-	return &object.String{Value: out}
+	return &object.String{Value: strings.Replace(line, search, rep, count)}
 }
 
 func init() {

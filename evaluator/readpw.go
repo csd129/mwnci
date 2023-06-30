@@ -27,8 +27,8 @@ func Readpw(args ...object.Object) object.Object {
 	if err != nil {
 		return newError(err.Error())
 	}
-	password := string(bytePassword)
-	return &object.String{Value: password}
+	//password := string(bytePassword)
+	return &object.String{Value: string(bytePassword)}
 }
 
 func init() {

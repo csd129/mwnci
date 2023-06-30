@@ -35,7 +35,6 @@ func Read(args ...object.Object) object.Object {
 		return newError("IOError: %s", err)
 	}
 	charbyte := string(buf[:n])
-	//charbyte = fmt.Sprintf("%s", charbyte)
 	return &object.String{Value: charbyte}
 }
 func init() {

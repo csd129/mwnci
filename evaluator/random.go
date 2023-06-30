@@ -2,9 +2,9 @@ package evaluator
 
 import (
 	"math/rand"
-	"time"
 	"mwnci/object"
 	"mwnci/typing"
+	"time"
 )
 
 // Random ...
@@ -16,14 +16,12 @@ func Random(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	i := args[0].(*object.Integer)
-	value := int(i.Value)
+	value := int(args[0].(*object.Integer).Value)
 	if value <= 1 {
-		return newError("Value %d is not greater than 1", value)
+		return newError("Random range %d is not greater than 1", value)
 	}
 	rand.Seed(time.Now().UnixNano())
-	val := rand.Intn(value)
-	return &object.Integer{Value: int64(val)}
+	return &object.Integer{Value: int64(rand.Intn(value))}
 }
 func init() {
 	RegisterBuiltin("random",
