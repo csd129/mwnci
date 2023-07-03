@@ -62,6 +62,40 @@ function getpwuid(Uid=-1) {
     return false;
 }
 
+function dupuid() {
+    PASSWD="/etc/passwd"
+    UIDs=[]
+    Duplicates=[]
+    FileContent=split(trim(cat(PASSWD)), "\n")
+    foreach Line in FileContent {
+        push(UIDs, split(Line, ":")[2])
+    }
+    CountedUids=ucount(UIDs)
+    foreach Uid in keys(CountedUids) {
+        if (CountedUids[Uid] > 1) {
+	        push(Duplicates, Uid)
+        }
+    }
+    return Duplicates;
+}
+
+function dupnam() {
+    PASSWD="/etc/passwd"
+    UNAMEs=[]
+    Duplicates=[]
+    FileContent=split(trim(cat(PASSWD)), "\n")
+    foreach Line in FileContent {
+        push(UNAMEs, split(Line, ":")[0])
+    }
+    CountedNames=ucount(UNAMEs)
+    foreach Uname in keys(CountedNames) {
+        if (CountedNames[Uname] > 1) {
+	    push(Duplicates, Uname)
+	    }
+    }
+    return Duplicates;
+}
+
 function string.getpwent() {
     return getpwent(self);
 }
