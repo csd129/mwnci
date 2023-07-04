@@ -1,6 +1,5 @@
 function getcpu() {
-    command="`mpstat -P ALL`"
-    out=eval(command)
+    out=`mpstat -P ALL`
     cpu_output=split(trim(out["stdout"]), "\n")
     cpu_output=shift(cpu_output,3)
     cpu_hash={}
