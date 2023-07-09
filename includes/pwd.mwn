@@ -4,19 +4,19 @@ function getpwent(users="") {
     }
     if (len(users) == 0) {
         println("Error calling `getpwent`: ERROR: TypeError: getpwent() takes exactly 1 argument (0 given)")
-	exit(1)
+        exit(1)
     }
     userhash={}
     userinfo=getpwnam(users)
     if (userinfo) {
-        gecos=split(userinfo[4], ",")
-	userhash=set(userhash, "Gecos", gecos)
-	userhash=set(userhash, "User", userinfo[0])
-	userhash=set(userhash, "Uid", userinfo[2])
-	userhash=set(userhash, "Gid", userinfo[3])
-	userhash=set(userhash, "Home", userinfo[5])
+        gecos=split(userinfo[4], ","
+        userhash=set(userhash, "Gecos", gecos)
+        userhash=set(userhash, "User", userinfo[0])
+        userhash=set(userhash, "Uid", userinfo[2])
+        userhash=set(userhash, "Gid", userinfo[3])
+        userhash=set(userhash, "Home", userinfo[5])
         shell = (len(userinfo[6]) == 0) ? "/bin/sh" : userinfo[6]
-	userhash=set(userhash, "Shell", shell)
+        userhash=set(userhash, "Shell", shell)
     } else {
         return false;
     }

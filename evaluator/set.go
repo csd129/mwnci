@@ -31,15 +31,14 @@ func setFun(args ...object.Object) object.Object {
 	}
 	if args[0].Type() == object.ARRAY_OBJ {
 		arr := args[0].(*object.Array)
-		nums := arr.Copy()
 		elem := int(args[1].(*object.Integer).Value)
 		if (elem > len(arr.Elements)-1) || (elem < 0) {
 			return newError("IndexError: array index [%d] out of range ", elem)
 		} else {
 			val := args[2]
-			nums.Aset(elem, val)
+			arr.Aset(elem, val)
 		}
-		return nums
+		return arr
 	}
 	return newError("argument to set() not supported, expected HASH or ARRAY, got=%s", args[0].Type())
 }
