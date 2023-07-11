@@ -14,7 +14,7 @@ func Swapper(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 	foo := args[0].(*object.Array)
-	nums := foo.Copy()
+	//	nums := foo.Copy()
 	a := args[1].(*object.Integer).Value
 	b := args[2].(*object.Integer).Value
 	if (a < 0 || a > int64(len(foo.Elements)-1)) {
@@ -23,8 +23,8 @@ func Swapper(args ...object.Object) object.Object {
 	if (b < 0 || b > int64(len(foo.Elements)-1)) {
 		return newError("Second array index (%d) out of range", b)
 	}
-        nums.Swap(int(a), int(b))
-	return nums
+        foo.Swap(int(a), int(b))
+	return foo
 }
 
 func init() {
