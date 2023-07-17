@@ -241,10 +241,6 @@ function contains(line="", search="") {
     return false;
 }
 
-function union(a=[], b=[]) {
-    return uniq(extend(a,b));
-}
-
 // Binary to Decimal
 function bin2dec(b_number) {
     number=string(b_number)
@@ -683,8 +679,4 @@ function object.oct2hex() {
 
 function object.oct2bin() {
     return oct2bin(self);
-}
-
-function array.union(arr2=[]) {
-    return union(self, arr2);
 }

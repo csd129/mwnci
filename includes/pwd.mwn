@@ -62,26 +62,6 @@ function getpwuid(Uid=-1) {
     return false;
 }
 
-function dupentry(Field=-1) {
-    if (Field == -1) {
-        Field=0
-    }
-    PASSWD="/etc/passwd"
-    UIDs=[]
-    Duplicates=[]
-    FileContent=split(trim(cat(PASSWD)), "\n")
-    foreach Line in FileContent {
-        push(UIDs, split(Line, ":")[Field])
-    }
-    CountedUids=ucount(UIDs)
-    foreach Uid in keys(CountedUids) {
-        if (CountedUids[Uid] > 1) {
-	        push(Duplicates, Uid)
-        }
-    }
-    return Duplicates;
-}
-
 function string.getpwent() {
     return getpwent(self);
 }
@@ -94,10 +74,3 @@ function integer.getpwuid() {
     return getpwuid(self);
 }
 
-function dupuid() {
-    return dupentry(2);
-}
-
-function dupnam() {
-    return dupentry(0);
-}
