@@ -20,23 +20,21 @@ func ArrDiff(args ...object.Object) object.Object {
 				newArray.Append(v)
 			}
 		} else {
-			return newError("argument to extend() not supported, expected ARRAY, got=%s", args[i].Type())
+			return newError("argument to difference() not supported, expected ARRAY, got=%s", args[i].Type())
 
 		}
 	}
 	list := make([]object.Object, 0)
 	for _, val1 := range arr1.Elements {
 		found := false
-		value1:=val1.Inspect()
 		for _, val2 := range newArray.Elements {
-			value2:=val2.Inspect()
-			if value1 == value2 {
-				found=true
+			if val1.Inspect() == val2.Inspect() {
+				found = true
 				break
 			}
 		}
 		if !found {
-			list = append(list,val1)
+			list = append(list, val1)
 		}
 	}
 	return &object.Array{Elements: list}
