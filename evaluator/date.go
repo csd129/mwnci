@@ -1,10 +1,9 @@
 package evaluator
 
 import (
-	"fmt"
-	"time"
 	"mwnci/object"
 	"mwnci/typing"
+	"time"
 )
 
 // Date...
@@ -17,7 +16,7 @@ func Date(args ...object.Object) object.Object {
 	}
 
 	current_time := time.Now()
-	return &object.String{Value: fmt.Sprintf("%s", current_time.Format(time.ANSIC))}
+	return &object.String{Value: current_time.Format(time.ANSIC)}
 }
 
 func init() {

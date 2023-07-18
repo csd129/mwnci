@@ -1,9 +1,9 @@
 package evaluator
 
 import (
+	"math"
 	"mwnci/object"
 	"mwnci/typing"
-	"math"
 )
 
 func Floor(args ...object.Object) object.Object {
@@ -16,8 +16,7 @@ func Floor(args ...object.Object) object.Object {
 	switch args[0].(type) {
 	case *object.Integer:
 		input := args[0].(*object.Integer).Value
-		result := math.Floor(float64(input))
-		return &object.Integer{Value: int64(result)}
+		return &object.Integer{Value: int64(input)}
 	case *object.Float:
 		input := args[0].(*object.Float).Value
 		result := math.Floor(input)

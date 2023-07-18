@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
@@ -23,9 +22,8 @@ func Cat(args ...object.Object) object.Object {
 	if err != nil {
 		return newError("IOError: error reading from file %s: %s", filename, err)
 	}
-	ndata := fmt.Sprintf("%s", data)
-	ndata = strings.TrimSuffix(ndata, "\n")
-	return &object.String{Value: string(ndata)}
+	ndata := strings.TrimSuffix(string(data), "\n")
+	return &object.String{Value: ndata}
 }
 
 func init() {

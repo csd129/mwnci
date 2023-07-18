@@ -3,8 +3,8 @@ package evaluator
 import (
 	"mwnci/object"
 	"mwnci/typing"
+
 	"github.com/chzyer/readline"
-	
 )
 
 // Input ...
@@ -16,11 +16,11 @@ func Input(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	prompt:=""
+	prompt := ""
 	if len(args) == 1 {
 		prompt = args[0].(*object.String).Value
 	} else {
-		prompt= "> "
+		prompt = "> "
 	}
 	line := ""
 	rl, err := readline.New(prompt)

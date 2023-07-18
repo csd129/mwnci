@@ -2,22 +2,22 @@ package evaluator
 
 import (
 	"bufio"
-	"os"
 	"fmt"
-	"regexp"
 	"mwnci/object"
 	"mwnci/typing"
+	"os"
+	"regexp"
 )
 
 // ReadFile ...
 func ReadFileLines(path string, search string) ([]string, error) {
-	file,_ := os.Open(path)
+	file, _ := os.Open(path)
 	defer file.Close()
 	var lines []string
 	r, _ := regexp.Compile(search)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		if r.MatchString(scanner.Text()) == true {
+		if r.MatchString(scanner.Text()) {
 			lines = append(lines, scanner.Text())
 		}
 	}

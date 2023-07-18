@@ -1,10 +1,9 @@
 package evaluator
 
 import (
-	"fmt"
-	"path/filepath"
 	"mwnci/object"
 	"mwnci/typing"
+	"path/filepath"
 )
 
 func Glob(args ...object.Object) object.Object {
@@ -15,7 +14,7 @@ func Glob(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	checkpath := fmt.Sprintf("%s",args[0].(*object.String))
+	checkpath := args[0].(*object.String).Value
 	files, err := filepath.Glob(checkpath)
 	if err != nil {
 		return newError(err.Error())
