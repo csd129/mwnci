@@ -783,7 +783,7 @@ func evalAssignStatement(a *ast.AssignStatement, env *object.Environment) (val o
 
 		res := evalInfixExpression("%=", current, evaluated, env)
 		if isError(res) {
-			fmt.Printf("Error handling %= %s\n", res.Inspect())
+			fmt.Printf("Error handling %%= %s\n", res.Inspect())
 			return res
 		}
 
@@ -987,9 +987,9 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 	}
 	fmt.Fprintf(os.Stderr, "identifier not found: %s\n", node.Value)
 	os.Exit(1)
-//	if PRAGMAS["strict"] == 1 {
-//		os.Exit(1)
-//	}
+	//	if PRAGMAS["strict"] == 1 {
+	//		os.Exit(1)
+	//	}
 	return newError("identifier not found: " + node.Value)
 }
 
@@ -1010,13 +1010,13 @@ func evalExpression(exps []ast.Expression, env *object.Environment) []object.Obj
 //
 // So this input:
 //
-//   /bin/sh -c "ls /etc"
+//	/bin/sh -c "ls /etc"
 //
 // Would give output of the form:
-//   /bin/sh
-//   -c
-//   ls /etc
 //
+//	/bin/sh
+//	-c
+//	ls /etc
 func splitCommand(input string) []string {
 
 	//
