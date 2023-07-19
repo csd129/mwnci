@@ -1,3 +1,4 @@
+include("os")
 function getcert(domain="") {
     if (!checkfunctype("getcert", "string", domain)) {
         exit(1)

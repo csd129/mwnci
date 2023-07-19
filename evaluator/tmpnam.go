@@ -3,7 +3,7 @@ package evaluator
 import (
 	"mwnci/object"
 	"mwnci/typing"
-	"io/ioutil"
+	"os"
 )
 
 // Tmpnam...
@@ -20,7 +20,8 @@ func Tmpnam(args ...object.Object) object.Object {
 	if len(args) == 2 {
 		prefix = args[1].(*object.String).Value
 	}
-	file, err := ioutil.TempFile(dir, prefix)
+	//file, err := ioutil.TempFile(dir, prefix)
+	file, err := os.CreateTemp(dir, prefix)
 	if err != nil {
 		return newError(err.Error())
 	}

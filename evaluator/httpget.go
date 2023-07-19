@@ -1,17 +1,17 @@
 package evaluator
 
 import (
-	"net/http"
 	"fmt"
 	"io/ioutil"
 	"mwnci/object"
 	"mwnci/typing"
+	"net/http"
 )
 
 func HttpGet(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"httpget", args,
-		typing.RangeOfArgs(1,2),
+		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.STRING_OBJ, object.HASH_OBJ),
 	); err != nil {
 		return newError(err.Error())
@@ -20,11 +20,11 @@ func HttpGet(args ...object.Object) object.Object {
 	geturl := fmt.Sprintf("%v", url)
 	client := http.Client{}
 	req, err := http.NewRequest("GET", geturl, nil)
-	if (err != nil) {
+	if err != nil {
 		return newError(err.Error())
 	}
 	if len(args) == 2 {
-		hash:= args[1].(*object.Hash)
+		hash := args[1].(*object.Hash)
 		for _, ent := range hash.Pairs {
 			hkey := fmt.Sprintf("%v", ent.Key)
 			hval := fmt.Sprintf("%v", ent.Value)
@@ -33,12 +33,15 @@ func HttpGet(args ...object.Object) object.Object {
 	}
 
 	res, err := client.Do(req)
-	if (err != nil) {
+	if err != nil {
 		return newError(err.Error())
 	}
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
-	return &object.String{Value: fmt.Sprintf("%s", body)}
+	if err != nil {
+		return newError(err.Error())
+	}
+	return &object.String{Value: string(body)}
 }
 
 func init() {
