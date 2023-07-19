@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"sort"
 	"strings"
 
 	"mwnci/object"
@@ -34,11 +33,10 @@ func Index(args ...object.Object) object.Object {
 	// index([1, 2, 3], 2)
 	if haystack, ok := args[0].(*object.Array); ok {
 		needle := args[1].(object.Comparable)
-		i := sort.Search(len(haystack.Elements), func(i int) bool {
-			return needle.Compare(haystack.Elements[i]) == 0
-		})
-		if i < len(haystack.Elements) && needle.Compare(haystack.Elements[i]) == 0 {
-			return &object.Integer{Value: int64(i)}
+		for i := range haystack.Elements {
+			if needle.Compare(haystack.Elements[i]) == 0 {
+				return &object.Integer{Value: int64(i)}
+			}
 		}
 		return &object.Integer{Value: -1}
 	}

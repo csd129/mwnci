@@ -12,8 +12,7 @@ func ArrUnion(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	arr1 := args[0].(*object.Array)
-	newArray := arr1.Copy()
+	newArray := args[0].(*object.Array).Copy()
 	for i := 1; i < len(args); i++ {
 		if args[i].Type() == object.ARRAY_OBJ {
 			for _, v := range args[i].(*object.Array).Elements {
@@ -33,4 +32,3 @@ func init() {
 			return (ArrUnion(args...))
 		})
 }
-

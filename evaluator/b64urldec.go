@@ -2,7 +2,6 @@ package evaluator
 
 import (
 	b64 "encoding/base64"
-	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -18,7 +17,8 @@ func B64urldec(args ...object.Object) object.Object {
 
 	data := args[0].Inspect()
 	sDec, _ := b64.URLEncoding.DecodeString(data)
-	decoded := fmt.Sprintf("%s", sDec)
+	//decoded := fmt.Sprintf("%s", sDec)
+	decoded := string(sDec)
 	return &object.String{Value: decoded}
 }
 

@@ -310,6 +310,19 @@ function oct2bin(o_number) {
     return bin(oct2dec(o_number));
 }
 
+function intersect(array_a, array_b) {
+    InterArray=[]
+    array_a=sort(array_a)
+    array_b=sort(array_b)
+    foreach Value in array_a {
+        found=contains(array_b, Value)
+        if (found) {
+	    push(InterArray, Value)
+	}
+    }
+    return uniq(InterArray);
+}
+
 function string.contains(search) {
     return contains(self, self);
 }
@@ -679,4 +692,8 @@ function object.oct2hex() {
 
 function object.oct2bin() {
     return oct2bin(self);
+}
+
+function array.intersect(data) {
+    return intersect(self, data);
 }
