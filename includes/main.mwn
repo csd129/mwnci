@@ -1,3 +1,5 @@
+INCLUDE={}
+INCLUDE=set(INCLUDE, "MAIN", true)
 /*
  Maths constants - add more here if needed
 */

@@ -9,7 +9,7 @@ function getpwent(users="") {
     userhash={}
     userinfo=getpwnam(users)
     if (userinfo) {
-        gecos=split(userinfo[4], ","
+        gecos=split(userinfo[4], ",")
         userhash=set(userhash, "Gecos", gecos)
         userhash=set(userhash, "User", userinfo[0])
         userhash=set(userhash, "Uid", userinfo[2])
