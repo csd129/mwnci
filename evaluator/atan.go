@@ -1,9 +1,9 @@
 package evaluator
 
 import (
+	"math"
 	"mwnci/object"
 	"mwnci/typing"
-	"math"
 )
 
 func mathAtan(args ...object.Object) object.Object {
@@ -16,11 +16,9 @@ func mathAtan(args ...object.Object) object.Object {
 
 	switch arg := args[0].(type) {
 	case *object.Integer:
-		v := arg.Value
-		return &object.Float{Value: math.Atan(float64(v))}
+		return &object.Float{Value: math.Atan(float64(arg.Value))}
 	case *object.Float:
-		v := arg.Value
-		return &object.Float{Value: math.Atan(float64(v))}
+		return &object.Float{Value: math.Atan(arg.Value)}
 	default:
 		return newError("argument to atan() not supported, expect INTEGER or FLOAT, got %s", args[0].Type())
 	}

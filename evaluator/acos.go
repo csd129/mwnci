@@ -1,9 +1,9 @@
 package evaluator
 
 import (
+	"math"
 	"mwnci/object"
 	"mwnci/typing"
-	"math"
 )
 
 func mathAcos(args ...object.Object) object.Object {
@@ -16,11 +16,9 @@ func mathAcos(args ...object.Object) object.Object {
 
 	switch arg := args[0].(type) {
 	case *object.Integer:
-		v := arg.Value
-		return &object.Float{Value: math.Acos(float64(v))}
+		return &object.Float{Value: math.Acos(float64(arg.Value))}
 	case *object.Float:
-		v := arg.Value
-		return &object.Float{Value: math.Acos(v)}
+		return &object.Float{Value: math.Acos(arg.Value)}
 	default:
 		return newError("argument to acos() not supported, expected INTEGER or FLOAT, got %s", args[0].Type())
 	}

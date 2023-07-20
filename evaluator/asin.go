@@ -1,9 +1,9 @@
 package evaluator
 
 import (
+	"math"
 	"mwnci/object"
 	"mwnci/typing"
-	"math"
 )
 
 func mathAsin(args ...object.Object) object.Object {
@@ -16,11 +16,9 @@ func mathAsin(args ...object.Object) object.Object {
 
 	switch arg := args[0].(type) {
 	case *object.Integer:
-		v := arg.Value
-		return &object.Float{Value: math.Asin(float64(v))}
+		return &object.Float{Value: math.Asin(float64(arg.Value))}
 	case *object.Float:
-		v := arg.Value
-		return &object.Float{Value: math.Asin(v)}
+		return &object.Float{Value: math.Asin(arg.Value)}
 	default:
 		return newError("argument to asin() not supported, expect INTEGER or FLOAT, got %s", args[0].Type())
 	}
