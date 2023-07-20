@@ -4,7 +4,8 @@ import (
 	"math"
 	"mwnci/object"
 	"mwnci/typing"
-       )
+)
+
 func mathCbrt(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"cbrt", args,
@@ -14,11 +15,9 @@ func mathCbrt(args ...object.Object) object.Object {
 	}
 	switch arg := args[0].(type) {
 	case *object.Integer:
-		v := arg.Value
-		return &object.Float{Value: math.Cbrt(float64(v))}
+		return &object.Float{Value: math.Cbrt(float64(arg.Value))}
 	case *object.Float:
-		v := arg.Value
-		return &object.Float{Value: math.Cbrt(v)}
+		return &object.Float{Value: math.Cbrt(arg.Value)}
 	default:
 		return newError("argument to `cbrt` not supported, got=%s",
 			args[0].Type())

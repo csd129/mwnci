@@ -16,7 +16,10 @@ func B64dec(args ...object.Object) object.Object {
 	}
 
 	data := args[0].Inspect()
-	sDec, _ := b64.StdEncoding.DecodeString(data)
+	sDec, err := b64.StdEncoding.DecodeString(data)
+	if err != nil {
+		return newError(err.Error())
+	}
 	decoded := string(sDec)
 	return &object.String{Value: decoded}
 }

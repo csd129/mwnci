@@ -19,7 +19,6 @@ func RTrim(args ...object.Object) object.Object {
 	if len(args) == 2 {
 		trimmer = args[1].(*object.String).Value
 	}
-	//s := strings.TrimRight(line, trimmer)
 	return &object.String{Value: strings.TrimRight(line, trimmer)}
 }
 
