@@ -13,15 +13,11 @@ func mathExp(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	switch args[0].(type) {
+	switch arg := args[0].(type) {
 	case *object.Integer:
-		input := args[0].(*object.Integer).Value
-		result := math.Exp(float64(input))
-		return &object.Float{Value: float64(result)}
+		return &object.Float{Value: math.Exp(float64(arg.Value))}
 	case *object.Float:
-		input := args[0].(*object.Float).Value
-		result := math.Exp(input)
-		return &object.Float{Value: float64(result)}
+		return &object.Float{Value: math.Exp(arg.Value)}
 	default:
 		return newError("argument to `exp` not supported, got=%s",
 			args[0].Type())

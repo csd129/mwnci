@@ -16,11 +16,9 @@ func mathSin(args ...object.Object) object.Object {
 
 	switch arg := args[0].(type) {
 	case *object.Integer:
-		v := arg.Value
-		return &object.Float{Value: math.Sin(float64(v))}
+		return &object.Float{Value: math.Sin(float64(arg.Value))}
 	case *object.Float:
-		v := arg.Value
-		return &object.Float{Value: math.Sin(v)}
+		return &object.Float{Value: math.Sin(arg.Value)}
 	default:
 		return newError("argument to `sin` not supported, got=%s",
 			args[0].Type())

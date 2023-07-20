@@ -16,11 +16,9 @@ func mathSinh(args ...object.Object) object.Object {
 
 	switch arg := args[0].(type) {
 	case *object.Integer:
-		v := arg.Value
-		return &object.Float{Value: math.Sinh(float64(v))}
+		return &object.Float{Value: math.Sinh(float64(arg.Value))}
 	case *object.Float:
-		v := arg.Value
-		return &object.Float{Value: math.Sinh(v)}
+		return &object.Float{Value: math.Sinh(arg.Value)}
 	default:
 		return newError("argument to `sinh` not supported, got=%s",
 			args[0].Type())
