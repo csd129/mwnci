@@ -2,14 +2,15 @@ function pow(num, power) {
     return num ** power;
 }
 
-function cumulative(arr) {
+function cumulative(arr=[]) {
+    newArray=[]
     prev=0
     foreach i in 0..(len(arr)-1) {
         num=arr[i] + prev
-	arr=set(arr, i, num)
-	prev=num
+        push(newArray, num)
+        prev=num
     }
-    return arr;
+    return newArray;
 }
 
 function average(ave_array) {
