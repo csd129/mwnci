@@ -1,3 +1,6 @@
+if (!INCLUDE["HTTP"]) {
+    INCLUDE=set(INCLUDE, "HTTTP", true)
+    
 function httpcontent(url="", expr="") {
     if (expr == "" || url == "") {
         return false;
@@ -119,4 +122,5 @@ function httpstat(url="") {
         return false;
     }
     return result;
+}
 }

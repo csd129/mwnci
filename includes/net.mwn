@@ -1,3 +1,6 @@
+if (!INCLUDE["NET"]) {
+    INCLUDE=set(INCLUDE, "NET", true)
+
 function netstat(iface="") {
     if (!checkfunctype("netstat", "string", iface, 1)) {
         exit(1)
@@ -88,4 +91,4 @@ function string.cidrrange() {
 function string.addresscount() {
     return addresscount(self);
 }
-
+}

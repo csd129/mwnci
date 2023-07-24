@@ -1,3 +1,6 @@
+if (!INCLUDE["OS"]) {
+    INCLUDE=set(INCLUDE, "OS", true)
+
 function env() {
     h={}
     env_vars=split(system("env"), "\n")
@@ -111,4 +114,5 @@ function getmem() {
     swapline=trim(swapline)
     hashline=set(hashline, swapkey, swapline)
     return hashline;
+}
 }

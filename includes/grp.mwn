@@ -1,3 +1,6 @@
+if (!INCLUDE["GRP"]) {
+    INCLUDE=set(INCLUDE, "GRP", true)
+
 function groups(user="") {
     grps=""
     if (user == "") {
@@ -61,4 +64,5 @@ function integer.getgrgid() {
 
 function string.getgrnam() {
     return getgrnam(self);
+}
 }

@@ -1,3 +1,6 @@
+if (!INCLUDE["PWD"]) {
+    INCLUDE=set(INCLUDE, "PWD", true)
+
 function getpwent(users="") {
     if (!checkfunctype("getpwent", "string", users, 1)) {
         exit(1)
@@ -73,4 +76,4 @@ function string.getpwnam() {
 function integer.getpwuid() {
     return getpwuid(self);
 }
-
+}

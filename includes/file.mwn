@@ -1,7 +1,6 @@
-/*
-** This section is for file type checks
-*/
-
+if (!INCLUDE["FILE"]) {
+    INCLUDE=set(INCLUDE, "FILE", true)
+    
 function getbin(permbit) {
     binary=bin(permbit)
     binary=trimprefix(binary, "0b")
@@ -341,4 +340,5 @@ function writetofile(filename="", mode="w", data) {
     fh.close()
 
     return true;
+}
 }

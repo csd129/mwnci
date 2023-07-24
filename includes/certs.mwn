@@ -1,4 +1,10 @@
-include("os")
+if (!INCLUDE["OS"]) {
+    include("os")
+}
+
+if (!INCLUDE["CERTS"]) {
+    INCLUDE=set(INCLUDE, "CERTS", true)
+
 function getcert(domain="") {
     if (!checkfunctype("getcert", "string", domain)) {
         exit(1)
@@ -11,7 +17,7 @@ function getcert(domain="") {
     cert_run=eval(command)
     cert_info=cert_run["stdout"]
     return cert_info;
-};
+}
 
 function certexpiredays(file="") {
     if (!checkfunctype("certexpiredays", "string", file)) {
@@ -36,7 +42,7 @@ function certexpiredays(file="") {
     datediff=(certepoch - time()) / 86400
     unlink(cfile)
     return datediff;
-};
+}
 
 function sitecertexp(domain="") {
     if (!checkfunctype("sitecertexp", "string", domain)) {
@@ -50,4 +56,5 @@ function sitecertexp(domain="") {
     certdate=certexpiredays(TEMPF)
     unlink(TEMPF)
     return certdate;
-};
+}
+}
