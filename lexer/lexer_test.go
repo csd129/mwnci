@@ -31,13 +31,14 @@ func TestNull(t *testing.T) {
 }
 
 func TestNextToken1(t *testing.T) {
-	input := "%=+(){},;?|| &&`/bin/ls`++--***=.."
+	input := "%%==+(){},;?|| &&`/bin/ls`++--***=.."
 
 	tests := []struct {
 		expectedType    token.Type
 		expectedLiteral string
 	}{
 		{token.MOD, "%"},
+		{token.MOD_EQUALS, "%="},
 		{token.ASSIGN, "="},
 		{token.PLUS, "+"},
 		{token.LPAREN, "("},
