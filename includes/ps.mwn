@@ -1,121 +1,121 @@
 if (!INCLUDE["PS"]) {
     INCLUDE=set(INCLUDE, "PS", true)
-
-function getpstate(pid=0) {
-    states={"R": "running",
-            "S": "sleeping",
-	        "D": "disk sleep",
-            "T": "stopped",
-            "t": "tracing stop",
-            "X": "dead",
-            "Z": "zombie",
-            "P": "parked",
-            "I": "idle"}
-    if (!checkfunctype("getpname", "integer", pid, 1)) {
-        exit(1)
+    
+    function getpstate(pid=0) {
+        states={"R": "running",
+                "S": "sleeping",
+    	        "D": "disk sleep",
+                "T": "stopped",
+                "t": "tracing stop",
+                "X": "dead",
+                "Z": "zombie",
+                "P": "parked",
+                "I": "idle"}
+        if (!checkfunctype("getpname", "integer", pid, 1)) {
+            exit(1)
+        }
+        if (pid == 0) {
+            pid=getpid()
+        }
+        filename=sprintf("/proc/%d/stat", pid)
+        if (!exists(filename)) {
+            return false;
+        }
+        command_line=trim(cat(filename))
+        command=fields(command_line)[2]
+        return states[command];
     }
-    if (pid == 0) {
-        pid=getpid()
+    
+    function process() {
+        CmdHash={}
+        ProcessTable={}
+        Processes=split(trim(system("ps aux | tail +2")), "\n")
+        foreach process in Processes {
+        	Cmd=""
+            line=fields(process)
+    	    counter=10
+    	    while (counter < len(line)) {
+    	        Cmd=Cmd + " " + line[counter]
+    	        counter++
+    	    }
+    	    Cmd=trim(Cmd)
+    	    CmdHash={"USER": line[0], "CPU": line[2], "MEM": line[3], "VSZ": line[4], "RSS": line[5], "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
+    	    ProcessTable=set(ProcessTable, int(line[1]), CmdHash)
+        }
+        return ProcessTable;
     }
-    filename=sprintf("/proc/%d/stat", pid)
-    if (!exists(filename)) {
+    
+    function pnametopid(name="") {
+        parray=[]
+        if (!checkfunctype("pnametopid", "string", name, 1)) {
+            exit(1)
+        }
+        if (name=="") {
+            println("Error calling `pnametopid`: ERROR: TypeError: pnametopid() expected argument #1 to be `STRING` got `NULL`")
+    	exit(1)
+        }
+        Processes=process()
+        PIDs=sort(keys(Processes))
+        foreach Pid in PIDs {
+            CommandLine=Processes[Pid]["COMMAND"]
+    	    CmdArray=fields(CommandLine)
+    	    Command=basename(CmdArray[0])
+            if (Command == name) {
+    	        push(parray, Pid)
+    	    }
+        }
+        if (len(parray) > 0) {
+            return parray;
+        }
         return false;
     }
-    command_line=trim(cat(filename))
-    command=fields(command_line)[2]
-    return states[command];
-}
-
-function process() {
-    CmdHash={}
-    ProcessTable={}
-    Processes=split(trim(system("ps aux | tail +2")), "\n")
-    foreach process in Processes {
-    	Cmd=""
-        line=fields(process)
-	    counter=10
-	    while (counter < len(line)) {
-	        Cmd=Cmd + " " + line[counter]
-	        counter++
-	    }
-	    Cmd=trim(Cmd)
-	    CmdHash={"USER": line[0], "CPU": line[2], "MEM": line[3], "VSZ": line[4], "RSS": line[5], "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
-	    ProcessTable=set(ProcessTable, int(line[1]), CmdHash)
+    
+    function getpname(pid=0) {
+        if (!checkfunctype("getpname", "integer", pid, 1)) {
+            exit(1)
+        }
+        if (pid == 0) {
+            pid=getpid()
+        }
+        Processes=process()
+        if (!Processes[pid]) {
+            return false;
+        }
+        CommandLine=fields(Processes[pid]["COMMAND"])
+        return CommandLine[0];
     }
-    return ProcessTable;
-}
-
-function pnametopid(name="") {
-    parray=[]
-    if (!checkfunctype("pnametopid", "string", name, 1)) {
-        exit(1)
+    
+    function cpuproc() {
+        data=[]
+        command="`ps -eo pcpu,pmem,pid,user,args --no-headers`"
+        result=eval(command)["stdout"]
+        result=split(result, "\n");
+        foreach line in result {
+            sline=fields(line)
+            if (len(sline) > 0) {
+                if (find(sline[4], "[") == -1) {
+     	            pcpu=sline[0]
+    	            pmem=sline[1]
+    	            pid=sline[2]
+    	            user=sline[3]
+    	            cmd=fields(sline[4])
+    	            parsed_data=sprintf("%s %s %s %s %s", pcpu, pmem, pid, user, cmd[0])
+    	            data=push(data, parsed_data)
+    	        }
+    	    }
+        }
+        return data;
     }
-    if (name=="") {
-        println("Error calling `pnametopid`: ERROR: TypeError: pnametopid() expected argument #1 to be `STRING` got `NULL`")
-	exit(1)
+    
+    function integer.getpname() {
+        return getpname(self);
     }
-    Processes=process()
-    PIDs=sort(keys(Processes))
-    foreach Pid in PIDs {
-        CommandLine=Processes[Pid]["COMMAND"]
-	    CmdArray=fields(CommandLine)
-	    Command=basename(CmdArray[0])
-        if (Command == name) {
-	        push(parray, Pid)
-	    }
+    
+    function string.pnametopid() {
+        return pnametopid(self);
     }
-    if (len(parray) > 0) {
-        return parray;
+    
+    function integer.getpstate() {
+        return getpstate(self);
     }
-    return false;
-}
-
-function getpname(pid=0) {
-    if (!checkfunctype("getpname", "integer", pid, 1)) {
-        exit(1)
-    }
-    if (pid == 0) {
-        pid=getpid()
-    }
-    Processes=process()
-    if (!Processes[pid]) {
-        return false;
-    }
-    CommandLine=fields(Processes[pid]["COMMAND"])
-    return CommandLine[0];
-}
-
-function cpuproc() {
-    data=[]
-    command="`ps -eo pcpu,pmem,pid,user,args --no-headers`"
-    result=eval(command)["stdout"]
-    result=split(result, "\n");
-    foreach line in result {
-        sline=fields(line)
-        if (len(sline) > 0) {
-            if (find(sline[4], "[") == -1) {
- 	            pcpu=sline[0]
-	            pmem=sline[1]
-	            pid=sline[2]
-	            user=sline[3]
-	            cmd=fields(sline[4])
-	            parsed_data=sprintf("%s %s %s %s %s", pcpu, pmem, pid, user, cmd[0])
-	            data=push(data, parsed_data)
-	        }
-	    }
-    }
-    return data;
-}
-
-function integer.getpname() {
-    return getpname(self);
-}
-
-function string.pnametopid() {
-    return pnametopid(self);
-}
-
-function integer.getpstate() {
-    return getpstate(self);
-}
 }

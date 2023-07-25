@@ -1,94 +1,94 @@
 if (!INCLUDE["NET"]) {
     INCLUDE=set(INCLUDE, "NET", true)
-
-function netstat(iface="") {
-    if (!checkfunctype("netstat", "string", iface, 1)) {
-        exit(1)
-    }
-    iface_hash={}
-    iface_data={}
-    ifdata=split(system("netstat -in"), "\n")
-    ifdata=shift(ifdata,2)
-
-    foreach line in ifdata {
-        sline=fields(line)
-        iface_data=set(iface_data, "MTU", sline[1])
-        iface_data=set(iface_data, "RX-OK", sline[2])
-        iface_data=set(iface_data, "RX-ERR", sline[3])
-        iface_data=set(iface_data, "RX-DRP", sline[4])
-        iface_data=set(iface_data, "RX-OVR", sline[5])
-        iface_data=set(iface_data, "TK-OK", sline[6])
-        iface_data=set(iface_data, "TX-ERR", sline[7])
-        iface_data=set(iface_data, "TX-DRP", sline[8])
-        iface_data=set(iface_data, "TX-OVR", sline[9])
-        iface_hash=set(iface_hash, sline[0], iface_data)
-    }
-    if (len(iface) > 0) {
-        return iface_hash[iface];
-    } else {
-        return iface_hash;
-    }
-};
-
-function openports() {
-    port_array=[]
-    portdata=split(system("netstat -tupln"), "\n")
-    portdata=shift(portdata,2)
-
-    foreach line in portdata {
-        sline=fields(line)
-        if (sline[5] == "LISTEN") {
-            port=split(sline[3], ":")
-            port_array=push(port_array, int(port[len(port)-1]))
+    
+    function netstat(iface="") {
+        if (!checkfunctype("netstat", "string", iface, 1)) {
+            exit(1)
         }
+        iface_hash={}
+        iface_data={}
+        ifdata=split(system("netstat -in"), "\n")
+        ifdata=shift(ifdata,2)
+    
+        foreach line in ifdata {
+            sline=fields(line)
+            iface_data=set(iface_data, "MTU", sline[1])
+            iface_data=set(iface_data, "RX-OK", sline[2])
+            iface_data=set(iface_data, "RX-ERR", sline[3])
+            iface_data=set(iface_data, "RX-DRP", sline[4])
+            iface_data=set(iface_data, "RX-OVR", sline[5])
+            iface_data=set(iface_data, "TK-OK", sline[6])
+            iface_data=set(iface_data, "TX-ERR", sline[7])
+            iface_data=set(iface_data, "TX-DRP", sline[8])
+            iface_data=set(iface_data, "TX-OVR", sline[9])
+            iface_hash=set(iface_hash, sline[0], iface_data)
+        }
+        if (len(iface) > 0) {
+            return iface_hash[iface];
+        } else {
+            return iface_hash;
+        }
+    };
+    
+    function openports() {
+        port_array=[]
+        portdata=split(system("netstat -tupln"), "\n")
+        portdata=shift(portdata,2)
+    
+        foreach line in portdata {
+            sline=fields(line)
+            if (sline[5] == "LISTEN") {
+                port=split(sline[3], ":")
+                port_array=push(port_array, int(port[len(port)-1]))
+            }
+        }
+        port_array=usort(port_array)
+        return port_array;
+    };
+    
+    function cidrrange(cidr="") {
+        range=[]
+        if (!checkfunctype("cidrrange", "string", cidr)) {
+            exit(1)
+        }
+        ips=listcidrips(cidr)
+        iplen=len(ips)-1
+        range=push(range, ips[0])
+        range=push(range, ips[len(ips)-1])
+        return range;
     }
-    port_array=usort(port_array)
-    return port_array;
-};
-
-function cidrrange(cidr="") {
-    range=[]
-    if (!checkfunctype("cidrrange", "string", cidr)) {
-        exit(1)
+    
+    function ping(host="", timeout=0) {
+        if (host == "") {
+            println("Error calling `ping`: ERROR: TypeError: ping() takes expected argument #1 to be `STRING` got `NULL`")
+    	exit(1)
+        }
+        if (!checkfunctype("ping", "string", host, 1)) {
+            exit(1)
+        }
+        if (!checkfunctype("ping", "integer", timeout, 2)) {
+            exit(1)
+        }
+        if (timeout < 1) {
+           timeout=4
+        }
+        cmd=sprintf("ping -c 1 -W %d %s > /dev/null && echo true || echo false", timeout, host)
+        if (system(cmd) == "true") {return true;}
+        return false;
     }
-    ips=listcidrips(cidr)
-    iplen=len(ips)-1
-    range=push(range, ips[0])
-    range=push(range, ips[len(ips)-1])
-    return range;
-}
-
-function ping(host="", timeout=0) {
-    if (host == "") {
-        println("Error calling `ping`: ERROR: TypeError: ping() takes expected argument #1 to be `STRING` got `NULL`")
-	exit(1)
+    
+    function addresscount(cidr="") {
+        if (!checkfunctype("addresscount", "string", cidr)) {
+            exit(1)
+        }
+        return len(listcidrips(cidr));
     }
-    if (!checkfunctype("ping", "string", host, 1)) {
-        exit(1)
+    
+    function string.cidrrange() {
+        return cidrrange(self);
     }
-    if (!checkfunctype("ping", "integer", timeout, 2)) {
-        exit(1)
+    
+    function string.addresscount() {
+        return addresscount(self);
     }
-    if (timeout < 1) {
-       timeout=4
-    }
-    cmd=sprintf("ping -c 1 -W %d %s > /dev/null && echo true || echo false", timeout, host)
-    if (system(cmd) == "true") {return true;}
-    return false;
-}
-
-function addresscount(cidr="") {
-    if (!checkfunctype("addresscount", "string", cidr)) {
-        exit(1)
-    }
-    return len(listcidrips(cidr));
-}
-
-function string.cidrrange() {
-    return cidrrange(self);
-}
-
-function string.addresscount() {
-    return addresscount(self);
-}
 }
