@@ -699,3 +699,7 @@ function object.oct2bin() {
 function array.intersect(data) {
     return intersect(self, data);
 }
+
+function array.acopy() {
+    return acopy(self);
+}
