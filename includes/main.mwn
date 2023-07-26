@@ -700,6 +700,6 @@ function array.intersect(data) {
     return intersect(self, data);
 }
 
-function array.acopy() {
-    return acopy(self);
+function array.copy() {
+    return copy(self);
 }

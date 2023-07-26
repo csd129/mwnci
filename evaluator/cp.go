@@ -6,9 +6,9 @@ import (
 	"io/ioutil"
 )
 
-func FCopy(args ...object.Object) object.Object {
+func FCp(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"copy", args,
+		"cp", args,
 		typing.ExactArgs(2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
@@ -31,8 +31,8 @@ func FCopy(args ...object.Object) object.Object {
 }
 
 func init() {
-	RegisterBuiltin("copy",
+	RegisterBuiltin("cp",
 		func(env *object.Environment, args ...object.Object) object.Object {
-			return (FCopy(args...))
+			return (FCp(args...))
 		})
 }

@@ -8,7 +8,7 @@ import (
 // push something onto an array
 func acopyFun(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"acopy", args,
+		"copy", args,
 		typing.ExactArgs(1),
 	); err != nil {
 		return newError(err.Error())
@@ -20,7 +20,7 @@ func acopyFun(args ...object.Object) object.Object {
 }
 
 func init() {
-	RegisterBuiltin("acopy",
+	RegisterBuiltin("copy",
 		func(env *object.Environment, args ...object.Object) object.Object {
 			return (acopyFun(args...))
 		})
