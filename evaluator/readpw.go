@@ -13,6 +13,7 @@ func Readpw(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"readpw", args,
 		typing.RangeOfArgs(0, 1),
+		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
 		return newError(err.Error())
 	}
