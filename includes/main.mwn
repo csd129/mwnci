@@ -383,7 +383,7 @@ function string.index(item) {
 
 
 function array.join( char ) {
-    return join(self, char)
+    return join(self, char);
 }
 
 
@@ -399,7 +399,7 @@ function object.asctime(format="") {
 }
 
 function hash.set(element="", value="") {
-    return set(self, element, value)
+    return set(self, element, value);
 }
 
 function array.set(element=-1, value="") {
@@ -443,7 +443,7 @@ function string.cat() {
 }
 
 function object.ceil() {
-    return ceil(self)
+    return ceil(self);
 }
 
 function hash.delete(key) {
@@ -499,7 +499,7 @@ function array.last() {
 }
 
 function array.shift(num=0) {
-    return shift(self, num)
+    return shift(self, num);
 }
 
 function object.len() {
