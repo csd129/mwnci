@@ -63,7 +63,7 @@ if (!INCLUDE["SYSSTAT"]) {
             sline=fields(line)
             if (len(ops) > 1) {
                 if (match(ops, sline[4])) {
-                    uid=getpwnam(sline[1])[2]
+                    uid=getpwnam(sline[1])["Uid"]
                     mem_hash=set(mem_hash, "uid",     int(uid))
                     mem_hash=set(mem_hash, "pid",     int(sline[0]))
                     mem_hash=set(mem_hash, "cpu",     float(sline[2]))

@@ -15,6 +15,22 @@ if (!INCLUDE["MATH"]) {
         return newArray;
     }
     
+    function gcd(dividend, divisor) {
+        if (!checkfunctype("gcd", "integer", dividend, 1)) {
+            exit(1)
+        }
+        if (!checkfunctype("gcd", "integer", divisor, 2)) {
+            exit(1)
+        }    
+        remainder=1
+        while (remainder != 0) {
+            remainder=dividend % divisor
+	    dividend=divisor
+	    divisor=remainder
+        }
+        return dividend;
+    }
+
     function average(ave_array) {
         if (!checkfunctype("average", "array", ave_array, 1)) {
             exit(1)
