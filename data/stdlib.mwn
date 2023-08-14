@@ -7,4 +7,5 @@ It will be best to add any defaults to the "main" include file
 so no recompilation is needed and it will be loaded at run time
 */
 
+INCLUDE={}
 include("main")
