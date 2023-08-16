@@ -1,6 +1,20 @@
 if (!INCLUDE["SYSSTAT"]) {
     INCLUDE=set(INCLUDE, "SYSSTAT", true)
     
+    function host() {
+        out=`iostat -o JSON`
+	data=eval(out["stdout"])
+	hosts=data["sysstat"]["hosts"][0]
+	host_hash={
+	    "nodename": hosts["nodename"],
+	    "sysname": hosts["sysname"],
+	    "release": hosts["release"],
+	    "machine": hosts["machine"],
+	    "number-of-cpus": hosts["number-of-cpus"]
+	}
+	return host_hash;
+    }
+
     function getcpu() {
         out=`mpstat -P ALL`
         cpu_output=split(trim(out["stdout"]), "\n")
@@ -51,51 +65,53 @@ if (!INCLUDE["SYSSTAT"]) {
     }
 
     function pidcpu(opts="") {
-        CMD="pidstat"
-        if (len(opts) > 0) {
-            CMD=CMD + " -C " + opts
+        CMD="pidstat -l"
+	if (len(opts) > 0) {
+	    CMD=CMD + " -C " + opts
+	}
+
+	ProcessLine=trim(system(CMD))
+	ProcessLine=shift(ProcessLine.split("\n"), 3)
+	pid_hash={}
+	foreach line in ProcessLine {
+	    sline=fields(line)
+	    pid=sline[2]
+	    temp_hash={
+	        "uid": int(sline[1]),
+		"pc_usr": float(sline[3]),
+		"pc_sys": float(sline[4]),
+		"pc_guest": float(sline[5]),
+		"pc_wait": float(sline[6]),
+		"pc_cpu": float(sline[7]),
+		"cpu": int(sline[8]),
+		"cmd": sline[9]
+	    }
+	    pid_hash=set(pid_hash, pid, temp_hash)
         }
-        a=trim(system(CMD))
-        a=shift(a.split("\n"), 3)
-        cpu_array=[]
-        foreach line in a {
-            cpu_hash={}
-            sline=fields(line)
-            cpu_hash=set(cpu_hash, "uid",     int(sline[1]))
-            cpu_hash=set(cpu_hash, "pid",     int(sline[2]))
-            cpu_hash=set(cpu_hash, "usr",     float(sline[3]))
-            cpu_hash=set(cpu_hash, "system",  float(sline[4]))
-            cpu_hash=set(cpu_hash, "guest",   float(sline[5]))
-            cpu_hash=set(cpu_hash, "wait",    float(sline[6]))
-            cpu_hash=set(cpu_hash, "cpu",     float(sline[7]))
-            cpu_hash=set(cpu_hash, "command", sline[9])
-            cpu_array=push(cpu_array, cpu_hash)
-        }
-        return cpu_array;
+	return pid_hash;
     }
-    
+
     function pidmem(ops="") {
         include("pwd")
-        CMD="ps -o pid,user,%cpu,%mem,command ax"
-        if (len(ops) == 0) {ops="[a-z]"}
-        a=trim(system(CMD))
-        a=rest(a.split("\n"))
-        mem_array=[]
-        foreach line in a {
-            mem_hash={}
-            sline=fields(line)
-            if (len(ops) > 1) {
-                if (match(ops, sline[4])) {
-                    uid=getpwnam(sline[1])["Uid"]
-                    mem_hash=set(mem_hash, "uid",     int(uid))
-                    mem_hash=set(mem_hash, "pid",     int(sline[0]))
-                    mem_hash=set(mem_hash, "cpu",     float(sline[2]))
-                    mem_hash=set(mem_hash, "mem",     float(sline[3]))
-                    mem_hash=set(mem_hash, "command", sline[4])
-                    mem_array=push(mem_array, mem_hash)
-                }
-            }
-        }
-        return mem_array;
+        CMD="ps -o pid,user:20,%cpu,%mem,command ax"
+	if (len(ops) == 0) {ops="[a-z]"}
+	ProcList=trim(system(CMD))
+	ProcList=rest(ProcList.split("\n"))
+	mem_hash={}
+	foreach line in ProcList {
+	    temp_hash={}
+	    sline=fields(line)
+	    if (len(ops) > 1) {
+	        if (match(ops, sline[4])) {
+		    uid=getpwnam(sline[1])["Uid"]
+		    temp_hash=set(temp_hash, "uid",     int(uid))
+		    temp_hash=set(temp_hash, "pc_cpu",     float(sline[2]))
+		    temp_hash=set(temp_hash, "pc_mem",     float(sline[3]))
+		    temp_hash=set(temp_hash, "command", sline[4])
+		    mem_hash=set(mem_hash, sline[0], temp_hash)
+		}
+	    }
+	}
+	return mem_hash;
     }
 }
