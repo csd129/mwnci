@@ -1064,26 +1064,27 @@ func backTickOperation(command string) object.Object {
 	// If the command exits with a non-zero exit-code it
 	// is regarded as a failure.  Here we test for ExitError
 	// to regard that as a non-failure.
-	//	if err != nil && err != err.(*exec.ExitError) {
-	//		fmt.Printf("Failed to run '%s' -> %s\n", command, err.Error())
-	//		return NULL
-	//	}
 
+	stdout := &object.String{Value: outb.String()}
+	stderr := &object.String{Value: errb.String()} 
 	if err != nil {
 		switch e := err.(type) {
 		case *exec.Error:
-			fmt.Printf("Failed to run '%s' -> %s\n", command, e.Error())
-			return NULL
+			foo:=fmt.Sprintf("%s", e.Error())
+			stdout = &object.String{Value: ""}
+			stderr = &object.String{Value: foo}
 		case *fs.PathError:
-			fmt.Printf("%s\n",e.Error())
-			return NULL
+			foo:=fmt.Sprintf("%s",e.Error())
+			stdout = &object.String{Value: ""}
+			stderr = &object.String{Value: foo}
 		}
 	}
+
 	//
 	// The result-objects to store in our hash.
 	//
-	stdout := &object.String{Value: outb.String()}
-	stderr := &object.String{Value: errb.String()}
+	//	stdout := &object.String{Value: outb.String()}
+	//	stderr := &object.String{Value: errb.String()}
 
 	// Create keys
 	stdoutKey := &object.String{Value: "stdout"}
