@@ -9,6 +9,7 @@ import (
 	"math"
 	"os"
 	"os/exec"
+	"io/fs"
 	"regexp"
 	"strings"
 
@@ -1063,11 +1064,21 @@ func backTickOperation(command string) object.Object {
 	// If the command exits with a non-zero exit-code it
 	// is regarded as a failure.  Here we test for ExitError
 	// to regard that as a non-failure.
-	if err != nil && err != err.(*exec.ExitError) {
-		fmt.Printf("Failed to run '%s' -> %s\n", command, err.Error())
-		return NULL
-	}
+	//	if err != nil && err != err.(*exec.ExitError) {
+	//		fmt.Printf("Failed to run '%s' -> %s\n", command, err.Error())
+	//		return NULL
+	//	}
 
+	if err != nil {
+		switch e := err.(type) {
+		case *exec.Error:
+			fmt.Printf("Failed to run '%s' -> %s\n", command, e.Error())
+			return NULL
+		case *fs.PathError:
+			fmt.Printf("%s\n",e.Error())
+			return NULL
+		}
+	}
 	//
 	// The result-objects to store in our hash.
 	//
