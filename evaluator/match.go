@@ -2,7 +2,6 @@ package evaluator
 
 import (
 	"regexp"
-	"fmt"
 
 	"mwnci/object"
 	"mwnci/typing"
@@ -26,7 +25,16 @@ func matchFun(args ...object.Object) object.Object {
 	res := reg.FindStringSubmatch(args[1].(*object.String).Value)
 
 	if len(res) > 0 {
-		return &object.String{Value: fmt.Sprintf("%v",res)}
+		newHash := make(map[object.HashKey]object.HashPair)
+		if len(res) > 1 {
+			for i := 1; i < len(res); i++ {
+				k := &object.Integer{Value: int64(i - 1)}
+				v := &object.String{Value: res[i]}
+				newHashPair := object.HashPair{Key: k, Value: v}
+				newHash[k.HashKey()] = newHashPair
+			}
+		}
+		return &object.Hash{Pairs: newHash}
 	}
 
 	// No match
