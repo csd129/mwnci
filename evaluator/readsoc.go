@@ -1,4 +1,4 @@
-package evaluator
+	package evaluator
 
 import (
 	"mwnci/object"
@@ -10,9 +10,9 @@ import (
 const DefaultBufferSize = 4096
 
 // Read ...
-func Read(args ...object.Object) object.Object {
+func ReadSoc(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"read", args,
+		"readsoc", args,
 		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.INTEGER_OBJ, object.INTEGER_OBJ),
 	); err != nil {
