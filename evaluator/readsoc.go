@@ -1,4 +1,4 @@
-	package evaluator
+package evaluator
 
 import (
 	"mwnci/object"
@@ -40,6 +40,6 @@ func ReadSoc(args ...object.Object) object.Object {
 func init() {
 	RegisterBuiltin("readsoc",
 		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Read(args...))
+			return (ReadSoc(args...))
 		})
 }
