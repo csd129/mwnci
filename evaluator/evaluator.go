@@ -1,3 +1,4 @@
+
 // Package evaluator contains the core of our interpreter, which walks
 // the AST produced by the parser and evaluates the user-submitted program.
 package evaluator
@@ -151,7 +152,7 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 		res := applyFunction(env, function, args)
 		if isError(res) {
 			fmt.Fprintf(os.Stderr, "Error calling `%s` : %s\n", node.Function, res.Inspect())
-			os.Exit(1)
+
 		}
 		return res
 
@@ -1032,7 +1033,8 @@ func splitCommand(input string) []string {
 	//
 	var result []string
 	for _, e := range res {
-		result = append(result, trimQuotes(e, '"'))
+		//		result = append(result, trimQuotes(e, '"'))
+		result = append(result, e)
 	}
 	return (result)
 }
@@ -1052,6 +1054,7 @@ func trimQuotes(in string, c byte) string {
 func backTickOperation(command string) object.Object {
 
 	// split the command
+	command = fmt.Sprintf("%s", command)
 	toExec := splitCommand(command)
 	cmd := exec.Command(toExec[0], toExec[1:]...)
 
@@ -1070,13 +1073,11 @@ func backTickOperation(command string) object.Object {
 	if err != nil {
 		switch e := err.(type) {
 		case *exec.Error:
-			foo:=fmt.Sprintf("%s", e.Error())
 			stdout = &object.String{Value: ""}
-			stderr = &object.String{Value: foo}
+			stderr = &object.String{Value: e.Error()}
 		case *fs.PathError:
-			foo:=fmt.Sprintf("%s",e.Error())
 			stdout = &object.String{Value: ""}
-			stderr = &object.String{Value: foo}
+			stderr = &object.String{Value: e.Error()}
 		}
 	}
 
