@@ -20,7 +20,6 @@ func mkdirFun(args ...object.Object) object.Object {
 
 
 	path := args[0].(*object.String).Value
-	// Can't fail?
 	mode, err := strconv.ParseInt("755", 8, 64)
 	if err != nil {
 		return FALSE
@@ -28,7 +27,6 @@ func mkdirFun(args ...object.Object) object.Object {
 
 	err = os.Mkdir(path, os.FileMode(mode))
 	if err != nil && !os.IsExist(err) {
-		//return &object.Integer{Value: 1}
 		return NULL
 	}
 	return TRUE

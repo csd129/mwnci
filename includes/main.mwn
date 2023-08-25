@@ -325,6 +325,37 @@ if (!INCLUDE["MAIN"]) {
         return uniq(InterArray);
     }
 
+    function zip(zip1=[], zip2=[]) {
+    	if (!checkfunctype("zip", "array", zip1, 1)) {
+	    exit(1)
+	}
+    	if (!checkfunctype("zip", "array", zip2, 2)) {
+	    exit(1)
+	}
+	
+        zip_hash={}
+        total = (len(zip1) > len(zip2)) ? len(zip2)-1 : len(zip1)-1
+        foreach i in 0..total {
+	    zip_hash=set(zip_hash, zip1[i], zip2[i])
+        }
+        return zip_hash;
+    }
+
+    function unzip(hash1={}) {
+    	if (!checkfunctype("unzip", "hash", hash1, 1)) {
+	    exit(1)
+	}
+        keyArray=keys(hash1)
+        valueArray=[]
+        ret_array=[]
+        foreach key in keyArray {
+            push(valueArray, hash1[key])
+        }
+        push(ret_array, keyArray)
+        push(ret_array, valueArray)
+        return ret_array;
+    }
+
     function string.contains(search) {
         return contains(self, self);
     }
