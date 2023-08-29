@@ -136,6 +136,7 @@ func main() {
 	if len(flag.Args()) > 0 {
 		input, err = ioutil.ReadFile(os.Args[1])
 	} else {
+		fmt.Printf("Mwnci %s\n", version)
 		repl.Start(os.Stdin, os.Stdout)
 	}
 
