@@ -2,42 +2,42 @@ if (!INCLUDE["SYSSTAT"]) {
     INCLUDE=set(INCLUDE, "SYSSTAT", true)
     
     function host() {
-        out=`iostat -o JSON`
-	data=eval(out["stdout"])
-	hosts=data["sysstat"]["hosts"][0]
-	host_hash={
-	    "nodename": hosts["nodename"],
-	    "sysname": hosts["sysname"],
-	    "release": hosts["release"],
-	    "machine": hosts["machine"],
-	    "number-of-cpus": hosts["number-of-cpus"]
-	}
-	return host_hash;
+		out=`iostat -o JSON`
+		data=eval(out["stdout"])
+		hosts=data["sysstat"]["hosts"][0]
+		host_hash={
+			"nodename": hosts["nodename"],
+			"sysname": hosts["sysname"],
+			"release": hosts["release"],
+			"machine": hosts["machine"],
+			"number-of-cpus": hosts["number-of-cpus"]
+		}
+		return host_hash;
     }
 
     function getcpu() {
-        out=`mpstat -P ALL`
+		out=`mpstat -P ALL`
         cpu_output=split(trim(out["stdout"]), "\n")
         cpu_output=shift(cpu_output,3)
         cpu_hash={}
         foreach line in cpu_output {
             line_list=fields(line)
-	    line_key=line_list[1]
-	    busy=sprintf("%.2f", 100.00 - float(line_list[11]))
-	    line_data={
-	        "usr": float(line_list[2]),
-	        "nice": float(line_list[3]),
-	        "sys": float(line_list[4]),
-	        "iowait": float(line_list[5]),
-	        "irq": float(line_list[6]),
-	        "soft": float(line_list[7]),
-	        "steal": float(line_list[8]),
-	        "guest": float(line_list[9]),
-	        "gnice": float(line_list[10]),
-	        "idle": float(line_list[11]),
-	        "busy": float(busy)
+	    	line_key=line_list[1]
+	    	busy=sprintf("%.2f", 100.00 - float(line_list[11]))
+	    	line_data={
+				"usr": float(line_list[2]),
+				"nice": float(line_list[3]),
+				"sys": float(line_list[4]),
+				"iowait": float(line_list[5]),
+				"irq": float(line_list[6]),
+				"soft": float(line_list[7]),
+				"steal": float(line_list[8]),
+				"guest": float(line_list[9]),
+				"gnice": float(line_list[10]),
+				"idle": float(line_list[11]),
+				"busy": float(busy)
             }
-	    cpu_hash=set(cpu_hash, line_key, line_data)
+			cpu_hash=set(cpu_hash, line_key, line_data)
         }
         return cpu_hash;
     }
@@ -49,69 +49,68 @@ if (!INCLUDE["SYSSTAT"]) {
         io_hash={}
         foreach line in io_output {
             line_list=fields(line)
-	    line_key=line_list[0]
-	    line_data={
-	        "tps": float(line_list[1]),
-	        "kb_reads": float(line_list[2]),
-	        "kb_wrtns": float(line_list[3]),
-	        "kb_dscds": float(line_list[4]),
-	        "kb_read": float(line_list[5]),
-	        "kb_wrtn": float(line_list[6]),
-	        "kb_dscd": float(line_list[7])
-	    }
-	    io_hash=set(io_hash, line_key, line_data)
+			line_key=line_list[0]
+			line_data={
+				"tps": float(line_list[1]),
+				"kb_reads": float(line_list[2]),
+				"kb_wrtns": float(line_list[3]),
+				"kb_dscds": float(line_list[4]),
+				"kb_read": float(line_list[5]),
+				"kb_wrtn": float(line_list[6]),
+				"kb_dscd": float(line_list[7])
+			}
+			io_hash=set(io_hash, line_key, line_data)
         }
         return io_hash;
     }
 
     function pidcpu(opts="") {
         CMD="pidstat -l"
-	if (len(opts) > 0) {
-	    CMD=CMD + " -C " + opts
-	}
-
-	ProcessLine=trim(system(CMD))
-	ProcessLine=shift(ProcessLine.split("\n"), 3)
-	pid_hash={}
-	foreach line in ProcessLine {
-	    sline=fields(line)
-	    pid=sline[2]
-	    temp_hash={
-	        "uid": int(sline[1]),
-		"pc_usr": float(sline[3]),
-		"pc_sys": float(sline[4]),
-		"pc_guest": float(sline[5]),
-		"pc_wait": float(sline[6]),
-		"pc_cpu": float(sline[7]),
-		"cpu": int(sline[8]),
-		"cmd": sline[9]
-	    }
-	    pid_hash=set(pid_hash, pid, temp_hash)
+		if (len(opts) > 0) {
+	    	CMD=CMD + " -C " + opts
+		}
+		ProcessLine=trim(system(CMD))
+		ProcessLine=shift(ProcessLine.split("\n"), 3)
+		pid_hash={}
+		foreach line in ProcessLine {
+			sline=fields(line)
+			pid=sline[2]
+			temp_hash={
+				"uid": int(sline[1]),
+				"pc_usr": float(sline[3]),
+				"pc_sys": float(sline[4]),
+				"pc_guest": float(sline[5]),
+				"pc_wait": float(sline[6]),
+				"pc_cpu": float(sline[7]),
+				"cpu": int(sline[8]),
+				"cmd": sline[9]
+			}
+			pid_hash=set(pid_hash, pid, temp_hash)
         }
-	return pid_hash;
+		return pid_hash;
     }
 
     function pidmem(ops="") {
         include("pwd")
         CMD="ps -o pid,user:20,%cpu,%mem,command ax"
-	if (len(ops) == 0) {ops="[a-z]"}
-	ProcList=trim(system(CMD))
-	ProcList=rest(ProcList.split("\n"))
-	mem_hash={}
-	foreach line in ProcList {
-	    temp_hash={}
-	    sline=fields(line)
-	    if (len(ops) > 1) {
-	        if (match(ops, sline[4])) {
-		    uid=getpwnam(sline[1])["Uid"]
-		    temp_hash=set(temp_hash, "uid",     int(uid))
-		    temp_hash=set(temp_hash, "pc_cpu",     float(sline[2]))
-		    temp_hash=set(temp_hash, "pc_mem",     float(sline[3]))
-		    temp_hash=set(temp_hash, "command", sline[4])
-		    mem_hash=set(mem_hash, sline[0], temp_hash)
+		if (len(ops) == 0) {ops="[a-z]"}
+		ProcList=trim(system(CMD))
+		ProcList=rest(ProcList.split("\n"))
+		mem_hash={}
+		foreach line in ProcList {
+			temp_hash={}
+			sline=fields(line)
+			if (len(ops) > 1) {
+				if (match(ops, sline[4])) {
+					uid=getpwnam(sline[1])["Uid"]
+					temp_hash=set(temp_hash, "uid", int(uid))
+					temp_hash=set(temp_hash, "pc_cpu", float(sline[2]))
+					temp_hash=set(temp_hash, "pc_mem", float(sline[3]))
+					temp_hash=set(temp_hash, "command", sline[4])
+					mem_hash=set(mem_hash, sline[0], temp_hash)
+				}
+			}
 		}
-	    }
-	}
-	return mem_hash;
+		return mem_hash;
     }
 }
