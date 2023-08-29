@@ -1,7 +1,7 @@
 if (!INCLUDE["GRP"]) {
     INCLUDE=set(INCLUDE, "GRP", true)
 
-function getgrent(group="") {
+    function getgrent(group="") {
         GROUP="/etc/group"
         GroupArray=[]
         FileArray=split(trim(cat(GROUP)), "\n")
@@ -10,15 +10,12 @@ function getgrent(group="") {
             grouphash={}
             groupinfo=split(trim(line), ":")
     	    if (groupinfo) {
-    	        grouphash=set(grouphash, "Group", groupinfo[0])
-	            grouphash=set(grouphash, "Password", groupinfo[1])
-	            grouphash=set(grouphash, "Gid", groupinfo[2])
 	            if (len(groupinfo[3]) > 0) {
 	                Members=split(groupinfo[3], ",")
 	            } else {
 	                Members=[]
 	            }
-	            grouphash=set(grouphash, "Members", Members)
+                grouphash={"Group": groupinfo[0], "Password": groupinfo[1], "Gid": groupinfo[2], "Members": Members}
 	            push(GroupArray, grouphash)
 	        }
         }
@@ -86,5 +83,4 @@ function getgrent(group="") {
     function string.getgrnam() {
         return getgrnam(self);
     }
-
 }

@@ -19,6 +19,7 @@ import (
 	"mwnci/lexer"
 	"mwnci/object"
 	"mwnci/parser"
+	"mwnci/repl"
 )
 
 // The current version
@@ -135,7 +136,7 @@ func main() {
 	if len(flag.Args()) > 0 {
 		input, err = ioutil.ReadFile(os.Args[1])
 	} else {
-		input, err = ioutil.ReadAll(os.Stdin)
+		repl.Start(os.Stdin, os.Stdout)
 	}
 
 	if err != nil {
