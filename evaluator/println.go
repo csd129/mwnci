@@ -1,8 +1,8 @@
 package evaluator
 
 import (
-	"mwnci/object"
 	"fmt"
+	"mwnci/object"
 )
 
 // Println ...
@@ -11,7 +11,7 @@ func Println(args ...object.Object) object.Object {
 		fmt.Print(s.Inspect())
 	}
 	fmt.Print("\n")
-	return NULL
+	return nil
 }
 
 func init() {

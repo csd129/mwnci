@@ -50,6 +50,9 @@ if (!INCLUDE["GRP"]) {
         return fields(grps);
     };
     
+    // getgrgid() and getgrnam() are available for backward compatibility
+    // scripts coded with older versions of mwnci
+    
     function getgrgid(Gid=-1) {
         if (!checkfunctype("getgrgid", "integer", Gid, 1)) {
             exit(1)
