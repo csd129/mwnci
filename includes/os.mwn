@@ -16,12 +16,12 @@ if (!INCLUDE["OS"]) {
             exit(1)
         }
         if (datey == "") {
-            cmd="`date +%s`"
+            cmd="date +%s"
         } else {
-            cmd="`date +%s -d \"" + datey + "\"`"
+            cmd="date +%s -d \"" + datey + "\""
         }
-        result=eval(cmd)
-        secs=int(trim(result["stdout"]))
+        result=system(cmd)
+        secs=int(trim(result))
         return secs;
     };
     

@@ -1,8 +1,8 @@
 package evaluator
 
 import (
-	"fmt"
 	"mwnci/object"
+	"fmt"
 )
 
 // printfFun is the implementation of our `printf` function.
@@ -16,7 +16,7 @@ func printfFun(args ...object.Object) object.Object {
 	if out.Type() == object.STRING_OBJ {
 		fmt.Print(out.(*object.String).Value)
 	}
-	return nil
+	return NULL
 }
 
 func init() {
