@@ -1044,8 +1044,8 @@ func splitCommand(input string) []string {
 	//
 	var result []string
 	for _, e := range res {
-		//		result = append(result, trimQuotes(e, '"'))
-		result = append(result, e)
+		result = append(result, trimQuotes(e, '"'))
+		//		result = append(result, e)
 	}
 	return (result)
 }
@@ -1065,7 +1065,7 @@ func trimQuotes(in string, c byte) string {
 func backTickOperation(command string) object.Object {
 
 	// split the command
-	command = fmt.Sprintf("%s", command)
+	//	command = fmt.Sprintf("%s", command)
 	toExec := splitCommand(command)
 	cmd := exec.Command(toExec[0], toExec[1:]...)
 
