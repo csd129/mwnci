@@ -31,6 +31,34 @@ if (!INCLUDE["MATH"]) {
         return dividend;
     }
 
+    function lcm(num1, num2) {
+        if (!checkfunctype("lcm", "integer", num1, 1)) {
+            exit(1)
+        }
+        if (!checkfunctype("lcm", "integer", num2, 2)) {
+            exit(1)
+        }
+        mult=num1 * num2
+        gcdiv=gcd(num1, num2)
+        return mult/gcdiv;
+    }
+
+    function simfract(Fraction="") {
+        if (!checkfunctype("simfract", "string", Fraction, 1)) {
+            exit(1)
+        }
+    	SFract=cut(Fraction,"/")
+	num1=int(SFract[0])
+	num2=int(SFract[1])
+	Gcd=gcd(num1, num2)
+	new1=int(num1/Gcd)
+	new2=int(num2/Gcd)
+	if (new1 == new2) {
+            return string(new1);
+    	}
+	return sprintf("%d/%d", new1, new2);
+    }
+
     function average(ave_array) {
         if (!checkfunctype("average", "array", ave_array, 1)) {
             exit(1)
