@@ -193,14 +193,14 @@ if (!INCLUDE["FILE"]) {
                 return true;
             } else {
                 return false;
-    	}
+            }
         }
         if (int(fgid) == getgid()) {
             if (int(group) == 1) {
-    	    return true;
-    	} else {
-    	    return false;
-    	}
+    	        return true;
+    	    } else {
+    	        return false;
+    	    }
         }
         if (int(other) == 1) {
             return true;
