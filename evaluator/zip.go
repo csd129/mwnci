@@ -31,8 +31,7 @@ func zipFun(args ...object.Object) object.Object {
 	for counter <= total {
 		K:=fmt.Sprintf("%v", arr1.Elements[counter])
 		k:=&object.String{Value: K}
-		V:=fmt.Sprintf("%v", arr2.Elements[counter])
-		v:=&object.String{Value: V}
+		v := arr2.Elements[counter]
 		newHashPair := object.HashPair{Key: k, Value: v}
 		newHash[k.HashKey()] = newHashPair
 		counter++
@@ -41,7 +40,7 @@ func zipFun(args ...object.Object) object.Object {
 }
 
 func init() {
-	RegisterBuiltin("zippy",
+	RegisterBuiltin("zip",
 		func(env *object.Environment, args ...object.Object) object.Object {
 			return (zipFun(args...))
 		})
