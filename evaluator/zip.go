@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -9,34 +8,39 @@ import (
 func zipFun(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"zip", args,
-		typing.ExactArgs(2),
-		typing.WithTypes(object.ARRAY_OBJ,object.ARRAY_OBJ),
+		typing.MinimumArgs(2),
 	); err != nil {
 		return newError(err.Error())
 	}
 
-	arr1 := args[0].(*object.Array)
-	arr2 := args[1].(*object.Array)
-	lenarr1 := len(arr1.Elements)-1
-	lenarr2 := len(arr2.Elements)-1
-	total := 0
-	if lenarr1 > lenarr2 {
-		total=lenarr2
-	} else {
-		total=lenarr1
+	shortest := len(args[0].(*object.Array).Elements)
+	for i := 0; i < len(args); i++ {
+		if args[i].Type() == object.ARRAY_OBJ {
+			length := len(args[i].(*object.Array).Elements)
+			if length < shortest {
+				shortest = length
+			}
+		} else {
+			return newError("argument to zip() not supported, expected ARRAY, got=%s", args[i].Type())
+		}
 	}
 
+	ziparray := make([]object.Object, shortest)
+	length:=len(args)
+	joinarray := make([]object.Object, length)
+
 	counter := 0
-	newHash := make(map[object.HashKey]object.HashPair)
-	for counter <= total {
-		K:=fmt.Sprintf("%v", arr1.Elements[counter])
-		k:=&object.String{Value: K}
-		v := arr2.Elements[counter]
-		newHashPair := object.HashPair{Key: k, Value: v}
-		newHash[k.HashKey()] = newHashPair
+
+	for counter < shortest {
+		for i:=0; i < len(args); i++ {
+			joinarray[i] = args[i].(*object.Array).Elements[counter]
+		}
+		pushlist := &object.Array{Elements: joinarray}
+		foo:=pushlist.Copy()
+		ziparray[counter]=foo
 		counter++
 	}
-	return &object.Hash{Pairs: newHash}
+	return &object.Array{Elements: ziparray}
 }
 
 func init() {
