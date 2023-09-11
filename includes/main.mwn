@@ -11,28 +11,6 @@ if (!INCLUDE["MAIN"]) {
         return true;
     }
 
-    function asctime(secs=-1, format="") {
-        if (secs == -1 && len(format) == 0) {
-            println("Error calling `asctime` : ERROR: TypeError: asctime() takes at least 1 arguments at most 2 (0 given)")
-            exit(1)
-        }
-        if (!checkfunctype("asctime", "integer", secs, 1)) {
-            exit(1)
-        }
-        if (!checkfunctype("asctime", "string", format, 2)) {
-            exit(1)
-        }
-
-        secs_cmdline=sprintf("--date=@%d", secs)
-        if (len(format) > 0) {
-            format_cmd=sprintf("+\"%s\"", format)
-        } else {
-            format_cmd="+\"%a %b %d %H:%M:%S %Y\""
-        }
-        cmd="/bin/date " + secs_cmdline + " " + format_cmd   
-        return trim(system(cmd));
-    }
-
     function interpol(data, text) {
         if (!checkfunctype("interpol", "hash", data, 1)) {
             exit(1)
