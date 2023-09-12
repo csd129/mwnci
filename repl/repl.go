@@ -1,8 +1,6 @@
 package repl
 
 import (
-	//	"bufio"
-	//	"fmt"
 	"io"
 	"mwnci/evaluator"
 	"mwnci/lexer"
@@ -14,18 +12,9 @@ import (
 const PROMPT = "mwnci> "
 
 func Start(in io.Reader, out io.Writer) {
-	//	scanner := bufio.NewScanner(in)
 	env := object.NewEnvironment()
 
 	for {
-		
-		//		fmt.Printf(PROMPT)
-		//		scanned := scanner.Scan()
-		//		if !scanned {
-		//			return
-		//		}
-
-		//		line := scanner.Text()
 		line := ""
 		rl, _ := readline.New(PROMPT)
 		defer rl.Close()
