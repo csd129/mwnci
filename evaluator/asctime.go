@@ -23,9 +23,7 @@ func AscTime(args ...object.Object) object.Object {
 	} else {
 		format = args[1].(*object.String).Value
 	}
-	//epochtime := args[0].(*object.Integer).Value
 	timer := time.Unix(args[0].(*object.Integer).Value, 0)
-	//formatted := strftime.Format(format, timer)
 	return &object.String{Value: strftime.Format(format, timer)}
 
 }
