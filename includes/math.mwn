@@ -5,17 +5,6 @@ if (!INCLUDE["MATH"]) {
         return num ** power;
     }
     
-    function cumulative(arr=[]) {
-        newArray=[]
-        prev=0
-        foreach i in 0..(len(arr)-1) {
-            num=arr[i] + prev
-            push(newArray, num)
-            prev=num
-        }
-        return newArray;
-    }
-    
     function gcd(dividend, divisor) {
         if (!checkfunctype("gcd", "integer", dividend, 1)) {
             exit(1)
@@ -180,10 +169,6 @@ if (!INCLUDE["MATH"]) {
     
     function array.average() {
         return average(self);
-    }
-    
-    function array.cumulative() {
-        return cumulative(self);
     }
     
     function object.pow(power) {
