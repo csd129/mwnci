@@ -1,3 +1,5 @@
+// +build !bsd
+
 package evaluator
 
 import (
