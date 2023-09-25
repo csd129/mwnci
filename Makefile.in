@@ -9,7 +9,9 @@ build:
 
 install: build
 	sudo mkdir -p ${BIN}
-	sudo ${INSTALL} ${INSTALL_OPTS} -m 755 -t ${BIN} mwnci
+	sudo cp mwnci ${BIN}
+	sudo chmod 755 ${BIN}/mwnci
+	sudo chown ${OWNER}:${GROUP} ${BIN}/mwnci
 	(cd ./includes; sudo make install)
 
 clean:

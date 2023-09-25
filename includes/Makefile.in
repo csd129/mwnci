@@ -1,18 +1,17 @@
 FILES=certs.mwn file.mwn grp.mwn http.mwn main.mwn \
 	math.mwn net.mwn os.mwn ps.mwn pwd.mwn sysstat.mwn units.mwn
-
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
 OWNER=@OWNER@
 GROUP=@GROUP@
-INSTALL_OPTS=--compare -o ${OWNER} -g ${GROUP}
 
 dummy:
 
 install: ${FILES}
 	mkdir -p ${INCLUDEDIR}
-	${INSTALL} ${INSTALL_OPTS} -m 644 -t ${INCLUDEDIR} ${FILES}
-
+	cp ${FILES} ${INCLUDEDIR}
+	sudo chmod 755 ${INCLUDEDIR}
+	sudo chmod 644 ${INCLUDEDIR}/*.mwn
 clean:
 	rm -f *~ \#*\#	
 
