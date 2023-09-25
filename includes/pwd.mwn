@@ -55,6 +55,23 @@ if (!INCLUDE["PWD"]) {
 	    return getpwent(Uid);
     }
     
+    function hashpw() {
+        PwHash={}
+        PWEntries=split(trim(cat("/etc/passwd")), "\n")
+        foreach line in PWEntries {
+            User=split(line, ":")[0]
+	    UserHash=getpwent(User)
+	    Uid=UserHash["Uid"]
+	    Gid=UserHash["Gid"]
+	    Home=UserHash["Home"]
+	    Shell=UserHash["Shell"]
+	    Gecos=UserHash["Gecos"]
+	    NewHash={"Uid": Uid, "Gid": Gid, "Home": Home, "Shell": Shell, "Gecos": Gecos}
+	    PwHash=set(PwHash, User, NewHash)
+    	}
+    	return PwHash;
+    }
+
     function string.getpwent() {
         return getpwent(self);
     }
