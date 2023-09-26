@@ -40,7 +40,8 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 			p := parser.New(l)
 			program := p.ParseProgram()
 			if len(p.Errors()) == 0 {
-				return (Eval(program, env))
+				Eval(program, env)
+				return nil
 			}
 			fmt.Printf("Error parsing eval-string: %s", string(data))
 			os.Exit(1)
