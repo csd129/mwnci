@@ -75,6 +75,29 @@ if (!INCLUDE["GRP"]) {
     	return getgrent(Gname);
     }
     
+    function hashgrp() {
+        GrpHash={}
+        GrpEntries=split(trim(cat("/etc/group")), "\n")
+    	foreach line in GrpEntries {
+            line=string(split(line, "#")[0])
+            if (len(line) > 0) {
+                SplitLine=split(line,":")
+            	Group=SplitLine[0]
+	    	Gid=SplitLine[2]
+	    	Members=string(SplitLine[3])
+	    	if (len(Members) > 0) {
+	            Members=split(Members,",")
+	    	} else {
+	            Members=[]
+	        }
+	   	NewHash={"Gid": Gid, "Members": Members}
+	    	GrpHash=set(GrpHash, Group, NewHash)
+            }
+        }
+        return GrpHash;
+    }
+
+
     function string.groups() {
         return groups(self);
     };

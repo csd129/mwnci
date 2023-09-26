@@ -57,21 +57,32 @@ if (!INCLUDE["PWD"]) {
     
     function hashpw() {
         PwHash={}
-        PWEntries=split(trim(cat("/etc/passwd")), "\n")
-        foreach line in PWEntries {
-            User=split(line, ":")[0]
-	    UserHash=getpwent(User)
-	    Uid=UserHash["Uid"]
-	    Gid=UserHash["Gid"]
-	    Home=UserHash["Home"]
-	    Shell=UserHash["Shell"]
-	    Gecos=UserHash["Gecos"]
-	    NewHash={"Uid": Uid, "Gid": Gid, "Home": Home, "Shell": Shell, "Gecos": Gecos}
-	    PwHash=set(PwHash, User, NewHash)
-    	}
-    	return PwHash;
+    	PWEntries=split(trim(cat("/etc/passwd")), "\n")
+    	foreach line in PWEntries {
+            line=string(split(line, "#")[0])
+	    if (len(line) > 0) {
+	        SplitLine=split(line,":")
+	    	User=SplitLine[0]
+	    	Uid=SplitLine[2]
+	    	Gid=SplitLine[3]
+	    	Gecos=string(SplitLine[4])
+	    	if (len(Gecos) > 0) {
+	            Gecos=split(Gecos,",")
+	        } else {
+	            Gecos=[]
+	        }
+	        Home=SplitLine[5]
+	    	Shell=string(SplitLine[6])
+	    	if (len(Shell) == 0) {
+	            Shell="/bin/sh"
+	        }
+	        NewHash={"Uid": Uid, "Gid": Gid, "Home": Home, "Shell": Shell, "Gecos": Gecos}
+	    	PwHash=set(PwHash, User, NewHash)
+            }
+        }
+        return PwHash;
     }
-
+    
     function string.getpwent() {
         return getpwent(self);
     }
