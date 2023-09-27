@@ -10,6 +10,8 @@ A MSL script consists of a sequence of commands. It is, for the most part, a fre
 
 Mwnci is Welsh for Monkey, and pronounced moon-key, but with a shorter "oo" (as in look/book). It's fine to say monkey 
 
+The wiki can be found [here](http://mwnci.ploogie.co.uk/index.php/Main_Page).
+
 ## Table of Contents
  [Quickstart](#quickstart)
 
