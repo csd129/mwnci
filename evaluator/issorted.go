@@ -15,9 +15,8 @@ func Issorted(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	foo := args[0].(*object.Array)
-	nums := foo.Copy()
-	if sort.IsSorted(nums) {
+	//foo := args[0].(*object.Array)
+	if sort.IsSorted(args[0].(*object.Array)) {
 		return TRUE
 	} else {
 		return FALSE

@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"syscall"
 	"mwnci/object"
 	"mwnci/typing"
+	"syscall"
 )
 
 func Kill(args ...object.Object) object.Object {
@@ -15,9 +15,8 @@ func Kill(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	p := args[0].(*object.Integer)
-	P := int(p.Value)
-	err := syscall.Kill(P, syscall.SIGTERM)
+	//P := int(args[0].(*object.Integer).Value)
+	err := syscall.Kill(int(args[0].(*object.Integer).Value), syscall.SIGTERM)
 	if err == nil {
 		return TRUE
 	}
@@ -27,6 +26,6 @@ func Kill(args ...object.Object) object.Object {
 func init() {
 	RegisterBuiltin("kill",
 		func(env *object.Environment, args ...object.Object) object.Object {
-			return(Kill(args...))
+			return (Kill(args...))
 		})
 }
