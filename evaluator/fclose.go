@@ -7,9 +7,9 @@ import (
 )
 
 // Close ...
-func Close(args ...object.Object) object.Object {
+func FClose(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"close", args,
+		"fclose", args,
 		typing.ExactArgs(1),
 		typing.WithTypes(object.INTEGER_OBJ),
 	); err != nil {
@@ -27,8 +27,8 @@ func Close(args ...object.Object) object.Object {
 }
 
 func init() {
-	RegisterBuiltin("close",
+	RegisterBuiltin("fclose",
 		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Close(args...))
+			return (FClose(args...))
 		})
 }
