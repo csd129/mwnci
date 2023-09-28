@@ -15,15 +15,14 @@ func Chr(args ...object.Object) object.Object {
 		typing.WithTypes(object.INTEGER_OBJ),
 	); err != nil {
 		return newError(err.Error())
-	}     
+	}
 
-	i := args[0].(*object.Integer)
-	return &object.String{Value: fmt.Sprintf("%c", rune(i.Value))}
+	return &object.String{Value: fmt.Sprintf("%c", rune(args[0].(*object.Integer).Value))}
 }
 
 func init() {
 	RegisterBuiltin("chr",
 		func(env *object.Environment, args ...object.Object) object.Object {
-			return(Chr(args...))
+			return (Chr(args...))
 		})
 }

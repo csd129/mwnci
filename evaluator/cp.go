@@ -1,9 +1,11 @@
 package evaluator
 
 import (
+	"io"
+	"os"
+
 	"mwnci/object"
 	"mwnci/typing"
-	"io/ioutil"
 )
 
 func FCp(args ...object.Object) object.Object {
@@ -18,16 +20,22 @@ func FCp(args ...object.Object) object.Object {
 	orig := args[0].Inspect()
 	dest := args[1].Inspect()
 
-	bytesRead, err := ioutil.ReadFile(orig)
+	source, err := os.Open(orig)
 	if err != nil {
 		return newError(err.Error())
 	}
+	defer source.Close()
 
-	err = ioutil.WriteFile(dest, bytesRead, 0644)
+	destination, err := os.Create(dest)
 	if err != nil {
 		return newError(err.Error())
 	}
-	return TRUE
+	defer destination.Close()
+	nBytes, err := io.Copy(destination, source)
+	if err != nil {
+		return newError(err.Error())
+	}
+	return &object.Integer{Value: nBytes}
 }
 
 func init() {

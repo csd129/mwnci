@@ -2,7 +2,7 @@ package evaluator
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"mwnci/object"
 	"mwnci/typing"
 	"net/http"
@@ -37,7 +37,7 @@ func HttpGet(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return newError(err.Error())
 	}

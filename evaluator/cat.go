@@ -20,10 +20,9 @@ func Cat(args ...object.Object) object.Object {
 	filename := args[0].(*object.String).Value
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		return newError("IOError: error reading from file %s: %s", filename, err)
+		return newError("IOError: %s: %s", filename, err)
 	}
-	ndata := strings.TrimSuffix(string(data), "\n")
-	return &object.String{Value: ndata}
+	return &object.String{Value: strings.TrimSuffix(string(data), "\n")}
 }
 
 func init() {

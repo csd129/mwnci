@@ -16,12 +16,9 @@ func Ceil(args ...object.Object) object.Object {
 
 	switch args[0].(type) {
 	case *object.Integer:
-		input := args[0].(*object.Integer).Value
-		return &object.Integer{Value: int64(input)}
+		return &object.Integer{Value: int64(args[0].(*object.Integer).Value)}
 	case *object.Float:
-		input := args[0].(*object.Float).Value
-		result := math.Ceil(input)
-		return &object.Integer{Value: int64(result)}
+		return &object.Integer{Value: int64(math.Ceil(args[0].(*object.Float).Value))}
 	default:
 		return newError("argument to ceil() not supported, expected INTEGER or FLOAT, got %s", args[0].Type())
 	}

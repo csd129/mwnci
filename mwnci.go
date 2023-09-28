@@ -12,7 +12,6 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"mwnci/evaluator"
@@ -28,16 +27,12 @@ var version = "0.1.7"
 //go:embed data/stdlib.mwn
 var stdlib string
 
-//
 // Implemention of "version()" function.
-//
 func versionFun(args ...object.Object) object.Object {
 	return &object.String{Value: version}
 }
 
-//
 // Implemention of "args()" function.
-//
 func argsFun(args ...object.Object) object.Object {
 	l := len(os.Args[1:])
 	result := make([]object.Object, l)
@@ -47,9 +42,7 @@ func argsFun(args ...object.Object) object.Object {
 	return &object.Array{Elements: result}
 }
 
-//
 // Execute the supplied string as a program.
-//
 func Execute(input string) int {
 
 	env := object.NewEnvironment()
@@ -134,7 +127,7 @@ func main() {
 	var err error
 
 	if len(flag.Args()) > 0 {
-		input, err = ioutil.ReadFile(os.Args[1])
+		input, err = os.ReadFile(os.Args[1])
 	} else {
 		fmt.Printf("Mwnci %s\n", version)
 		repl.Start(os.Stdin, os.Stdout)
