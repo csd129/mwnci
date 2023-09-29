@@ -8,8 +8,8 @@ while (true) {
   nfd = accept(fd)
   msg = readsoc(nfd)
   write(nfd, msg)
-  close(nfd)
+  fclose(nfd)
 }
 
-close(fd)
+fclose(fd)
 

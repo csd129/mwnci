@@ -6,9 +6,6 @@ import (
 	"syscall"
 )
 
-// DefaultBufferSize is the default buffer size
-const DefaultBufferSize = 4096
-
 // Read ...
 func ReadSoc(args ...object.Object) object.Object {
 	if err := typing.Check(

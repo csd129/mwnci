@@ -8,7 +8,7 @@ import (
 )
 
 // DefaultBufferSize is the default buffer size
-//const DefaultBufferSize = 4096
+const DefaultBufferSize = 4096
 
 // Read ...
 func Fread(args ...object.Object) object.Object {

@@ -334,11 +334,7 @@ if (!INCLUDE["FILE"]) {
     	    }
         }
     
-        fh=open(filename, mode)
-        fh.write(wstring)
-        fh.write("\n")
-        fh.close()
-    
+	writefile(filename, wstring)
         return true;
     }
 }
