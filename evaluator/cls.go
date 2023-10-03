@@ -14,7 +14,7 @@ func Cls(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}     
-	cmd := exec.Command("/bin/clear")
+	cmd := exec.Command("clear")
 	cmd.Stdout = os.Stdout
 	cmd.Run()
 

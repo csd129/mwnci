@@ -114,6 +114,13 @@ if (!INCLUDE["MATH"]) {
         return result;
     }
     
+    function trunc(Float) {
+        if (!checkfunctype("trunc", "float", Float, 1)) {
+	    exit(1)
+	}
+        return(float(int(Float)));
+    }
+
     function highest(a, b) {
         return (a > b) ? a : b;
     }
@@ -152,5 +159,9 @@ if (!INCLUDE["MATH"]) {
     
     function object.pow(power) {
         return pow(self, power);
+    }
+
+    function float.trunc() {
+        return trunc(self);
     }
 }
