@@ -294,6 +294,57 @@ if (!INCLUDE["MAIN"]) {
         return ret_array;
     }
 
+    function rotr(Array) {
+        VarType=type(Array)
+        Valid=false
+        isString=false
+        if (VarType == "string") {
+            Array=split(Array, "")
+	    isString=true
+	    Valid=true
+	}
+	if (VarType == "array") {
+            Valid=true
+	}
+	if (!Valid) {
+	    println("Error calling `rotr`: ERROR: argument to rotr() not supported, expected STRING or ARRAY, got ", toupper(type(Array)))
+	    exit(1)
+	}
+	NewArray=Array.copy()
+	ToMove=pop(NewArray)
+	NewArray=insert(NewArray, 0, ToMove)
+	if (isString) {
+	    NewArray=join(NewArray, "")
+	}
+	return NewArray;
+    }
+
+    function rotl(Array) {
+        VarType=type(Array)
+	Valid=false
+	isString=false
+	if (VarType == "string") {
+	    Array=split(Array, "")
+	    isString=true
+	    Valid=true
+	}
+	if (VarType == "array") {
+	    Valid=true
+	}
+	if (!Valid) {
+	    println("Error calling `rotl`: ERROR: argument to rotl() not supported, expected STRING or ARRAY, got ", toupper(type(Array)))
+	    exit(1)
+	}
+	NewArray=Array.copy()
+	ToMove=NewArray[0]
+	NewArray=delete(NewArray,0)
+	push(NewArray, ToMove)
+	if (isString) {
+	    NewArray=join(NewArray, "")
+	}
+	return NewArray;
+    }
+
     function string.contains(search) {
         return contains(self, self);
     }
