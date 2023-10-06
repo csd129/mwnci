@@ -41,7 +41,7 @@ if (!INCLUDE["MAIN"]) {
     function map(marray,fnc) {
        result = []
        foreach item in marray {
-          push(result,fnc(item))
+          result=push(result,fnc(item))
        }
        return result;
     }
@@ -273,7 +273,7 @@ if (!INCLUDE["MAIN"]) {
         foreach Value in array_a {
             found=contains(array_b, Value)
             if (found) {
-    	        push(InterArray, Value)
+    	        InterArray=push(InterArray, Value)
     	    }
         }
         return uniq(InterArray);
@@ -287,10 +287,10 @@ if (!INCLUDE["MAIN"]) {
         valueArray=[]
         ret_array=[]
         foreach key in keyArray {
-            push(valueArray, hash1[key])
+            ValueArray=push(valueArray, hash1[key])
         }
-        push(ret_array, keyArray)
-        push(ret_array, valueArray)
+        ret_array=push(ret_array, keyArray)
+        ret_array=push(ret_array, valueArray)
         return ret_array;
     }
 
@@ -338,7 +338,7 @@ if (!INCLUDE["MAIN"]) {
 	NewArray=Array.copy()
 	ToMove=NewArray[0]
 	NewArray=delete(NewArray,0)
-	push(NewArray, ToMove)
+	NewArray=push(NewArray, ToMove)
 	if (isString) {
 	    NewArray=join(NewArray, "")
 	}

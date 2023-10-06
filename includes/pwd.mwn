@@ -19,7 +19,7 @@ if (!INCLUDE["PWD"]) {
                 userhash=set(userhash, "Home", userinfo[5])
                 shell = (len(userinfo[6]) == 0) ? "/bin/sh" : userinfo[6]
                 userhash=set(userhash, "Shell", shell)
-                push(PasswdArray, userhash)
+                PasswdArray=push(PasswdArray, userhash)
             }
         }
 	    if (user != "") {

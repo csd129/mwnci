@@ -16,7 +16,7 @@ if (!INCLUDE["GRP"]) {
 	                Members=[]
 	            }
                 grouphash={"Group": groupinfo[0], "Password": groupinfo[1], "Gid": groupinfo[2], "Members": Members}
-	            push(GroupArray, grouphash)
+	            GroupArray=push(GroupArray, grouphash)
 	        }
         }
         if (group != "") {

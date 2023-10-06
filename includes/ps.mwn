@@ -61,7 +61,7 @@ if (!INCLUDE["PS"]) {
     	    CmdArray=fields(CommandLine)
     	    Command=basename(CmdArray[0])
             if (Command == name) {
-    	        push(parray, Pid)
+    	        parray=push(parray, Pid)
     	    }
         }
         if (len(parray) > 0) {
