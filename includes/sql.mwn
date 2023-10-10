@@ -1,0 +1,29 @@
+if (!INCLUDE["SQL"]) {
+    INCLUDE=set(INCLUDE, "SQL", true)
+
+    function sqlget(db, command) {
+        if (!checkfunctype("sqlget", "hash", db, 1)) {
+            exit(1)
+        }
+        if (!checkfunctype("sqlget", "string", command, 2)) {
+            exit(1)
+        }
+
+	ConfOptions="[mysql]\n"
+	foreach key in keys(db) {
+	    ConfOptions=ConfOptions+string(key)+"="+string(db[key])+"\n"
+	}
+        ConfFile="/tmp/sql." + string(getpid())
+        writefile(ConfFile, ConfOptions)
+        chmod(ConfFile, "600")
+
+        MysqlCmd=sprintf("echo \"%s\" | mysql --defaults-file=%s", command, ConfFile)
+        output=system(MysqlCmd)
+        unlink(ConfFile)
+	output=split(trim(output), "\n")
+	if (!output) {
+	    return false;
+	}
+        return output;
+    }
+}    
