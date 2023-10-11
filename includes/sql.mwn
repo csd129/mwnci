@@ -1,29 +1,62 @@
 if (!INCLUDE["SQL"]) {
     INCLUDE=set(INCLUDE, "SQL", true)
 
+    //
+    // Any output from this function will be false if there's an error
+    // or a an array of arrays for table output.
+    //
+    // This will genrally be used if you want to select data and have it
+    // returned as an array. If you just want data as plaintext use sqlcmd()
+    //
     function sqlget(db, command) {
-        if (!checkfunctype("sqlget", "hash", db, 1)) {
+    	TableArray=[]
+        if (!checkfunctype("sqlcmd", "hash", db, 1)) {
             exit(1)
         }
-        if (!checkfunctype("sqlget", "string", command, 2)) {
+        if (!checkfunctype("sqlcmd", "string", command, 2))  {
             exit(1)
         }
 
-	ConfOptions="[mysql]\n"
-	foreach key in keys(db) {
-	    ConfOptions=ConfOptions+string(key)+"="+string(db[key])+"\n"
-	}
+        //
+        // We don't want the password showing on the command line
+        // So we use the hash to create a "defaults-file" and change the
+        // permissions so that only the caller can read it
+        //
+        ConfOptions="[mysql]\n"
+        foreach key in keys(db) {
+            ConfOptions=ConfOptions+string(key)+"="+string(db[key])+"\n"
+        }
         ConfFile="/tmp/sql." + string(getpid())
         writefile(ConfFile, ConfOptions)
         chmod(ConfFile, "600")
 
-        MysqlCmd=sprintf("echo \"%s\" | mysql --defaults-file=%s", command, ConfFile)
+        //
+        // Execute the mysql command and remove the temporary "defaults-file"
+        //
+        MysqlCmd=sprintf("echo \"%s\" | mysql --defaults-file=%s 2>&1; exit 0", command, ConfFile)
         output=system(MysqlCmd)
         unlink(ConfFile)
-	output=split(trim(output), "\n")
-        return output;
+
+        //
+        // If we get an error, then output the message and return false
+        //
+        if (match("^ERROR .* at line", output)) {
+            println("sqlcmd error: ", command)
+            println(output)
+            return false;
+        }
+        output=split(output, "\n")
+        foreach line in output {
+            Sline=split(line, "\t")
+            TableArray=push(TableArray, Sline)
+        }
+        return TableArray;
     }
 
+    //
+    // Any output from this function will be false if there's an error
+    // or a string
+    //
     function sqlcmd(db, command) {
         if (!checkfunctype("sqlcmd", "hash", db, 1)) {
             exit(1)
@@ -32,18 +65,34 @@ if (!INCLUDE["SQL"]) {
             exit(1)
         }
 
+        //
+        // We don't want the password showing on the command line
+        // So we use the hash to create a "defaults-file" and change the
+        // permissions so that only the caller can read it
+        //
         ConfOptions="[mysql]\n"
         foreach key in keys(db) {
             ConfOptions=ConfOptions+string(key)+"="+string(db[key])+"\n"
         }
-
         ConfFile="/tmp/sql." + string(getpid())
         writefile(ConfFile, ConfOptions)
         chmod(ConfFile, "600")
 
+        //
+        // Execute the mysql command and remove the temporary "defaults-file"
+        //
         MysqlCmd=sprintf("echo \"%s\" | mysql --defaults-file=%s 2>&1; exit 0", command, ConfFile)
         output=system(MysqlCmd)
         unlink(ConfFile)
+
+        //
+        // If we get an error, then output the message and return false
+        //
+        if (match("^ERROR .* at line", output)) {
+            println("sqlcmd error: ", command)
+            println(output)
+            return false;
+        }
         return output;
     }
 }    
