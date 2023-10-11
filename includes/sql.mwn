@@ -45,10 +45,14 @@ if (!INCLUDE["SQL"]) {
             println(output)
             return false;
         }
-        output=split(output, "\n")
-        foreach line in output {
-            Sline=split(line, "\t")
-            TableArray=push(TableArray, Sline)
+        if (len(output)>0) {
+            output=split(output, "\n")
+            foreach line in output {
+                Sline=split(line, "\t")
+                TableArray=push(TableArray, Sline)
+            }
+        } else {
+            output=[]
         }
         return TableArray;
     }
