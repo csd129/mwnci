@@ -7,34 +7,5 @@ It will be best to add any defaults to the "main" include file
 so no recompilation is needed and it will be loaded at run time
 */
 
-/*
- Maths constants - add more here if needed
-*/
-const PI=     3.141592653589793;
-const E=      2.718281828459045;
-const TAU=    PI*2;
-const PHI=    1.618033988749894;
-const SQRT2=  1.414213562373095;
-const SQRTE=  1.648721270700128;
-const SQRTPI= 1.772453850905516;
-const SQRTPHI=1.272019649514068;
-const LN2=    0.693147180559945;
-const LOG2E=  1/LN2;
-const LN10=   2.302585092994045;
-const LOGH10E=1/LN10;
-
-
-/*
- File-objects for STDIN, STDOUT, and STDERR.
-
- Rather than opening these by name/path we have magic-strings which
- are recognized by our "open" primitive.
-*/
-
-const STDIN= open( "!STDIN!" );
-const STDOUT=open( "!STDOUT!" );
-const STDERR=open( "!STDERR!" );
-
-
 INCLUDE={}
 include("main")
