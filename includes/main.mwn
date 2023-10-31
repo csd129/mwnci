@@ -13,7 +13,7 @@ const LN2=    0.693147180559945;
 const LOG2E=  1/LN2;
 const LN10=   2.302585092994045;
 const LOGH10E=1/LN10;
-
+const OS=getos();
 
 /*
  File-objects for STDIN, STDOUT, and STDERR.
