@@ -25,7 +25,7 @@ func Split(args ...object.Object) object.Object {
 	}
 
 	if (len(s) == 0) {
-           return NULL
+           return &object.Null{}
         }
 	tokens := strings.Split(s, sep)
 	elements := make([]object.Object, len(tokens))

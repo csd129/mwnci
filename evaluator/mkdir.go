@@ -27,7 +27,7 @@ func mkdirFun(args ...object.Object) object.Object {
 
 	err = os.Mkdir(path, os.FileMode(mode))
 	if err != nil && !os.IsExist(err) {
-		return NULL
+		return &object.Null{}
 	}
 	return TRUE
 }

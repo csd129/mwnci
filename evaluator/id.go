@@ -36,7 +36,7 @@ func IdOf(args ...object.Object) object.Object {
 		return &object.String{Value: fmt.Sprintf("%p", b)}
 	}
 
-	return NULL
+	return &object.Null{}
 }
 
 func init() {
