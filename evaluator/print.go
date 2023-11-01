@@ -10,7 +10,7 @@ func putsFun(args ...object.Object) object.Object {
 	for _, arg := range args {
 		fmt.Print(arg.Inspect())
 	}
-	return &object.Null{}
+	return NULL
 }
 
 func init() {
