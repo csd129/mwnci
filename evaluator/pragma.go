@@ -4,15 +4,19 @@ import (
 	"strings"
 
 	"mwnci/object"
+	"mwnci/typing"
 )
 
 // set a global pragma
 func pragmaFun(args ...object.Object) object.Object {
 
 	// If more than one argument that's an error
-	if len(args) > 1 {
-		return newError("wrong number of arguments. got=%d, want=0|1",
-			len(args))
+	if err := typing.Check(
+		"pragma", args,
+		typing.RangeOfArgs(0, 1),
+		typing.WithTypes(object.STRING_OBJ),
+	); err != nil {
+		return newError(err.Error())
 	}
 
 	// If one argument update to enable the given pragma
