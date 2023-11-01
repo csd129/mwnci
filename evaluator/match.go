@@ -17,7 +17,6 @@ func matchFun(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-
 	//
 	// Compile and match
 	//
@@ -38,11 +37,12 @@ func matchFun(args ...object.Object) object.Object {
 	}
 
 	// No match
-	return FALSE
+	return &object.Null{}
 }
 
 func init() {
 	RegisterBuiltin("match",
-		func(env *object.Environment, args ...object.Object) object.Object {return (matchFun(args...))
+		func(env *object.Environment, args ...object.Object) object.Object {
+			return (matchFun(args...))
 		})
 }

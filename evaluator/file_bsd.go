@@ -1,36 +1,37 @@
+//go:build !linux
 // +build !linux
 
 package evaluator
 
 import (
-	"os"
 	"fmt"
-	"syscall"
 	"mwnci/object"
 	"mwnci/typing"
+	"os"
+	"syscall"
 )
 
 // File ...
 func File(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"file", args,
-		typing.RangeOfArgs(1,2),
+		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.STRING_OBJ, object.INTEGER_OBJ),
 	); err != nil {
 		return newError(err.Error())
 	}
-		
+
 	file := args[0].(*object.String).Value
 
 	fileStat, err := os.Lstat(file)
 	if err != nil {
-		return NULL
+		return &object.Null{}
 	}
-	fileSys := fileStat.Sys() 
+	fileSys := fileStat.Sys()
 	fileMtime := fileSys.(*syscall.Stat_t).Mtimespec.Sec
 	if len(args) == 1 {
 		return &object.Integer{Value: int64(fileMtime)}
-	}	
+	}
 	fileUid := fileSys.(*syscall.Stat_t).Uid
 	fileGid := fileSys.(*syscall.Stat_t).Gid
 	fileCtime := fileSys.(*syscall.Stat_t).Ctimespec.Sec
@@ -41,7 +42,7 @@ func File(args ...object.Object) object.Object {
 	var (
 		fileType string
 	)
-	switch fileSys.(*syscall.Stat_t).Mode  & syscall.S_IFMT {
+	switch fileSys.(*syscall.Stat_t).Mode & syscall.S_IFMT {
 	case syscall.S_IFREG:
 		fileType = "FILE"
 	case syscall.S_IFDIR:
