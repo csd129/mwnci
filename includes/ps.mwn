@@ -1,31 +1,6 @@
 if (!INCLUDE["PS"]) {
     INCLUDE=set(INCLUDE, "PS", true)
     
-    function getpstate(pid=0) {
-        states={"R": "running",
-                "S": "sleeping",
-    	        "D": "disk sleep",
-                "T": "stopped",
-                "t": "tracing stop",
-                "X": "dead",
-                "Z": "zombie",
-                "P": "parked",
-                "I": "idle"}
-        if (!checkfunctype("getpname", "integer", pid, 1)) {
-            exit(1)
-        }
-        if (pid == 0) {
-            pid=getpid()
-        }
-        filename=sprintf("/proc/%d/stat", pid)
-        if (!exists(filename)) {
-            return false;
-        }
-        command_line=trim(cat(filename))
-        command=fields(command_line)[2]
-        return states[command];
-    }
-    
     function process() {
         CmdHash={}
         ProcessTable={}
@@ -85,26 +60,28 @@ if (!INCLUDE["PS"]) {
         return CommandLine[0];
     }
     
-    function cpuproc() {
-        data=[]
-        command="`ps -eo pcpu,pmem,pid,user,args --no-headers`"
-        result=eval(command)["stdout"]
-        result=split(result, "\n");
-        foreach line in result {
-            sline=fields(line)
-            if (len(sline) > 0) {
-                if (find(sline[4], "[") == -1) {
-     	            pcpu=sline[0]
-    	            pmem=sline[1]
-    	            pid=sline[2]
-    	            user=sline[3]
-    	            cmd=fields(sline[4])
-    	            parsed_data=sprintf("%s %s %s %s %s", pcpu, pmem, pid, user, cmd[0])
-    	            data=push(data, parsed_data)
-    	        }
-    	    }
-        }
-        return data;
+    function procstat(pid=-1) {
+        if (!checkfunctype("procstat", "integer", pid)) {
+	    exit(1)
+	}
+        Data={}
+	Command="ps -eo pcpu,pmem,pid,user,args --no-headers"
+	Result=split(trim(system(Command)), "\n")
+	foreach Line in Result {
+	    SLine=fields(Line)
+	    if (len(SLine) > 0) {
+	        if (find(SLine[4], "[") == -1) { 
+		    Proc_Hash={"pcpu": SLine[0], "pmem": SLine[1], "user": SLine[3], "cmd": SLine[4]}
+		    Key=SLine[2]
+		    Data=set(Data, Key, Proc_Hash)
+		}
+	    }
+	}
+	if (pid > 0) {
+	    return Data[string(pid)];
+	} else {
+	    return Data;
+	}
     }
     
     function integer.getpname() {
@@ -113,9 +90,5 @@ if (!INCLUDE["PS"]) {
     
     function string.pnametopid() {
         return pnametopid(self);
-    }
-    
-    function integer.getpstate() {
-        return getpstate(self);
     }
 }
