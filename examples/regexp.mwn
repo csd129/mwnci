@@ -5,7 +5,7 @@
 //
 // Substring match
 //
-if ( match( "ccle", "Eccles Cake" ) ) {
+if ( match( "cclE", "Eccles Cake" ) ) {
    print( "'Eccles Cake' contains the substring 'ccle'\n");
 }
 

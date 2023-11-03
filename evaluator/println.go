@@ -11,7 +11,7 @@ func Println(args ...object.Object) object.Object {
 		fmt.Print(s.Inspect())
 	}
 	fmt.Print("\n")
-	return &object.Null{}
+	return NULL
 }
 
 func init() {

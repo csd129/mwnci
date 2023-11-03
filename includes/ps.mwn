@@ -62,26 +62,26 @@ if (!INCLUDE["PS"]) {
     
     function procstat(pid=-1) {
         if (!checkfunctype("procstat", "integer", pid)) {
-	    exit(1)
-	}
+            exit(1)
+        }
         Data={}
-	Command="ps -eo pcpu,pmem,pid,user,args --no-headers"
-	Result=split(trim(system(Command)), "\n")
-	foreach Line in Result {
-	    SLine=fields(Line)
-	    if (len(SLine) > 0) {
-	        if (find(SLine[4], "[") == -1) { 
-		    Proc_Hash={"pcpu": SLine[0], "pmem": SLine[1], "user": SLine[3], "cmd": SLine[4]}
-		    Key=SLine[2]
-		    Data=set(Data, Key, Proc_Hash)
-		}
-	    }
-	}
-	if (pid > 0) {
-	    return Data[string(pid)];
-	} else {
-	    return Data;
-	}
+        Command="ps -eo pcpu,pmem,pid,user,args --no-headers"
+        Result=split(trim(system(Command)), "\n")
+        foreach Line in Result {
+            SLine=fields(Line)
+            if (len(SLine) > 0) {
+                if (find(SLine[4], "[") == -1) {
+                    Proc_Hash={"pcpu": SLine[0], "pmem": SLine[1], "user": SLine[3], "cmd": SLine[4]}
+                    Key=SLine[2]
+                    Data=set(Data, Key, Proc_Hash)
+                }
+            }
+        }
+        if (pid > 0) {
+            return Data[string(pid)];
+        } else {
+            return Data;
+        }
     }
     
     function integer.getpname() {

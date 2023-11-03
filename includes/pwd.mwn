@@ -14,8 +14,8 @@ if (!INCLUDE["PWD"]) {
                 gecos=split(userinfo[4], ",")
                 userhash=set(userhash, "Gecos", gecos)
                 userhash=set(userhash, "User", userinfo[0])
-                userhash=set(userhash, "Uid", userinfo[2])
-                userhash=set(userhash, "Gid", userinfo[3])
+                userhash=set(userhash, "Uid", int(userinfo[2]))
+                userhash=set(userhash, "Gid", int(userinfo[3]))
                 userhash=set(userhash, "Home", userinfo[5])
                 shell = (len(userinfo[6]) == 0) ? "/bin/sh" : userinfo[6]
                 userhash=set(userhash, "Shell", shell)
@@ -76,7 +76,7 @@ if (!INCLUDE["PWD"]) {
 	    	if (len(Shell) == 0) {
 	            Shell="/bin/sh"
 	        }
-	        NewHash={"Uid": Uid, "Gid": Gid, "Home": Home, "Shell": Shell, "Gecos": Gecos}
+	        NewHash={"Uid": int(Uid), "Gid": int(Gid), "Home": Home, "Shell": Shell, "Gecos": Gecos}
 	    	PwHash=set(PwHash, User, NewHash)
             }
         }

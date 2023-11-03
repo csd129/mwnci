@@ -25,7 +25,7 @@ func File(args ...object.Object) object.Object {
 
 	fileStat, err := os.Lstat(file)
 	if err != nil {
-		return &object.Null{}
+		return NULL
 	}
 	fileSys := fileStat.Sys()
 	fileMtime := fileSys.(*syscall.Stat_t).Mtimespec.Sec

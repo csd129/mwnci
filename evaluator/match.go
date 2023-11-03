@@ -37,7 +37,7 @@ func matchFun(args ...object.Object) object.Object {
 	}
 
 	// No match
-	return &object.Null{}
+	return FALSE
 }
 
 func init() {
