@@ -16,52 +16,33 @@ if (!INCLUDE["SYSSTAT"]) {
     }
 
     function getcpu() {
-		out=`mpstat -P ALL`
-        cpu_output=split(trim(out["stdout"]), "\n")
-        cpu_output=shift(cpu_output,3)
-        cpu_hash={}
-        foreach line in cpu_output {
-            line_list=fields(line)
-	    	line_key=line_list[1]
-	    	busy=sprintf("%.2f", 100.00 - float(line_list[11]))
-	    	line_data={
-				"usr": float(line_list[2]),
-				"nice": float(line_list[3]),
-				"sys": float(line_list[4]),
-				"iowait": float(line_list[5]),
-				"irq": float(line_list[6]),
-				"soft": float(line_list[7]),
-				"steal": float(line_list[8]),
-				"guest": float(line_list[9]),
-				"gnice": float(line_list[10]),
-				"idle": float(line_list[11]),
-				"busy": float(busy)
-            }
-			cpu_hash=set(cpu_hash, line_key, line_data)
-        }
-        return cpu_hash;
+        Mpstat=system("mpstat -P ALL -o JSON")
+	Json=eval(Mpstat)
+	Cpu_Hash={}
+	Load=Json["sysstat"]["hosts"][0]["statistics"][0]["cpu-load"]
+	foreach n in Load {
+	    busy=sprintf("%.2f", 100.00 - float(n["idle"]))
+	    key=n["cpu"]
+	    line_data=delete(n,"cpu")
+	    line_data=set(line_data, "busy", busy)
+	    Cpu_Hash=set(Cpu_Hash, key, line_data)
+	}
+        return Cpu_Hash;
     }
     
     function getio() {
-        out=`iostat -p ALL`
-        io_output=split(trim(out["stdout"]), "\n")
-        io_output=shift(io_output,6)
-        io_hash={}
-        foreach line in io_output {
-            line_list=fields(line)
-			line_key=line_list[0]
-			line_data={
-				"tps": float(line_list[1]),
-				"kb_reads": float(line_list[2]),
-				"kb_wrtns": float(line_list[3]),
-				"kb_dscds": float(line_list[4]),
-				"kb_read": float(line_list[5]),
-				"kb_wrtn": float(line_list[6]),
-				"kb_dscd": float(line_list[7])
-			}
-			io_hash=set(io_hash, line_key, line_data)
-        }
-        return io_hash;
+        Iostat=system("iostat -p ALL -o JSON")
+	Iostat=replaceall(Iostat, "kB_", "kb_")
+	Iostat=replaceall(Iostat, "/", "")
+	Json=eval(Iostat)
+	Io_Hash={}
+	Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
+	foreach n in Disk {
+	    key=n["disk_device"]
+	    line_data=delete(n, "disk_device")
+	    Io_Hash=set(Io_Hash, key, line_data)
+	}
+        return Io_Hash;
     }
 
     function pidcpu(opts="") {
