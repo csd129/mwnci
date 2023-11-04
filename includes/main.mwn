@@ -16,8 +16,17 @@ const STDERR=open( "!STDERR!" );
 
 if (!INCLUDE["MAIN"]) {
     INCLUDE=set(INCLUDE, "MAIN", true)
+
     function checkfunctype(func, expected, received, argnum=1) {
         ReceivedType=type(received)
+	if (expected == "number") {
+	    if (ReceivedType == "integer" || ReceivedType == "float") {
+	        return true;
+	    } else {
+	        println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
+		return false;
+	    }
+	}
         if (ReceivedType != expected) {
             println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `",
             toupper(expected), "` got `", toupper(ReceivedType), "`")

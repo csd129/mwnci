@@ -1,5 +1,5 @@
 /*
- Maths constants - add more here if needed
+ Math constants - add more here if needed
 */
 const PI=     3.141592653589793;
 const PI_2=   PI/2;
@@ -23,6 +23,36 @@ if (!INCLUDE["MATH"]) {
         return num ** power;
     }
     
+    function pow10(x=0) {
+        if (!checkfunctype("pow10", "number", x, 1)) {exit(1)}
+	return float(10**x);
+    }
+
+    function exp(x=0) {
+    	if (!checkfunctype("exp", "number", x, 1)) {exit(1)}
+        return E**x;
+    }
+
+    function exp2(x=0) {
+        if (!checkfunctype("exp2", "number", x, 1)) {exit(1)}
+        return float(2.0**x);
+    }
+
+    function expm1(x=0) {
+        if (!checkfunctype("expm1", "number", x, 1)) {exit(1)}
+        return E**float(x)-1;
+    }
+
+    function dim(x=0,y=0) {
+        if (!checkfunctype("dim", "number", x, 1)) {exit(1)}
+        if (!checkfunctype("dim", "number", y, 2)) {exit(1)}
+        v=float(x)-float(y)
+	if (v < 0) {
+	    return float(0);
+	}
+	return v;
+    }
+
     function gcd(dividend, divisor) {
         if (!checkfunctype("gcd", "integer", dividend, 1)) {
             exit(1)
@@ -133,7 +163,7 @@ if (!INCLUDE["MATH"]) {
     }
     
     function trunc(Float) {
-        if (!checkfunctype("trunc", "float", Float, 1)) {
+        if (!checkfunctype("trunc", "number", Float, 1)) {
 	    exit(1)
 	}
         return(float(int(Float)));
@@ -181,5 +211,25 @@ if (!INCLUDE["MATH"]) {
 
     function float.trunc() {
         return trunc(self);
+    }
+
+    function object.exp() {
+        return exp(self);
+    }
+
+    function object.dim(y=0) {
+        return dim(self,y);
+    }
+
+    function object.exp2() {
+        return exp2(self);
+    }
+
+    function object.expm1() {
+        return(expm1(self));
+    }
+
+    function object.pow10() {
+        return(pow10(self));
     }
 }
