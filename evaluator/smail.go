@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"os"
 	"crypto/tls"
 	"strconv"
 	"mwnci/object"
@@ -49,6 +50,12 @@ func Smail(args ...object.Object) object.Object {
 			Port, _ = strconv.Atoi(HVal)
 		case "InsecureSkipVerify":
 			ISV = HVal
+		case "Attach":
+			_, err := os.Open(HVal)
+			if err != nil {
+				return newError(err.Error())
+			}
+			Mail.Attach(HVal)
 		}
 	}
 	Mail.SetBody(BodyType, Message)
