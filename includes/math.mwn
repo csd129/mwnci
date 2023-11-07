@@ -18,14 +18,22 @@ const LOGH10E=1/LN10;
 
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
-    
-    function pow(num, power) {
+
+    function fma(X=0, Y=0, Z=0) {
+        if (!checkfunctype("fma", "number", X, 1)) {exit(1)}
+        if (!checkfunctype("fma", "number", Y, 2)) {exit(1)}
+        if (!checkfunctype("fma", "number", Z, 3)) {exit(1)}
+        return float(float(X) * float(Y) + float(Z));
+    }
+    function pow(num=1, power=1) {
+        if (!checkfunctype("pow", "number", num, 1)) {exit(1)}
+        if (!checkfunctype("pow", "number", power, 1)) {exit(1)}
         return num ** power;
     }
     
     function pow10(x=0) {
         if (!checkfunctype("pow10", "number", x, 1)) {exit(1)}
-	return float(10**x);
+        return float(10**x);
     }
 
     function exp(x=0) {
@@ -47,19 +55,15 @@ if (!INCLUDE["MATH"]) {
         if (!checkfunctype("dim", "number", x, 1)) {exit(1)}
         if (!checkfunctype("dim", "number", y, 2)) {exit(1)}
         v=float(x)-float(y)
-	if (v < 0) {
-	    return float(0);
-	}
-	return v;
+	    if (v < 0) {
+	        return float(0);
+        }
+	    return v;
     }
 
     function gcd(dividend, divisor) {
-        if (!checkfunctype("gcd", "integer", dividend, 1)) {
-            exit(1)
-        }
-        if (!checkfunctype("gcd", "integer", divisor, 2)) {
-            exit(1)
-        }    
+        if (!checkfunctype("gcd", "integer", dividend, 1)) {exit(1)}
+        if (!checkfunctype("gcd", "integer", divisor, 2)) {exit(1)}    
         remainder=1
         while (remainder != 0) {
             remainder=dividend % divisor
@@ -70,28 +74,20 @@ if (!INCLUDE["MATH"]) {
     }
 
     function lcm(num1, num2) {
-        if (!checkfunctype("lcm", "integer", num1, 1)) {
-            exit(1)
-        }
-        if (!checkfunctype("lcm", "integer", num2, 2)) {
-            exit(1)
-        }
+        if (!checkfunctype("lcm", "integer", num1, 1)) {exit(1)}
+        if (!checkfunctype("lcm", "integer", num2, 2)) {exit(1)}
         mult=num1 * num2
         gcdiv=gcd(num1, num2)
         return mult/gcdiv;
     }
 
     function average(ave_array) {
-        if (!checkfunctype("average", "array", ave_array, 1)) {
-            exit(1)
-        }
+        if (!checkfunctype("average", "array", ave_array, 1)) {exit(1)}
         return float(sum(ave_array) / float(len(ave_array)));
     }
     
     function isprime(num=0) {
-        if (!checkfunctype("isprime", "integer", num, 1)) {
-            exit(1)
-        }
+        if (!checkfunctype("isprime", "integer", num, 1)) {exit(1)}
         if (num < 2) {return false;}
         foreach i in 2..(int(sqrt(num))) {
             if ((num % i) == 0) {return false;}
@@ -100,9 +96,7 @@ if (!INCLUDE["MATH"]) {
     }
     
     function factorial(n) {
-        if (!checkfunctype("factorial", "integer", n, 1)) {
-            exit(1)
-        }
+        if (!checkfunctype("factorial", "integer", n, 1)) {exit(1)}
         result=1
         fnum=n
         while (n >= 1) {
@@ -117,14 +111,18 @@ if (!INCLUDE["MATH"]) {
     }
     
     function degrees(radian) {
+        if (!checkfunctype("degrees", "number", radian, 1)) {exit(1)}
         return (radian * (180/PI));
     }
     
     function radians(deg) {
+        if (!checkfunctype("radians", "number", deg, 1)) {exit(1)}
         return (deg * (PI / 180));
     }
     
     function hypot(p, q) {
+        if (!checkfunctype("hypot", "number", p, 1)) {exit(1)}
+        if (!checkfunctype("hypot", "number", q, 2)) {exit(1)}
         p=abs(p)
         q=abs(q)
     
@@ -143,6 +141,7 @@ if (!INCLUDE["MATH"]) {
     }
     
     function round(rnum) {
+        if (!checkfunctype("round", "number", rnum, 1)) {exit(1)}
         intnum=int(rnum)
         if (rnum > 0) {
             remain=float(rnum-intnum)
