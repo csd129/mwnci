@@ -49,7 +49,6 @@ func Smail(args ...object.Object) object.Object {
 			Port, _ = strconv.Atoi(HVal)
 		case "InsecureSkipVerify":
 			ISV = HVal
-			fmt.Printf("%v\n", HVal)
 		}
 	}
 	Mail.SetBody(BodyType, Message)
