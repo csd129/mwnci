@@ -63,6 +63,7 @@ if (!INCLUDE["PWD"]) {
 	    if (len(line) > 0) {
 	        SplitLine=split(line,":")
 	    	User=SplitLine[0]
+		Password=SplitLine[1]
 	    	Uid=SplitLine[2]
 	    	Gid=SplitLine[3]
 	    	Gecos=string(SplitLine[4])
@@ -76,7 +77,7 @@ if (!INCLUDE["PWD"]) {
 	    	if (len(Shell) == 0) {
 	            Shell="/bin/sh"
 	        }
-	        NewHash={"Uid": int(Uid), "Gid": int(Gid), "Home": Home, "Shell": Shell, "Gecos": Gecos}
+	        NewHash={"Uid": int(Uid), "Password": Password, "Gid": int(Gid), "Home": Home, "Shell": Shell, "Gecos": Gecos}
 	    	PwHash=set(PwHash, User, NewHash)
             }
         }
