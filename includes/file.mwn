@@ -25,36 +25,43 @@ if (!INCLUDE["FILE"]) {
     }
     
     function isfile(filename="") {
+        if (!checkfunctype("isfile", "string", filename, 1)) {exit(1)}
         if (FileType(filename) == "FILE") {return true;}
         return false;
     }
     
     function isblock(filename="") {
+        if (!checkfunctype("isblock", "string", filename, 1)) {exit(1)}
         if (FileType(filename) == "BLOCK") {return true;}
         return false;
     }
     
     function isdir(filename="") {
+        if (!checkfunctype("isdir", "string", filename, 1)) {exit(1)}
         if (FileType(filename) == "DIR") {return true;}
         return false;
     }
     
     function ischr(filename="") {
+        if (!checkfunctype("ischr", "string", filename, 1)) {exit(1)}
         if (FileType(filename) == "CHR") {return true;}
         return false;
     }
     
     function isfifo(filename="") {
+        if (!checkfunctype("isfifo", "string", filename, 1)) {exit(1)}
         if (FileType(filename) == "FIFO") {return true;}
         return false;
     }
     
     function islink(filename="") {
+        if (!checkfunctype("islink", "string", filename, 1)) {exit(1)}
         if (FileType(filename) == "LINK") {return true;}
         return false;
     }
     
     function issock(filename="") {
+        if (!checkfunctype("issock", "string", filename, 1)) {exit(1)}
         if (FileType(filename) == "SOCKET") {return true;}
         return false;
     }

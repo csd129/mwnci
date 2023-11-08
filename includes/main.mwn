@@ -77,7 +77,7 @@ if (!INCLUDE["MAIN"]) {
     }
 
 
-    function isalpha(data) {
+    function isalpha(data="") {
         if (!isnumber(data)) {
             return true;
         }
@@ -207,6 +207,7 @@ if (!INCLUDE["MAIN"]) {
     }
     
     function sec2time(seconds=0) {
+        if (!checkfunctype("sec2time", "integer", seconds, 1)) {exit(1)}
         elapse={}
         T=seconds
         D=T/60/60/24
