@@ -490,10 +490,6 @@ if (!INCLUDE["MAIN"]) {
         return dirpath(self);
     }
     
-    function string.exists() {
-        return exists(self);
-    }
-    
     function string.fields() {
         return fields(self);
     }

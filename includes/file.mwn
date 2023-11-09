@@ -65,7 +65,13 @@ if (!INCLUDE["FILE"]) {
         if (FileType(filename) == "SOCKET") {return true;}
         return false;
     }
-    
+
+    function isexist(filename="") {
+        if (!checkfunctype("isexist", "string", filename, 1)) {exit(1)}
+        return (len(glob(filename)) > 0 ? true : false);
+    }   
+
+
     function isempty(filename="") {
         if (len(filename) == 0) {
             println("Error calling `isempty`: ERROR: TypeError: isempty() takes exactly 1 argument (0 given)")
@@ -145,7 +151,7 @@ if (!INCLUDE["FILE"]) {
             }
         }
     
-        if (exists(filename)) {
+        if (isexist(filename)) {
             owner=int(fields(file(filename, 1))[7])
     	    if (owner == uid) {
     	        return true;
@@ -174,7 +180,7 @@ if (!INCLUDE["FILE"]) {
     	        gid=int(grp)
             }
         }
-        if (exists(filename)) {
+        if (isexist(filename)) {
             owner=int(fields(file(filename, 1))[8])
     	    if (owner == gid) {
     	        return true;
@@ -271,6 +277,10 @@ if (!INCLUDE["FILE"]) {
     function string.isowner(owner="") {
         return isowner(self, owner);
     };
+
+    function string.isexist() {
+        return isexist(self);
+    }
     
     function string.isblock() {
         return isblock(self);

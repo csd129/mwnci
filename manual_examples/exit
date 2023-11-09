@@ -1,5 +1,5 @@
 #!/usr/bin/env mwnci
-if (exists("/tmp/foo")) {
+if (isexist("/tmp/foo")) {
     exit(0)
 }
 exit(1) 

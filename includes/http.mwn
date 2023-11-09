@@ -18,7 +18,7 @@ if (!INCLUDE["HTTP"]) {
         }
         if (!checkfunctype("httpsave", "string", url, 1)) {exit(1)}
         if (!checkfunctype("httpsave", "string", filename, 2)) {exit(1)}
-        if (exists(filename)) {
+        if (isexist(filename)) {
             print("File ", filename, " exists. Overwrite(y/N)? ")
             choice=STDIN.read()
             if (!match("[yY]", choice)) {return false;}
