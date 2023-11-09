@@ -2,6 +2,8 @@
  Define some handy constants
 */
 const OS=getos();
+const ARGS=args();
+const PID=getpid();
 
 /*
  File-objects for STDIN, STDOUT, and STDERR.
