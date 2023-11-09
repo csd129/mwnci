@@ -105,10 +105,7 @@ if (!INCLUDE["FILE"]) {
         f_mdate=int(fields(f_stat)[0])    
         s_mdate=int(fields(s_stat)[0])
     
-        if (f_mdate > s_mdate) {
-            return true;
-        }
-        return false;
+        return (f_mdate > s_mdate ? true : false);
     };
     
     function isolder(f_file="", s_file="") {
@@ -196,23 +193,12 @@ if (!INCLUDE["FILE"]) {
         fgid=data[8]
     
         if (int(fuid) == getuid()) {
-            if (int(owner) == 1) {
-                return true;
-            } else {
-                return false;
-            }
+            return (int(owner) == 1 ? true : false);
         }
         if (int(fgid) == getgid()) {
-            if (int(group) == 1) {
-    	        return true;
-    	    } else {
-    	        return false;
-    	    }
+            return (int(group) == 1 ? true : false);
         }
-        if (int(other) == 1) {
-            return true;
-        }
-        return false;
+        return (int(other) == 1 ? true : false);
     }
     
     function isreadable(filename="") {

@@ -1,15 +1,15 @@
 if (!INCLUDE["OS"]) {
     INCLUDE=set(INCLUDE, "OS", true)
     
-    function env() {
-        h={}
-        env_vars=split(system("env"), "\n")
-        foreach ev in env_vars {
-            v=split(ev, "=")
-            h=set(h, v[0], v[1])
-        }
-        return h;
-    }; 
+//    function env() {
+//        h={}
+//        env_vars=split(system("env"), "\n")
+//        foreach ev in env_vars {
+//            v=split(ev, "=")
+//           h=set(h, v[0], v[1])
+//        }
+//        return h;
+//    }; 
     
     function datetoepoch(datey="") {
         if (!checkfunctype("datetoepoch", "string", datey)) {

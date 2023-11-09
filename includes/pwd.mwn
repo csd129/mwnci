@@ -67,11 +67,7 @@ if (!INCLUDE["PWD"]) {
 	    	Uid=SplitLine[2]
 	    	Gid=SplitLine[3]
 	    	Gecos=string(SplitLine[4])
-	    	if (len(Gecos) > 0) {
-	            Gecos=split(Gecos,",")
-	        } else {
-	            Gecos=[]
-	        }
+	    	Gecos=(len(Gecos) > 0 ? split(Gecos,",") : [])
 	        Home=SplitLine[5]
 	    	Shell=string(SplitLine[6])
 	    	if (len(Shell) == 0) {

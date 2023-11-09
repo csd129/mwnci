@@ -83,11 +83,7 @@ if (!INCLUDE["GRP"]) {
             if (len(line) > 0) {
                 SplitLine=split(line,":")
                 Members=string(SplitLine[3])
-                if (len(Members) > 0) {
-                    Members=split(Members,",")
-                } else {
-	                Members=[]
-                }
+                Members=(len(Members) > 0 ? split(Members,",") : [])
                 NewHash={"Gid": SplitLine[2], "Members": Members}
                 GrpHash=set(GrpHash, SplitLine[0], NewHash)
             }
