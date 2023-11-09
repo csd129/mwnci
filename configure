@@ -6,7 +6,7 @@ trap "rm -f ${TEMP}" 0 1 2 3 5 15
 . ./config.conf
 
 INFILE=$(find . -name \*.in)
-
+emconsts=`cat ./includes/*.mwn | grep -w "const.*=.*;$" | tr '=' ' ' | awk '{printf("\"%s\"\n", $2)}' | tr '\n' ' '`
 emincludes=`cat ./includes/*.mwn | grep function | tr '(' ' '  | awk '{printf("\"%s\"\n", $2)}' | grep -v "\." | tr '\n' ' '`
 emfunctions=`cat ./evaluator/*.go | grep RegisterBuiltin | awk '{print $1}' | grep "^Reg" |awk -F\" '{printf("\"%s\" ", $2)}'`
 
@@ -19,6 +19,7 @@ do
         -e s:"@INCLUDE@":"${INCLUDE}":g \
 	-e s:"@OWNER@":"${OWNER}":g \
 	-e s:"@GROUP@":"${GROUP}":g \
+    -e s:"@CONSTS@":"${emconsts}":g \
 	-e s:"@EMFUNCTIONS@":"${emfunctions}":g \
 	-e s:"@EMINCLUDES@":"${emincludes}":g \
 	> ${TEMP}
