@@ -63,7 +63,7 @@ if (!INCLUDE["PWD"]) {
 	    if (len(line) > 0) {
 	        SplitLine=split(line,":")
 	    	User=SplitLine[0]
-		Password=SplitLine[1]
+            Password=SplitLine[1]
 	    	Uid=SplitLine[2]
 	    	Gid=SplitLine[3]
 	    	Gecos=string(SplitLine[4])

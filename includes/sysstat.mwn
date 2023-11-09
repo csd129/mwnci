@@ -17,31 +17,31 @@ if (!INCLUDE["SYSSTAT"]) {
 
     function getcpu() {
         Mpstat=system("mpstat -P ALL -o JSON")
-	Json=eval(Mpstat)
-	Cpu_Hash={}
-	Load=Json["sysstat"]["hosts"][0]["statistics"][0]["cpu-load"]
-	foreach n in Load {
-	    busy=sprintf("%.2f", 100.00 - float(n["idle"]))
-	    key=n["cpu"]
-	    line_data=delete(n,"cpu")
-	    line_data=set(line_data, "busy", busy)
-	    Cpu_Hash=set(Cpu_Hash, key, line_data)
-	}
+		Json=eval(Mpstat)
+		Cpu_Hash={}
+		Load=Json["sysstat"]["hosts"][0]["statistics"][0]["cpu-load"]
+		foreach n in Load {
+			busy=sprintf("%.2f", 100.00 - float(n["idle"]))
+			key=n["cpu"]
+			line_data=delete(n,"cpu")
+			line_data=set(line_data, "busy", busy)
+			Cpu_Hash=set(Cpu_Hash, key, line_data)
+		}
         return Cpu_Hash;
     }
     
     function getio() {
         Iostat=system("iostat -p ALL -o JSON")
-	Iostat=replaceall(Iostat, "kB_", "kb_")
-	Iostat=replaceall(Iostat, "/", "")
-	Json=eval(Iostat)
-	Io_Hash={}
-	Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
-	foreach n in Disk {
-	    key=n["disk_device"]
-	    line_data=delete(n, "disk_device")
-	    Io_Hash=set(Io_Hash, key, line_data)
-	}
+		Iostat=replaceall(Iostat, "kB_", "kb_")
+		Iostat=replaceall(Iostat, "/", "")
+		Json=eval(Iostat)
+		Io_Hash={}
+		Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
+		foreach n in Disk {
+			key=n["disk_device"]
+			line_data=delete(n, "disk_device")
+			Io_Hash=set(Io_Hash, key, line_data)
+		}
         return Io_Hash;
     }
 

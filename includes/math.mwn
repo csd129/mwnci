@@ -162,17 +162,19 @@ if (!INCLUDE["MATH"]) {
     }
     
     function trunc(Float) {
-        if (!checkfunctype("trunc", "number", Float, 1)) {
-	    exit(1)
-	}
+        if (!checkfunctype("trunc", "number", Float, 1)) {exit(1)}
         return(float(int(Float)));
     }
 
     function highest(a, b) {
+        if (!checkfunctype("highest", "number", a, 1)) {exit(1)}
+        if (!checkfunctype("highest", "number", b, 2)) {exit(1)}
         return (a > b) ? a : b;
     }
     
     function lowest(a, b) {
+        if (!checkfunctype("lowest", "number", a, 1)) {exit(1)}
+        if (!checkfunctype("lowest", "number", b, 2)) {exit(1)}
         return (a < b) ? a : b;
     }
     

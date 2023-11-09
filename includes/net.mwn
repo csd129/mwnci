@@ -2,9 +2,7 @@ if (!INCLUDE["NET"]) {
     INCLUDE=set(INCLUDE, "NET", true)
     
     function netstat(iface="") {
-        if (!checkfunctype("netstat", "string", iface, 1)) {
-            exit(1)
-        }
+        if (!checkfunctype("netstat", "string", iface, 1)) {exit(1)}
         iface_hash={}
         iface_data={}
         ifdata=split(system("netstat -in"), "\n")

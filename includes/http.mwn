@@ -16,18 +16,12 @@ if (!INCLUDE["HTTP"]) {
             println("`httpsave` expects 2 arguments")
             return false;
         }
-        if (!checkfunctype("httpsave", "string", url, 1)) {
-            exit(1)
-        }
-        if (!checkfunctype("httpsave", "string", filename, 2)) {
-            exit(1)
-        }
+        if (!checkfunctype("httpsave", "string", url, 1)) {exit(1)}
+        if (!checkfunctype("httpsave", "string", filename, 2)) {exit(1)}
         if (exists(filename)) {
             print("File ", filename, " exists. Overwrite(y/N)? ")
             choice=STDIN.read()
-            if (!match("[yY]", choice)) {
-                return false;
-            }
+            if (!match("[yY]", choice)) {return false;}
         } 
         fh=open(filename, "w")
         fh.write(httpget(url))
@@ -41,12 +35,8 @@ if (!INCLUDE["HTTP"]) {
             return false;
         }
     
-        if (!checkfunctype("getweb", "string", url, 1)) {
-            exit(1)
-        }
-        if (!checkfunctype("getweb", "hash", header, 2)) {
-            exit(1)
-        }
+        if (!checkfunctype("getweb", "string", url, 1)) {exit(1)}
+        if (!checkfunctype("getweb", "hash", header, 2)) {exit(1)}
         
         AUTH=""
         HEADER=""
