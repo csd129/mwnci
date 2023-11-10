@@ -2,6 +2,16 @@ if (!INCLUDE["SQL"]) {
     INCLUDE=set(INCLUDE, "SQL", true)
 
     //
+    // Reads a hash for a temp my.cnf
+    // E.g
+    // DB={"user": username,
+    // "password": mypassword,
+    // "database": mydb,
+    // "host": servername,
+    // "port": 3306
+    // }
+
+    //
     // Any output from this function will be false if there's an error
     // or a an array of arrays for table output.
     //
