@@ -78,10 +78,7 @@ if (!INCLUDE["MAIN"]) {
 
 
     function isalpha(data="") {
-        if (!isnumber(data)) {
-            return true;
-        }
-        return false;
+        return (!isnumber(data) ? true : false);
     }
 
     function getfileblock(start_block, end_block, filename) {
@@ -364,7 +361,7 @@ if (!INCLUDE["MAIN"]) {
     }
     
     function string.contains(search) {
-        return contains(self, self);
+        return contains(self, search);
     }
 
     function array.head(lines=0) {

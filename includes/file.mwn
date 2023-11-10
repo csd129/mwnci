@@ -13,57 +13,52 @@ if (!INCLUDE["FILE"]) {
     }
     
     function FileType(filename="") {
+        if (!checkfunctype("FileType", "string", filename)) {exit(1)}
         if (len(filename) == 0) {
             println("Error calling `FileType`: ERROR: TypeError: FileType() takes exactly 1 argument (0 given)")
             exit(1)
         }
-        if (!checkfunctype("FileType", "string", filename)) {
-            exit(1)
-        }
-        fileinfo=fields(file(filename, 1))
-        return fileinfo[6];
+	if (isexist(filename)) {
+            fields(file(filename, 1))
+            return fields(file(filename, 1))[6];
+	} else {
+	    return "NOEXIST";
+	}
     }
     
     function isfile(filename="") {
         if (!checkfunctype("isfile", "string", filename, 1)) {exit(1)}
-        if (FileType(filename) == "FILE") {return true;}
-        return false;
+        return (FileType(filename) == "FILE" ? true : false);
     }
     
     function isblock(filename="") {
         if (!checkfunctype("isblock", "string", filename, 1)) {exit(1)}
-        if (FileType(filename) == "BLOCK") {return true;}
-        return false;
+        return (FileType(filename) == "BLOCK" ? true : false);
     }
     
     function isdir(filename="") {
         if (!checkfunctype("isdir", "string", filename, 1)) {exit(1)}
-        if (FileType(filename) == "DIR") {return true;}
-        return false;
+	return (FileType(filename) == "DIR" ? true : false);
     }
     
     function ischr(filename="") {
         if (!checkfunctype("ischr", "string", filename, 1)) {exit(1)}
-        if (FileType(filename) == "CHR") {return true;}
-        return false;
+	return (FileType(filename) == "CHR" ? true : false);
     }
     
     function isfifo(filename="") {
         if (!checkfunctype("isfifo", "string", filename, 1)) {exit(1)}
-        if (FileType(filename) == "FIFO") {return true;}
-        return false;
-    }
+	return (FileType(filename) == "FIFO" ? true : false);
+   }
     
     function islink(filename="") {
         if (!checkfunctype("islink", "string", filename, 1)) {exit(1)}
-        if (FileType(filename) == "LINK") {return true;}
-        return false;
+	return (FileType(filename) == "LINK" ? true : false);
     }
     
     function issock(filename="") {
         if (!checkfunctype("issock", "string", filename, 1)) {exit(1)}
-        if (FileType(filename) == "SOCKET") {return true;}
-        return false;
+	return (FileType(filename) == "SOCKET" ? true : false);
     }
 
     function isexist(filename="") {
@@ -81,9 +76,7 @@ if (!INCLUDE["FILE"]) {
             exit(1)
         }
         fileinfo=fields(file(filename, 1))
-        filesize=fileinfo[4]
-        if (filesize == 0) {return true;}
-        return false;
+        return (int(fileinfo[4]) == 0 ? true : false);
     }
     
     
@@ -308,10 +301,6 @@ if (!INCLUDE["FILE"]) {
     
     function string.issock() {
         return issock(self);
-    }
-    
-    function string.isspec() {
-        return isspec(self);
     }
     
     function writetofile(filename="", mode="w", data) {
