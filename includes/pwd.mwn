@@ -62,19 +62,14 @@ if (!INCLUDE["PWD"]) {
             line=string(split(line, "#")[0])
 	    if (len(line) > 0) {
 	        SplitLine=split(line,":")
-	    	User=SplitLine[0]
-            Password=SplitLine[1]
-	    	Uid=SplitLine[2]
-	    	Gid=SplitLine[3]
 	    	Gecos=string(SplitLine[4])
 	    	Gecos=(len(Gecos) > 0 ? split(Gecos,",") : [])
-	        Home=SplitLine[5]
 	    	Shell=string(SplitLine[6])
 	    	if (len(Shell) == 0) {
 	            Shell="/bin/sh"
 	        }
-	        NewHash={"Uid": int(Uid), "Password": Password, "Gid": int(Gid), "Home": Home, "Shell": Shell, "Gecos": Gecos}
-	    	PwHash=set(PwHash, User, NewHash)
+	        NewHash={"Uid": int(SplitLine[2]), "Password": SplitLine[1], "Gid": int(SplitLine[3]), "Home": SplitLine[5], "Shell": Shell, "Gecos": Gecos}
+	    	PwHash=set(PwHash, SplitLine[0], NewHash)
             }
         }
         return PwHash;

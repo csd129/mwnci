@@ -32,16 +32,6 @@ func versionFun(args ...object.Object) object.Object {
 	return &object.String{Value: version}
 }
 
-// Implemention of "args()" function.
-func argsFun(args ...object.Object) object.Object {
-	l := len(os.Args[1:])
-	result := make([]object.Object, l)
-	for i, txt := range os.Args[1:] {
-		result[i] = &object.String{Value: txt}
-	}
-	return &object.Array{Elements: result}
-}
-
 // Execute the supplied string as a program.
 func Execute(input string) int {
 
@@ -62,12 +52,6 @@ func Execute(input string) int {
 	evaluator.RegisterBuiltin("version",
 		func(env *object.Environment, args ...object.Object) object.Object {
 			return (versionFun(args...))
-		})
-
-	// Access to the command-line arguments
-	evaluator.RegisterBuiltin("args",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (argsFun(args...))
 		})
 
 	//
