@@ -5,7 +5,7 @@
 ;;; Code:
 
 (defvar mwnci-constants
-  '(@CONSTS@
+  '(@CONSTS@ "true" "false" "null"
     ))
 
 (defvar mwnci-keywords
