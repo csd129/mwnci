@@ -232,8 +232,8 @@ if (!INCLUDE["FILE"]) {
         }    
         if (isreadable(filename)) {
             if(isdoable(filename, 2)) {
-    	    return true;
-    	}
+    	        return true;
+    	    }
         }
         return false;
     }

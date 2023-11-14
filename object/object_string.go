@@ -5,7 +5,6 @@ package object
 import (
 	"hash/fnv"
 	"sort"
-	"strconv"
 	"strings"
 	"unicode/utf8"
 )
@@ -40,14 +39,11 @@ func (s *String) HashKey() HashKey {
 	return HashKey{Type: s.Type(), Value: h.Sum64()}
 }
 
-// InvokeMethod invokes a method against the object.
+// InvokeMethodinvokes a method against the object.
 // (Built-in methods only.)
 func (s *String) InvokeMethod(method string, env Environment, args ...Object) Object {
-	if method == "len" {
-		return &Integer{Value: int64(utf8.RuneCountInString(s.Value))}
-	}
 	if method == "methods" {
-		static := []string{"len", "methods", "ord", "to_i", "to_f"}
+		static := []string{"methods"}
 		dynamic := env.Names("string.")
 
 		var names []string
@@ -64,23 +60,6 @@ func (s *String) InvokeMethod(method string, env Environment, args ...Object) Ob
 			result[i] = &String{Value: txt}
 		}
 		return &Array{Elements: result}
-	}
-	if method == "ord" {
-		return &Integer{Value: int64(s.Value[0])}
-	}
-	if method == "to_i" {
-		i, err := strconv.ParseInt(s.Value, 0, 64)
-		if err != nil {
-			i = 0
-		}
-		return &Integer{Value: int64(i)}
-	}
-	if method == "to_f" {
-		i, err := strconv.ParseFloat(s.Value, 64)
-		if err != nil {
-			i = 0
-		}
-		return &Float{Value: i}
 	}
 	return nil
 }

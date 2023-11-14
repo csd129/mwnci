@@ -740,4 +740,18 @@ if (!INCLUDE["MAIN"]) {
     function object.rotl(RotAmount=1) {
         return rotl(self, RotAmount);
     }
+
+    function object.int() {
+        return int(self);
+    }
+
+    function object.float() {
+        return float(self);
+    }
+
+    function string.ord() {
+        return ord(self);
+    }
+    
 }
+
