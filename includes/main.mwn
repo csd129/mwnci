@@ -752,6 +752,9 @@ if (!INCLUDE["MAIN"]) {
     function string.ord() {
         return ord(self);
     }
-    
+
+    function integer.chr() {
+        return chr(self);
+    }
 }
 

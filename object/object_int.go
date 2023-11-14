@@ -30,11 +30,8 @@ func (i *Integer) HashKey() HashKey {
 // InvokeMethod invokes a method against the object.
 // (Built-in methods only.)
 func (i *Integer) InvokeMethod(method string, env Environment, args ...Object) Object {
-	if method == "chr" {
-		return &String{Value: string(rune(i.Value))}
-	}
 	if method == "methods" {
-		static := []string{"chr", "methods"}
+		static := []string{"methods"}
 		dynamic := env.Names("integer.")
 
 		var names []string

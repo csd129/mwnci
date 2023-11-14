@@ -40,9 +40,6 @@ func (ao *Array) Inspect() string {
 // InvokeMethod invokes a method against the object.
 // (Built-in methods only.)
 func (ao *Array) InvokeMethod(method string, env Environment, args ...Object) Object {
-	if method == "len" {
-		return &Integer{Value: int64(len(ao.Elements))}
-	}
 	if method == "methods" {
 		static := []string{"len", "methods"}
 		dynamic := env.Names("array.")
