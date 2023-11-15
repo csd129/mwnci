@@ -19,6 +19,7 @@ const LOGH10E=1/LN10;
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
+
     function divmod(a,b) {
         if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
         if (!checkfunctype("divmod", "integer", b, 2)) {exit(1)}
@@ -30,6 +31,17 @@ if (!INCLUDE["MATH"]) {
 	return result;
     }
     
+
+    function fmod(n,d) {
+        if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
+        if (!checkfunctype("fmod", "number", d, 2)) {exit(1)}
+        tq=float(int(n/d))
+	remainder=n-tq*d
+	remainder=float(sprintf("%.15f", remainder))
+	return remainder;
+    }
+
+
     function modf(num) {
         Result=[]
         if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
