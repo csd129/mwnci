@@ -19,6 +19,13 @@ const LOGH10E=1/LN10;
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
+    function abs(number=0) {
+        if (!checkfunctype("abs", "integer", number, 1)) {exit(1)}
+        if (number < 0) {
+	    number *= -1
+	}
+	return number;
+    }
 
     function divmod(a,b) {
         if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
