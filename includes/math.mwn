@@ -19,6 +19,17 @@ const LOGH10E=1/LN10;
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
+    function divmod(a,b) {
+        if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
+        if (!checkfunctype("divmod", "integer", b, 2)) {exit(1)}
+        result=[]
+	num=a/b
+	result=push(result, num)
+	num=a%b
+	result=push(result, num)
+	return result;
+    }
+    
     function modf(num) {
         Result=[]
         if (!checkfunctype("modf", "number", num, 1)) {exit(1)}

@@ -18,6 +18,9 @@ func Start(in io.Reader, out io.Writer) {
 	l := lexer.New(line)
 	p := parser.New(l)
 	program := p.ParseProgram()
+	if len(p.Errors()) != 0 {
+		printParserErrors(out, p.Errors())
+	}
 	evaluator.Eval(program, env)
 	for {
 		line := ""
