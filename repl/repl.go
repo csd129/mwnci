@@ -6,6 +6,7 @@ import (
 	"mwnci/lexer"
 	"mwnci/object"
 	"mwnci/parser"
+
 	"github.com/chzyer/readline"
 )
 
@@ -13,14 +14,17 @@ const PROMPT = "mwnci> "
 
 func Start(in io.Reader, out io.Writer) {
 	env := object.NewEnvironment()
-
+	line := "INCLUDE={} include(\"main\")"
+	l := lexer.New(line)
+	p := parser.New(l)
+	program := p.ParseProgram()
+	evaluator.Eval(program, env)
 	for {
 		line := ""
 		rl, _ := readline.New(PROMPT)
 		defer rl.Close()
-			line, _ = rl.Readline()
+		line, _ = rl.Readline()
 
-			
 		l := lexer.New(line)
 		p := parser.New(l)
 

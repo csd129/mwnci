@@ -19,26 +19,39 @@ const LOGH10E=1/LN10;
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
+    function modf(num) {
+        Result=[]
+        if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
+        inty=int(num)
+        remainder=float(num) - float(inty)
+        remainder=float(sprintf("%.15f", remainder))
+        Result=push(Result, float(inty))
+        Result=push(Result, float(remainder))
+        return Result;
+
+    }
+
     function fma(X=0, Y=0, Z=0) {
         if (!checkfunctype("fma", "number", X, 1)) {exit(1)}
         if (!checkfunctype("fma", "number", Y, 2)) {exit(1)}
         if (!checkfunctype("fma", "number", Z, 3)) {exit(1)}
         return float(float(X) * float(Y) + float(Z));
     }
+
     function pow(num=1, power=1) {
         if (!checkfunctype("pow", "number", num, 1)) {exit(1)}
         if (!checkfunctype("pow", "number", power, 1)) {exit(1)}
-        return num ** power;
+        return float(num ** power);
     }
     
     function pow10(x=0) {
-        if (!checkfunctype("pow10", "number", x, 1)) {exit(1)}
+        if (!checkfunctype("pow10", "integer", x, 1)) {exit(1)}
         return float(10**x);
     }
 
     function exp(x=0) {
     	if (!checkfunctype("exp", "number", x, 1)) {exit(1)}
-        return E**x;
+        return float(E**x);
     }
 
     function exp2(x=0) {
@@ -227,10 +240,14 @@ if (!INCLUDE["MATH"]) {
     }
 
     function object.expm1() {
-        return(expm1(self));
+        return expm1(self);
     }
 
     function object.pow10() {
-        return(pow10(self));
+        return pow10(self);
+    }
+
+    function object.modf() {
+        return modf(self);
     }
 }

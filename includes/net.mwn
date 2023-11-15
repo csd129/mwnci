@@ -89,4 +89,12 @@ if (!INCLUDE["NET"]) {
     function string.addresscount() {
         return addresscount(self);
     }
+
+    function string.netstat() {
+        return netstat(self);
+    }
+
+    function string.ping(count=0) {
+        return ping(self, count);
+    }
 }

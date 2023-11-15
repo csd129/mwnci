@@ -22,7 +22,7 @@ import (
 )
 
 // The current version
-var version = "0.1.8.r01"
+var version = "0.1.8.r02"
 
 //go:embed data/stdlib.mwn
 var stdlib string
