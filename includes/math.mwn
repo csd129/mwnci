@@ -21,21 +21,13 @@ if (!INCLUDE["MATH"]) {
 
     function abs(number=0) {
         if (!checkfunctype("abs", "integer", number, 1)) {exit(1)}
-        if (number < 0) {
-	    number *= -1
-	}
-	return number;
+        return (number < 0 ? number *= -1 : number);
     }
 
     function divmod(a,b) {
         if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
         if (!checkfunctype("divmod", "integer", b, 2)) {exit(1)}
-        result=[]
-	num=a/b
-	result=push(result, num)
-	num=a%b
-	result=push(result, num)
-	return result;
+        return [a/b, a%b];
     }
     
 
@@ -43,9 +35,8 @@ if (!INCLUDE["MATH"]) {
         if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
         if (!checkfunctype("fmod", "number", d, 2)) {exit(1)}
         tq=float(int(n/d))
-	remainder=n-tq*d
-	remainder=float(sprintf("%.15f", remainder))
-	return remainder;
+        remainder=float(sprintf("%.15f", n-tq*d))
+        return remainder;
     }
 
 
