@@ -1,54 +1,49 @@
-/*
- Math constants - add more here if needed
-*/
-const PI=     3.141592653589793;
-const PI_2=   PI/2;
-const PI_4=   PI/4;
-const E=      2.718281828459045;
-const TAU=    PI*2;
-const PHI=    1.618033988749894;
-const SQRT2=  sqrt(2);
-const SQRTE=  sqrt(E);
-const SQRTPI= sqrt(PI);
-const SQRTPHI=sqrt(PHI);
-const LN2=    0.693147180559945;
-const LOG2E=  1/LN2;
-const LN10=   2.302585092994045;
-const LOGH10E=1/LN10;
-
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
+    function sqrt(n=0) {
+        if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
+        return n**0.5;
+    }
+
+    function cbrt(n=0) {
+        if (!checkfunctype("cbrt", "number", n, 1)) {exit(1)}
+        return n**0.3333333333333333;
+    }
+
     function abs(number=0) {
-        if (!checkfunctype("abs", "integer", number, 1)) {exit(1)}
+        if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
         return (number < 0 ? number *= -1 : number);
     }
 
-    function divmod(a,b) {
+    function divmod(a=0,b=0) {
         if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
         if (!checkfunctype("divmod", "integer", b, 2)) {exit(1)}
+	    if (b == 0) {
+	        println("Error calling `divmod`: Error: argument #2 Division by zero")
+	        exit(1)
+	    }
         return [a/b, a%b];
     }
     
-
-    function fmod(n,d) {
+    function fmod(n=0,d=0) {
         if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
         if (!checkfunctype("fmod", "number", d, 2)) {exit(1)}
+	    if (d == 0) {
+	        println("Error calling `fmod`: Error: argument #2 Division by zero")
+	        exit(1)
+	    }
         tq=float(int(n/d))
         remainder=float(sprintf("%.15f", n-tq*d))
         return remainder;
     }
 
-
-    function modf(num) {
-        Result=[]
+    function modf(num=0) {
         if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
         inty=int(num)
         remainder=float(num) - float(inty)
         remainder=float(sprintf("%.15f", remainder))
-        Result=push(Result, float(inty))
-        Result=push(Result, float(remainder))
-        return Result;
+        return [float(inty), float(remainder)];
 
     }
 
@@ -146,12 +141,12 @@ if (!INCLUDE["MATH"]) {
     
     function degrees(radian) {
         if (!checkfunctype("degrees", "number", radian, 1)) {exit(1)}
-        return (radian * (180/PI));
+        return radian * (180/PI);
     }
     
     function radians(deg) {
         if (!checkfunctype("radians", "number", deg, 1)) {exit(1)}
-        return (deg * (PI / 180));
+        return deg * (PI / 180);
     }
     
     function hypot(p, q) {
@@ -271,4 +266,30 @@ if (!INCLUDE["MATH"]) {
     function object.modf() {
         return modf(self);
     }
+
+    function object.sqrt() {
+        return sqrt(self);
+    }
+
+    function object.cbrt() {
+        return cbrt(self);
+    }
 }
+
+/*
+ Math constants - add more here if needed
+*/
+const PI=     3.141592653589793;
+const PI_2=   PI/2;
+const PI_4=   PI/4;
+const E=      2.718281828459045;
+const TAU=    PI*2;
+const PHI=    1.618033988749894;
+const SQRT2=  sqrt(2);
+const SQRTE=  sqrt(E);
+const SQRTPI= sqrt(PI);
+const SQRTPHI=sqrt(PHI);
+const LN2=    0.693147180559945;
+const LOG2E=  1/LN2;
+const LN10=   2.302585092994045;
+const LOGH10E=1/LN10;
