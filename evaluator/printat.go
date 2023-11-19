@@ -9,8 +9,6 @@ import (
 func Printat(args ...object.Object) object.Object {
 	X := int(args[0].(*object.Integer).Value)
 	Y := int(args[1].(*object.Integer).Value)
-	X = 10
-	Y = 10
 	Text := args[2].Inspect()
 	fmt.Print("\033[", X, ";", Y, "H", Text, "\033[0m")
 
