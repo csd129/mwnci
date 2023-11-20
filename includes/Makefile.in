@@ -1,5 +1,6 @@
 FILES=certs.mwn file.mwn grp.mwn http.mwn main.mwn sql.mwn\
-	math.mwn net.mwn os.mwn ps.mwn pwd.mwn sysstat.mwn units.mwn
+	math.mwn net.mwn os.mwn ps.mwn pwd.mwn sysstat.mwn units.mwn \
+	ansicolor.mwn
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
 OWNER=@OWNER@

@@ -18,8 +18,7 @@ func Printat(args ...object.Object) object.Object {
 	Y := int(args[1].(*object.Integer).Value)
 	fmt.Print("\033[", X, ";", Y, "H")
 	for _, v := range args[2:] {
-		foo := v.ToInterface()
-		fmt.Print(foo)
+		fmt.Print(v.ToInterface())
 	}
 	fmt.Print("\033[0m")
 
