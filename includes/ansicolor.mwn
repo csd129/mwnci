@@ -33,3 +33,5 @@ const AE_REV_ON    = "[7m";
 const AE_REV_OFF   = "[27m";
 const AE_HIDE_ON   = "[8m";
 const AE_HIDE_OFF  = "[28m";
+const AE_STRIKE_ON  = "[9m";
+const AE_STRIKE_OFF = "[29m";
