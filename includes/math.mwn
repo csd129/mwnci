@@ -1,6 +1,19 @@
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
+    function ceil(Value) {
+        if (!checkfunctype("ceil", "number", Value, 1)) {exit(1)}
+        return (Value > int(Value)) ? int(Value) + 1 : int(Value);
+    }
+
+    function floor(Value) {
+        if (!checkfunctype("floor", "number", Value, 1)) {exit(1)}
+        if  (Value < 0) {
+            return (int(Value) > Value) ? int(Value)-1 : int(Value);
+        }
+        return int(Value);
+    }
+    
     function sqrt(n=0) {
         if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
         return n**0.5;
