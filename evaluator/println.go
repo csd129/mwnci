@@ -1,15 +1,16 @@
 package evaluator
 
 import (
-	"mwnci/object"
 	"fmt"
+	"mwnci/object"
 )
 
 // Println ...
 func Println(args ...object.Object) object.Object {
-	for _, s := range args {
-		fmt.Print(s.Inspect())
-	}
+	//	for _, s := range args {
+	//	fmt.Print(s)
+	//	}
+	putsFun(args...)
 	fmt.Print("\n")
 	return NULL
 }
