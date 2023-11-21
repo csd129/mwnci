@@ -3,6 +3,7 @@
 package lexer
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"unicode"
@@ -243,11 +244,23 @@ func (l *Lexer) NextToken() token.Token {
 			}
 		}
 	case rune('"'):
-		tok.Type = token.STRING
-		tok.Literal = l.readString()
+		str, err := l.readString('"')
+		if err == nil {
+			tok.Literal = str
+			tok.Type = token.STRING
+		} else {
+			tok.Literal = err.Error()
+			tok.Type = token.ILLEGAL
+		}
 	case rune('`'):
-		tok.Type = token.BACKTICK
-		tok.Literal = l.readBacktick()
+		str, err := l.readString('`')
+		if err == nil {
+			tok.Literal = str
+			tok.Type = token.BACKTICK
+		} else {
+			tok.Literal = err.Error()
+			tok.Type = token.ILLEGAL
+		}
 	case rune('['):
 		tok = newToken(token.LBRACKET, l.ch)
 	case rune(']'):
@@ -495,12 +508,15 @@ func (l *Lexer) readDecimal() token.Token {
 }
 
 // read string
-func (l *Lexer) readString() string {
+func (l *Lexer) readString(delim rune) (string, error) {
 	out := ""
 
 	for {
 		l.readChar()
-		if l.ch == '"' {
+		if l.ch == rune(0) {
+			return "", fmt.Errorf("unterminated string")
+		}
+		if l.ch == delim {
 			break
 		}
 
@@ -508,8 +524,17 @@ func (l *Lexer) readString() string {
 		// Handle \n, \r, \t, \", etc.
 		//
 		if l.ch == '\\' {
+			// Line ending with "\" + newline
+			if l.peekChar() == '\n' {
+				// consume the newline.
+				l.readChar()
+				continue
+			}
 			l.readChar()
 
+			if l.ch == rune(0) {
+				return "", errors.New("unterminated string")
+			}
 			if l.ch == rune('n') {
 				l.ch = '\n'
 			}
@@ -528,8 +553,8 @@ func (l *Lexer) readString() string {
 		}
 		out = out + string(l.ch)
 	}
-
-	return out
+	
+	return out, nil
 }
 
 // read a regexp, including flags.
@@ -583,17 +608,17 @@ func (l *Lexer) readRegexp() (string, error) {
 }
 
 // read the end of a backtick-quoted string
-func (l *Lexer) readBacktick() string {
-	position := l.position + 1
-	for {
-		l.readChar()
-		if l.ch == '`' {
-			break
-		}
-	}
-	out := string(l.characters[position:l.position])
-	return out
-}
+//func (l *Lexer) readBacktick() string {
+//	position := l.position + 1
+//	for {
+//		l.readChar()
+//		if l.ch == '`' {
+//			break
+//		}
+//	}
+//      out := string(l.characters[position:l.position])
+//	return out
+//}
 
 // peek character
 func (l *Lexer) peekChar() rune {
