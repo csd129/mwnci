@@ -44,12 +44,8 @@ if (!INCLUDE["MAIN"]) {
     }
     
     function interpol(data={}, text="") {
-        if (!checkfunctype("interpol", "hash", data, 1)) {
-            exit(1)
-        }
-        if (!checkfunctype("interpol", "string", text, 2)) {
-            exit(1)
-        }
+        if (!checkfunctype("interpol", "hash", data, 1)) {exit(1)}
+        if (!checkfunctype("interpol", "string", text, 2)) {exit(1)}
         foreach key in keys(data) {
             rstring="${"+key+"}"
             text=replaceall(text, rstring, string(data[key]))
@@ -283,9 +279,7 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function unzip(hash1={}) {
-    	if (!checkfunctype("unzip", "hash", hash1, 1)) {
-	    exit(1)
-	}
+    	if (!checkfunctype("unzip", "hash", hash1, 1)) {exit(1)}
         keyArray=keys(hash1)
         valueArray=[]
         ret_array=[]
@@ -298,9 +292,7 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function rotr(Array, Amount=0) {
-        if (!checkfunctype("rotr", "integer", Amount, 2)) {
-	    exit(1)
-	}
+        if (!checkfunctype("rotr", "integer", Amount, 2)) {exit(1)}
 	if (Amount < 1) {Amount=1}
         VarType=type(Array)
         Valid=false
@@ -329,10 +321,8 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function rotl(Array, Amount=0) {
-        if (!checkfunctype("rotl", "integer", Amount, 2)) {
-	    exit(1)
-	}
-	if (Amount < 1) {Amount=1}
+        if (!checkfunctype("rotl", "integer", Amount, 2)) {exit(1)}
+	    if (Amount < 1) {Amount=1}
         VarType=type(Array)
         Valid=false
         isString=false

@@ -54,9 +54,7 @@ if (!INCLUDE["GRP"]) {
     // scripts coded with older versions of mwnci
     
     function getgrgid(Gid=-1) {
-        if (!checkfunctype("getgrgid", "integer", Gid, 1)) {
-            exit(1)
-        }
+        if (!checkfunctype("getgrgid", "integer", Gid, 1)) {exit(1)}
         if (Gid == -1) {
             println("Error calling `getgrgid`: ERROR: TypeError: getgrgid() takes exactly 1 argument (0 given)")
             exit(1)
@@ -65,9 +63,7 @@ if (!INCLUDE["GRP"]) {
     }
     
     function getgrnam(Gname="") {
-        if (!checkfunctype("getgrnam", "string", Gname, 1)) {
-            exit(1)
-        }
+        if (!checkfunctype("getgrnam", "string", Gname, 1)) {exit(1)}
         if (Gname == "") {
            println("Error calling `getgrnam`: ERROR: TypeError: getgrnam() takes exactly 1 argument (0 given)")
            exit(1) 
