@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"context"
 	"os"
 	"fmt"
 	"strings"
@@ -41,7 +40,7 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 			p := parser.New(l)
 			program := p.ParseProgram()
 			if len(p.Errors()) == 0 {
-				EvalContext(context.Background(), program, env)
+				Eval(program, env)
 				return nil
 			}
 			fmt.Printf("Error parsing eval-string: %s", string(data))
