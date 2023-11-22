@@ -3,7 +3,7 @@ if (!INCLUDE["MATH"]) {
 
     function ceil(Value) {
         if (!checkfunctype("ceil", "number", Value, 1)) {exit(1)}
-        return (Value > int(Value)) ? int(Value) + 1 : int(Value);
+        
     }
 
     function floor(Value) {
@@ -97,10 +97,7 @@ if (!INCLUDE["MATH"]) {
         if (!checkfunctype("dim", "number", x, 1)) {exit(1)}
         if (!checkfunctype("dim", "number", y, 2)) {exit(1)}
         v=float(x)-float(y)
-	    if (v < 0) {
-	        return float(0);
-        }
-	    return v;
+        return (v < 0) ? float(0) : v);
     }
 
     function gcd(dividend, divisor) {
