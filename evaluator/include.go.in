@@ -24,7 +24,7 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 	if len(import_file) == 0 {
 		return newError("ArgError: include() expects a file identifier, none given")
 	}
-	imp_filename:=fmt.Sprintf("%s.mwn", import_file)
+	imp_filename:=fmt.Sprintf("%s.mwnci", import_file)
 	userincludes:=os.Getenv("INCLUDEPATH")
 	if len(userincludes) == 0 {
 		includes="@INCLUDE@:."

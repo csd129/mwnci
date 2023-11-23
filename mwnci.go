@@ -24,7 +24,7 @@ import (
 // The current version
 var version = "0.1.8.r02"
 
-//go:embed data/stdlib.mwn
+//go:embed data/stdlib.mwnci
 var stdlib string
 
 // Implemention of "version()" function.
