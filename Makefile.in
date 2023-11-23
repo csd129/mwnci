@@ -22,7 +22,7 @@ distclean:
 	go clean
 	make clean
 	rm -f mwnci main Makefile includes/Makefile \
-              emacs/mwnci.el evaluator/include.go
+              emacs/mwnci.el evaluator/include.go vim/mwnci.vim
 
 test:
 	go test -v -race ./...

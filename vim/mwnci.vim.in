@@ -1,0 +1,52 @@
+" Vim Syntax File
+" Language:     mwnci
+" Creator:      James Mills, prologic at shortcircuit dot net dot au
+" Last Change:  31st January 2019
+
+if version < 600
+    syntax clear
+elseif exists("b:current_syntax")
+    finish
+endif
+
+syntax case match
+
+syntax keyword xType @VIMCONSTS@ true false null
+
+syntax keyword xKeyword fn if else return while foreach function in let return switch case default const
+
+syntax keyword xFunction @VIMINCLUDES@
+syntax keyword xFunction @VIMFUNCTIONS@
+
+syntax match xOperator "=="
+syntax match xOperator "\v!\="
+syntax match xOperator "\v<"
+syntax match xOperator "\v>"
+syntax match xOperator "\v!"
+syntax match xOperator "\v\+"
+syntax match xOperator "\v-"
+syntax match xOperator "\v\*"
+syntax match xOperator "\v/"
+syntax match xOperator "\v:\="
+syntax match xOperator "\v\="
+syntax match xOperator "\v&"
+syntax match xOperator "\v\|"
+syntax match xOperator "\v^"
+syntax match xOperator "\v\~"
+syntax match xOperator "\v&&"
+syntax match xOperator "\v\|\|"
+
+syntax region xString start=/"/ skip=/\\./ end=/"/
+
+syntax region xComment start='#' end='$' keepend
+syntax region xComment start='//' end='$' keepend
+
+highlight link xOperator Operator
+highlight link xType Type
+highlight link xKeyword Keyword
+highlight link xFunction Function
+highlight link xString String
+highlight link xComment Comment
+
+
+let b:current_syntax = "mwnci"
