@@ -2,6 +2,7 @@ if (!INCLUDE["FILE"]) {
     INCLUDE=set(INCLUDE, "FILE", true)
     
     function getbin(permbit) {
+        if (!checkfunctype("getbin", "integer", permbit)) {exit(1)}
         binary=bin(permbit)
         binary=trimprefix(binary, "0b")
         sizeb=3-len(binary)
@@ -13,6 +14,8 @@ if (!INCLUDE["FILE"]) {
     }
     
     function isdoable(filename="", bit) {
+        if (!checkfunctype("isdoable", "string", filename)) {exit(1)}
+        if (!checkfunctype("isdoable", "integer", bit)) {exit(1)}
         data=fields(file(filename, 1))
         perms=data[3]
         owner=getbin(int(perms[1]))[bit]
@@ -153,7 +156,7 @@ if (!INCLUDE["FILE"]) {
     
     function isolder(f_file="", s_file="") {
         if (!checkfunctype("isolder", "string", f_file, 1)) {exit(1)}
-        if (!checkfunctype("isolder", "string", s_file,2 )) {exit(1)}
+        if (!checkfunctype("isolder", "string", s_file, 2)) {exit(1)}
         if (s_file == "" || f_file == "") {
             println("Error calling `isolder`: ERROR: TypeError: isolder() takes exactly 2 arguments (1 or less given)")
     	    exit(1);
