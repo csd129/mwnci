@@ -19,6 +19,9 @@ const STDERR=open( "!STDERR!" );
 if (!INCLUDE["MAIN"]) {
     INCLUDE=set(INCLUDE, "MAIN", true)
 
+//
+// Argument checker for all functions
+//
     function checkfunctype(func, expected, received, argnum=1) {
         ReceivedType=type(received)
 	    if (expected == "number") {
@@ -29,6 +32,14 @@ if (!INCLUDE["MAIN"]) {
                 return false;
 	        }
 	    }
+        if (expected == "iterable") {
+            if (ReceivedType == "string" || ReceivedType == "array") {
+                return true
+            } else {
+                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `STRING` or `ARRAY`, got `", toupper(ReceivedType), "`")
+                return false;
+            }
+        }
         if (ReceivedType != expected) {
             println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `",
             toupper(expected), "` got `", toupper(ReceivedType), "`")
@@ -292,6 +303,7 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function rotr(Array, Amount=0) {
+        if (!checkfunctype("rotr", "iterable", Array, 1)) {exit(1)}
         if (!checkfunctype("rotr", "integer", Amount, 2)) {exit(1)}
 	if (Amount < 1) {Amount=1}
         VarType=type(Array)
