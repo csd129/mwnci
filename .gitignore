@@ -4,5 +4,6 @@ mwnci
 .idea/
 Makefile
 emacs/mwnci.el
+vim/mwnci.vim
 evaluator/include.go
 includes/Makefile

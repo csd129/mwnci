@@ -1,4 +1,3 @@
-
 // Package evaluator contains the core of our interpreter, which walks
 // the AST produced by the parser and evaluates the user-submitted program.
 package evaluator
@@ -272,6 +271,9 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 }
 
 func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
+	if right == nil {
+		return newError("null operand %v", right)
+	}
 	switch obj := right.(type) {
 	case *object.Integer:
 		return &object.Integer{Value: -obj.Value}
@@ -283,6 +285,9 @@ func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 }
 
 func evalInfixExpression(operator string, left, right object.Object, env *object.Environment) object.Object {
+	if left == nil || right == nil {
+		return newError("null operand %v %v", left, right)
+	}
 	switch {
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
 		return evalIntegerInfixExpression(operator, left, right)
@@ -407,6 +412,9 @@ func evalBooleanInfixExpression(operator string, left, right object.Object) obje
 }
 
 func evalIntegerInfixExpression(operator string, left, right object.Object) object.Object {
+	if left == nil || right == nil {
+		return newError("null operand %v %v", left, right)
+	}
 	leftVal := left.(*object.Integer).Value
 	rightVal := right.(*object.Integer).Value
 	switch operator {
@@ -1062,11 +1070,30 @@ func trimQuotes(in string, c byte) string {
 // Run a command and return a hash containing the result.
 // `stderr`, `stdout`, and `error` will be the fields
 func backTickOperation(command string) object.Object {
+	command = strings.TrimSpace(command)
+	if command == "" {
+		return newError("empty command")
+	}
+
+	// default arguments, if none are found
+	args := []string{}
 
 	// split the command
 	//	command = fmt.Sprintf("%s", command)
 	toExec := splitCommand(command)
-	cmd := exec.Command(toExec[0], toExec[1:]...)
+
+	// Did that work?
+	if len(args) == 0 {
+		return newError("error - empty command")
+	}
+
+	// Use the real args if we got any
+	if len(args) > 1 {
+		args = toExec[1:]
+	}
+
+	// Run the ocmmand.
+	cmd := exec.Command(toExec[0], args...)
 
 	// get the result
 	var outb, errb bytes.Buffer
@@ -1236,6 +1263,11 @@ func RegisterBuiltin(name string, fun object.BuiltinFunction) {
 func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpression, env *object.Environment) object.Object {
 
 	obj := EvalContext(ctx, call.Object, env)
+	
+	if obj == nil {
+		return newError("impossible object-call on an empty object")
+	}
+	
 	if method, ok := call.Call.(*ast.CallExpression); ok {
 
 		//
