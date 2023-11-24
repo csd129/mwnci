@@ -1082,15 +1082,15 @@ func backTickOperation(command string) object.Object {
 	//	command = fmt.Sprintf("%s", command)
 	toExec := splitCommand(command)
 
-	// Did that work?
-	if len(args) == 0 {
-		return newError("error - empty command")
-	}
+	//	// Did that work?
+	//	if len(args) == 0 {
+	//		return newError("error - empty command")
+	//	}
 
 	// Use the real args if we got any
-	if len(args) > 1 {
-		args = toExec[1:]
-	}
+	//	if len(args) > 1 {
+	//		args = toExec[1:]
+	//	}
 
 	// Run the ocmmand.
 	cmd := exec.Command(toExec[0], args...)
