@@ -18,7 +18,7 @@
 ;; The language-core and functions from the standard-library.
 (defvar mwnci-functions
   '(
-"args" @EMFUNCTIONS@
+    @EMFUNCTIONS@
     ))
 (defvar mwnci-includes
   '(
