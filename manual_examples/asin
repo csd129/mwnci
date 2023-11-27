@@ -1,4 +1,5 @@
 #!/usr/bin/env mwnci
+include("math)
 HALFPI = PI / 2
 println("Arcsine + Arcosine Identity Verification\n")
 println("  Sine     Expected   Returned")

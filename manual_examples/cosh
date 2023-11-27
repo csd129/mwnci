@@ -1,4 +1,5 @@
 #!/usr/bin/env mwnci
+include("math")
 println("Test cosh(x) = 0.5 * (exp(x) + exp(-x))")
 println("over the interval from -5 to 5\n")
 println(" x cosh(x) 0.5 * (exp(x) + exp(-x))")

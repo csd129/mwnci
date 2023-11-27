@@ -24,7 +24,7 @@ if (!INCLUDE["PWD"]) {
         }
 	    if (user != "") {
             foreach entry in PasswdArray {
-	            if (entry["User"] == user || entry["Uid"] == user) {
+	            if (entry["User"] == user || string(entry["Uid"]) == user) {
                     return entry;
                 }
 	        }
