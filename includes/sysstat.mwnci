@@ -2,8 +2,8 @@ if (!INCLUDE["SYSSTAT"]) {
     INCLUDE=set(INCLUDE, "SYSSTAT", true)
     
     function host() {
-		out=`iostat -o JSON`
-		data=eval(out["stdout"])
+		out=system("iostat -o JSON")
+		data=eval(out)
 		hosts=data["sysstat"]["hosts"][0]
 		host_hash={
 			"nodename": hosts["nodename"],

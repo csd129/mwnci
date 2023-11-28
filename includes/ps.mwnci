@@ -85,4 +85,8 @@ if (!INCLUDE["PS"]) {
     function string.pnametopid() {
         return pnametopid(self);
     }
+
+    function integer.procstat() {
+        return procstat(self);
+    }
 }
