@@ -26,7 +26,7 @@ if (!INCLUDE["MATH"]) {
 
     function abs(number=0) {
         if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
-        return (number < 0 ? number *= -1 : number);
+        return number < 0 ? number *= -1 : number;
     }
 
     function divmod(a=0,b=0) {
@@ -47,8 +47,7 @@ if (!INCLUDE["MATH"]) {
 	        exit(1)
 	    }
         tq=float(int(n/d))
-        remainder=float(sprintf("%.15f", n-tq*d))
-        return remainder;
+        return float(sprintf("%.15f", n-tq*d));
     }
 
     function modf(num=0) {
@@ -97,7 +96,7 @@ if (!INCLUDE["MATH"]) {
         if (!checkfunctype("dim", "number", x, 1)) {exit(1)}
         if (!checkfunctype("dim", "number", y, 2)) {exit(1)}
         v=float(x)-float(y)
-        return (v < 0) ? float(0) : v);
+        return v < 0 ? float(0) : v;
     }
 
     function gcd(dividend, divisor) {
@@ -202,19 +201,19 @@ if (!INCLUDE["MATH"]) {
     
     function trunc(Float) {
         if (!checkfunctype("trunc", "number", Float, 1)) {exit(1)}
-        return(float(int(Float)));
+        return float(int(Float));
     }
 
     function highest(a, b) {
         if (!checkfunctype("highest", "number", a, 1)) {exit(1)}
         if (!checkfunctype("highest", "number", b, 2)) {exit(1)}
-        return (a > b) ? a : b;
+        return a > b ? a : b;
     }
     
     function lowest(a, b) {
         if (!checkfunctype("lowest", "number", a, 1)) {exit(1)}
         if (!checkfunctype("lowest", "number", b, 2)) {exit(1)}
-        return (a < b) ? a : b;
+        return a < b ? a : b;
     }
     
     function float.round() {
