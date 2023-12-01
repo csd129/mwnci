@@ -9,7 +9,6 @@ import (
 	"math"
 	"os"
 	"os/exec"
-	"io/fs"
 	"regexp"
 	"strings"
 
@@ -1052,7 +1051,6 @@ func splitCommand(input string) []string {
 	var result []string
 	for _, e := range res {
 		result = append(result, trimQuotes(e, '"'))
-		//		result = append(result, e)
 	}
 	return (result)
 }
@@ -1070,30 +1068,10 @@ func trimQuotes(in string, c byte) string {
 // Run a command and return a hash containing the result.
 // `stderr`, `stdout`, and `error` will be the fields
 func backTickOperation(command string) object.Object {
-	command = strings.TrimSpace(command)
-	if command == "" {
-		return newError("empty command")
-	}
-
-	// default arguments, if none are found
-	args := []string{}
-
 	// split the command
-	//	command = fmt.Sprintf("%s", command)
+
 	toExec := splitCommand(command)
-
-	//	// Did that work?
-	//	if len(args) == 0 {
-	//		return newError("error - empty command")
-	//	}
-
-	// Use the real args if we got any
-	//	if len(args) > 1 {
-	//		args = toExec[1:]
-	//	}
-
-	// Run the ocmmand.
-	cmd := exec.Command(toExec[0], args...)
+	cmd := exec.Command(toExec[0], toExec[1:]...)
 
 	// get the result
 	var outb, errb bytes.Buffer
@@ -1101,40 +1079,32 @@ func backTickOperation(command string) object.Object {
 	cmd.Stderr = &errb
 	err := cmd.Run()
 
-	// If the command exits with a non-zero exit-code it
-	// is regarded as a failure.  Here we test for ExitError
-	// to regard that as a non-failure.
+        // If the command exits with a non-zero exit-code it
+        // is regarded as a failure.  Here we test for ExitError
+        // to regard that as a non-failure.
+        if err != nil && err != err.(*exec.ExitError) {
+                fmt.Printf("Failed to run '%s' -> %s\n", command, err.Error())
+                return NULL
+        }
 
-	stdout := &object.String{Value: outb.String()}
-	stderr := &object.String{Value: errb.String()} 
-	if err != nil {
-		switch e := err.(type) {
-		case *exec.Error:
-			stdout = &object.String{Value: ""}
-			stderr = &object.String{Value: e.Error()}
-		case *fs.PathError:
-			stdout = &object.String{Value: ""}
-			stderr = &object.String{Value: e.Error()}
-		}
-	}
+        //
+        // The result-objects to store in our hash.
+        //
+        stdout := &object.String{Value: outb.String()}
+        stderr := &object.String{Value: errb.String()}
 
-	//
-	// The result-objects to store in our hash.
-	//
-	//	stdout := &object.String{Value: outb.String()}
-	//	stderr := &object.String{Value: errb.String()}
+        // Create keys
+        stdoutKey := &object.String{Value: "stdout"}
+        stdoutHash := object.HashPair{Key: stdoutKey, Value: stdout}
 
-	// Create keys
-	stdoutKey := &object.String{Value: "stdout"}
-	stdoutHash := object.HashPair{Key: stdoutKey, Value: stdout}
+	
+        stderrKey := &object.String{Value: "stderr"}
+        stderrHash := object.HashPair{Key: stderrKey, Value: stderr}
 
-	stderrKey := &object.String{Value: "stderr"}
-	stderrHash := object.HashPair{Key: stderrKey, Value: stderr}
-
-	// Make a new hash, and populate it
-	newHash := make(map[object.HashKey]object.HashPair)
-	newHash[stdoutKey.HashKey()] = stdoutHash
-	newHash[stderrKey.HashKey()] = stderrHash
+        // Make a new hash, and populate it
+        newHash := make(map[object.HashKey]object.HashPair)
+        newHash[stdoutKey.HashKey()] = stdoutHash
+        newHash[stderrKey.HashKey()] = stderrHash
 
 	return &object.Hash{Pairs: newHash}
 }
