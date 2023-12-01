@@ -17,7 +17,6 @@ func Fields(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-
 	s := args[0].(*object.String).Value
 
 	tokens := strings.Fields(s)

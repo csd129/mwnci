@@ -38,6 +38,22 @@ if (!INCLUDE["MATH"]) {
 	    }
         return [a/b, a%b];
     }
+
+    function median(MedianArray) {
+        if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
+        MedianArray=sort(MedianArray)
+        Median=0
+        Len=len(MedianArray)
+        Calc=divmod(Len, 2)
+        Pos=Calc[0]
+        Remainder=Calc[1]
+        if (Remainder == 1) {
+            Median=MedianArray[Pos]
+        } else {
+            Median=(float(MedianArray[Pos]) + float(MedianArray[Pos-1]))/2.0
+        }
+        return Median;
+    }    
     
     function fmod(n=0,d=0) {
         if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
@@ -124,6 +140,15 @@ if (!INCLUDE["MATH"]) {
         return float(sum(ave_array) / float(len(ave_array)));
     }
     
+    //
+    // For the mathematical pedants ;)
+    //
+
+    function mean(ave_array) {
+        return average(ave_array);
+    }
+
+    //  End pedantry
     function isprime(num=0) {
         if (!checkfunctype("isprime", "integer", num, 1)) {exit(1)}
         if (num < 2) {return false;}
@@ -282,6 +307,14 @@ if (!INCLUDE["MATH"]) {
 
     function object.cbrt() {
         return cbrt(self);
+    }
+
+    function array.mean() {
+        return average(self);
+    }
+
+    function array.median() {
+        return median(self);
     }
 }
 
