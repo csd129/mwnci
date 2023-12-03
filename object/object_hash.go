@@ -88,7 +88,7 @@ func (h *Hash) Reset() {
 func (h *Hash) Next() (Object, Object, bool) {
 	if h.offset < len(h.Pairs) {
 		idx := 0
-		fmt.Print("Nexty next\n")
+
 		//
 		// Bug: #90
 		//
