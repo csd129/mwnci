@@ -77,14 +77,3 @@ print( "\nCubes:\n" );
 print( "\t", ints.map( fn(n) { return n * n * n; }), "\n");
 print( "\nCubes via POW:\n" );
 print( "\t", ints.map( fn(n) { return n ** 3; }), "\n");
-
-//
-// Now use our functional-methods to show odd/even/prime
-// numbers contained in our list.
-//
-print( "\nOdd numbers:\n" );
-print( "\t", ints.filter(odd?), "\n");
-print( "\nEven numbers:\n" );
-print( "\t", ints.filter( even?), "\n");
-print( "\nPrime numbers:\n" );
-print( "\t", ints.filter( prime?), "\n");

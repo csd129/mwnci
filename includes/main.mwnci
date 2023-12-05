@@ -69,7 +69,6 @@ if (!INCLUDE["MAIN"]) {
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
         if (OS == "linux") {
-            //proc="/proc/" + string(pid)
             if (isexist("/proc/" + string(pid))) {return true;}
         } else {
             procs=split(trim(system("ps aux")),"\n")
