@@ -639,8 +639,8 @@ for ( true ) {
 	p := parser.New(l)
 	program := p.ParseProgram()
 	env := object.NewEnvironment()
-	SetContext(ctx)
-	evaluated := Eval(program, env)
+
+	evaluated := EvalContext(ctx, program, env)
 
 	errObj, ok := evaluated.(*object.Error)
 	if !ok {
