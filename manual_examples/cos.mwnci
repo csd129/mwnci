@@ -1,10 +1,13 @@
 #!/usr/bin/env mwnci
+include("ansicolor")
 print("Cosine Waveform: \n\n")
-print("     -1 -0.5   0   0.5   1\n")
-print("     +----+----+----+----+\n")
+print(AF_RED,"     -1 -0.5   0   0.5   1\n")
+print("     +----+----+----+----+\n",AF_RESET)
 i=0.0
 while (i <= 3.2) {
+    print(AF_BLUE)
     printf("%4.2f ", i)
+    print(AF_RESET)
     cosine=cos(i)
     plot=int(10 * cosine) + 10
     if (plot < 10) {
@@ -20,21 +23,21 @@ while (i <= 3.2) {
 	    after=after + " "
 	    j++
 	}
-	print(before, "*", after, "|")
+	print(before, AF_YELLOW, "*", AF_RESET,after, AF_RED,"|",AF_RESET)
 	printf("              cosine = %+8.6f\n", cosine)
     } else {
         if (plot == 10) {
-	    print("          *")
+	    print(AF_YELLOW,"          *", AF_RESET)
 	    printf("              cosine = %+8.6f\n", cosine)
 	} else {
-	        print("          |")
+	        print(AF_RED, "          |", AF_RESET)
 		before=""
 		j=11
 		while (j < plot) {
 		    before=before + " "
 		    j++
 		}
-		print(before, "*")
+		print(before, AF_YELLOW, "*", AF_RESET)
 		after=""
 		j=plot+1
 		while (j <= 24) {
