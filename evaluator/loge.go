@@ -5,12 +5,13 @@ import (
 	"mwnci/object"
 	"mwnci/typing"
 )
+
 func mathLogE(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"loge", args,
 		typing.ExactArgs(1),
 	); err != nil {
-		return newError( err.Error())
+		return newError(err.Error())
 	}
 
 	switch arg := args[0].(type) {

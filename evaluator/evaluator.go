@@ -98,7 +98,7 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 	case *ast.ForeachStatement:
 		return evalForeachExpression(ctx, node, env)
 	case *ast.ReturnStatement:
-		val := EvalContext (ctx, node.ReturnValue, env)
+		val := EvalContext(ctx, node.ReturnValue, env)
 		if isError(val) {
 			return val
 		}
@@ -472,7 +472,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 		len := 0
 		if rightVal < leftVal {
 			reverseit = 1
-			len=int(leftVal-rightVal) + 1
+			len = int(leftVal-rightVal) + 1
 		} else {
 			len = int(rightVal-leftVal) + 1
 		}
@@ -1004,11 +1004,6 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 	if builtin, ok := builtins[node.Value]; ok {
 		return builtin
 	}
-	fmt.Fprintf(os.Stderr, "identifier not found: %s\n", node.Value)
-	os.Exit(1)
-	//	if PRAGMAS["strict"] == 1 {
-	//		os.Exit(1)
-	//	}
 	return newError("identifier not found: " + node.Value)
 }
 
@@ -1079,32 +1074,31 @@ func backTickOperation(command string) object.Object {
 	cmd.Stderr = &errb
 	err := cmd.Run()
 
-        // If the command exits with a non-zero exit-code it
-        // is regarded as a failure.  Here we test for ExitError
-        // to regard that as a non-failure.
-        if err != nil && err != err.(*exec.ExitError) {
-                fmt.Printf("Failed to run '%s' -> %s\n", command, err.Error())
-                return NULL
-        }
+	// If the command exits with a non-zero exit-code it
+	// is regarded as a failure.  Here we test for ExitError
+	// to regard that as a non-failure.
+	if err != nil && err != err.(*exec.ExitError) {
+		fmt.Printf("Failed to run '%s' -> %s\n", command, err.Error())
+		return NULL
+	}
 
-        //
-        // The result-objects to store in our hash.
-        //
-        stdout := &object.String{Value: outb.String()}
-        stderr := &object.String{Value: errb.String()}
+	//
+	// The result-objects to store in our hash.
+	//
+	stdout := &object.String{Value: outb.String()}
+	stderr := &object.String{Value: errb.String()}
 
-        // Create keys
-        stdoutKey := &object.String{Value: "stdout"}
-        stdoutHash := object.HashPair{Key: stdoutKey, Value: stdout}
+	// Create keys
+	stdoutKey := &object.String{Value: "stdout"}
+	stdoutHash := object.HashPair{Key: stdoutKey, Value: stdout}
 
-	
-        stderrKey := &object.String{Value: "stderr"}
-        stderrHash := object.HashPair{Key: stderrKey, Value: stderr}
+	stderrKey := &object.String{Value: "stderr"}
+	stderrHash := object.HashPair{Key: stderrKey, Value: stderr}
 
-        // Make a new hash, and populate it
-        newHash := make(map[object.HashKey]object.HashPair)
-        newHash[stdoutKey.HashKey()] = stdoutHash
-        newHash[stderrKey.HashKey()] = stderrHash
+	// Make a new hash, and populate it
+	newHash := make(map[object.HashKey]object.HashPair)
+	newHash[stdoutKey.HashKey()] = stdoutHash
+	newHash[stderrKey.HashKey()] = stderrHash
 
 	return &object.Hash{Pairs: newHash}
 }
@@ -1228,16 +1222,15 @@ func RegisterBuiltin(name string, fun object.BuiltinFunction) {
 	builtins[name] = &object.Builtin{Fn: fun}
 }
 
-
 // evalObjectCallExpression invokes methods against objects.
 func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpression, env *object.Environment) object.Object {
 
 	obj := EvalContext(ctx, call.Object, env)
-	
+
 	if obj == nil {
 		return newError("impossible object-call on an empty object")
 	}
-	
+
 	if method, ok := call.Call.(*ast.CallExpression); ok {
 
 		//
