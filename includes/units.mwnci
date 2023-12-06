@@ -158,13 +158,32 @@ if (!INCLUDE["UNITS"]) {
 //
 // Metric to Imperial
 //
+    function mm2in(Mm) {
+        if (!checkfunctype("mm2in", "number", Mm)) {exit(1)}
+	return Mm / 25.4;
+    }
+
+    function mm2ft(Mm) {
+        if (!checkfunctype("mm2ft", "number", Mm)) {exit(1)}
+	return Mm / 304.8;
+    }
+    function mm2yd(Mm) {
+        if (!checkfunctype("mm2yd", "number", Mm)) {exit(1)}
+	return ft2yd(mm2ft(Mm));
+    }
+
+    function mm2mi(Mm) {
+        if (!checkfunctype("mm2mi", "number", Mm)) {exit(1)}
+	return yd2mi(mm2yd(Mm));
+    }
+    
     function cm2in(Cm) {
         if (!checkfunctype("cm2in", "number", Cm)) {exit(1)}
 	return Cm / 2.54;
     }
 
     function cm2ft(Cm) {
-        if (!checkfunctype("cm2in", "number", Cm)) {exit(1)}
+        if (!checkfunctype("cm2ft", "number", Cm)) {exit(1)}
 	return cm2in(Cm) / 12.0;
     }
 
@@ -217,4 +236,66 @@ if (!INCLUDE["UNITS"]) {
         if (!checkfunctype("km2mi", "number", Km)) {exit(1)}
 	return yd2mi(km2yd(Km));
     }
+
+
+//
+// Imperal to Metric
+//
+    function in2mm(In) {
+        if (!checkfunctype("in2mm", "number", In)) {exit(1)}
+	return In * 25.4;
+    }
+    function in2m(In) {
+        if (!checkfunctype("in2m", "number", In)) {exit(1)}
+	return cm2m(in2cm(In));
+    }
+
+    function in2cm(In) {
+        if (!checkfunctype("in2cm", "number", In)) {exit(1)}
+	return In * 2.54;
+    }
+
+    function in2km(In) {
+        if (!checkfunctype("in2km", "number", In)) {exit(1)}
+	return m2km(in2m(In));
+    }
+
+    function yd2mm(Yd) {
+        if (!checkfunctype("yd2mm", "number", Yd)) {exit(1)}
+	return in2mm(yd2in(Yd));
+    }
+
+    function yd2cm(Yd) {
+        if (!checkfunctype("yd2cm", "number", Yd)) {exit(1)}
+	return in2cm(yd2in(Yd));
+    }
+
+    function yd2m(Yd) {
+        if (!checkfunctype("yd2m", "number", Yd)) {exit(1)}
+	return in2m(yd2in(Yd));
+    }
+
+    function yd2km(Yd) {
+        if (!checkfunctype("yd2km", "number", Yd)) {exit(1)}
+	return in2km(yd2in(Yd));
+    }
+//
+// Imperial Weight
+//
+
+    function oz2lb(Oz) {
+        if (!checkfunctype("oz2lb", "number", Oz)) {exit(1)}
+	return Oz / 16.0;
+    }
+
+    function oz2st(Oz) {
+        if (!checkfunctype("oz2st", "number", Oz)) {exit(1)}
+	return Oz / 224.0;
+    }
+
+    function oz2ton(Oz) {
+        if (!checkfunctype("oz2ton", "number", Oz)) {exit(1)}
+	return Oz / 35840.0;
+    }
 }
+
