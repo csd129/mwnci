@@ -3,6 +3,7 @@ package evaluator
 import (
 	"mwnci/object"
 	"mwnci/typing"
+	"os"
 	"os/user"
 )
 
@@ -13,11 +14,13 @@ func Whoami(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	user, err := user.Current()
+	UserName := ""
+	currentuser, err := user.Current()
+	UserName = currentuser.Username
 	if err != nil {
-		return newError(err.Error())
+		UserName = os.Getenv("USER")
 	}
-	return &object.String{Value: user.Username}
+	return &object.String{Value: UserName}
 }
 
 func init() {

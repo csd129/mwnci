@@ -25,7 +25,8 @@ func exitFun(args ...object.Object) object.Object {
 	}
 
 	os.Exit(code)
-	return TRUE
+	// sigh
+	return nil
 }
 
 func init() {
