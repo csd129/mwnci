@@ -1,6 +1,5 @@
-FILES=certs.mwnci file.mwnci grp.mwnci http.mwnci main.mwnci sql.mwnci\
-	math.mwnci net.mwnci os.mwnci ps.mwnci pwd.mwnci sysstat.mwnci units.mwnci \
-	ansicolor.mwnci
+FILES=file.mwnci grp.mwnci http.mwnci main.mwnci math.mwnci net.mwnci \
+	os.mwnci ps.mwnci pwd.mwnci sysstat.mwnci ansicolor.mwnci
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
 OWNER=@OWNER@
