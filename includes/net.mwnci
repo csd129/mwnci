@@ -71,8 +71,7 @@ if (!INCLUDE["NET"]) {
            timeout=4
         }
         cmd=sprintf("ping -c 1 -W %d %s > /dev/null && echo true || echo false", timeout, host)
-        if (system(cmd) == "true") {return true;}
-        return false;
+        return (system(cmd) == "true") ? true : false;
     }
     
     function addresscount(cidr="") {

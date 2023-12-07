@@ -239,7 +239,7 @@ if (!INCLUDE["UNITS"]) {
 
 
 //
-// Imperal to Metric
+// Imperial to Metric
 //
     function in2mm(In) {
         if (!checkfunctype("in2mm", "number", In)) {exit(1)}
