@@ -6,62 +6,62 @@ if (!INCLUDE["UNITS"]) {
 //
     function mm2cm(Mm) {
         if (!checkfunctype("mm2cm", "number", Mm)) {exit(1)}
-	return Mm / 10.0;
+        return Mm / 10.0;
     }
 
     function cm2m(Cm) {
         if (!checkfunctype("cm2m", "number", Cm)) {exit(1)}
-	return Cm / 100.0;
+        return Cm / 100.0;
     }
 
     function m2km(Metre) {
         if (!checkfunctype("m2km", "number", Metre)) {exit(1)}
-	return Metre / 1000.0;
+        return Metre / 1000.0;
     }
 
     function mm2m(Mm) {
         if (!checkfunctype("mm2m", "number", Mm)) {exit(1)}
-	return cm2m(mm2cm(Mm));
+        return cm2m(mm2cm(Mm));
     }
 
     function mm2km(Mm) {
         if (!checkfunctype("mm2km", "number", Mm)) {exit(1)}
-	return m2km(mm2m(Mm));
+        return m2km(mm2m(Mm));
     }
 
     function cm2km(Cm) {
         if (!checkfunctype("cm2km", "number", Cm)) {exit(1)}
-	return m2km(cm2m(Cm));
+        return m2km(cm2m(Cm));
     }
 
     function km2m(Km) {
         if (!checkfunctype("km2m", "number", Km)) {exit(1)}
-	return Km * 1000.0;
+        return Km * 1000.0;
     }
 
     function m2cm(Metre) {
         if (!checkfunctype("m2cm", "number", Metre)) {exit(1)}
-	return Metre * 100.0;
+        return Metre * 100.0;
     }
 
     function cm2mm(Cm) {
         if (!checkfunctype("cm2mm", "number", Cm)) {exit(1)}
-	return Cm * 10.0;
+        return Cm * 10.0;
     }
 
     function m2mm(Metre) {
         if (!checkfunctype("m2mm", "number", Metre)) {exit(1)}
-	return Metre * 1000.0;
+        return Metre * 1000.0;
     }
 
     function km2cm(Km) {
         if (!checkfunctype("km2cm", "number", Km)) {exit(1)}
-	return km2m(Km) * 100.0;
+        return km2m(Km) * 100.0;
     }
 
     function km2mm(Km) {
         if (!checkfunctype("km2mm", "number", Km)) {exit(1)}
-	return km2m(Km) * 1000.0;
+        return km2m(Km) * 1000.0;
     }
 
 //
@@ -69,32 +69,32 @@ if (!INCLUDE["UNITS"]) {
 //
     function mg2g(Mg) {
         if (!checkfunctype("mg2g", "number", Mg)) {exit(1)}
-	return Mg / 1000.0;
+        return Mg / 1000.0;
     }
 
     function g2kg(Gr) {
         if (!checkfunctype("g2kg", "number", Gr)) {exit(1)}
-	return Gr / 1000.0;
+        return Gr / 1000.0;
     }
 
     function mg2kg(Mg) {
         if (!checkfunctype("mg2kg", "number", Mg)) {exit(1)}
-	return Mg / 1000000.0;
+        return Mg / 1000000.0;
     }
 
     function kg2mg(Kg) {
         if (!checkfunctype("kg2mg", "number", Kg)) {exit(1)}
-	return Kg * 1000000.0;
+        return Kg * 1000000.0;
     }
 
     function kg2g(Kg) {
         if (!checkfunctype("kg2g", "number", Kg)) {exit(1)}
-	return Kg * 1000.0;
+        return Kg * 1000.0;
     }
 
     function g2mg(Gr) {
         if (!checkfunctype("g2mg", "number", Gr)) {exit(1)}
-	return Gr * 1000.0;
+        return Gr * 1000.0;
     }
 
 //
@@ -102,57 +102,57 @@ if (!INCLUDE["UNITS"]) {
 //
     function in2ft(In) {
         if (!checkfunctype("in2ft", "number", In)) {exit(1)}
-	return In / 12.0;
+        return In / 12.0;
     }
 
     function ft2yd(Ft) {
         if (!checkfunctype("ft2yd", "number", Ft)) {exit(1)}
-	return Ft / 3.0;
+        return Ft / 3.0;
     }
 
     function yd2mi(Yd) {
         if (!checkfunctype("yd2mi", "number", Yd)) {exit(1)}
-	return Yd / 1760.0;
+        return Yd / 1760.0;
     }
 
     function in2yd(In) {
         if (!checkfunctype("in2yd", "number", In)) {exit(1)}
-	return ft2yd(in2ft(In));
+        return ft2yd(in2ft(In));
     }
 
     function in2mi(In) {
         if (!checkfunctype("in2mi", "number", In)) {exit(1)}
-	return yd2mi(in2yd(In));
+        return yd2mi(in2yd(In));
     }
 
     function ft2mi(Ft) {
         if (!checkfunctype("ft2mi", "number", Ft)) {exit(1)}
-	return yd2mi(ft2yd(Ft));
+        return yd2mi(ft2yd(Ft));
     }
 
     function mi2ft(Mi) {
         if (!checkfunctype("mi2ft", "number", Mi)) {exit(1)}
-	return Mi * 5280.0;
+        return Mi * 5280.0;
     }
 
     function mi2yd(Mi) {
         if (!checkfunctype("mi2yd", "number", Mi)) {exit(1)}
-	return Mi * 1760;
+        return Mi * 1760;
     }
 
     function mi2in(Mi) {
         if (!checkfunctype("mi2in", "number", Mi)) {exit(1)}
-	return (Mi * 5280.0) * 12.0;
+        return (Mi * 5280.0) * 12.0;
     }
 
     function yd2in(Yd) {
         if (!checkfunctype("yd2in", "number", Yd)) {exit(1)}
-	return Yd * 36.0;
+        return Yd * 36.0;
     }
 
     function yd2ft(Yd) {
         if (!checkfunctype("yd2ft", "number", Yd)) {exit(1)}
-	return Yd * 3.0;
+        return Yd * 3.0;
     }
 
 //
@@ -160,81 +160,81 @@ if (!INCLUDE["UNITS"]) {
 //
     function mm2in(Mm) {
         if (!checkfunctype("mm2in", "number", Mm)) {exit(1)}
-	return Mm / 25.4;
+        return Mm / 25.4;
     }
 
     function mm2ft(Mm) {
         if (!checkfunctype("mm2ft", "number", Mm)) {exit(1)}
-	return Mm / 304.8;
+        return Mm / 304.8;
     }
     function mm2yd(Mm) {
         if (!checkfunctype("mm2yd", "number", Mm)) {exit(1)}
-	return ft2yd(mm2ft(Mm));
+        return ft2yd(mm2ft(Mm));
     }
 
     function mm2mi(Mm) {
         if (!checkfunctype("mm2mi", "number", Mm)) {exit(1)}
-	return yd2mi(mm2yd(Mm));
+        return yd2mi(mm2yd(Mm));
     }
     
     function cm2in(Cm) {
         if (!checkfunctype("cm2in", "number", Cm)) {exit(1)}
-	return Cm / 2.54;
+        return Cm / 2.54;
     }
 
     function cm2ft(Cm) {
         if (!checkfunctype("cm2ft", "number", Cm)) {exit(1)}
-	return cm2in(Cm) / 12.0;
+        return cm2in(Cm) / 12.0;
     }
 
     function cm2yd(Cm) {
         if (!checkfunctype("cm2yd", "number", Cm)) {exit(1)}
-	return in2yd(cm2in(Cm));
+        return in2yd(cm2in(Cm));
     }
 
     function cm2mi(Cm) {
         if (!checkfunctype("cm2mi", "number", Cm)) {exit(1)}
-	return in2mi(cm2in(Cm));
+        return in2mi(cm2in(Cm));
     }
 
     function m2in(Metre) {
         if (!checkfunctype("m2in", "number", Metre)) {exit(1)}
-	return cm2in(Metre * 100.0);
+        return cm2in(Metre * 100.0);
     }
 
     function m2ft(Metre) {
         if (!checkfunctype("m2ft", "number", Metre)) {exit(1)}
-	return cm2in(Metre * 100) / 12.0;
+        return cm2in(Metre * 100) / 12.0;
     }
 
     function m2yd(Metre) {
         if (!checkfunctype("m2yd", "number", Metre)) {exit(1)}
-	return cm2in(Metre * 100) / 36.0;
+        return cm2in(Metre * 100) / 36.0;
     }
 
     function m2mi(Metre) {
         if (!checkfunctype("m2mi", "number", Metre)) {exit(1)}
-	return in2mi(m2in(Metre));
+        return in2mi(m2in(Metre));
     }
 
     function km2in(Km) {
         if (!checkfunctype("km2in", "number", Km)) {exit(1)}
-	return m2in(km2m(Km));
+        return m2in(km2m(Km));
     }
 
     function km2ft(Km) {
         if (!checkfunctype("km2ft", "number", Km)) {exit(1)}
-	return m2ft(km2m(Km));
+        return m2ft(km2m(Km));
     }
 
     function km2yd(Km) {
         if (!checkfunctype("km2yd", "number", Km)) {exit(1)}
-	return km2ft(Km) / 3.0;
+        return km2ft(Km) / 3.0;
     }
 
     function km2mi(Km) {
         if (!checkfunctype("km2mi", "number", Km)) {exit(1)}
-	return yd2mi(km2yd(Km));
+        return yd2mi(km2yd(Km));
     }
 
 
@@ -243,41 +243,41 @@ if (!INCLUDE["UNITS"]) {
 //
     function in2mm(In) {
         if (!checkfunctype("in2mm", "number", In)) {exit(1)}
-	return In * 25.4;
+        return In * 25.4;
     }
     function in2m(In) {
         if (!checkfunctype("in2m", "number", In)) {exit(1)}
-	return cm2m(in2cm(In));
+        return cm2m(in2cm(In));
     }
 
     function in2cm(In) {
         if (!checkfunctype("in2cm", "number", In)) {exit(1)}
-	return In * 2.54;
+        return In * 2.54;
     }
 
     function in2km(In) {
         if (!checkfunctype("in2km", "number", In)) {exit(1)}
-	return m2km(in2m(In));
+        return m2km(in2m(In));
     }
 
     function yd2mm(Yd) {
         if (!checkfunctype("yd2mm", "number", Yd)) {exit(1)}
-	return in2mm(yd2in(Yd));
+        return in2mm(yd2in(Yd));
     }
 
     function yd2cm(Yd) {
         if (!checkfunctype("yd2cm", "number", Yd)) {exit(1)}
-	return in2cm(yd2in(Yd));
+        return in2cm(yd2in(Yd));
     }
 
     function yd2m(Yd) {
         if (!checkfunctype("yd2m", "number", Yd)) {exit(1)}
-	return in2m(yd2in(Yd));
+        return in2m(yd2in(Yd));
     }
 
     function yd2km(Yd) {
         if (!checkfunctype("yd2km", "number", Yd)) {exit(1)}
-	return in2km(yd2in(Yd));
+        return in2km(yd2in(Yd));
     }
 //
 // Imperial Weight
@@ -285,17 +285,32 @@ if (!INCLUDE["UNITS"]) {
 
     function oz2lb(Oz) {
         if (!checkfunctype("oz2lb", "number", Oz)) {exit(1)}
-	return Oz / 16.0;
+        return Oz / 16.0;
     }
 
     function oz2st(Oz) {
         if (!checkfunctype("oz2st", "number", Oz)) {exit(1)}
-	return Oz / 224.0;
+        return Oz / 224.0;
     }
 
     function oz2ton(Oz) {
         if (!checkfunctype("oz2ton", "number", Oz)) {exit(1)}
-	return Oz / 35840.0;
+        return Oz / 35840.0;
+    }
+
+    function lb2st(Lb) {
+        if (!checkfunctype("lb2st", "number", Lb)) {exit(1)}
+        return Lb / 14.0;
+    }
+
+    function lb2ton(Lb) {
+        if (!checkfunctype("lb2ton", "number", Lb)) {exit(1)}
+        return Lb / 2240.0;
+    }
+
+    function st2ton(St) {
+        if (!checkfunctype("st2ton", "number", St)) {exit(1)}
+        return St / 160.0;
     }
 }
 
