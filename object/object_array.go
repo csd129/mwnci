@@ -89,32 +89,32 @@ func (ao *Array) ToInterface() interface{} {
 }
 
 func (a *Array) Copy() *Array {
-        elements := make([]Object, len(a.Elements))
-        for i, e := range a.Elements {
-                elements[i] = e
-        }
-        return &Array{Elements: elements}
+	elements := make([]Object, len(a.Elements))
+	for i, e := range a.Elements {
+		elements[i] = e
+	}
+	return &Array{Elements: elements}
 }
 
 func (a *Array) PopLeft() Object {
-        if len(a.Elements) > 0 {
-                e := a.Elements[0]
-                a.Elements = a.Elements[1:]
-                return e
-        }
-        return &Null{}
+	if len(a.Elements) > 0 {
+		e := a.Elements[0]
+		a.Elements = a.Elements[1:]
+		return e
+	}
+	return &Null{}
 
 }
 
 func (a *Array) Len() int {
-        return len(a.Elements)
+	return len(a.Elements)
 }
 
 func (a *Array) Less(i, j int) bool {
-        if cmp, ok := a.Elements[i].(Comparable); ok {
-                return cmp.Compare(a.Elements[j]) == -1
-        }
-        return false
+	if cmp, ok := a.Elements[i].(Comparable); ok {
+		return cmp.Compare(a.Elements[j]) == -1
+	}
+	return false
 }
 
 func (a *Array) Swap(i, j int) {
@@ -122,33 +122,33 @@ func (a *Array) Swap(i, j int) {
 }
 
 func (a *Array) Insert(i int, j Object) {
-	a.Elements=append(a.Elements, j)
+	a.Elements = append(a.Elements, j)
 	copy(a.Elements[i+1:], a.Elements[i:])
-	a.Elements[i]=j
+	a.Elements[i] = j
 }
 
-func (a *Array) Aset(i int , j Object) {
-    a.Elements[i] = j
+func (a *Array) Aset(i int, j Object) {
+	a.Elements[i] = j
 }
 
 func (a *Array) Bool() bool {
-        return len(a.Elements) > 0
+	return len(a.Elements) > 0
 }
 
 func (a *Array) PopRight() Object {
 
-        if len(a.Elements) > 0 {
-                e := a.Elements[(len(a.Elements) - 1)]
-                a.Elements = a.Elements[:(len(a.Elements) - 1)]
-                return e
-        }
-        return &Null{}
+	if len(a.Elements) > 0 {
+		e := a.Elements[(len(a.Elements) - 1)]
+		a.Elements = a.Elements[:(len(a.Elements) - 1)]
+		return e
+	}
+	return &Null{}
 }
 
 func (a *Array) Reverse() {
-        for i, j := 0, len(a.Elements)-1; i < j; i, j = i+1, j-1 {
-                a.Elements[i], a.Elements[j] = a.Elements[j], a.Elements[i]
-        }
+	for i, j := 0, len(a.Elements)-1; i < j; i, j = i+1, j-1 {
+		a.Elements[i], a.Elements[j] = a.Elements[j], a.Elements[i]
+	}
 }
 
 func (ao *Array) Compare(other Object) int {
@@ -175,3 +175,13 @@ func (a *Array) Append(obj Object) {
 	a.Elements = append(a.Elements, obj)
 }
 
+func (a *Array) SameType(obj Object) bool {
+	First := a.Elements[0].Type()
+	for _, el := range a.Elements {
+		ThisType := el.Type()
+		if First != ThisType {
+			return false
+		}
+	}
+	return true
+}
