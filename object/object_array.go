@@ -27,7 +27,7 @@ func (ao *Array) String() string {
 // Inspect returns a string-representation of the given object.
 func (ao *Array) Inspect() string {
 	var out bytes.Buffer
-	elements := make([]string, 0)
+	elements := []string{}
 	for _, e := range ao.Elements {
 		elements = append(elements, e.Inspect())
 	}
