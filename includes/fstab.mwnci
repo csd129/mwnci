@@ -1,6 +1,5 @@
 if (!INCLUDE["FSTAB"]) {
     INCLUDE=set(INCLUDE, "FSTAB", true)
-
     function getfstab() {
    	FstabArray=[]
 	FSTAB="/etc/fstab"
@@ -23,11 +22,11 @@ if (!INCLUDE["FSTAB"]) {
     }
 
     function getfsfile(DeviceName="") {
-        if (!checkfunctype("getfsspec", "string", DeviceName, 1)) {
+        if (!checkfunctype("getfsfile", "string", DeviceName, 1)) {
 	    exit(1)
 	}
 	if (len(DeviceName) == 0) {
-	    println("Error calling `getfsspec`: ERROR: TypeError: getfsspec() takes exactly 1 argument (0 given)")
+	    println("Error calling `getfsfile`: ERROR: TypeError: getfsspec() takes exactly 1 argument (0 given)")
 	    exit(1)
 	}
 	Fstab=getfstab()
@@ -38,5 +37,41 @@ if (!INCLUDE["FSTAB"]) {
 	    }
 	}
 	return Empty;
+    }
+
+    function getfsspec(DeviceName="") {
+        if (!checkfunctype("getfsspec", "string", DeviceName, 1)) {
+	    exit(1)
+	}
+	if (len(DeviceName) == 0) {
+	    println("Error calling `getfsspec`: ERROR: TypeError: getfsspec() takes exactly 1 argument (0 given)")
+	    exit(1)
+	}
+	Fstab=getfstab()
+	Empty={}
+	foreach line in Fstab {
+	    if (line["Device"] == DeviceName) {
+	        return line;
+	    }
+	}
+	return Empty;
+    }
+
+    function getfstype(FSType="") {
+        if (!checkfunctype("getfstype", "string", FSType, 1)) {
+	    exit(1)
+	}
+	if (len(FSType) == 0) {
+	    println("Error calling `getfstype`: ERROR: TypeError: getfstype() takes exactly 1 argument (0 given)")
+	    exit(1)
+	}
+	TypeArray=[]
+	Fstab=getfstab()
+	foreach line in Fstab {
+	    if (line["Type"] == FSType) {
+	        TypeArray=push(TypeArray, line)
+	    }
+	}
+	return TypeArray;
     }
 }
