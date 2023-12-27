@@ -31,6 +31,7 @@ const (
 	EQUALS       // == or !=
 	REGEXP_MATCH // !~ ~=
 	LESSGREATER  // > or <
+	BitwiseShift // << or >>
 	SUM          // + or -
 	PRODUCT      // * or /
 	POWER        // **
@@ -53,6 +54,8 @@ var precedences = map[token.Type]int{
 	token.LT_EQUALS:    LESSGREATER,
 	token.GT:           LESSGREATER,
 	token.GT_EQUALS:    LESSGREATER,
+	token.LeftShift:    BitwiseShift,
+	token.RightShift:   BitwiseShift,
 	token.CONTAINS:     REGEXP_MATCH,
 	token.NOT_CONTAINS: REGEXP_MATCH,
 
@@ -155,6 +158,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.EQ, p.parseInfixExpression)
 	p.registerInfix(token.GT, p.parseInfixExpression)
 	p.registerInfix(token.GT_EQUALS, p.parseInfixExpression)
+	p.registerInfix(token.LeftShift, p.parseInfixExpression)
+	p.registerInfix(token.RightShift, p.parseInfixExpression)
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
 	p.registerInfix(token.LT, p.parseInfixExpression)

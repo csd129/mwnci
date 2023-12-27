@@ -74,6 +74,8 @@ const (
 	SWITCH          = "switch"
 	TRUE            = "TRUE"
 	WHILE           = "WHILE"
+	LeftShift       = "<<"
+	RightShift      = ">>"
 )
 
 // reserved keywords
