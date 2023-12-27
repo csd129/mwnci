@@ -168,6 +168,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.GT, p.parseInfixExpression)
 	p.registerInfix(token.GT_EQUALS, p.parseInfixExpression)
 	p.registerInfix(token.BitwiseAND, p.parseInfixExpression)
+	p.registerInfix(token.BitwiseOR, p.parseInfixExpression)
+	p.registerInfix(token.BitwiseXOR, p.parseInfixExpression)
 	p.registerInfix(token.LeftShift, p.parseInfixExpression)
 	p.registerInfix(token.RightShift, p.parseInfixExpression)
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)

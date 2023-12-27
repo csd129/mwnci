@@ -88,8 +88,6 @@ func (l *Lexer) NextToken() token.Token {
 			l.readChar()
 			tok = token.Token{Type: token.AND, Literal: string(ch) + string(l.ch)}
 		} else {
-			//			ch := l.ch
-			//			literal := string(ch) + string(l.ch)
 			tok = newToken(token.BitwiseAND, l.ch)
 		}
 	case rune('|'):
@@ -97,8 +95,12 @@ func (l *Lexer) NextToken() token.Token {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.OR, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.BitwiseOR, l.ch)
 		}
 
+	case rune('^'):
+		tok = newToken(token.BitwiseXOR, l.ch)
 	case rune('='):
 		tok = newToken(token.ASSIGN, l.ch)
 		if l.peekChar() == rune('=') {
