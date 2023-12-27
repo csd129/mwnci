@@ -87,6 +87,10 @@ func (l *Lexer) NextToken() token.Token {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.AND, Literal: string(ch) + string(l.ch)}
+		} else {
+			//			ch := l.ch
+			//			literal := string(ch) + string(l.ch)
+			tok = newToken(token.BitwiseAND, l.ch)
 		}
 	case rune('|'):
 		if l.peekChar() == rune('|') {

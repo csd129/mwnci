@@ -76,6 +76,10 @@ const (
 	WHILE           = "WHILE"
 	LeftShift       = "<<"
 	RightShift      = ">>"
+	BitwiseAND      = "&"
+	BitwiseOR       = "|"
+	BitwiseXOR      = "^"
+	BitwiseNOT      = "~"
 )
 
 // reserved keywords

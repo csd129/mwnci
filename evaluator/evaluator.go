@@ -427,6 +427,8 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 			os.Exit(1)
 		}
 		return &object.Integer{Value: leftVal % rightVal}
+	case "&":
+		return &object.Integer{Value: leftVal & rightVal}
 	case "%=":
 		if rightVal == 0 {
 			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
