@@ -4,21 +4,13 @@ if (!INCLUDE["NET"]) {
     function netstat(iface="") {
         if (!checkfunctype("netstat", "string", iface, 1)) {exit(1)}
         iface_hash={}
-        iface_data={}
         ifdata=split(system("netstat -in"), "\n")
         ifdata=shift(ifdata,2)
     
         foreach line in ifdata {
             sline=fields(line)
-            iface_data=set(iface_data, "MTU", sline[1])
-            iface_data=set(iface_data, "RX-OK", sline[2])
-            iface_data=set(iface_data, "RX-ERR", sline[3])
-            iface_data=set(iface_data, "RX-DRP", sline[4])
-            iface_data=set(iface_data, "RX-OVR", sline[5])
-            iface_data=set(iface_data, "TK-OK", sline[6])
-            iface_data=set(iface_data, "TX-ERR", sline[7])
-            iface_data=set(iface_data, "TX-DRP", sline[8])
-            iface_data=set(iface_data, "TX-OVR", sline[9])
+            iface_data={"MTU": sline[1], "RX-OK": sline[2], "RX_ERR": sline[3], "RX_DRP": sline[4], "RX-OVR": sline[5],
+                        "TX-OK": sline[6], "TX-ERR": sline[7], "TX-DRP": sline[8], "TX-OVR": sline[9]}
             iface_hash=set(iface_hash, sline[0], iface_data)
         }
         if (len(iface) > 0) {
@@ -46,9 +38,7 @@ if (!INCLUDE["NET"]) {
     
     function cidrrange(cidr="") {
         range=[]
-        if (!checkfunctype("cidrrange", "string", cidr)) {
-            exit(1)
-        }
+        if (!checkfunctype("cidrrange", "string", cidr)) {exit(1)}
         ips=listcidrips(cidr)
         iplen=len(ips)-1
         range=push(range, ips[0])
@@ -59,17 +49,11 @@ if (!INCLUDE["NET"]) {
     function ping(host="", timeout=0) {
         if (host == "") {
             println("Error calling `ping`: ERROR: TypeError: ping() takes expected argument #1 to be `STRING` got `NULL`")
-    	exit(1)
-        }
-        if (!checkfunctype("ping", "string", host, 1)) {
             exit(1)
         }
-        if (!checkfunctype("ping", "integer", timeout, 2)) {
-            exit(1)
-        }
-        if (timeout < 1) {
-           timeout=4
-        }
+        if (!checkfunctype("ping", "string", host, 1)) {exit(1)}
+        if (!checkfunctype("ping", "integer", timeout, 2)) {exit(1)}
+        if (timeout < 1) {timeout=4}
         cmd=sprintf("ping -c 1 -W %d %s > /dev/null && echo true || echo false", timeout, host)
         return (system(cmd) == "true") ? true : false;
     }

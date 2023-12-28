@@ -40,7 +40,6 @@ if (!INCLUDE["FILE"]) {
             exit(1)
         }
         if (isexist(filename)) {
-            fields(file(filename, 1))
             return fields(file(filename, 1))[6];
         } else {
             return "NOEXIST";

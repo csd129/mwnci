@@ -195,9 +195,7 @@ if (!INCLUDE["MATH"]) {
             q = t
         }
     
-        if (p == 0) {
-            return 0;
-        }
+        if (p == 0) {return 0;}
     
         q = q / p
         return p * sqrt(1+q*q);
