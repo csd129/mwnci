@@ -67,20 +67,9 @@ if (!INCLUDE["NET"]) {
     
     function iptoint(IP) {
         if (!checkfunctype("iptoint", "string", IP, 1)) {exit(1)}
+        if (!checkip(IP)) {return false;}
         octets=IP.split(".")
-        if (len(octets) > 4) {return false;}
-        octets=set(octets, 0, int(octets[0]) | 0)
-        octets=set(octets, 1, int(octets[1]) | 0)
-        octets=set(octets, 2, int(octets[2]) | 0)
-        octets=set(octets, 3, int(octets[3]) | 0)
-        
-        if ((octets[0] < 0 || octets[0] > 255) ||
-            (octets[1] < 0 || octets[1] > 255) ||
-            (octets[2] < 0 || octets[2] > 255) ||
-            (octets[3] < 0 || octets[3] > 255)) {
-            return false;
-        }
-        return octets[3] + (octets[2] << 8) + (octets[1] << 16) + (octets[0] << 24);
+        return int(octets[3]) + (int(octets[2]) << 8) + (int(octets[1]) << 16) + (int(octets[0]) << 24);
     }
 
     function inttoip(number) {
@@ -90,7 +79,7 @@ if (!INCLUDE["NET"]) {
             (number >> 16) & 255,
             (number >> 8) & 255,
             number & 255)
-	return IP;
+	    return IP;
     }
 
     function string.cidrrange() {
