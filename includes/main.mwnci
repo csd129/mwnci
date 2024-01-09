@@ -130,7 +130,7 @@ if (!INCLUDE["MAIN"]) {
     
     function head(data, lines=0) {
         if (!checkfunctype("head", "iterable", data, 1)) {exit(1)}
-        if (!checkfunctype("head", "integer", lines, 1)) {exit(1)}
+        if (!checkfunctype("head", "integer", lines, 2)) {exit(1)}
         type_string=false
         if (type(data) == "string") {
             data=split(data, "\n")
@@ -158,7 +158,7 @@ if (!INCLUDE["MAIN"]) {
     
     function tail(data, lines=0) {
         if (!checkfunctype("tail", "iterable", data, 1)) {exit(1)}
-        if (!checkfunctype("tail", "integer", lines, 1)) {exit(1)}
+        if (!checkfunctype("tail", "integer", lines, 2)) {exit(1)}
         type_string=false
         if (type(data) == "string") {
             data=split(data, "\n")
@@ -315,7 +315,7 @@ if (!INCLUDE["MAIN"]) {
     function rotr(Array, Amount=0) {
         if (!checkfunctype("rotr", "iterable", Array, 1)) {exit(1)}
         if (!checkfunctype("rotr", "integer", Amount, 2)) {exit(1)}
-	if (Amount < 1) {Amount=1}
+        if (Amount < 1) {Amount=1}
         VarType=type(Array)
         Valid=false
         isString=false
