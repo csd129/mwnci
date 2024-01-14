@@ -23,9 +23,3 @@ func Whoami(args ...object.Object) object.Object {
 	return &object.String{Value: UserName}
 }
 
-func init() {
-	RegisterBuiltin("whoami",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Whoami(args...))
-		})
-}

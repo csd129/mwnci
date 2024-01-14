@@ -37,9 +37,3 @@ func Touch(args ...object.Object) object.Object {
 	return &object.Integer{Value: 0}
 }
 
-func init() {
-	RegisterBuiltin("touch",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Touch(args...))
-		})
-}

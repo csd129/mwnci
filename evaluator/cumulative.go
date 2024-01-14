@@ -35,9 +35,3 @@ func Cumulate(args ...object.Object) object.Object {
 	return &object.Array{Elements: count_arr}
 }
 
-func init() {
-	RegisterBuiltin("cumulative",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Cumulate(args...))
-		})
-}

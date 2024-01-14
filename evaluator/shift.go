@@ -25,9 +25,3 @@ func Shift(args ...object.Object) object.Object {
 	}
 	return newArray
 }
-func init() {
-	RegisterBuiltin("shift",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Shift(args...))
-		})
-}

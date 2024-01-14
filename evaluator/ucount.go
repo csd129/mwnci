@@ -50,9 +50,3 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 	return NULL
 }
 
-func init() {
-	RegisterBuiltin("ucount",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Ucount(env, args...))
-		})
-}

@@ -28,9 +28,3 @@ func LookupTXT(args ...object.Object) object.Object {
 	}
 	return &object.Array{Elements: elements}
 }
-func init() {
-	RegisterBuiltin("lookuptxt",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (LookupTXT(args...))
-		})
-}

@@ -33,9 +33,3 @@ func subStrFun(args ...object.Object) object.Object {
 	return &object.String{Value: string(asRunes[i : i+l])}
 }
 
-func init() {
-	RegisterBuiltin("substr",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (subStrFun(args...))
-		})
-}

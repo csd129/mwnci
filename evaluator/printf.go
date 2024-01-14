@@ -19,9 +19,3 @@ func printfFun(args ...object.Object) object.Object {
 	return NULL
 }
 
-func init() {
-	RegisterBuiltin("printf",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (printfFun(args...))
-		})
-}

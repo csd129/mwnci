@@ -16,9 +16,3 @@ func getPpidFun(args ...object.Object) object.Object {
 	return &object.Integer{Value: int64(os.Getppid())}
 }
 
-func init() {
-	RegisterBuiltin("getppid",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (getPpidFun(args...))
-		})
-}

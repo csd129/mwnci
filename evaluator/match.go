@@ -43,9 +43,3 @@ func matchFun(args ...object.Object) object.Object {
 	return FALSE
 }
 
-func init() {
-	RegisterBuiltin("match",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (matchFun(args...))
-		})
-}

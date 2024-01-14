@@ -28,9 +28,3 @@ func AscTime(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("asctime",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (AscTime(args...))
-		})
-}

@@ -49,9 +49,3 @@ func evalFun(env *object.Environment, args ...object.Object) object.Object {
 	return newError("argument to `eval` not supported, got %s", args[0].Type())
 }
 
-func init() {
-	RegisterBuiltin("eval",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (evalFun(env, args...))
-		})
-}

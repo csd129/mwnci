@@ -44,9 +44,3 @@ func floatFun(args ...object.Object) object.Object {
 	}
 }
 
-func init() {
-	RegisterBuiltin("float",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (floatFun(args...))
-		})
-}

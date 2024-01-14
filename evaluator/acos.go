@@ -24,10 +24,3 @@ func mathAcos(args ...object.Object) object.Object {
 	}
 
 }
-
-func init() {
-	RegisterBuiltin("acos",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (mathAcos(args...))
-		})
-}

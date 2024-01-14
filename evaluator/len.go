@@ -20,9 +20,3 @@ func FunLen(args ...object.Object) object.Object {
 	return newError("TypeError: object of type '%s' has no len()", args[0].Type())
 }
 
-func init() {
-	RegisterBuiltin("len",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (FunLen(args...))
-		})
-}

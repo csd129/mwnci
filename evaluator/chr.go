@@ -20,9 +20,3 @@ func Chr(args ...object.Object) object.Object {
 	return &object.String{Value: fmt.Sprintf("%c", rune(args[0].(*object.Integer).Value))}
 }
 
-func init() {
-	RegisterBuiltin("chr",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Chr(args...))
-		})
-}

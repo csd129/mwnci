@@ -44,9 +44,3 @@ func HttpGet(args ...object.Object) object.Object {
 	return &object.String{Value: string(body)}
 }
 
-func init() {
-	RegisterBuiltin("httpget",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (HttpGet(args...))
-		})
-}

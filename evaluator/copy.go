@@ -19,9 +19,3 @@ func acopyFun(args ...object.Object) object.Object {
 	return newArray
 }
 
-func init() {
-	RegisterBuiltin("copy",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (acopyFun(args...))
-		})
-}

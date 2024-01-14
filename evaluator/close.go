@@ -27,9 +27,3 @@ func Close(args ...object.Object) object.Object {
 	return &object.Null{}
 }
 
-func init() {
-	RegisterBuiltin("close",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Close(args...))
-		})
-}

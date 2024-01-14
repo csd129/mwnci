@@ -27,9 +27,3 @@ func Listen(args ...object.Object) object.Object {
 	return &object.Null{}
 }
 
-func init() {
-	RegisterBuiltin("listen",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Listen(args...))
-		})
-}

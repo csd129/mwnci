@@ -18,9 +18,3 @@ func Getgid(args ...object.Object) object.Object {
 	return &object.Integer{Value: int64(os.Getgid())}
 }
 
-func init() {
-	RegisterBuiltin("getgid",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Getgid(args...))
-		})
-}

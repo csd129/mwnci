@@ -22,9 +22,3 @@ func Sleep(args ...object.Object) object.Object {
 	return NULL
 }
 
-func init() {
-	RegisterBuiltin("sleep",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Sleep(args...))
-		})
-}

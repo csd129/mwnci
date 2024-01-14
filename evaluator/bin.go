@@ -20,10 +20,3 @@ func Bin(args ...object.Object) object.Object {
 	i := args[0].(*object.Integer)
 	return &object.String{Value: fmt.Sprintf("0b%s", strconv.FormatInt(i.Value, 2))}
 }
-
-func init() {
-	RegisterBuiltin("bin",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return(Bin(args...))
-		})
-}

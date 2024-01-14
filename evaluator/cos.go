@@ -24,9 +24,3 @@ func mathCos(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("cos",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (mathCos(args...))
-		})
-}

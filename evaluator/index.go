@@ -47,9 +47,3 @@ func Index(args ...object.Object) object.Object {
 	)
 }
 
-func init() {
-	RegisterBuiltin("index",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Index(args...))
-		})
-}

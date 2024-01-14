@@ -25,9 +25,3 @@ func Printat(args ...object.Object) object.Object {
 	return NULL
 }
 
-func init() {
-	RegisterBuiltin("printat",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Printat(args...))
-		})
-}

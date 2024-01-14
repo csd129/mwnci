@@ -29,9 +29,3 @@ func exitFun(args ...object.Object) object.Object {
 	return nil
 }
 
-func init() {
-	RegisterBuiltin("exit",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (exitFun(args...))
-		})
-}

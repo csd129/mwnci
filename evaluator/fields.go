@@ -27,9 +27,3 @@ func Fields(args ...object.Object) object.Object {
 	return &object.Array{Elements: elements}
 }
 
-func init() {
-	RegisterBuiltin("fields",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Fields(args...))
-		})
-}

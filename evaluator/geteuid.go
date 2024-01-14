@@ -17,9 +17,3 @@ func Geteuid(args ...object.Object) object.Object {
 	return &object.Integer{Value: int64(os.Geteuid())}
 }
 
-func init() {
-	RegisterBuiltin("geteuid",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Geteuid(args...))
-		})
-}

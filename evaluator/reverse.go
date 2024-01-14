@@ -39,9 +39,3 @@ func Rev(args ...object.Object) object.Object {
 	return FALSE
 }
 
-func init() {
-	RegisterBuiltin("reverse",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Rev(args...))
-		})
-}

@@ -81,9 +81,3 @@ func FOpen(args ...object.Object) object.Object {
 	return &object.Integer{Value: int64(fd)}
 }
 
-func init() {
-	RegisterBuiltin("fopen",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (FOpen(args...))
-		})
-}

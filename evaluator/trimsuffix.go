@@ -19,9 +19,3 @@ func TrimSuff(args ...object.Object) object.Object {
 	return &object.String{Value: strings.TrimSuffix(line, suffix)}
 }
 
-func init() {
-	RegisterBuiltin("trimsuffix",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (TrimSuff(args...))
-		})
-}

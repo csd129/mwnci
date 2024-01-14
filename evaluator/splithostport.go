@@ -30,9 +30,3 @@ func SplitHP(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("splithostport",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (SplitHP(args...))
-		})
-}

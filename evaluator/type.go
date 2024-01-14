@@ -40,9 +40,3 @@ func typeFun(args ...object.Object) object.Object {
 	}
 }
 
-func init() {
-	RegisterBuiltin("type",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (typeFun(args...))
-		})
-}

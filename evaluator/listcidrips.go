@@ -37,9 +37,3 @@ func IncIP(ip net.IP) {
 	}
 }
 
-func init() {
-	RegisterBuiltin("listcidrips",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Listcidrips(args...))
-		})
-}

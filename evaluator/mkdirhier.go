@@ -30,9 +30,3 @@ func Mkdirhier(args ...object.Object) object.Object {
 	return TRUE
 }
 
-func init() {
-	RegisterBuiltin("mkdirhier",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Mkdirhier(args...))
-		})
-}

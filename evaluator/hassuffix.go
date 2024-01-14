@@ -23,9 +23,3 @@ func HasSuff(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("hassuffix",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (HasSuff(args...))
-		})
-}

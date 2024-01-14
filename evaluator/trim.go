@@ -23,9 +23,3 @@ func Trim(args ...object.Object) object.Object {
 	return &object.String{Value: strings.Trim(line, trimmer)}
 }
 
-func init() {
-	RegisterBuiltin("trim",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Trim(args...))
-		})
-}

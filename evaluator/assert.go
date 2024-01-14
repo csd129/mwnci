@@ -23,10 +23,3 @@ func Assert(args ...object.Object) object.Object {
 	}
 	return nil
 }
-	
-func init() {
-	RegisterBuiltin("assert",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Assert(args...))
-		})
-}

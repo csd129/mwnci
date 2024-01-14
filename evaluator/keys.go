@@ -33,9 +33,3 @@ func hashKeys(args ...object.Object) object.Object {
 	return &object.Array{Elements: array}
 }
 
-func init() {
-	RegisterBuiltin("keys",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (hashKeys(args...))
-		})
-}

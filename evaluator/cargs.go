@@ -25,9 +25,3 @@ func Cargs(args ...object.Object) object.Object {
 	return &object.Array{Elements: elements}
 }
 
-func init() {
-	RegisterBuiltin("cargs",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Cargs(args...))
-		})
-}

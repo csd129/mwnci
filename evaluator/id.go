@@ -39,9 +39,3 @@ func IdOf(args ...object.Object) object.Object {
 	return NULL
 }
 
-func init() {
-	RegisterBuiltin("id",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (IdOf(args...))
-		})
-}

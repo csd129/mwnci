@@ -43,9 +43,3 @@ func zipFun(args ...object.Object) object.Object {
 	return &object.Array{Elements: ziparray}
 }
 
-func init() {
-	RegisterBuiltin("zip",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (zipFun(args...))
-		})
-}

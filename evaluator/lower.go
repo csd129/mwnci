@@ -20,9 +20,3 @@ func Lower(args ...object.Object) object.Object {
 	return &object.String{Value: strings.ToLower(str.Value)}
 }
 
-func init() {
-	RegisterBuiltin("tolower",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Lower(args...))
-		})
-}

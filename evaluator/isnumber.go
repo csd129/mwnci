@@ -23,9 +23,3 @@ func IsNumber(args ...object.Object) object.Object {
 	return TRUE
 }
 
-func init() {
-	RegisterBuiltin("isnumber",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (IsNumber(args...))
-		})
-}

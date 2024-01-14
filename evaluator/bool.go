@@ -50,10 +50,3 @@ func Bool(args ...object.Object) object.Object {
 
 	return &object.Boolean{Value: retval}
 }
-
-func init() {
-	RegisterBuiltin("bool",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Bool(args...))
-		})
-}

@@ -20,9 +20,3 @@ func fpushFun(args ...object.Object) object.Object {
 	return newArray
 }
 
-func init() {
-	RegisterBuiltin("push",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (fpushFun(args...))
-		})
-}

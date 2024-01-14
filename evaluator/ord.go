@@ -23,9 +23,3 @@ func Ord(args ...object.Object) object.Object {
 		s.Inspect(),
 	)
 }
-func init() {
-	RegisterBuiltin("ord",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Ord(args...))
-		})
-}

@@ -25,9 +25,3 @@ func mathTanh(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("tanh",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (mathTanh(args...))
-		})
-}

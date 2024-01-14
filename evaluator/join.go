@@ -24,12 +24,6 @@ func Joiner(args ...object.Object) object.Object {
 	}
 	return &object.String{Value: strings.Join(a, sep.Value)}
 }
-func init() {
-	RegisterBuiltin("join",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Joiner(args...))
-		})
-}
 
 
 

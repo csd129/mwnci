@@ -25,9 +25,3 @@ func mathCosh(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("cosh",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (mathCosh(args...))
-		})
-}

@@ -24,10 +24,3 @@ func FuncCut(args ...object.Object) object.Object {
 	elements[1] = &object.String{Value: fmt.Sprintf("%v", after)}
 	return &object.Array{Elements: elements}
 }
-
-func init() {
-	RegisterBuiltin("cut",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (FuncCut(args...))
-		})
-}

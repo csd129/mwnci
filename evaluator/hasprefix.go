@@ -23,9 +23,3 @@ func HasPrefix(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("hasprefix",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (HasPrefix(args...))
-		})
-}

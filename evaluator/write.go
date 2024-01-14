@@ -27,9 +27,3 @@ func Write(args ...object.Object) object.Object {
 	return &object.Integer{Value: int64(n)}
 }
 
-func init() {
-	RegisterBuiltin("write",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Write(args...))
-		})
-}

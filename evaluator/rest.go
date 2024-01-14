@@ -20,9 +20,3 @@ func Rest(args ...object.Object) object.Object {
 	newArray.PopLeft()
 	return newArray
 }
-func init() {
-	RegisterBuiltin("rest",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Rest(args...))
-		})
-}

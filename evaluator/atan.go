@@ -25,9 +25,3 @@ func mathAtan(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("atan",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (mathAtan(args...))
-		})
-}

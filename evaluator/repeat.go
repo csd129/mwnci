@@ -35,9 +35,3 @@ func Repeat(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("repeat",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Repeat(args...))
-		})
-}

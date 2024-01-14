@@ -18,9 +18,3 @@ func Dirpath(args ...object.Object) object.Object {
 	return &object.String{Value: path.Dir(args[0].(*object.String).Value)}
 }
 
-func init() {
-	RegisterBuiltin("dirpath",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Dirpath(args...))
-		})
-}

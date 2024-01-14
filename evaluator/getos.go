@@ -16,9 +16,3 @@ func GetOs(args ...object.Object) object.Object {
 	return &object.String{Value: runtime.GOOS}
 }
 
-func init() {
-	RegisterBuiltin("getos",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (GetOs(args...))
-		})
-}

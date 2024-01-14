@@ -25,9 +25,3 @@ func Cd(args ...object.Object) object.Object {
 	return TRUE
 }
 
-func init() {
-	RegisterBuiltin("cd",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Cd(args...))
-		})
-}

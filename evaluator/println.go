@@ -12,9 +12,3 @@ func Println(args ...object.Object) object.Object {
 	return NULL
 }
 
-func init() {
-	RegisterBuiltin("println",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Println(args...))
-		})
-}

@@ -65,9 +65,3 @@ func Socket(args ...object.Object) object.Object {
 	return &object.Integer{Value: int64(fd)}
 }
 
-func init() {
-	RegisterBuiltin("socket",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Socket(args...))
-		})
-}

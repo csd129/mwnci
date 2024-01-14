@@ -43,9 +43,3 @@ func Regexp(args ...object.Object) object.Object {
 	return &object.Array{Elements: elements}
 }
 
-func init() {
-	RegisterBuiltin("regexp",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Regexp(args...))
-		})
-}

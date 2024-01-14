@@ -28,9 +28,3 @@ func Uniq(args ...object.Object) object.Object {
 	return &object.Array{Elements: list}
 }
 
-func init() {
-	RegisterBuiltin("uniq",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Uniq(args...))
-		})
-}

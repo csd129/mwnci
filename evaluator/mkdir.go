@@ -31,9 +31,3 @@ func mkdirFun(args ...object.Object) object.Object {
 	return TRUE
 }
 
-func init() {
-	RegisterBuiltin("mkdir",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (mkdirFun(args...))
-		})
-}

@@ -20,10 +20,3 @@ func Args(args ...object.Object) object.Object {
 	}
 	return &object.Array{Elements: result}
 }
-
-func init() {
-	RegisterBuiltin("args",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Args(args...))
-		})
-}

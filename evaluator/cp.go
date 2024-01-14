@@ -38,9 +38,3 @@ func FCp(args ...object.Object) object.Object {
 	return &object.Integer{Value: nBytes}
 }
 
-func init() {
-	RegisterBuiltin("cp",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (FCp(args...))
-		})
-}

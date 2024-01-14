@@ -24,9 +24,3 @@ func LookupCNAME(args ...object.Object) object.Object {
 	return &object.String{Value: record}
 }
 
-func init() {
-	RegisterBuiltin("lookupcname",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (LookupCNAME(args...))
-		})
-}

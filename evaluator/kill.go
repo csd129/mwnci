@@ -23,9 +23,3 @@ func Kill(args ...object.Object) object.Object {
 	return FALSE
 }
 
-func init() {
-	RegisterBuiltin("kill",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Kill(args...))
-		})
-}

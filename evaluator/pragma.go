@@ -53,9 +53,3 @@ func pragmaFun(args ...object.Object) object.Object {
 	return &object.Array{Elements: array}
 }
 
-func init() {
-	RegisterBuiltin("pragma",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (pragmaFun(args...))
-		})
-}

@@ -21,9 +21,3 @@ func Replace(args ...object.Object) object.Object {
 	return &object.String{Value: strings.Replace(line, search, rep, count)}
 }
 
-func init() {
-	RegisterBuiltin("replace",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Replace(args...))
-		})
-}

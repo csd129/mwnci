@@ -43,9 +43,3 @@ func chmodFun(args ...object.Object) object.Object {
 	return TRUE
 }
 
-func init() {
-	RegisterBuiltin("chmod",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (chmodFun(args...))
-		})
-}

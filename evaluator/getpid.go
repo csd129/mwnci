@@ -16,9 +16,3 @@ func getPidFun(args ...object.Object) object.Object {
 	return &object.Integer{Value: int64(os.Getpid())}
 }
 
-func init() {
-	RegisterBuiltin("getpid",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (getPidFun(args...))
-		})
-}

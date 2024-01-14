@@ -33,9 +33,3 @@ func Sum(args ...object.Object) object.Object {
 	return &object.Float{Value: total}
 }
 
-func init() {
-	RegisterBuiltin("sum",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Sum(args...))
-		})
-}

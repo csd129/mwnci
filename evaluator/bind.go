@@ -53,11 +53,3 @@ func Bind(args ...object.Object) object.Object {
 
 	return &object.Null{}
 }
-
-
-func init() {
-	RegisterBuiltin("bind",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Bind(args...))
-		})
-}

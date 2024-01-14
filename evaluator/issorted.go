@@ -22,9 +22,3 @@ func Issorted(args ...object.Object) object.Object {
 	}
 }
 
-func init() {
-	RegisterBuiltin("issorted",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Issorted(args...))
-		})
-}

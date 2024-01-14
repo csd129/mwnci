@@ -13,9 +13,3 @@ func putsFun(args ...object.Object) object.Object {
 	return NULL
 }
 
-func init() {
-	RegisterBuiltin("print",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (putsFun(args...))
-		})
-}

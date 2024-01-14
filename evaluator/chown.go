@@ -26,9 +26,3 @@ func Chown(args ...object.Object) object.Object {
 	} 
 	return TRUE
 }
-func init() {
-	RegisterBuiltin("chown",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Chown(args...))
-		})
-}

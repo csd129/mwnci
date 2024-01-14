@@ -27,9 +27,3 @@ func ArrayInsert(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("insert",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (ArrayInsert(args...))
-		})
-}

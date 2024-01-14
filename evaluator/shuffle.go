@@ -23,9 +23,3 @@ func ShuffleFun(args ...object.Object) object.Object {
 	return newa
 }
 
-func init() {
-	RegisterBuiltin("shuffle",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (ShuffleFun(args...))
-		})
-}

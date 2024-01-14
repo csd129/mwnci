@@ -21,12 +21,6 @@ func Oct(args ...object.Object) object.Object {
 	return &object.String{Value: fmt.Sprintf("0%s", strconv.FormatInt(i.Value, 8))}
 }
 
-func init() {
-	RegisterBuiltin("oct",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return(Oct(args...))
-		})
-}
 
 
 

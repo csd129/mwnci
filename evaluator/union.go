@@ -26,9 +26,3 @@ func ArrUnion(args ...object.Object) object.Object {
 	return Uniq(newArray)
 }
 
-func init() {
-	RegisterBuiltin("union",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (ArrUnion(args...))
-		})
-}

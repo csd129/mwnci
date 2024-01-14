@@ -30,9 +30,3 @@ func System(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("system",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (System(args...))
-		})
-}

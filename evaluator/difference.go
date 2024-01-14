@@ -40,9 +40,3 @@ func ArrDiff(args ...object.Object) object.Object {
 	return &object.Array{Elements: list}
 }
 
-func init() {
-	RegisterBuiltin("difference",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (ArrDiff(args...))
-		})
-}

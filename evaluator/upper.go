@@ -21,9 +21,3 @@ func Upper(args ...object.Object) object.Object {
 	return &object.String{Value: strings.ToUpper(str.Value)}
 }
 
-func init() {
-	RegisterBuiltin("toupper",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Upper(args...))
-		})
-}

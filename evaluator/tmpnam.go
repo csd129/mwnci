@@ -27,9 +27,3 @@ func Tmpnam(args ...object.Object) object.Object {
 
 	return &object.String{Value: file.Name()}
 }
-func init() {
-	RegisterBuiltin("tmpnam",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Tmpnam(args...))
-		})
-}

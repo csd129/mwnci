@@ -23,9 +23,3 @@ func Random(args ...object.Object) object.Object {
 	rand.Seed(time.Now().UnixNano())
 	return &object.Integer{Value: int64(rand.Intn(value))}
 }
-func init() {
-	RegisterBuiltin("random",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Random(args...))
-		})
-}

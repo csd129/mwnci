@@ -19,9 +19,3 @@ func Date(args ...object.Object) object.Object {
 	return &object.String{Value: current_time.Format(time.ANSIC)}
 }
 
-func init() {
-	RegisterBuiltin("date",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Date(args...))
-		})
-}

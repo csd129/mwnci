@@ -27,9 +27,3 @@ func Swapper(args ...object.Object) object.Object {
 	return nums
 }
 
-func init() {
-	RegisterBuiltin("swap",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Swapper(args...))
-		})
-}

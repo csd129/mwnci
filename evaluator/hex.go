@@ -22,9 +22,3 @@ func Hex(args ...object.Object) object.Object {
 	return &object.String{Value: fmt.Sprintf("0x%s", strconv.FormatInt(i.Value, 16))}
 }
 
-func init() {
-	RegisterBuiltin("hex",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return(Hex(args...))
-		})
-}

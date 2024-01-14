@@ -31,10 +31,3 @@ func Accept(args ...object.Object) object.Object {
 
 	return &object.Integer{Value: int64(nfd)}
 }
-
-func init() {
-	RegisterBuiltin("accept",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Accept(args...))
-		})
-}

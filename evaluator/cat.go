@@ -44,9 +44,3 @@ func Cat(args ...object.Object) object.Object {
 	return &object.String{Value: strings.TrimSuffix(string(data), "\n")}
 }
 
-func init() {
-	RegisterBuiltin("cat",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Cat(args...))
-		})
-}

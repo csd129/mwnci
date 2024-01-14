@@ -44,9 +44,3 @@ func setFun(args ...object.Object) object.Object {
 	return newError("argument to set() not supported, expected HASH or ARRAY, got=%s", args[0].Type())
 }
 
-func init() {
-	RegisterBuiltin("set",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (setFun(args...))
-		})
-}

@@ -19,9 +19,3 @@ func Trimprefix(args ...object.Object) object.Object {
 	return &object.String{Value: strings.TrimPrefix(line, prefix)}
 }
 
-func init() {
-	RegisterBuiltin("trimprefix",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Trimprefix(args...))
-		})
-}

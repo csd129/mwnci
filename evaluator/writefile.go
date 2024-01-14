@@ -28,9 +28,3 @@ func WriteFile(args ...object.Object) object.Object {
 	return NULL
 }
 
-func init() {
-	RegisterBuiltin("writefile",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (WriteFile(args...))
-		})
-}

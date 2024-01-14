@@ -18,9 +18,3 @@ func Time(args ...object.Object) object.Object {
 	return &object.Integer{Value: now.Unix()}
 }
 
-func init() {
-	RegisterBuiltin("time",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Time(args...))
-		})
-}

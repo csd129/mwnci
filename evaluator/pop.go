@@ -27,9 +27,3 @@ func Pop(args ...object.Object) object.Object {
 	return element
 }
 
-func init() {
-	RegisterBuiltin("pop",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Pop(args...))
-		})
-}

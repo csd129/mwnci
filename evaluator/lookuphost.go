@@ -28,9 +28,3 @@ func LookupHOST(args ...object.Object) object.Object {
 	}
 	return &object.Array{Elements: elements}
 }
-func init() {
-	RegisterBuiltin("lookuphost",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (LookupHOST(args...))
-		})
-}

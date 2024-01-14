@@ -31,9 +31,3 @@ func Readpw(args ...object.Object) object.Object {
 	return &object.String{Value: string(bytePassword)}
 }
 
-func init() {
-	RegisterBuiltin("readpw",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Readpw(args...))
-		})
-}

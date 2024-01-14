@@ -27,9 +27,3 @@ func Glob(args ...object.Object) object.Object {
 	return &object.Array{Elements: elements}
 }
 
-func init() {
-	RegisterBuiltin("glob",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Glob(args...))
-		})
-}

@@ -20,9 +20,3 @@ func Hostname(args ...object.Object) object.Object {
 	}
 	return &object.String{Value: hostname}
 }
-func init() {
-	RegisterBuiltin("hostname",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Hostname(args...))
-		})
-}

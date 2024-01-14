@@ -41,9 +41,3 @@ func Read(args ...object.Object) object.Object {
 	return &object.String{Value: charbyte}
 }
 
-func init() {
-	RegisterBuiltin("read",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Read(args...))
-		})
-}

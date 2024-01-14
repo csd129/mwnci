@@ -64,9 +64,3 @@ func File(args ...object.Object) object.Object {
 	return &object.String{Value: value}
 }
 
-func init() {
-	RegisterBuiltin("file",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (File(args...))
-		})
-}

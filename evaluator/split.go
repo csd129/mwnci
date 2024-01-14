@@ -35,9 +35,3 @@ func Split(args ...object.Object) object.Object {
 	return &object.Array{Elements: elements}
 }
 
-func init() {
-	RegisterBuiltin("split",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Split(args...))
-		})
-}

@@ -50,9 +50,3 @@ func Connect(args ...object.Object) object.Object {
 	return &object.Null{}
 }
 
-func init() {
-	RegisterBuiltin("connect",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Connect(args...))
-		})
-}

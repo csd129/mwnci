@@ -26,9 +26,3 @@ func CheckIP(args ...object.Object) object.Object {
 	return &object.String{Value: clientip}
 }
 
-func init() {
-	RegisterBuiltin("checkip",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (CheckIP(args...))
-		})
-}

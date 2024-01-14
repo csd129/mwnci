@@ -50,9 +50,3 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 	return newError("Unable to open file %s", imp_filename)
 }
 
-func init() {
-	RegisterBuiltin("include",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Include(env, args...))
-		})
-}

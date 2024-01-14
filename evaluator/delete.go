@@ -49,9 +49,3 @@ func harrayDelete(args ...object.Object) object.Object {
 	return newError("argument to delete() must be HASH or ARRAY, got=%s", args[0].Type())
 }
 
-func init() {
-	RegisterBuiltin("delete",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (harrayDelete(args...))
-		})
-}

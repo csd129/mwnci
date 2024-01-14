@@ -26,9 +26,3 @@ func mathLog10(args ...object.Object) object.Object {
 
 }
 
-func init() {
-	RegisterBuiltin("log10",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (mathLog10(args...))
-		})
-}

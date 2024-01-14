@@ -38,9 +38,3 @@ func sprintfFun(args ...object.Object) object.Object {
 	return &object.String{Value: out}
 }
 
-func init() {
-	RegisterBuiltin("sprintf",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (sprintfFun(args...))
-		})
-}

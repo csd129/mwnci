@@ -27,9 +27,3 @@ func Ipincidr(args ...object.Object) object.Object {
 	return FALSE
 }
 
-func init() {
-	RegisterBuiltin("ipincidr",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Ipincidr(args...))
-		})
-}

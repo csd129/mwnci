@@ -44,9 +44,3 @@ func openFun(args ...object.Object) object.Object {
 	return (file)
 }
 
-func init() {
-	RegisterBuiltin("open",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (openFun(args...))
-		})
-}

@@ -27,9 +27,3 @@ func setEnvFun(args ...object.Object) object.Object {
 	}
 }
 
-func init() {
-	RegisterBuiltin("setenv",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (setEnvFun(args...))
-		})
-}

@@ -47,9 +47,3 @@ func intFun(args ...object.Object) object.Object {
 	}
 }
 
-func init() {
-	RegisterBuiltin("int",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (intFun(args...))
-		})
-}

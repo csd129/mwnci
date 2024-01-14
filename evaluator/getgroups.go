@@ -23,9 +23,3 @@ func GetGroups(args ...object.Object) object.Object {
 	return &object.Array{Elements: elements}
 }
 
-func init() {
-	RegisterBuiltin("getgroups",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (GetGroups(args...))
-		})
-}

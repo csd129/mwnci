@@ -17,10 +17,3 @@ func basenameFun(args ...object.Object) object.Object {
 	}     
 	return &object.String{Value: path.Base(args[0].(*object.String).Value)}
 }
-
-func init() {
-	RegisterBuiltin("basename",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (basenameFun(args...))
-		})
-}

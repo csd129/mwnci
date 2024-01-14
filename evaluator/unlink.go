@@ -24,9 +24,3 @@ func unlinkFun(args ...object.Object) object.Object {
 	return TRUE
 }
 
-func init() {
-	RegisterBuiltin("unlink",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (unlinkFun(args...))
-		})
-}

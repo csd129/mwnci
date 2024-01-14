@@ -24,10 +24,3 @@ func mathAsin(args ...object.Object) object.Object {
 	}
 
 }
-
-func init() {
-	RegisterBuiltin("asin",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (mathAsin(args...))
-		})
-}

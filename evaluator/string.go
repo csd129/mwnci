@@ -16,9 +16,3 @@ func strFun(args ...object.Object) object.Object {
 	return &object.String{Value: args[0].Inspect()}
 }
 
-func init() {
-	RegisterBuiltin("string",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (strFun(args...))
-		})
-}

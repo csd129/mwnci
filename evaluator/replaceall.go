@@ -20,9 +20,3 @@ func Replaceall(args ...object.Object) object.Object {
 	return &object.String{Value: strings.ReplaceAll(line, search, rep)}
 }
 
-func init() {
-	RegisterBuiltin("replaceall",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Replaceall(args...))
-		})
-}

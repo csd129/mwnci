@@ -34,9 +34,3 @@ func Input(args ...object.Object) object.Object {
 	return &object.String{Value: string(line)}
 }
 
-func init() {
-	RegisterBuiltin("input",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Input(args...))
-		})
-}

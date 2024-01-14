@@ -27,9 +27,3 @@ func Sorted(args ...object.Object) object.Object {
 	return newArray
 }
 
-func init() {
-	RegisterBuiltin("sort",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Sorted(args...))
-		})
-}

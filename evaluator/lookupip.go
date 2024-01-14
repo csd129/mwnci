@@ -28,9 +28,3 @@ func LookupIP(args ...object.Object) object.Object {
 	}
 	return &object.Array{Elements: elements}
 }
-func init() {
-	RegisterBuiltin("lookupip",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (LookupIP(args...))
-		})
-}

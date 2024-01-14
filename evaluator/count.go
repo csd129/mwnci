@@ -29,9 +29,3 @@ func Count(args ...object.Object) object.Object {
 	return &object.Integer{Value: int64(counter)}
 }
 
-func init() {
-	RegisterBuiltin("count",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Count(args...))
-		})
-}

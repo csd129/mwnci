@@ -37,9 +37,3 @@ func Seek(args ...object.Object) object.Object {
 	return &object.Integer{Value: offset}
 }
 
-func init() {
-	RegisterBuiltin("seek",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (Seek(args...))
-		})
-}

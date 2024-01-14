@@ -27,9 +27,3 @@ func ArrExtend(args ...object.Object) object.Object {
 	return newArray
 }
 
-func init() {
-	RegisterBuiltin("extend",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (ArrExtend(args...))
-		})
-}
