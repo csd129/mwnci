@@ -1,10 +1,9 @@
 package evaluator
 
-import (
-	"syscall"
-	"fmt"
+import ( 
 	"mwnci/object"
 	"mwnci/typing"
+	"syscall"
 )
 
 // DefaultBufferSize is the default buffer size
@@ -37,7 +36,5 @@ func Read(args ...object.Object) object.Object {
 		return newError("IOError: %s", err)
 	}
 	charbyte := string(buf[:n])
-	charbyte = fmt.Sprintf("%s", charbyte)
 	return &object.String{Value: charbyte}
 }
-
