@@ -25,36 +25,6 @@ if (!INCLUDE["OS"]) {
         return secs;
     };
     
-    function uname() {
-        u_name={}
-        u_name=set(u_name, "kernel", system("uname -s"))
-        u_name=set(u_name, "nodename", system("uname -n"))
-        u_name=set(u_name, "release", system("uname -r"))
-        u_name=set(u_name, "version", system("uname -v"))
-        u_name=set(u_name, "machine", system("uname -m"))
-        u_name=set(u_name, "processor", system("uname -p"))
-        u_name=set(u_name, "hardware", system("uname -i"))
-        u_name=set(u_name, "os", system("uname -o"))
-        u_name=set(u_name, "all", system("uname -a"))
-        return u_name;
-    };
-    
-    function arch() {
-        return uname()["machine"];
-    };
-    
-    function ulimit() {
-        ulimit_hash={}
-        data=split(system("ulimit -a"), "\n")
-        foreach item in data {
-            desc=trim(split(item, "(")[0])
-            desc=desc.replaceall(" ", "_")
-            value=trim(split(item, ")")[1])
-            ulimit_hash=set(ulimit_hash, desc, value)
-        }
-        return ulimit_hash;
-    };
-    
     function syslog(priority="syslog.info", message="") {
         if (!checkfunctype("syslog", "string", priority, 1)) {exit(1)}
         if (!checkfunctype("syslog", "string", message, 2)) {exit(1)}

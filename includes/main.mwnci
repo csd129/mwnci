@@ -378,6 +378,17 @@ if (!INCLUDE["MAIN"]) {
         return issorted(reverse(SortedArray));
     }
     
+    function lines(data) {
+        if (type(data) == "string") {
+	    return len(split(data, "\n"));
+ 	}
+	if (type(data) == "array") {
+	    return len(data);
+	}
+	println("Error calling `lines`: ERROR: TypeError lines() expected argument #1 to be `STRING` or `ARRAY`, got `", toupper(type(data)), "`")
+	exit(1)
+    }
+
     function string.contains(search) {
         return contains(self, search);
     }
@@ -442,7 +453,6 @@ if (!INCLUDE["MAIN"]) {
     function array.join( char ) {
         return join(self, char);
     }
-    
     
     function object.abs() {
         return abs(self);
@@ -778,5 +788,12 @@ if (!INCLUDE["MAIN"]) {
     function integer.chr() {
         return chr(self);
     }
-}
 
+    function string.lines() {
+        return lines(self);
+    }
+
+    function array.lines() {
+        return lines(self);
+    }
+}

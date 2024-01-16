@@ -1,10 +1,10 @@
 if (!INCLUDE["NET"]) {
     INCLUDE=set(INCLUDE, "NET", true)
     
-    function netstat(iface="") {
-        if (!checkfunctype("netstat", "string", iface, 1)) {exit(1)}
+    function nettrans(iface="") {
+        if (!checkfunctype("nettrans", "string", iface, 1)) {exit(1)}
         iface_hash={}
-        ifdata=split(system("netstat -in"), "\n")
+        ifdata=split(system("netstat -i"), "\n")
         ifdata=shift(ifdata,2)
     
         foreach line in ifdata {
