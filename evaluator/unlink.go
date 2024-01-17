@@ -21,5 +21,5 @@ func unlinkFun(args ...object.Object) object.Object {
 	if err != nil {
 		return &object.Boolean{Value: false}
 	}
-	return T & object.Boolean{Value: true}
+	return &object.Boolean{Value: true}
 }
