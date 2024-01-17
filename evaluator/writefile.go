@@ -25,6 +25,5 @@ func WriteFile(args ...object.Object) object.Object {
 		return newError("IOError: error writing file %s: %s", filename, err)
 	}
 
-	return NULL
+	return &object.Null{}
 }
-

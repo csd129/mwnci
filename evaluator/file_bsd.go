@@ -25,7 +25,7 @@ func File(args ...object.Object) object.Object {
 
 	fileStat, err := os.Lstat(file)
 	if err != nil {
-		return NULL
+		return &object.Null{}
 	}
 	fileSys := fileStat.Sys()
 	fileMtime := fileSys.(*syscall.Stat_t).Mtimespec.Sec
@@ -63,4 +63,3 @@ func File(args ...object.Object) object.Object {
 	value := fmt.Sprintf("%d %d %d %04o %d %d %s %d %d", fileMtime, fileAtime, fileCtime, fileMode, fileSize, fileLinks, fileType, fileUid, fileGid)
 	return &object.String{Value: value}
 }
-

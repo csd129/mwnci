@@ -1015,7 +1015,7 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 		return builtin
 	}
 	fmt.Fprintf(os.Stderr, "identifier not found: %s\n", node.Value)
-        os.Exit(1)
+	os.Exit(1)
 
 	return newError("identifier not found: " + node.Value)
 }

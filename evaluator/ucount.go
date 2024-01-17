@@ -47,6 +47,5 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 		return (Eval(program, env))
 	}
 
-	return NULL
+	return &object.Null{}
 }
-

@@ -10,12 +10,12 @@ func sprintfFun(args ...object.Object) object.Object {
 
 	// We expect 1+ arguments
 	if len(args) < 1 {
-		return NULL
+		return &object.Null{}
 	}
 
 	// Type-check
 	if args[0].Type() != object.STRING_OBJ {
-		return NULL
+		return &object.Null{}
 	}
 
 	// Get the format-string.
@@ -37,4 +37,3 @@ func sprintfFun(args ...object.Object) object.Object {
 	// And now return the value.
 	return &object.String{Value: out}
 }
-
