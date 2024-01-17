@@ -4,11 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"os"
 	"mwnci/object"
 	"mwnci/typing"
-
-
+	"os"
 )
 
 // Input ...
@@ -23,8 +21,8 @@ func Input(args ...object.Object) object.Object {
 	prompt := "> "
 	if len(args) == 1 {
 		prompt = args[0].(*object.String).Value
-	} 
-	fmt.Fprintf(os.Stdout, prompt)
+	}
+	fmt.Fprintf(os.Stdout, "%s", prompt)
 	buffer := bufio.NewReader(os.Stdin)
 
 	line, _, err := buffer.ReadLine()
@@ -33,4 +31,3 @@ func Input(args ...object.Object) object.Object {
 	}
 	return &object.String{Value: string(line)}
 }
-
