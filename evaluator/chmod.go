@@ -1,10 +1,10 @@
 package evaluator
 
 import (
-	"os"
-	"strconv"
 	"mwnci/object"
 	"mwnci/typing"
+	"os"
+	"strconv"
 )
 
 // Change a mode of a file - note the second argument is a string
@@ -16,8 +16,7 @@ func chmodFun(args ...object.Object) object.Object {
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
 		return newError(err.Error())
-	}     
-
+	}
 
 	path := args[0].Inspect()
 	mode := ""
@@ -40,6 +39,5 @@ func chmodFun(args ...object.Object) object.Object {
 	if err != nil {
 		return newError(err.Error())
 	}
-	return TRUE
+	return &object.Boolean{Value: true}
 }
-

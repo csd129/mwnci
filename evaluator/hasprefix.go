@@ -17,9 +17,8 @@ func HasPrefix(args ...object.Object) object.Object {
 	line := args[0].(*object.String).Value
 	suffix := args[1].(*object.String).Value
 	if strings.HasPrefix(line, suffix) {
-		return TRUE
+		return &object.Boolean{Value: true}
 	}
-	return FALSE
+	return &object.Boolean{Value: false}
 
 }
-

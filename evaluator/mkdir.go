@@ -21,13 +21,12 @@ func mkdirFun(args ...object.Object) object.Object {
 	path := args[0].(*object.String).Value
 	mode, err := strconv.ParseInt("755", 8, 64)
 	if err != nil {
-		return FALSE
+		return &object.Boolean{Value: false}
 	}
 
 	err = os.Mkdir(path, os.FileMode(mode))
 	if err != nil && !os.IsExist(err) {
-		return FALSE
+		return &object.Boolean{Value: false}
 	}
-	return TRUE
+	return &object.Boolean{Value: true}
 }
-

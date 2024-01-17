@@ -16,9 +16,8 @@ func Issorted(args ...object.Object) object.Object {
 	}
 
 	if sort.IsSorted(args[0].(*object.Array)) {
-		return TRUE
+		return &object.Boolean{Value: true}
 	} else {
-		return FALSE
+		return &object.Boolean{Value: false}
 	}
 }
-

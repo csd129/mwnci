@@ -21,12 +21,11 @@ func Mkdirhier(args ...object.Object) object.Object {
 	perms := args[1].(*object.String).Value
 	mode, err := strconv.ParseInt(perms, 8, 64)
 	if err != nil {
-		return FALSE
+		return &object.Boolean{Value: false}
 	}
 	err = os.MkdirAll(directory, os.FileMode(mode))
 	if err != nil && !os.IsExist(err) {
-		return FALSE
+		return &object.Boolean{Value: false}
 	}
-	return TRUE
+	return &object.Boolean{Value: true}
 }
-

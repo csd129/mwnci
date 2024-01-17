@@ -22,6 +22,5 @@ func Cd(args ...object.Object) object.Object {
 	if err != nil {
 		return newError(err.Error())
 	}
-	return TRUE
+	return &object.Boolean{Value: true}
 }
-

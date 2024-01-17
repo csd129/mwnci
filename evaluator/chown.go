@@ -14,7 +14,7 @@ func Chown(args ...object.Object) object.Object {
 		typing.WithTypes(object.STRING_OBJ, object.INTEGER_OBJ, object.INTEGER_OBJ),
 	); err != nil {
 		return newError(err.Error())
-	}     
+	}
 
 	path := args[0].Inspect()
 	owner := int(args[1].(*object.Integer).Value)
@@ -23,6 +23,6 @@ func Chown(args ...object.Object) object.Object {
 	err := os.Chown(path, owner, group)
 	if err != nil {
 		return newError(err.Error())
-	} 
-	return TRUE
+	}
+	return &object.Boolean{Value: true}
 }

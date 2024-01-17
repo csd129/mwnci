@@ -1,10 +1,10 @@
 package evaluator
 
 import (
-	"strconv"
 	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
+	"strconv"
 )
 
 func IsNumber(args ...object.Object) object.Object {
@@ -15,11 +15,10 @@ func IsNumber(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 	value := fmt.Sprintf("%v", args[0])
-	
-	_, err := strconv.ParseFloat(value, 64)
-	if (err != nil) {
-		return FALSE
-	}
-	return TRUE
-}
 
+	_, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return &object.Boolean{Value: false}
+	}
+	return &object.Boolean{Value: true}
+}
