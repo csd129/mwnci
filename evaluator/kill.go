@@ -14,12 +14,9 @@ func Kill(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-
-	//P := int(args[0].(*object.Integer).Value)
 	err := syscall.Kill(int(args[0].(*object.Integer).Value), syscall.SIGTERM)
 	if err == nil {
 		return TRUE
 	}
 	return FALSE
 }
-
