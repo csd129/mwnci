@@ -9,7 +9,6 @@
 package main
 
 import (
-	_ "embed"
 	"flag"
 	"fmt"
 	"os"
@@ -24,7 +23,6 @@ import (
 // The current version
 var version = "0.1.9.r01"
 
-//go:embed data/stdlib.mwnci
 var stdlib string
 
 // Implemention of "version()" function.
@@ -57,6 +55,7 @@ func Execute(input string) int {
 	//
 	//  Parse and evaluate our standard-library.
 	//
+	stdlib := "INCLUDE={} include(\"main\")"
 	initL := lexer.New(stdlib)
 	initP := parser.New(initL)
 	initProg := initP.ParseProgram()
