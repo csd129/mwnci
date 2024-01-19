@@ -1,22 +1,14 @@
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
-    function ceil(Value) {
-        if (!checkfunctype("ceil", "number", Value, 1)) {exit(1)}
-        return (Value > int(Value)) ? int(Value) + 1 : int(Value);
+    function abs(number=0) {
+        if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
+        return number < 0 ? number *= -1 : number;
     }
 
-    function floor(Value) {
-        if (!checkfunctype("floor", "number", Value, 1)) {exit(1)}
-        if  (Value < 0) {
-            return (int(Value) > Value) ? int(Value)-1 : int(Value);
-        }
-        return int(Value);
-    }
-    
-    function sqrt(n=0) {
-        if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
-        return n**0.5;
+    function average(ave_array) {
+        if (!checkfunctype("average", "array", ave_array, 1)) {exit(1)}
+        return float(sum(ave_array) / float(len(ave_array)));
     }
 
     function cbrt(n=0) {
@@ -24,9 +16,21 @@ if (!INCLUDE["MATH"]) {
         return n**0.3333333333333333;
     }
 
-    function abs(number=0) {
-        if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
-        return number < 0 ? number *= -1 : number;
+    function ceil(Value) {
+        if (!checkfunctype("ceil", "number", Value, 1)) {exit(1)}
+        return (Value > int(Value)) ? int(Value) + 1 : int(Value);
+    }
+
+    function degrees(radian) {
+        if (!checkfunctype("degrees", "number", radian, 1)) {exit(1)}
+        return radian * (180/PI);
+    }
+
+    function dim(x=0,y=0) {
+        if (!checkfunctype("dim", "number", x, 1)) {exit(1)}
+        if (!checkfunctype("dim", "number", y, 2)) {exit(1)}
+        v=float(x)-float(y)
+        return v < 0 ? float(0) : v;
     }
 
     function divmod(a=0,b=0) {
@@ -37,60 +41,6 @@ if (!INCLUDE["MATH"]) {
 	        exit(1)
 	    }
         return [a/b, a%b];
-    }
-
-    function median(MedianArray) {
-        if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
-        MedianArray=sort(MedianArray)
-        Median=0
-        Len=len(MedianArray)
-        Calc=divmod(Len, 2)
-        Pos=Calc[0]
-        Remainder=Calc[1]
-        if (Remainder == 1) {
-            Median=MedianArray[Pos]
-        } else {
-            Median=(float(MedianArray[Pos]) + float(MedianArray[Pos-1]))/2.0
-        }
-        return Median;
-    }    
-    
-    function fmod(n=0,d=0) {
-        if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
-        if (!checkfunctype("fmod", "number", d, 2)) {exit(1)}
-	    if (d == 0) {
-	        println("Error calling `fmod`: Error: argument #2 Division by zero")
-	        exit(1)
-	    }
-        tq=float(int(n/d))
-        return float(sprintf("%.15f", n-tq*d));
-    }
-
-    function modf(num=0) {
-        if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
-        inty=int(num)
-        remainder=float(num) - float(inty)
-        remainder=float(sprintf("%.15f", remainder))
-        return [float(inty), float(remainder)];
-
-    }
-
-    function fma(X=0, Y=0, Z=0) {
-        if (!checkfunctype("fma", "number", X, 1)) {exit(1)}
-        if (!checkfunctype("fma", "number", Y, 2)) {exit(1)}
-        if (!checkfunctype("fma", "number", Z, 3)) {exit(1)}
-        return float(float(X) * float(Y) + float(Z));
-    }
-
-    function pow(num=1, power=1) {
-        if (!checkfunctype("pow", "number", num, 1)) {exit(1)}
-        if (!checkfunctype("pow", "number", power, 1)) {exit(1)}
-        return float(num ** power);
-    }
-    
-    function pow10(x=0) {
-        if (!checkfunctype("pow10", "integer", x, 1)) {exit(1)}
-        return float(10**x);
     }
 
     function exp(x=0) {
@@ -108,56 +58,6 @@ if (!INCLUDE["MATH"]) {
         return E**float(x)-1;
     }
 
-    function dim(x=0,y=0) {
-        if (!checkfunctype("dim", "number", x, 1)) {exit(1)}
-        if (!checkfunctype("dim", "number", y, 2)) {exit(1)}
-        v=float(x)-float(y)
-        return v < 0 ? float(0) : v;
-    }
-
-    function gcd(dividend, divisor) {
-        if (!checkfunctype("gcd", "integer", dividend, 1)) {exit(1)}
-        if (!checkfunctype("gcd", "integer", divisor, 2)) {exit(1)}    
-        remainder=1
-        while (remainder != 0) {
-            remainder=dividend % divisor
-            dividend=divisor
-            divisor=remainder
-        }
-        return dividend;
-    }
-
-    function lcm(num1, num2) {
-        if (!checkfunctype("lcm", "integer", num1, 1)) {exit(1)}
-        if (!checkfunctype("lcm", "integer", num2, 2)) {exit(1)}
-        mult=num1 * num2
-        gcdiv=gcd(num1, num2)
-        return mult/gcdiv;
-    }
-
-    function average(ave_array) {
-        if (!checkfunctype("average", "array", ave_array, 1)) {exit(1)}
-        return float(sum(ave_array) / float(len(ave_array)));
-    }
-    
-    //
-    // For the mathematical pedants ;)
-    //
-
-    function mean(ave_array) {
-        return average(ave_array);
-    }
-
-    //  End pedantry
-    function isprime(num=0) {
-        if (!checkfunctype("isprime", "integer", num, 1)) {exit(1)}
-        if (num < 2) {return false;}
-        foreach i in 2..(int(sqrt(num))) {
-            if ((num % i) == 0) {return false;}
-        }
-        return true;
-    }
-    
     function factorial(n) {
         if (!checkfunctype("factorial", "integer", n, 1)) {exit(1)}
         result=1
@@ -173,16 +73,50 @@ if (!INCLUDE["MATH"]) {
         return result;
     }
     
-    function degrees(radian) {
-        if (!checkfunctype("degrees", "number", radian, 1)) {exit(1)}
-        return radian * (180/PI);
+    function floor(Value) {
+        if (!checkfunctype("floor", "number", Value, 1)) {exit(1)}
+        if  (Value < 0) {
+            return (int(Value) > Value) ? int(Value)-1 : int(Value);
+        }
+        return int(Value);
     }
     
-    function radians(deg) {
-        if (!checkfunctype("radians", "number", deg, 1)) {exit(1)}
-        return deg * (PI / 180);
+    function fma(X=0, Y=0, Z=0) {
+        if (!checkfunctype("fma", "number", X, 1)) {exit(1)}
+        if (!checkfunctype("fma", "number", Y, 2)) {exit(1)}
+        if (!checkfunctype("fma", "number", Z, 3)) {exit(1)}
+        return float(float(X) * float(Y) + float(Z));
     }
-    
+
+    function fmod(n=0,d=0) {
+        if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
+        if (!checkfunctype("fmod", "number", d, 2)) {exit(1)}
+	    if (d == 0) {
+	        println("Error calling `fmod`: Error: argument #2 Division by zero")
+	        exit(1)
+	    }
+        tq=float(int(n/d))
+        return float(sprintf("%.15f", n-tq*d));
+    }
+
+    function gcd(dividend, divisor) {
+        if (!checkfunctype("gcd", "integer", dividend, 1)) {exit(1)}
+        if (!checkfunctype("gcd", "integer", divisor, 2)) {exit(1)}    
+        remainder=1
+        while (remainder != 0) {
+            remainder=dividend % divisor
+            dividend=divisor
+            divisor=remainder
+        }
+        return dividend;
+    }
+
+    function highest(a, b) {
+        if (!checkfunctype("highest", "number", a, 1)) {exit(1)}
+        if (!checkfunctype("highest", "number", b, 2)) {exit(1)}
+        return a > b ? a : b;
+    }
+
     function hypot(p, q) {
         if (!checkfunctype("hypot", "number", p, 1)) {exit(1)}
         if (!checkfunctype("hypot", "number", q, 2)) {exit(1)}
@@ -200,7 +134,81 @@ if (!INCLUDE["MATH"]) {
         q = q / p
         return p * sqrt(1+q*q);
     }
+
+    function isprime(num=0) {
+        if (!checkfunctype("isprime", "integer", num, 1)) {exit(1)}
+        if (num < 2) {return false;}
+        foreach i in 2..(int(sqrt(num))) {
+            if ((num % i) == 0) {return false;}
+        }
+        return true;
+    }
     
+    function lcm(num1, num2) {
+        if (!checkfunctype("lcm", "integer", num1, 1)) {exit(1)}
+        if (!checkfunctype("lcm", "integer", num2, 2)) {exit(1)}
+        mult=num1 * num2
+        gcdiv=gcd(num1, num2)
+        return mult/gcdiv;
+    }
+
+    function lowest(a, b) {
+        if (!checkfunctype("lowest", "number", a, 1)) {exit(1)}
+        if (!checkfunctype("lowest", "number", b, 2)) {exit(1)}
+        return a < b ? a : b;
+    }
+    
+    //
+    // For the mathematical pedants ;)
+    //
+
+    function mean(ave_array) {
+        return average(ave_array);
+    }
+
+    // End pedantry
+
+    function median(MedianArray) {
+        if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
+        MedianArray=sort(MedianArray)
+        Median=0
+        Len=len(MedianArray)
+        Calc=divmod(Len, 2)
+        Pos=Calc[0]
+        Remainder=Calc[1]
+        if (Remainder == 1) {
+            Median=MedianArray[Pos]
+        } else {
+            Median=(float(MedianArray[Pos]) + float(MedianArray[Pos-1]))/2.0
+        }
+        return Median;
+    }    
+    
+    function modf(num=0) {
+        if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
+        inty=int(num)
+        remainder=float(num) - float(inty)
+        remainder=float(sprintf("%.15f", remainder))
+        return [float(inty), float(remainder)];
+
+    }
+    
+    function pow(num=1, power=1) {
+        if (!checkfunctype("pow", "number", num, 1)) {exit(1)}
+        if (!checkfunctype("pow", "number", power, 1)) {exit(1)}
+        return float(num ** power);
+    }
+    
+    function pow10(x=0) {
+        if (!checkfunctype("pow10", "integer", x, 1)) {exit(1)}
+        return float(10**x);
+    }
+
+    function radians(deg) {
+        if (!checkfunctype("radians", "number", deg, 1)) {exit(1)}
+        return deg * (PI / 180);
+    }
+       
     function round(rnum) {
         if (!checkfunctype("round", "number", rnum, 1)) {exit(1)}
         intnum=int(rnum)
@@ -221,24 +229,17 @@ if (!INCLUDE["MATH"]) {
         }
         return result;
     }
-    
+
+    function sqrt(n=0) {
+        if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
+        return n**0.5;
+    }
+
     function trunc(Float) {
         if (!checkfunctype("trunc", "number", Float, 1)) {exit(1)}
         return float(int(Float));
     }
 
-    function highest(a, b) {
-        if (!checkfunctype("highest", "number", a, 1)) {exit(1)}
-        if (!checkfunctype("highest", "number", b, 2)) {exit(1)}
-        return a > b ? a : b;
-    }
-    
-    function lowest(a, b) {
-        if (!checkfunctype("lowest", "number", a, 1)) {exit(1)}
-        if (!checkfunctype("lowest", "number", b, 2)) {exit(1)}
-        return a < b ? a : b;
-    }
-    
     function float.round() {
         return round(self);
     }

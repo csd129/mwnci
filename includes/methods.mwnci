@@ -1,3 +1,6 @@
+// This file contains the object methods for functions in main.mwnci
+// and builtin commands. It is autoloaded within main.mwnci
+
 if (!INCLUDE["METHODS"]) {
     INCLUDE=set(INCLUDE, "METHODS", true)
 
