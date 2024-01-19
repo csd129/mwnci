@@ -314,6 +314,10 @@ if (!INCLUDE["MATH"]) {
     function array.median() {
         return median(self);
     }
+
+    function object.abs() {
+        return abs(self);
+    }
 }
 
 /*
