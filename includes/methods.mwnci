@@ -393,4 +393,8 @@ if (!INCLUDE["METHODS"]) {
     function array.lines() {
         return lines(self);
     }
+    
+    function object.abs() {
+        return abs(self);
+    }    
 }
