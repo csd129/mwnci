@@ -16,7 +16,7 @@ func Kill(args ...object.Object) object.Object {
 	}
 	err := syscall.Kill(int(args[0].(*object.Integer).Value), syscall.SIGTERM)
 	if err == nil {
-		return &object.Boolean{Value: true}
+		return TRUE
 	}
-	return &object.Boolean{Value: false}
+	return FALSE
 }

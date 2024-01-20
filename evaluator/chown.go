@@ -24,5 +24,5 @@ func Chown(args ...object.Object) object.Object {
 	if err != nil {
 		return newError(err.Error())
 	}
-	return &object.Boolean{Value: true}
+	return TRUE
 }

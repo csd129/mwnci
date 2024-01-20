@@ -18,7 +18,7 @@ func IsNumber(args ...object.Object) object.Object {
 
 	_, err := strconv.ParseFloat(value, 64)
 	if err != nil {
-		return &object.Boolean{Value: false}
+		return FALSE
 	}
-	return &object.Boolean{Value: true}
+	return TRUE
 }

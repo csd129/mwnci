@@ -21,8 +21,8 @@ func setEnvFun(args ...object.Object) object.Object {
 	value := args[1].(*object.String).Value
 	err := os.Setenv(name, value)
 	if err != nil {
-		return &object.Boolean{Value: false}
+		return FALSE
 	} else {
-		return &object.Boolean{Value: true}
+		return TRUE
 	}
 }

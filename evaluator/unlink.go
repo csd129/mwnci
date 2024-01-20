@@ -19,7 +19,7 @@ func unlinkFun(args ...object.Object) object.Object {
 
 	err := os.Remove(path)
 	if err != nil {
-		return &object.Boolean{Value: false}
+		return FALSE
 	}
-	return &object.Boolean{Value: true}
+	return TRUE
 }
