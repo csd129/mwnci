@@ -15,8 +15,7 @@ func fpushFun(args ...object.Object) object.Object {
 			args[0].Type())
 	}
 	arr := args[0].(*object.Array)
-	newArray := arr.Copy()
-	newArray.Append(args[1])
-	return newArray
+	arr.Append(args[1])
+	return arr
 }
 

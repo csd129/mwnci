@@ -6,6 +6,7 @@ if (!INCLUDE["METHODS"]) {
 
 function array.copy() {return copy(self);}
 function array.cumulative() {return cumulative(self);}
+function array.delete(ind) {return delete(self, ind);}
 function array.extend(NextArray=[]) {return extend(self, NextArray);}
 function array.find(item) {return index(self, item);}
 function array.first() {return first(self);}
