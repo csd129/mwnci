@@ -17,9 +17,9 @@ func ShuffleFun(args ...object.Object) object.Object {
 	}
 	foo := args[0].(*object.Array)
 	length := len(foo.Elements)
-	//	newa := foo.Copy()
+	newa := foo.Copy()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
-	rand.Shuffle(length, func(i, j int) { foo.Swap(i, j) })
-	return foo
+	rand.Shuffle(length, func(i, j int) { newa.Swap(i, j) })
+	return newa
 }
 

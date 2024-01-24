@@ -1,10 +1,6 @@
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
-    function abs(number=0) {
-        if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
-        return number < 0 ? number *= -1 : number;
-    }
 
     function average(ave_array) {
         if (!checkfunctype("average", "array", ave_array, 1)) {exit(1)}
@@ -243,10 +239,7 @@ if (!INCLUDE["MATH"]) {
     function float.round() {
         return round(self);
     }
-
-    function object.abs() {
-        return abs(self);
-    }
+    
     function integer.isprime() {
         return isprime(self);
     }

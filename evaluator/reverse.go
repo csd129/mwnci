@@ -32,8 +32,9 @@ func Rev(args ...object.Object) object.Object {
 		return &object.String{Value: output}
 	case *object.Array:
 		foo := args[0].(*object.Array)
-		foo.Reverse()
-		return foo
+		nums := foo.Copy()
+		nums.Reverse()
+		return nums
 	}
 	return FALSE
 }

@@ -6,7 +6,6 @@ if (!INCLUDE["METHODS"]) {
 
 function array.copy() {return copy(self);}
 function array.cumulative() {return cumulative(self);}
-function array.delete(ind) {return delete(self, ind);}
 function array.extend(NextArray=[]) {return extend(self, NextArray);}
 function array.find(item) {return index(self, item);}
 function array.first() {return first(self);}
@@ -42,6 +41,7 @@ function hash.set(element="", value="") {return set(self, element, value);}
 function integer.bin() {return bin(self);}
 function integer.chr() {return chr(self);}
 function integer.procexists() {return procexists(self);}
+function object.abs() {return abs(self);}
 function object.asctime(format="") {if (len(format) == 0) {return asctime(self);}return asctime(self,format);}
 function object.bin2dec() {return bin2dec(self);}
 function object.bin2hex() {return bin2hex(self);}

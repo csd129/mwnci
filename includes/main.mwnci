@@ -22,6 +22,11 @@ const STDERR=open( "!STDERR!" );
 if (!INCLUDE["MAIN"]) {
     INCLUDE=set(INCLUDE, "MAIN", true)
 
+    function abs(number=0) {
+        if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
+        return number < 0 ? number *= -1 : number;
+    }
+
 // Binary to Decimal
     function bin2dec(b_number) {
         number=string(b_number)
