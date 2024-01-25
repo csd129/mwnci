@@ -171,6 +171,10 @@ func (ao *Array) Compare(other Object) int {
 	return -1
 }
 
+func (a *Array) Prepend(obj Object) {
+	a.Elements = append([]Object{obj}, a.Elements...)
+}
+
 func (a *Array) Append(obj Object) {
 	a.Elements = append(a.Elements, obj)
 }

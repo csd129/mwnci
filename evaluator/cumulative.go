@@ -19,19 +19,14 @@ func Cumulate(args ...object.Object) object.Object {
 	arr := args[0].(*object.Array)
 	count_arr := make([]object.Object, len(args[0].(*object.Array).Elements))
 	total := float64(0)
-	previous := float64(0)
-	counter := 0
-	for _, el := range arr.Elements {
+	for counter, el := range arr.Elements {
 		num := fmt.Sprintf("%v", el)
 		val, err := strconv.ParseFloat(num, 64)
 		if err != nil {
-			return newError("Unable to parse \"%v\"", el)
+			return newError("Unable to parse \"%v\" at index [%d]", el, counter)
 		}
-		total = previous + val
-		previous = total
+		total = total + val
 		count_arr[counter] = &object.Float{Value: total}
-		counter++
 	}
 	return &object.Array{Elements: count_arr}
 }
-
