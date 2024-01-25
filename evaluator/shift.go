@@ -16,12 +16,15 @@ func Shift(args ...object.Object) object.Object {
 	}
 
 	arr := args[0].(*object.Array)
-	amount :=  args[1].(*object.Integer).Value
+	amount := args[1].(*object.Integer).Value
 	newArray := arr.Copy()
-	i:=int64(1)
-	for (i <= amount) {
-		newArray.PopLeft()
-		i++
+	length := int64(len(newArray.Elements))
+	if amount < 0 {
+		amount = 0
 	}
+	if amount > length {
+		amount = length
+	}
+	newArray.Elements = newArray.Elements[amount:]
 	return newArray
 }
