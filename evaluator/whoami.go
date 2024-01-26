@@ -16,10 +16,10 @@ func Whoami(args ...object.Object) object.Object {
 	}
 	UserName := ""
 	currentuser, err := user.Current()
-	UserName = currentuser.Username
 	if err != nil {
 		UserName = os.Getenv("USER")
+	} else {
+		UserName = currentuser.Username
 	}
 	return &object.String{Value: UserName}
 }
-

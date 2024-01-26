@@ -26,7 +26,7 @@ func openFun(args ...object.Object) object.Object {
 
 	}
 
-	// Get the mode (optiona)
+	// Get the mode (optional)
 	if len(args) > 1 {
 		switch args[1].(type) {
 		case *object.String:
