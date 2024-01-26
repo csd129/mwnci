@@ -69,7 +69,7 @@ if (!INCLUDE["SQL"]) {
 
     //
     // Any output from this function will be false if there's an error
-    // or a string
+    // otherwise it returns a string
     //
     function sqlcmd(db, command) {
         if (!checkfunctype("sqlcmd", "hash", db, 1)) {

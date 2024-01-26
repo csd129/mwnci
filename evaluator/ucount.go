@@ -2,11 +2,8 @@ package evaluator
 
 import (
 	"fmt"
-	"mwnci/lexer"
 	"mwnci/object"
-	"mwnci/parser"
 	"mwnci/typing"
-	"strings"
 )
 
 func Ucount(env *object.Environment, args ...object.Object) object.Object {
@@ -17,35 +14,19 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	var b strings.Builder
+	newHash := make(map[object.HashKey]object.HashPair)
 	arr := args[0].(*object.Array)
 	dict := make(map[string]int)
-	b.WriteString("{")
 	for _, data := range arr.Elements {
 		HashData := fmt.Sprintf("%v", data)
 		dict[HashData]++
 	}
-	counter := 1
-	buildline := ""
-	dictlen := len(dict)
+
 	for k, v := range dict {
-		if counter != dictlen {
-			buildline = fmt.Sprintf("\"%v\": %v,", k, v)
-		} else {
-			buildline = fmt.Sprintf("\"%v\": %v}", k, v)
-		}
-
-		fmt.Fprintf(&b, "%v", buildline)
-		counter++
+		key := &object.String{Value: k}
+		val := &object.Integer{Value: int64(v)}
+		newHashPair := object.HashPair{Key: key, Value: val}
+		newHash[key.HashKey()] = newHashPair
 	}
-
-	longstring := fmt.Sprintf("%v", b.String())
-	l := lexer.New(longstring)
-	p := parser.New(l)
-	program := p.ParseProgram()
-	if len(p.Errors()) == 0 {
-		return (Eval(program, env))
-	}
-
-	return &object.Null{}
+	return &object.Hash{Pairs: newHash}
 }
