@@ -27,6 +27,12 @@ if (!INCLUDE["MAIN"]) {
         return number < 0 ? number *= -1 : number;
     }
 
+// Rest() moved to here because buitlin shift() has replaced it 
+    function rest(arr) {
+        if (!checkfunctype("rest", "array", arr, 1)) {exit(1)}
+        return shift(arr);
+    }
+
 // Binary to Decimal
     function bin2dec(b_number) {
         number=string(b_number)

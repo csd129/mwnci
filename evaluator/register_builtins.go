@@ -104,7 +104,6 @@ func init() {
 	RegisterBuiltin("repeat", func(env *object.Environment, args ...object.Object) object.Object { return (Repeat(args...)) })
 	RegisterBuiltin("replace", func(env *object.Environment, args ...object.Object) object.Object { return (Replace(args...)) })
 	RegisterBuiltin("replaceall", func(env *object.Environment, args ...object.Object) object.Object { return (Replaceall(args...)) })
-	RegisterBuiltin("rest", func(env *object.Environment, args ...object.Object) object.Object { return (Rest(args...)) })
 	RegisterBuiltin("reverse", func(env *object.Environment, args ...object.Object) object.Object { return (Rev(args...)) })
 	RegisterBuiltin("rtrim", func(env *object.Environment, args ...object.Object) object.Object { return (RTrim(args...)) })
 	RegisterBuiltin("seek", func(env *object.Environment, args ...object.Object) object.Object { return (Seek(args...)) })

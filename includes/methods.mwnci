@@ -23,6 +23,7 @@ function array.max() {return max(self);}
 function array.min() {return min(self);}
 function array.push(item) {return push(self, item);}
 function array.remove(element=-1) {return remove(self, element);}
+function array.rest() {return rest(self);}
 function array.rsort() {return rsort(self);}
 function array.set(element=-1, value="") {return set(self, element, value);}
 function array.shift(num=0) {return shift(self, num);}
