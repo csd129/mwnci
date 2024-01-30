@@ -1,10 +1,9 @@
 package evaluator
 
 import (
-	"regexp"
-
 	"mwnci/object"
 	"mwnci/typing"
+	"regexp"
 )
 
 // regular expression match
@@ -25,21 +24,8 @@ func matchFun(args ...object.Object) object.Object {
 		return newError("failed to compile regexp %s: %s", args[0].Inspect(), err)
 	}
 	res := reg.FindStringSubmatch(args[1].(*object.String).Value)
-
 	if len(res) > 0 {
-		newHash := make(map[object.HashKey]object.HashPair)
-		if len(res) > 1 {
-			for i := 1; i < len(res); i++ {
-				k := &object.Integer{Value: int64(i - 1)}
-				v := &object.String{Value: res[i]}
-				newHashPair := object.HashPair{Key: k, Value: v}
-				newHash[k.HashKey()] = newHashPair
-			}
-		}
-		return &object.Hash{Pairs: newHash}
+		return TRUE
 	}
-
-	// No match
 	return FALSE
 }
-
