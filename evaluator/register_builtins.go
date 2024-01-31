@@ -41,6 +41,7 @@ func init() {
 	RegisterBuiltin("extend", func(env *object.Environment, args ...object.Object) object.Object { return (ArrExtend(args...)) })
 	RegisterBuiltin("fields", func(env *object.Environment, args ...object.Object) object.Object { return (Fields(args...)) })
 	RegisterBuiltin("file", func(env *object.Environment, args ...object.Object) object.Object { return (File(args...)) })
+	RegisterBuiltin("findfile", func(env *object.Environment, args ...object.Object) object.Object { return (FindFile(args...)) })
 	RegisterBuiltin("first", func(env *object.Environment, args ...object.Object) object.Object { return (First(args...)) })
 	RegisterBuiltin("float", func(env *object.Environment, args ...object.Object) object.Object { return (floatFun(args...)) })
 	RegisterBuiltin("fopen", func(env *object.Environment, args ...object.Object) object.Object { return (FOpen(args...)) })
