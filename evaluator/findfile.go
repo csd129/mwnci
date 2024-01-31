@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"log"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
@@ -20,27 +19,34 @@ func FindFile(args ...object.Object) object.Object {
 	}
 
 	rootpath := args[0].(*object.String).Value
-	filesearch := args[1].(*object.String).Value
-	r, err := regexp.Compile(filesearch)
+	fileInfo, err := os.Stat(rootpath)
 	if err != nil {
-		return newError("failed to compile regexp %s: %s", filesearch, err)
+		return newError("Unable to get status of %s", rootpath)
 	}
+	if fileInfo.IsDir() {
+		filesearch := args[1].(*object.String).Value
+		r, err := regexp.Compile(filesearch)
+		if err != nil {
+			return newError("failed to compile regexp %s: %s", filesearch, err)
+		}
 
-	err = filepath.Walk(rootpath, func(path string, info os.FileInfo, err error) error {
-		basefile := filepath.Base(path)
-		if r.MatchString(basefile) {
-			files = append(files, path)
+		err = filepath.Walk(rootpath, func(path string, info os.FileInfo, err error) error {
+			basefile := filepath.Base(path)
+			if r.MatchString(basefile) {
+				files = append(files, path)
+			}
+			return nil
+		})
+		if err != nil {
+			return newError("Failed to walk directory %s", rootpath)
 		}
-		return nil
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	elements := make([]object.Object, len(files))
-	if len(files) != 0 {
-		for i, token := range files {
-			elements[i] = &object.String{Value: token}
+		elements := make([]object.Object, len(files))
+		if len(files) != 0 {
+			for i, token := range files {
+				elements[i] = &object.String{Value: token}
+			}
 		}
+		return &object.Array{Elements: elements}
 	}
-	return &object.Array{Elements: elements}
+	return newError("%s is not a directory", rootpath)
 }
