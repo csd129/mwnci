@@ -37,9 +37,6 @@ func FindFile(args ...object.Object) object.Object {
 			}
 			return nil
 		})
-		if err != nil {
-			return newError("Failed to walk directory %s", rootpath)
-		}
 		elements := make([]object.Object, len(files))
 		if len(files) != 0 {
 			for i, token := range files {

@@ -17,9 +17,7 @@ func setEnvFun(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	name := args[0].(*object.String).Value
-	value := args[1].(*object.String).Value
-	err := os.Setenv(name, value)
+	err := os.Setenv(args[0].(*object.String).Value, args[1].(*object.String).Value)
 	if err != nil {
 		return FALSE
 	} else {

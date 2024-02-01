@@ -3,11 +3,11 @@ package evaluator
 import (
 	"os"
 	"fmt"
-	"strings"
 	"mwnci/object"
 	"mwnci/lexer"
 	"mwnci/parser"
 	"mwnci/typing"
+	"path/filepath"
 )
 
 func Include(env *object.Environment, args ...object.Object) object.Object {
@@ -31,7 +31,7 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 	} else {
 		includes=fmt.Sprintf("%s:%s", userincludes, "@INCLUDE@:." )
 	}
-	incpaths:=strings.Split(includes, ":")
+	incpaths:=filepath.SplitList(includes)
 	for _, ipath := range incpaths {
 		import_file=fmt.Sprintf("%s/%s", ipath, imp_filename)
 		data, err := os.ReadFile(import_file)
