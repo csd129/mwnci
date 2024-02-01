@@ -30,7 +30,7 @@ func FindFile(args ...object.Object) object.Object {
 			return newError("failed to compile regexp %s: %s", filesearch, err)
 		}
 
-		err = filepath.Walk(rootpath, func(path string, info os.FileInfo, err error) error {
+		filepath.Walk(rootpath, func(path string, info os.FileInfo, err error) error {
 			basefile := filepath.Base(path)
 			if r.MatchString(basefile) {
 				files = append(files, path)

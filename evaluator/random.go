@@ -20,6 +20,7 @@ func Random(args ...object.Object) object.Object {
 	if value <= 1 {
 		return newError("Random range %d is not greater than 1", value)
 	}
-	rand.Seed(time.Now().UnixNano())
-	return &object.Integer{Value: int64(rand.Intn(value))}
+	source := rand.NewSource(time.Now().UnixNano())
+	rng := rand.New(source)
+	return &object.Integer{Value: int64(rng.Intn(value))}
 }
