@@ -6,6 +6,7 @@ include("methods")
 */
 const OS=getos();
 const ARGS=args();
+const ARGC=len(ARGS);
 const PID=getpid();
 
 /*
