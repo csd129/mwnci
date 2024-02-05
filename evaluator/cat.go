@@ -41,6 +41,5 @@ func Cat(args ...object.Object) object.Object {
 		}
 		data=fmt.Sprintf("%v", b.String())
 	}
-	return &object.String{Value: strings.TrimSuffix(string(data), "\n")}
+	return &object.String{Value: string(data)}
 }
-
