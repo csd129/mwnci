@@ -9,7 +9,7 @@ import (
 
 func Whoami(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"whomai", args,
+		"whoami", args,
 		typing.ExactArgs(0),
 	); err != nil {
 		return newError(err.Error())
