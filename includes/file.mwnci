@@ -45,7 +45,11 @@ if (!INCLUDE["FILE"]) {
             return "NOEXIST";
         }
     }
-    
+
+    function filetype(filename="") {
+        if (!checkfunctype("filetype", "string", filename)) {exit(1)}
+        return FileType(filename);
+    }
     function isfile(filename="") {
         if (!checkfunctype("isfile", "string", filename, 1)) {exit(1)}
         if (len(filename) == 0) {
