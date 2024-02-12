@@ -1,6 +1,43 @@
 if (!INCLUDE["NET"]) {
     INCLUDE=set(INCLUDE, "NET", true)
     
+    include("net/tcp_states")
+
+    function parseconn(conn="", proto="") {
+        SplitConn=splithostport(conn)
+        if (hassuffix(proto, "6")) {
+            IP=hextoipv6(SplitConn[0])
+        } else {
+            IP=hextoipv4(SplitConn[0])
+        }
+        Port=string(hex2dec(SplitConn[1]))
+        if (Port == "0") {Port="*"}
+        return sprintf("%s:%s", IP, Port);
+    }
+
+    function netstat() {
+        netarray=[]
+        protocols=["tcp", "tcp6", "raw", "udp", "udp6", "raw6"]
+        foreach protocol in protocols {
+            procfile="/proc/net/" + protocol
+            data=shift(split(cat(procfile), "\n"))
+            foreach line in data {
+	        temparray=[]
+                if (len(line) > 0) {
+                    sline=fields(line)
+                    Local=parseconn(sline[1], protocol)
+                    Remote=parseconn(sline[2], protocol)
+	            State=TCP_STATES[sline[3]]
+	            if (State == "CLOSE") {State=""}
+	            temparray=[protocol, Local, Remote, State]
+	            netarray=push(netarray, temparray)
+                }
+            }
+        }
+    	return netarray;
+    }
+
+
     function nettrans(iface="") {
         if (!checkfunctype("nettrans", "string", iface, 1)) {exit(1)}
         iface_hash={}
@@ -22,13 +59,9 @@ if (!INCLUDE["NET"]) {
     
     function openports() {
         port_array=[]
-        portdata=split(system("netstat -tupln"), "\n")
-        portdata=shift(portdata,2)
-    
-        foreach line in portdata {
-            sline=fields(line)
-            if (sline[5] == "LISTEN") {
-                port=split(sline[3], ":")
+        foreach line in netstat() {
+            if (line[3] == "LISTEN") {
+                port=split(line[1], ":")
                 port_array=push(port_array, int(port[len(port)-1]))
             }
         }
@@ -80,6 +113,40 @@ if (!INCLUDE["NET"]) {
             (number >> 8) & 255,
             number & 255)
         return IP;
+    }
+
+    function hextoipv6(hexaIP="") {
+        i=0
+	result=""
+	while (i < len(hexaIP)) {
+	    word=hexaIP.substr(i, 8)
+	    foreach n in [6, 7, 4, 5, 2, 3, 0, 1] {
+	        result=result + string(word[n])
+		if (n==5 || n==1){result=result + ":"}
+	    }
+	    i += 8
+	}
+	result=split(substr(result,0, len(result)-1), ":")
+	ipv6_result=""
+	foreach hexy in result {
+	    temp=ltrim(hexy, "0")
+	    if (len(temp) == 0) {temp="0"}
+	    ipv6_result=ipv6_result + temp + ":"
+	}
+	return tolower(substr(ipv6_result,0, len(ipv6_result)-1));
+    }
+
+    function hextoipv4(hexaIP="") {
+        converted=inttoip(hex2dec(hexaIP))
+	return join(reverse(split(converted, ".")), ".");
+    }
+
+    function string.hextoipv6() {
+        return hextoipv6(self);
+    }
+
+    function string.hextoipv4() {
+        return hextoipv4(self);
     }
 
     function string.cidrrange() {
