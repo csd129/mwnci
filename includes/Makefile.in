@@ -1,6 +1,7 @@
 FILES=file.mwnci grp.mwnci http.mwnci main.mwnci math.mwnci net.mwnci \
 	os.mwnci ps.mwnci pwd.mwnci sysstat.mwnci ansicolor.mwnci \
 	units.mwnci certs.mwnci fstab.mwnci methods.mwnci mysql.mwnci
+NETFILES=net/tcp_states.mwnci
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
 OWNER=@OWNER@
@@ -13,6 +14,10 @@ install: ${FILES}
 	cp ${FILES} ${INCLUDEDIR}
 	sudo chmod 755 ${INCLUDEDIR}
 	sudo chmod 644 ${INCLUDEDIR}/*.mwnci
+	mkdir -p ${INCLUDEDIR}/net
+	cp ${NETFILES} ${INCLUDEDIR}/net
+	sudo chmod 755 ${INCLUDEDIR}/net
+	sudo chmod 644 ${INCLUDEDIR}/net/*.mwnci
 clean:
 	rm -f *~ \#*\#	
 
