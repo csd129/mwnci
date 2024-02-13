@@ -37,23 +37,41 @@ if (!INCLUDE["OS"]) {
         return result;
     };
     
-    function getmem() {
+    function meminfo() {
         memhash={}
-        mem=split(system("free -k"), "\n")
-        memory=fields(trim(mem[1]))
-        swap=fields(trim(mem[2]))
-        memkey=tolower(split(memory[0],":")[0])
-        swapkey=tolower(split(swap[0],":")[0])
-        mem_used_perc=sprintf("%.2f", float(memory[2])/float(memory[1])*100)
-        mem_free_perc=sprintf("%.2f", float(100 - float(mem_used_perc)))
-        hashy={"total": memory[1], "used": memory[2], "free": memory[3],
-            "shared": memory[4], "cache": memory[5], "avail": memory[6],
-	        "pcfree": mem_free_perc, "pcused": mem_used_perc}
+        data=split(cat("/proc/meminfo"), "\n")
+        foreach entry in data {
+            if (len(entry) > 0) {
+                entry=replaceall(entry, ":", "")
+                entryarray=fields(entry)
+                memhash=set(memhash, entryarray[0], entryarray[1])
+            }
+        }
+    return memhash;
+    }
+
+    function free() {
+    	memhash={}
+        mem=meminfo()
+        mem_total=int(mem["MemTotal"])
+        mem_free=int(mem["MemFree"])
+        mem_available=int(mem["MemAvailable"])
+        mem_shared=int(mem["Shmem"])
+        mem_cached=int(mem["Cached"]) + int(mem["SReclaimable"])
+        mem_bufcache=int(mem["Buffers"]) + mem_cached
+        mem_used=mem_total - mem_available
+        mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
+        mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
+        swap_total=int(mem["SwapTotal"])
+        swap_free=int(mem["SwapFree"])
+        swap_used=swap_total - swap_free
+        swap_used_perc=sprintf("%.2f", float(swap_used) / float(swap_total)*100)
+        swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
+
+        hashy={"buff_cache": mem_bufcache, "cache": mem_cached, "shared": mem_shared, "total": mem_total, "free": mem_free, "available": mem_available, "used": mem_used, "used_perc": mem_used_perc, "free_perc": mem_free_perc}
         memhash=set(memhash, "mem", hashy)
-        swap_used_perc=sprintf("%.2f",float(swap[2])/float(swap[1])*100)
-        swap_free_perc=sprintf("%.2f", float(100 - float(swap_used_perc)))
-        hashy={"total": swap[1], "used": swap[2], "free": swap[3],
-            "pcfree": swap_free_perc, "pcused": swap_used_perc}
+
+        hashy={"total": swap_total, "free": swap_free, "used": swap_used, "used_perc": swap_used_perc, "free_perc": swap_free_perc}
         memhash=set(memhash, "swap", hashy)
         return memhash;
     }
