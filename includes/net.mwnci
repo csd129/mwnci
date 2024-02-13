@@ -175,4 +175,8 @@ if (!INCLUDE["NET"]) {
     function integer.inttoip() {
     	return inttoip(self);
     }
+
+    function string.nettrans() {
+        return nettrans(self);
+    }
 }
