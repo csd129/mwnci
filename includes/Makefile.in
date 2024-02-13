@@ -2,7 +2,7 @@ FILES=file.mwnci grp.mwnci http.mwnci main.mwnci math.mwnci net.mwnci \
 	os.mwnci ps.mwnci pwd.mwnci sysstat.mwnci ansicolor.mwnci \
 	units.mwnci certs.mwnci fstab.mwnci methods.mwnci mysql.mwnci
 NETFILES=net/tcp_states.mwnci
-PROCFILE=proc/net.mwnci
+PROCFILES=proc/net.mwnci
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
 OWNER=@OWNER@
@@ -20,7 +20,7 @@ install: ${FILES}
 	sudo chmod 755 ${INCLUDEDIR}/net
 	sudo chmod 644 ${INCLUDEDIR}/net/*.mwnci
 	mkdir -p ${INCLUDEDIR}/proc
-	cp ${NETFILES} ${INCLUDEDIR}/proc
+	cp ${PROCFILES} ${INCLUDEDIR}/proc
 	sudo chmod 755 ${INCLUDEDIR}/proc
 	sudo chmod 644 ${INCLUDEDIR}/proc/*.mwnci
 clean:
