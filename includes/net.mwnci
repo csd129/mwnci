@@ -42,22 +42,23 @@ if (!INCLUDE["NET"]) {
 
     function nettrans(iface="") {
         if (!checkfunctype("nettrans", "string", iface, 1)) {exit(1)}
+        data=split(cat("/proc/net/dev"), "\n")
+        data=shift(data, 2)
         iface_hash={}
-        ifdata=split(system("netstat -i"), "\n")
-        ifdata=shift(ifdata,2)
-    
-        foreach line in ifdata {
+        foreach line in data {
             sline=fields(line)
-            iface_data={"MTU": sline[1], "RX-OK": sline[2], "RX_ERR": sline[3], "RX_DRP": sline[4], "RX-OVR": sline[5],
-                        "TX-OK": sline[6], "TX-ERR": sline[7], "TX-DRP": sline[8], "TX-OVR": sline[9]}
-            iface_hash=set(iface_hash, sline[0], iface_data)
+            if (len(sline) > 0) {
+                device=replace(sline[0], ":", "", 1)
+                iface_data={"RX-OK": sline[2], "RX-ERR": sline[3], "RX-DRP": sline[4], 
+                            "TX-OK": sline[10], "TX-ERR": sline[11], "TX-DRP": sline[12]}
+	            iface_hash=set(iface_hash, device, iface_data)
+	        }
         }
         if (len(iface) > 0) {
             return iface_hash[iface];
-        } else {
-            return iface_hash;
         }
-    };
+        return iface_hash;
+    }
     
     function openports() {
         port_array=[]
