@@ -91,6 +91,7 @@ func init() {
 	RegisterBuiltin("md5sum", func(env *object.Environment, args ...object.Object) object.Object { return (Md5sum(args...)) })
 	RegisterBuiltin("mkdir", func(env *object.Environment, args ...object.Object) object.Object { return (mkdirFun(args...)) })
 	RegisterBuiltin("mkdirhier", func(env *object.Environment, args ...object.Object) object.Object { return (Mkdirhier(args...)) })
+	RegisterBuiltin("mkfifo", func(env *object.Environment, args ...object.Object) object.Object { return (Mkfifo(args...)) })
 	RegisterBuiltin("oct", func(env *object.Environment, args ...object.Object) object.Object { return (Oct(args...)) })
 	RegisterBuiltin("open", func(env *object.Environment, args ...object.Object) object.Object { return (openFun(args...)) })
 	RegisterBuiltin("ord", func(env *object.Environment, args ...object.Object) object.Object { return (Ord(args...)) })
