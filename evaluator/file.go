@@ -1,6 +1,3 @@
-//go:build !linux
-// +build !linux
-
 package evaluator
 
 import (
@@ -28,14 +25,14 @@ func File(args ...object.Object) object.Object {
 		return &object.Null{}
 	}
 	fileSys := fileStat.Sys()
-	fileMtime := fileSys.(*syscall.Stat_t).Mtimespec.Sec
+	fileMtime := fileSys.(*syscall.Stat_t).Mtim.Sec
 	if len(args) == 1 {
 		return &object.Integer{Value: int64(fileMtime)}
 	}
 	fileUid := fileSys.(*syscall.Stat_t).Uid
 	fileGid := fileSys.(*syscall.Stat_t).Gid
-	fileCtime := fileSys.(*syscall.Stat_t).Ctimespec.Sec
-	fileAtime := fileSys.(*syscall.Stat_t).Atimespec.Sec
+	fileCtime := fileSys.(*syscall.Stat_t).Ctim.Sec
+	fileAtime := fileSys.(*syscall.Stat_t).Atim.Sec
 	fileMode := fileSys.(*syscall.Stat_t).Mode & 07777
 	fileLinks := fileSys.(*syscall.Stat_t).Nlink
 	fileSize := fileStat.Size()
