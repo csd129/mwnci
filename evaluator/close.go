@@ -24,6 +24,5 @@ func Close(args ...object.Object) object.Object {
 		return newError("IOError: %s", err)
 	}
 
-	return &object.Null{}
+	return NULL
 }
-

@@ -47,6 +47,5 @@ func Connect(args ...object.Object) object.Object {
 		return newError("SocketError: %s", err)
 	}
 
-	return &object.Null{}
+	return NULL
 }
-

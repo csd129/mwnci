@@ -22,5 +22,5 @@ func Printat(args ...object.Object) object.Object {
 	}
 	fmt.Print("\033[0m")
 
-	return &object.Null{}
+	return NULL
 }

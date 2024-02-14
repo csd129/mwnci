@@ -16,5 +16,5 @@ func printfFun(args ...object.Object) object.Object {
 	if out.Type() == object.STRING_OBJ {
 		fmt.Print(out.(*object.String).Value)
 	}
-	return &object.Null{}
+	return NULL
 }

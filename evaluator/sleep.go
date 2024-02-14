@@ -19,5 +19,5 @@ func Sleep(args ...object.Object) object.Object {
 	timer := int(args[0].(*object.Integer).Value)
 	time.Sleep(time.Duration(timer) * time.Millisecond)
 
-	return &object.Null{}
+	return NULL
 }
