@@ -75,4 +75,25 @@ if (!INCLUDE["OS"]) {
         memhash=set(memhash, "swap", hashy)
         return memhash;
     }
+
+    function df() {
+        diskhash={}
+        mounted=shift(split(system("df"),"\n"))
+        foreach entry in mounted {
+            if (len(entry) > 0) {
+                splitline=fields(entry)
+	            if (splitline[0].contains("/")) {
+                    perc_used=int(trimsuffix(splitline[4], "%"))
+                    perc_free=100 - perc_used
+                    temphash={"blocks": int(splitline[1]), "used": int(splitline[2]), "available": int(splitline[3]), "usedperc": perc_used, "freeperc": perc_free, "mount": splitline[5]}
+                    diskhash=set(diskhash, splitline[0], temphash)
+                }
+            }
+        }
+        return diskhash;
+    }
+
+    function string.datetoepoch() {
+        return datetoepoch(self);
+    }
 }

@@ -72,8 +72,8 @@ if (!INCLUDE["SYSSTAT"]) {
     }
 
     function pidmem(ops="") {
-        include("pwd")
-        CMD="ps -o pid,user:20,%cpu,%mem,command ax"
+		include("pwd")
+		CMD="ps -o pid,user:20,%cpu,%mem,command ax"
 		if (len(ops) == 0) {ops="[a-z]"}
 		ProcList=trim(system(CMD))
 		ProcList=rest(ProcList.split("\n"))
@@ -84,10 +84,7 @@ if (!INCLUDE["SYSSTAT"]) {
 			if (len(ops) > 1) {
 				if (match(ops, sline[4])) {
 					uid=getpwnam(sline[1])["Uid"]
-					temp_hash=set(temp_hash, "uid", int(uid))
-					temp_hash=set(temp_hash, "pc_cpu", float(sline[2]))
-					temp_hash=set(temp_hash, "pc_mem", float(sline[3]))
-					temp_hash=set(temp_hash, "command", sline[4])
+					temp_hash={"uid": int(uid), "pc_cpu": float(sline[2]), "pc_mem": float(sline[3]), "command": sline[4] }
 					mem_hash=set(mem_hash, sline[0], temp_hash)
 				}
 			}
