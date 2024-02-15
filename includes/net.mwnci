@@ -118,6 +118,21 @@ if (!INCLUDE["NET"]) {
         return IP;
     }
 
+    function sortips(iparray=[]) {
+        if (!checkfunctype("sortips", "array", iparray, 1)) {exit(1)}
+	if (len(iparray) == 0) {return iparray;}
+	temparray=[]
+	foreach ip in iparray {
+	    temparray=push(temparray, iptoint(ip))
+	}
+	temparray=sort(temparray)
+	iparray=[]
+	foreach ip in temparray {
+	    iparray=push(iparray, inttoip(ip))
+	}
+	return iparray;
+    }
+
     function hextoipv6(hexaIP="") {
         i=0
 	    result=""
