@@ -124,7 +124,7 @@ if (!INCLUDE["NET"]) {
         foreach i, ip in iparray {
             iparray=set(iparray, i, iptoint(ip))
         }
-        iarray=sort(iarray)
+        iarray=sort(iparray)
         foreach i, ip in iparray {
             iparray=set(iparray, i, inttoip(ip))
         }
