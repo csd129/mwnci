@@ -120,17 +120,15 @@ if (!INCLUDE["NET"]) {
 
     function sortips(iparray=[]) {
         if (!checkfunctype("sortips", "array", iparray, 1)) {exit(1)}
-	if (len(iparray) == 0) {return iparray;}
-	temparray=[]
-	foreach ip in iparray {
-	    temparray=push(temparray, iptoint(ip))
-	}
-	temparray=sort(temparray)
-	iparray=[]
-	foreach ip in temparray {
-	    iparray=push(iparray, inttoip(ip))
-	}
-	return iparray;
+        if (len(iparray) == 0) {return iparray;}
+        foreach i, ip in iarray {
+            iarray=set(iarray, i, iptoint(ip))
+        }
+        iarray=sort(iarray)
+        foreach i, ip in iarray {
+            iarray=set(iarray, i, inttoip(ip))
+        }
+        return iparray;
     }
 
     function hextoipv6(hexaIP="") {
@@ -193,5 +191,9 @@ if (!INCLUDE["NET"]) {
 
     function string.nettrans() {
         return nettrans(self);
+    }
+
+    function array.sortips() {
+        return sortips(self);
     }
 }
