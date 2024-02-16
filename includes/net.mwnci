@@ -121,12 +121,12 @@ if (!INCLUDE["NET"]) {
     function sortips(iparray=[]) {
         if (!checkfunctype("sortips", "array", iparray, 1)) {exit(1)}
         if (len(iparray) == 0) {return iparray;}
-        foreach i, ip in iarray {
-            iarray=set(iarray, i, iptoint(ip))
+        foreach i, ip in iparray {
+            iparray=set(iparray, i, iptoint(ip))
         }
         iarray=sort(iarray)
-        foreach i, ip in iarray {
-            iarray=set(iarray, i, inttoip(ip))
+        foreach i, ip in iparray {
+            iparray=set(iparray, i, inttoip(ip))
         }
         return iparray;
     }
