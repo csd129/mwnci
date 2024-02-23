@@ -131,6 +131,13 @@ if (!INCLUDE["NET"]) {
         return iparray;
     }
 
+    function rsortips(ip_array=[]) {
+        if (!checkfunctype("rsortips", "array", ip_array, 1)) {exit(1)}
+	if (len(ip_array) == 0) {return ip_array;}
+	ip_array=sortips(ip_array)
+	return reverse(ip_array);
+    }
+
     function hextoipv6(hexaIP="") {
         i=0
 	    result=""
@@ -195,5 +202,9 @@ if (!INCLUDE["NET"]) {
 
     function array.sortips() {
         return sortips(self);
+    }
+
+    function array.rsortips() {
+        return rsourtips(serlf);
     }
 }

@@ -83,10 +83,6 @@ function string.isincidr(cidr) {return isincidr(cidr, self);}
 function string.isnumber() {return isnumber(self);}
 function string.lines() {return lines(self);}
 function string.listcidrips() {return listcidrips(self);}
-function string.lookupcname() {return lookupcname(self);}
-function string.lookuphost() {return lookuphost(self);}
-function string.lookupip() {return lookupip(self);}
-function string.lookuptxt() {return lookuptxt(self);}
 function string.ltrim(trimmer="") {if (trimmer == "") {return ltrim(self);} return ltrim(self, trimmer);}          
 function string.match(search) {return match(search, self);}
 function string.ord() {return ord(self);}
@@ -102,4 +98,15 @@ function string.toupper() {return toupper(self);}
 function string.trim() {return trim(self);}
 function string.trimprefix(pref) {return trimprefix(self, pref);}
 function string.trimsuffix(suff) {return trimsuffix(self, suff);}
+
+// For backward compatibility
+
+function string.lookupcname() {return lookupcname(self);}
+function string.lookuphost() {return lookuphost(self);}
+function string.lookupip() {return lookupip(self);}
+function string.lookuptxt() {return lookuptxt(self);}
+function string.lookupptr() {return lookupptr(self);}
+function string.lookupns() {return lookupns(self);}
+function string.lookupmx() {return lookupmx(self);}
+
 }

@@ -410,4 +410,13 @@ if (!INCLUDE["MAIN"]) {
     function usort(arr) {
         return sort(uniq(arr)); 
     }
+    function lookupcname(Search="") {return nslookup(Search, "cname");}
+    function lookuphost(Search="") {return nslookup(Search, "host");}
+    function lookupip(Search="") {return nslookup(Search, "ip");}
+    function lookuptxt(Search="") {return nslookup(Search, "txt");}
+    function lookupptr(Search="") {return nslookup(Search, "ptr");}
+    function lookupns(Search="") {return nslookup(Search, "ns");}
+    function lookupmx(Search="") {return nslookup(Search, "mx");}
+
+
 }
