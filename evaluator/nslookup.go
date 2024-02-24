@@ -10,14 +10,17 @@ import (
 func NSLookup(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"nslookup", args,
-		typing.ExactArgs(2),
+		typing.RangeOfArgs(0, 2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
 		return newError(err.Error())
 	}
 
 	domain := args[0].(*object.String).Value
-	search_type := args[1].(*object.String).Value
+	search_type := "ip"
+	if len(args) == 2 {
+		search_type = args[1].(*object.String).Value
+	}
 
 	switch search_type {
 	case "cname":
@@ -69,12 +72,11 @@ func NSLookup(args ...object.Object) object.Object {
 		if err != nil {return NULL}
 		elements := make([]object.Object, len(record))
 		for i,data := range record {
-			hostpref := fmt.Sprintf("%v:%v", data.Host, data.Pref)
+			hostpref := fmt.Sprintf("%v %v", data.Host, data.Pref)
 			elements[i] = &object.String{Value: hostpref}
 		}
 		return &object.Array{Elements: elements}
 	default:
-		return NULL
+		return newError("Search type argument to `nslookup` is not supprted, got `%s`. Types are `cname`, `host`, `ip`, `txt`, `ptr`, `ns`, `mx`. ", search_type)
 	}
-
 }
