@@ -2,9 +2,9 @@ package evaluator
 
 import (
 	"fmt"
-	"net"
 	"mwnci/object"
 	"mwnci/typing"
+	"net"
 )
 
 func NSLookup(args ...object.Object) object.Object {
@@ -25,11 +25,15 @@ func NSLookup(args ...object.Object) object.Object {
 	switch search_type {
 	case "cname":
 		record, err := net.LookupCNAME(domain)
-		if err != nil {return NULL}
+		if err != nil {
+			return NULL
+		}
 		return &object.String{Value: record}
 	case "host":
 		record, err := net.LookupHost(domain)
-		if err != nil {return NULL}
+		if err != nil {
+			return NULL
+		}
 		elements := make([]object.Object, len(record))
 		for i, ip := range record {
 			elements[i] = &object.String{Value: fmt.Sprint(ip)}
@@ -37,7 +41,9 @@ func NSLookup(args ...object.Object) object.Object {
 		return &object.Array{Elements: elements}
 	case "ip":
 		record, err := net.LookupIP(domain)
-		if err != nil {return NULL}
+		if err != nil {
+			return NULL
+		}
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
 			elements[i] = &object.String{Value: fmt.Sprint(data)}
@@ -45,7 +51,9 @@ func NSLookup(args ...object.Object) object.Object {
 		return &object.Array{Elements: elements}
 	case "txt":
 		record, err := net.LookupTXT(domain)
-		if err != nil {return NULL}
+		if err != nil {
+			return NULL
+		}
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
 			elements[i] = &object.String{Value: fmt.Sprint(data)}
@@ -53,7 +61,9 @@ func NSLookup(args ...object.Object) object.Object {
 		return &object.Array{Elements: elements}
 	case "ptr":
 		record, err := net.LookupAddr(domain)
-		if err != nil {return NULL}
+		if err != nil {
+			return NULL
+		}
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
 			elements[i] = &object.String{Value: fmt.Sprint(data)}
@@ -61,22 +71,26 @@ func NSLookup(args ...object.Object) object.Object {
 		return &object.Array{Elements: elements}
 	case "ns":
 		record, err := net.LookupNS(domain)
-		if err != nil {return NULL}
+		if err != nil {
+			return NULL
+		}
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
-			elements[i] = &object.String{Value: fmt.Sprintf("%v",data)}
+			elements[i] = &object.String{Value: fmt.Sprintf("%v", data)}
 		}
 		return &object.Array{Elements: elements}
 	case "mx":
 		record, err := net.LookupMX(domain)
-		if err != nil {return NULL}
+		if err != nil {
+			return NULL
+		}
 		elements := make([]object.Object, len(record))
-		for i,data := range record {
+		for i, data := range record {
 			hostpref := fmt.Sprintf("%v %v", data.Host, data.Pref)
 			elements[i] = &object.String{Value: hostpref}
 		}
 		return &object.Array{Elements: elements}
 	default:
-		return newError("Search type argument to `nslookup` is not supprted, got `%s`. Types are `cname`, `host`, `ip`, `txt`, `ptr`, `ns`, `mx`. ", search_type)
+		return newError("Search type argument to `nslookup` is not supprted, got `%s`. \nTypes are `cname`, `host`, `ip`, `txt`, `ptr`, `ns`, `mx`. ", search_type)
 	}
 }
