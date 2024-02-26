@@ -15,7 +15,7 @@ if (!INCLUDE["FILE"]) {
     
     function isdoable(filename="", bit) {
         if (!checkfunctype("isdoable", "string", filename)) {exit(1)}
-        if (!checkfunctype("isdoable", "integer", bit)) {exit(1)}
+        if (!checkfunctype("isdoable", "integer", bit, 2)) {exit(1)}
         data=fields(file(filename, 1))
         perms=data[3]
         owner=getbin(int(perms[1]))[bit]

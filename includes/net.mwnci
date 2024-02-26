@@ -159,6 +159,24 @@ if (!INCLUDE["NET"]) {
 	    return tolower(substr(ipv6_result,0, len(ipv6_result)-1));
     }
 
+    function lookupport(Port=0, Proto="tcp") {
+        if (!checkfunctype("lookupport", "integer", Port)) {exit(1)}
+	if (!checkfunctype("lookupport", "string", Proto, 2)) {exit(1)}
+        SERVICES="/etc/services"
+	InitList=regexp(string(Port)+"/"+Proto, SERVICES)
+	foreach Line in InitList {
+	    if (len(Line) > 0) {
+	        SLine=fields(Line)
+		Service=SLine[0]
+		ServPort=split(SLine[1], "/")[0]
+		if (Port == int(ServPort)) {
+		    return Service;
+	        }
+ 	    }
+	}
+	return null;
+    }
+
     function hextoipv4(hexaIP="") {
         converted=inttoip(hex2dec(hexaIP))
 	    return join(reverse(split(converted, ".")), ".");
