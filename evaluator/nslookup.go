@@ -70,20 +70,13 @@ func NSLookup(args ...object.Object) object.Object {
 		}
 		return &object.Array{Elements: elements}
 	case "ns":
-		record, err := net.LookupNS(domain)
-		if err != nil {
-			return NULL
-		}
+		record, _ := net.LookupNS(domain)
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
-			elements[i] = &object.String{Value: fmt.Sprintf("%v", data)}
+			elements[i] = &object.String{Value: fmt.Sprintf("%v", data.Host)}
 		}
 		return &object.Array{Elements: elements}
 	case "mx":
-		record, err := net.LookupMX(domain)
-		if err != nil {
-			return NULL
-		}
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
 			hostpref := fmt.Sprintf("%v %v", data.Host, data.Pref)
