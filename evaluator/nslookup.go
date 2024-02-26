@@ -77,6 +77,7 @@ func NSLookup(args ...object.Object) object.Object {
 		}
 		return &object.Array{Elements: elements}
 	case "mx":
+		record, _ := net.LookupMX(domain)
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
 			hostpref := fmt.Sprintf("%v %v", data.Host, data.Pref)
