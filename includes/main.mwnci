@@ -418,5 +418,54 @@ if (!INCLUDE["MAIN"]) {
     function lookupns(Search="") {return nslookup(Search, "ns");}
     function lookupmx(Search="") {return nslookup(Search, "mx");}
 
+    function permsym(BPerms="") {
+        DefPerms=["-", "-", "-"]
+        if (BPerms[0] == "1") {DefPerms=set(DefPerms, 0, "r")}
+        if (BPerms[1] == "1") {DefPerms=set(DefPerms, 1, "w")}
+        if (BPerms[2] == "1") {DefPerms=set(DefPerms, 2, "x")}
+        return join(DefPerms, "");
+    }
 
+
+    function oct2sym(Perms="") {
+        Binary=trimprefix(oct2bin(Perms), "0b")
+        while (len(Binary) < 12) {
+            Binary="0" + Binary
+        }
+        Spec=substr(Binary,0,3)
+        User=substr(Binary,3,3)
+        Group=substr(Binary,6,3)
+        Other=substr(Binary,9,3)
+
+        SymUser=permsym(User)
+        SymGroup=permsym(Group)
+        SymOther=permsym(Other)
+
+        FullPerms=split(SymUser + SymGroup + SymOther, "")
+        BSpec=split(Spec, "")
+        if (BSpec[2] == "1") {
+            if (FullPerms[8] != "x") {
+	            FullPerms=set(FullPerms, 8, "T")
+	        } else {
+	            FullPerms=set(FullPerms, 8, "t")
+	        }
+        }
+        if (BSpec[1] == "1") {
+            if (FullPerms[5] != "x") {
+	            FullPerms=set(FullPerms, 5, "S")
+	        } else {
+	            FullPerms=set(FullPerms, 5, "s")
+	        }
+        }
+        if (BSpec[0] == "1") {
+            if (FullPerms[2] != "x") {
+	            FullPerms=set(FullPerms, 2, "S")
+	        } else {
+	            FullPerms=set(FullPerms, 2, "s")
+	        }
+        }
+        FullPerms=join(FullPerms, "")
+
+           return FullPerms;
+    }
 }

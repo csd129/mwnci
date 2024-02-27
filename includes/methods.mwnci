@@ -85,7 +85,9 @@ function string.lines() {return lines(self);}
 function string.listcidrips() {return listcidrips(self);}
 function string.ltrim(trimmer="") {if (trimmer == "") {return ltrim(self);} return ltrim(self, trimmer);}          
 function string.match(search) {return match(search, self);}
+function string.oct2sym() {return oct2sym(self);}
 function string.ord() {return ord(self);}
+function string.permsym() {return permsym(self);}
 function string.repeat(count=0, separator="") {return repeat(self, count, separator);}
 function string.replace(old, new, amount) {return replace(self, old, new, amount);}
 function string.replaceall( old, new ) {return replaceall(self, old, new);}
