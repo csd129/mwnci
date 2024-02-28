@@ -26,3 +26,6 @@ distclean:
 
 test:
 	go test -v -race ./...
+
+functest:
+	go run mwnci functests/functest

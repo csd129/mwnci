@@ -18,7 +18,7 @@ func Assert(args ...object.Object) object.Object {
 	}
 
 	if !args[0].(*object.Boolean).Value {
-		fmt.Printf("Assertion Error: %s", args[1].(*object.String).Value)
+		fmt.Printf("Assertion Error: %s\n", args[1].(*object.String).Value)
 		os.Exit(1)
 	}
 	return nil
