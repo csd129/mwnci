@@ -1,0 +1,10 @@
+if (!INCLUDE["NETFLAGS"]) {
+    INCLUDE=set(INCLUDE, "NETFLAGS", true)
+
+    RTF_FLAGS={
+	"0001": "U",
+	"0002": "G",
+	"0003": "UG",
+	"0004": "H",
+    }
+}

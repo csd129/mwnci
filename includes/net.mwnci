@@ -5,6 +5,10 @@ if (!INCLUDE["NET"]) {
         include("net/tcp_states")
     }
 
+    if (!INCLUDE["NETFLAGS"]) {
+        include("net/netflags")
+    }
+
     function parseconn(conn="", proto="") {
         SplitConn=splithostport(conn)
         if (hassuffix(proto, "6")) {
@@ -175,6 +179,26 @@ if (!INCLUDE["NET"]) {
             }
         }
 	    return null;
+    }
+
+    function route() {
+        Data=shift(split(cat("/proc/net/route"), "\n"))
+        RouteArray=[]
+        foreach Line in Data {
+            if (len(Line) > 0) {
+                SLine=fields(Line)
+                Iface=SLine[0]
+                Destination=SLine[1]
+                Gateway=SLine[2]
+                Flags=RTF_FLAGS[SLine[3]]
+                Mask=hextoipv4(SLine[7])
+                DestIP=hextoipv4(Destination)
+                GateIP=hextoipv4(Gateway)
+                tempHash={"Destination": DestIP, "Gateway": GateIP, "Genmask": Mask, "Flags": Flags, "Iface":Iface}
+                RouteArray=RouteArray.push(tempHash)
+            }
+        }
+        return RouteArray;
     }
 
     function hextoipv4(hexaIP="") {

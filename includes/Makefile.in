@@ -1,7 +1,7 @@
 FILES=file.mwnci grp.mwnci http.mwnci main.mwnci math.mwnci net.mwnci \
 	os.mwnci ps.mwnci pwd.mwnci sysstat.mwnci ansicolor.mwnci \
 	units.mwnci certs.mwnci fstab.mwnci methods.mwnci mysql.mwnci
-NETFILES=net/tcp_states.mwnci
+NETFILES=net/tcp_states.mwnci net/netflags.mwnci
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
 OWNER=@OWNER@
