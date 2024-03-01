@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
@@ -19,6 +20,7 @@ func unlinkFun(args ...object.Object) object.Object {
 
 	err := os.Remove(path)
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error calling unlink(): %v\n", err.Error())
 		return FALSE
 	}
 	return TRUE

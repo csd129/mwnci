@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
@@ -31,13 +32,16 @@ func chmodFun(args ...object.Object) object.Object {
 	// convert from octal -> decimal
 	result, err := strconv.ParseInt(mode, 8, 64)
 	if err != nil {
-		return newError("Unable to create permissions with %v", args[1])
+		//		return newError("Unable to create permissions with %v", args[1])
+		fmt.Fprintf(os.Stderr, "Error calling chmod(): Unable to create permissions with %v\n", args[1])
+		return FALSE
 	}
 
 	// Change the mode.
 	err = os.Chmod(path, os.FileMode(result))
 	if err != nil {
-		return newError(err.Error())
+		fmt.Fprintf(os.Stderr, "Error calling chmod(): %v\n", err.Error())
+		return FALSE
 	}
 	return TRUE
 }

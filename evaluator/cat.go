@@ -1,5 +1,4 @@
 package evaluator
-
 import (
 	"mwnci/object"
 	"mwnci/typing"
@@ -25,7 +24,8 @@ func Cat(args ...object.Object) object.Object {
 	if filename != "-" {
 		file, err := os.Open(filename)
 		if err != nil {
-			return newError(err.Error())
+			fmt.Fprintf(os.Stderr, "Error calling cat(): %v\n", err.Error())
+			return &object.String{Value: string(data)}
 		}
 		defer file.Close()
 		scanner := bufio.NewScanner(file)

@@ -3,6 +3,7 @@ package evaluator
 import (
 	"mwnci/object"
 	"mwnci/typing"
+	"fmt"
 	"os"
 )
 
@@ -20,7 +21,8 @@ func Cd(args ...object.Object) object.Object {
 	}
 	err := os.Chdir(dir)
 	if err != nil {
-		return newError(err.Error())
+		fmt.Fprintf(os.Stderr, "Error calling cd(): %v\n", err.Error())
+		return FALSE
 	}
 	return &object.Boolean{Value: true}
 }

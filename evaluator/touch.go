@@ -3,7 +3,7 @@ package evaluator
 import (
 	"os"
 	"time"
-	
+	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -24,6 +24,7 @@ func Touch(args ...object.Object) object.Object {
 	if os.IsNotExist(err) {
 		file, err := os.Create(path)
 		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error calling touch(): %v\n", err)
 			return FALSE
 		}
 		defer file.Close()
@@ -31,9 +32,10 @@ func Touch(args ...object.Object) object.Object {
 		currentTime := time.Now().Local()
 		err = os.Chtimes(path, currentTime, currentTime)
 		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error calling touch(): %v\n", err)
 			return FALSE
 		}
 	}
-	return &object.Integer{Value: 0}
+	return TRUE
 }
 
