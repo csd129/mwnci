@@ -84,6 +84,14 @@ if (!INCLUDE["MAIN"]) {
                 return false;
             }
         }
+        if (expected == "collection") {
+            if (ReceivedType == "hash" || ReceivedType == "array") {
+                return true;
+            } else {
+                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `HASH` or `ARRAY`, got `", toupper(ReceivedType), "`")
+                return false;
+            }
+        }
         if (ReceivedType != expected) {
             println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `",
             toupper(expected), "` got `", toupper(ReceivedType), "`")
