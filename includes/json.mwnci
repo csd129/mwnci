@@ -1,0 +1,23 @@
+if (!INCLUDE["JSON"]) {
+    INCLUDE=set(INCLUDE, "JSON", true)
+
+    function tojson(JsonData) {
+        JsonData=JsonData.string()
+        cmd=sprintf("echo \"%s\" | yq -c --output-format json", JsonData)
+        return system(cmd);
+    }
+
+    function toyaml(JsonData) {
+        JsonData=JsonData.string()
+        cmd=sprintf("echo \"%s\" | yq --output-format yaml", JsonData)
+        return system(cmd);
+    }
+
+    function object.tojson() {
+        return tojson(self);
+    }
+
+    function object.toyaml() {
+        return toyaml(self);
+    }
+}
