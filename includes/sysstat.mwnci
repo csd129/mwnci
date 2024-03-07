@@ -15,7 +15,22 @@ if (!INCLUDE["SYSSTAT"]) {
 		return host_hash;
     }
 
-    function getcpu() {
+	function vmstat() {
+    	DataHash={}
+    	Data=shift(split(trim(system("vmstat")), "\n"),2)
+    	Info=fields(Data[0])
+    	ProcHash={"Run": int(Info[0]), "Block": int(Info[1])}
+    	MemHash={"Swap": int(Info[2]), "Free": int(Info[3]), "Buff": int(Info[4]), "Cache": int(Info[5])}
+    	SwapHash={"SwapIn": int(Info[6]), "SwapTo": int(Info[7])}
+    	IOHash={"BlockIn": int(Info[8]), "BlockOut": int(Info[9])}
+    	SysHash={"Inter": int(Info[10]), "Contxt": int(Info[11])}
+    	CpuHash={"User": int(Info[12]), "Sys": int(Info[13]), "Idle": int(Info[14]), "Wait": int(Info[15]), "Steal": int(Info[16]), "Guest": int(Info[17])}
+    	DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
+    	return DataHash;
+	}
+
+
+    function mpstat() {
         Mpstat=system("mpstat -P ALL -o JSON")
 		Json=eval(Mpstat)
 		Cpu_Hash={}
@@ -30,7 +45,7 @@ if (!INCLUDE["SYSSTAT"]) {
         return Cpu_Hash;
     }
     
-    function getio() {
+    function iostat() {
         Iostat=system("iostat -p ALL -o JSON")
 		Iostat=replaceall(Iostat, "kB_", "kb_")
 		Iostat=replaceall(Iostat, "/", "")
@@ -45,7 +60,7 @@ if (!INCLUDE["SYSSTAT"]) {
         return Io_Hash;
     }
 
-    function pidcpu(opts="") {
+    function pidstat(opts="") {
         CMD="pidstat -l"
 		if (len(opts) > 0) {
 	    	CMD=CMD + " -C " + opts
@@ -69,7 +84,7 @@ if (!INCLUDE["SYSSTAT"]) {
 			pid_hash=set(pid_hash, pid, temp_hash)
         }
 		return pid_hash;
-    }
+	}
 
     function pidmem(ops="") {
 		include("pwd")
