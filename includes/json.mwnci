@@ -15,7 +15,7 @@ if (!INCLUDE["JSON"]) {
                 return false;
             }
         }
-        result=system(cmd)
+        result=trim(system(cmd))
         unlink(tempfile)
         return replaceall(result, " -- ", " : ");
     }

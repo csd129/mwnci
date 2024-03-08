@@ -24,7 +24,10 @@ if (!INCLUDE["SYSSTAT"]) {
     	SwapHash={"SwapIn": int(Info[6]), "SwapTo": int(Info[7])}
     	IOHash={"BlockIn": int(Info[8]), "BlockOut": int(Info[9])}
     	SysHash={"Inter": int(Info[10]), "Contxt": int(Info[11])}
-    	CpuHash={"User": int(Info[12]), "Sys": int(Info[13]), "Idle": int(Info[14]), "Wait": int(Info[15]), "Steal": int(Info[16]), "Guest": int(Info[17])}
+    	CpuHash={"User": int(Info[12]), "Sys": int(Info[13]), "Idle": int(Info[14]), "Wait": int(Info[15]), "Steal": int(Info[16])}
+		if (len(Info) == 18) {
+	    	CpuHash=set(CpuHash, "Guest", int(Info[17]))
+		}
     	DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
     	return DataHash;
 	}
