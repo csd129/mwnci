@@ -36,8 +36,8 @@ if (!INCLUDE["MAIN"]) {
     function splithostport(hostp="") {
         if (!checkfunctype("splithostport", "string", hostp, 1)) {exit(1)}
         splitport=split(hostp, ":")
-        port=int(splitport[len(splitport)-1])
-        address=trimsuffix(hostp, ":"+string(port))
+        port=splitport[len(splitport)-1]
+        address=trimsuffix(hostp, ":"+port)
         return [address, port];
     }
 
