@@ -131,11 +131,15 @@ if (!INCLUDE["MATH"]) {
         return p * sqrt(1+q*q);
     }
 
-    function isprime(num=0) {
-        if (!checkfunctype("isprime", "integer", num, 1)) {exit(1)}
-        if (num < 2) {return false;}
-        foreach i in 2..(int(sqrt(num))) {
-            if ((num % i) == 0) {return false;}
+    function isprime(n=0) {
+        if (!checkfunctype("isprime", "integer", n, 1)) {exit(1)}
+        i=2
+        if (n < 2) {return false;}
+        while (i <= n/2) {
+            if (n % i == 0) {
+	            return false;
+	        }
+            i++
         }
         return true;
     }
