@@ -1,12 +1,12 @@
 package evaluator
 
 import (
-	"bufio"
-	"fmt"
-	"io"
+
+	// "io"
 	"mwnci/object"
 	"mwnci/typing"
-	"os"
+
+	"github.com/chzyer/readline"
 )
 
 // Input ...
@@ -22,12 +22,12 @@ func Input(args ...object.Object) object.Object {
 	if len(args) == 1 {
 		prompt = args[0].(*object.String).Value
 	}
-	fmt.Fprintf(os.Stdout, "%s", prompt)
-	buffer := bufio.NewReader(os.Stdin)
-
-	line, _, err := buffer.ReadLine()
-	if err != nil && err != io.EOF {
-		return newError(fmt.Sprintf("error reading input from stdin: %s", err))
-	}
+	line := ""
+	rl, _ := readline.New(prompt)
+	defer rl.Close()
+	line, _ = rl.Readline()
+	//	if err != nil && err != io.EOF {
+	//		return newError(fmt.Sprintf("error reading input from stdin: %s", err))
+	//	}
 	return &object.String{Value: string(line)}
 }
