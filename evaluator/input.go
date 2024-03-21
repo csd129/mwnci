@@ -2,7 +2,6 @@ package evaluator
 
 import (
 
-	// "io"
 	"mwnci/object"
 	"mwnci/typing"
 
@@ -26,8 +25,5 @@ func Input(args ...object.Object) object.Object {
 	rl, _ := readline.New(prompt)
 	defer rl.Close()
 	line, _ = rl.Readline()
-	//	if err != nil && err != io.EOF {
-	//		return newError(fmt.Sprintf("error reading input from stdin: %s", err))
-	//	}
 	return &object.String{Value: string(line)}
 }
