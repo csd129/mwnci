@@ -7,6 +7,7 @@ import (
 	"mwnci/lexer"
 	"mwnci/object"
 	"mwnci/parser"
+	"strings"
 	"fmt"
 	"github.com/chzyer/readline"
 )
@@ -26,16 +27,28 @@ func Start(in io.Reader, out io.Writer) {
 		printParserErrors(out, p.Errors())
 	}
 	evaluator.Eval(program, env)
+	line = ""
+	rl, _ := readline.NewEx(&readline.Config{
+		Prompt:            PROMPT,
+		HistoryFile:       historyfile,
+	})
+	defer rl.Close()
+	var cmds []string
 	for {
-		line := ""
-		rl, _ := readline.NewEx(&readline.Config{
-			Prompt:            PROMPT,
-			HistoryFile:       historyfile,
-		})
-		defer rl.Close()
 		line, _ = rl.Readline()
-
-		l := lexer.New(line)
+		line = strings.TrimSpace(line)
+		if len(line) == 0 {
+			continue
+		}
+		cmds=append(cmds, line)
+		if !strings.HasSuffix(line, ":") {
+			continue
+		}
+		cmd := strings.Join(cmds, " ")
+		cmd = strings.TrimSpace(cmd)
+		cmd = strings.TrimSuffix(cmd, ":")
+		rl.SaveHistory(cmd)
+		l := lexer.New(cmd)
 		p := parser.New(l)
 
 		program := p.ParseProgram()
@@ -49,6 +62,7 @@ func Start(in io.Reader, out io.Writer) {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")
 		}
+		cmds=cmds[:0]
 	}
 }
 
