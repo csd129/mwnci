@@ -8,15 +8,18 @@ if (!INCLUDE["GRP"]) {
 
         foreach line in FileArray {
             grouphash={}
-            groupinfo=split(trim(line), ":")
-    	    if (groupinfo) {
-	            if (len(groupinfo[3]) > 0) {
-	                Members=split(groupinfo[3], ",")
-	            } else {
-	                Members=[]
+            line=trim(line)
+	        if (line[0] != "#") {
+                groupinfo=split(trim(line), ":")
+    	        if (groupinfo) {
+	                if (len(groupinfo[3]) > 0) {
+	                    Members=split(groupinfo[3], ",")
+	                } else {
+	                    Members=[]
+	                }
+                    grouphash={"Group": groupinfo[0], "Password": groupinfo[1], "Gid": groupinfo[2], "Members": Members}
+	                GroupArray=push(GroupArray, grouphash)
 	            }
-                grouphash={"Group": groupinfo[0], "Password": groupinfo[1], "Gid": groupinfo[2], "Members": Members}
-	            GroupArray=push(GroupArray, grouphash)
 	        }
         }
         if (group != "") {
@@ -44,11 +47,19 @@ if (!INCLUDE["GRP"]) {
         run=eval(cmd)
         if (len(run["stderr"]) == 0) {
             gr=run["stdout"]
-            gr=replaceall(gr, " : ", ":")
-            grps=split(gr, ":")[1]
+            switch(OS) {
+	            case  "linux" {
+                    gr=replaceall(gr, " : ", ":")
+                    grps=split(gr, ":")[1]
+	            }
+	            case "freebsd" {
+	                grps=gr
+                }
+	        }
         }
         return fields(grps);
-    };
+
+    }
     
     // getgrgid() and getgrnam() are available for backward compatibility
     // scripts coded with older versions of mwnci
