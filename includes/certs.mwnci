@@ -35,10 +35,17 @@ if (!INCLUDE["CERTS"]) {
         command=sprintf("openssl x509 -in %s -enddate -noout", cfile)
         certdate=system(command)
         certdate=trim(split(certdate, "=")[1])
-        certepoch=datetoepoch(certdate)
-        datediff=(certepoch - time()) / 86400
+	switch(OS) {
+	    case "linux" {
+	        certepoch=datetoepoch(certdate)
+	    }
+	    case "freebsd" {
+	        cmd="date -j -f \"%b %d %T %Y %Z\" \"" + certdate + "\" +%s"
+	        certepoch=int(trim(system(cmd)))
+	    }
+        }
         unlink(cfile)
-        return datediff;
+	return (certepoch - time()) / 86400;
     }
     
     function sitecertexp(domain="") {
