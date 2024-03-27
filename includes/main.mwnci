@@ -301,8 +301,15 @@ if (!INCLUDE["MAIN"]) {
 
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
-	if (isexist("/proc/" + string(pid))) {return true;}
-        return false;
+	cmd="ps ax"
+	processes=rest(split(trim(system(cmd)), "\n"))
+	foreach line in processes {
+	    procid=int(fields(line)[0])
+	    if (procid == pid) {
+	        return true;
+	    }
+	}
+	return false;
     }
 
     function rotl(Array, Amount=0) {
