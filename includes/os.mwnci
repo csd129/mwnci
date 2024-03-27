@@ -1,17 +1,17 @@
 if (!INCLUDE["OS"]) {
     INCLUDE=set(INCLUDE, "OS", true)
     
-function mem_rounded(mem_size) {
-    mem_size=int(mem_size)
-    chip_size=1
-    chip_guess=(mem_size / 8)-1
-    while (chip_guess != 0) {
-        chip_guess = chip_guess >> 1
-	chip_size = chip_size << 1
+    function mem_rounded(mem_size) {
+        mem_size=int(mem_size)
+        chip_size=1
+        chip_guess=(mem_size / 8)-1
+        while (chip_guess != 0) {
+            chip_guess = chip_guess >> 1
+            chip_size = chip_size << 1
+        }
+        rounded = (int(int(mem_size) / int(chip_size)) + 1) * int(chip_size)
+        return rounded;
     }
-    rounded = (int(int(mem_size) / int(chip_size)) + 1) * int(chip_size)
-    return rounded;
-}
 
     function env() {
         h={}
@@ -64,65 +64,65 @@ function mem_rounded(mem_size) {
 
     function free() {
     	if (OS == "linux") {
-    	memhash={}
-        mem=meminfo()
-        mem_total=int(mem["MemTotal"])
-        mem_free=int(mem["MemFree"])
-        mem_available=int(mem["MemAvailable"])
-        mem_shared=int(mem["Shmem"])
-        mem_cached=int(mem["Cached"]) + int(mem["SReclaimable"])
-        mem_bufcache=int(mem["Buffers"]) + mem_cached
-        mem_used=mem_total - mem_available
-        mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
-        mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
-        swap_total=int(mem["SwapTotal"])
-        swap_free=int(mem["SwapFree"])
-        swap_used=swap_total - swap_free
-        swap_used_perc=sprintf("%.2f", float(swap_used) / float(swap_total)*100)
-        swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
+            memhash={}
+            mem=meminfo()
+            mem_total=int(mem["MemTotal"])
+            mem_free=int(mem["MemFree"])
+            mem_available=int(mem["MemAvailable"])
+            mem_shared=int(mem["Shmem"])
+            mem_cached=int(mem["Cached"]) + int(mem["SReclaimable"])
+            mem_bufcache=int(mem["Buffers"]) + mem_cached
+            mem_used=mem_total - mem_available
+            mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
+            mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
+            swap_total=int(mem["SwapTotal"])
+            swap_free=int(mem["SwapFree"])
+            swap_used=swap_total - swap_free
+            swap_used_perc=sprintf("%.2f", float(swap_used) / float(swap_total)*100)
+            swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
 
-        hashy={"buff_cache": mem_bufcache, "cache": mem_cached, "shared": mem_shared, "total": mem_total, "free": mem_free, "available": mem_available, "used": mem_used, "used_perc": mem_used_perc, "free_perc": mem_free_perc}
-        memhash=set(memhash, "mem", hashy)
+            hashy={"buff_cache": mem_bufcache, "cache": mem_cached, "shared": mem_shared, "total": mem_total, "free": mem_free, "available": mem_available, "used": mem_used, "used_perc": mem_used_perc, "free_perc": mem_free_perc}
+            memhash=set(memhash, "mem", hashy)
 
-        hashy={"total": swap_total, "free": swap_free, "used": swap_used, "used_perc": swap_used_perc, "free_perc": swap_free_perc}
-        memhash=set(memhash, "swap", hashy)
-	}
-	if (OS == "freebsd") {
-	sysctl={}
-	sysctl_output=split(trim(system("/sbin/sysctl -a | egrep \"hw.pagesize|hw.physmem|vm.stats.vm\"")), "\n")
-foreach line in sysctl_output {
-	sline=cut(line, ": ")
-	sysctl=sysctl.set(sline[0], sline[1])
-}
+            hashy={"total": swap_total, "free": swap_free, "used": swap_used, "used_perc": swap_used_perc, "free_perc": swap_free_perc}
+            memhash=set(memhash, "swap", hashy)
+	    }
+	    if (OS == "freebsd") {
+	        sysctl={}
+	        sysctl_output=split(trim(system("/sbin/sysctl -a | egrep \"hw.pagesize|hw.physmem|vm.stats.vm\"")), "\n")
+            foreach line in sysctl_output {
+	            sline=cut(line, ": ")
+	            sysctl=sysctl.set(sline[0], sline[1])
+            }
 
-mem_hw = mem_rounded(sysctl["hw.physmem"])
-mem_all = int(sysctl["vm.stats.vm.v_page_count"]) * int(sysctl["hw.pagesize"])
-mem_inactive = int(sysctl["vm.stats.vm.v_inactive_count"]) * int(sysctl["hw.pagesize"])
-mem_cache = int(sysctl["vm.stats.vm.v_cache_count"]) * int(sysctl["hw.pagesize"])
-mem_free = int(sysctl["vm.stats.vm.v_free_count"]) * int(sysctl["hw.pagesize"])
+            mem_hw = mem_rounded(sysctl["hw.physmem"])
+            mem_all = int(sysctl["vm.stats.vm.v_page_count"]) * int(sysctl["hw.pagesize"])
+            mem_inactive = int(sysctl["vm.stats.vm.v_inactive_count"]) * int(sysctl["hw.pagesize"])
+            mem_cache = int(sysctl["vm.stats.vm.v_cache_count"]) * int(sysctl["hw.pagesize"])
+            mem_free = int(sysctl["vm.stats.vm.v_free_count"]) * int(sysctl["hw.pagesize"])
 
-mem_total = mem_hw
-mem_avail = mem_inactive + mem_cache + mem_free
-mem_used = mem_total - mem_avail
-mem_used_perc = sprintf("%.2f", float(mem_used) / float(mem_total)*100)
-mem_free_perc = sprintf("%.2f", float(100.00 - float(mem_used_perc)))
-memhash={}
+            mem_total = mem_hw
+            mem_avail = mem_inactive + mem_cache + mem_free
+            mem_used = mem_total - mem_avail
+            mem_used_perc = sprintf("%.2f", float(mem_used) / float(mem_total)*100)
+            mem_free_perc = sprintf("%.2f", float(100.00 - float(mem_used_perc)))
+            memhash={}
 
-hashy={"buff_cache": (mem_inactive + mem_cache)/1024, "total": mem_total/1024, "free": mem_free/1024, "used": mem_used/1024, "free_perc": mem_free_perc, "used_perc": mem_used_perc, "available": mem_avail/1024}
-memhash=set(memhash, "mem", hashy)
+            hashy={"buff_cache": (mem_inactive + mem_cache)/1024, "total": mem_total/1024, "free": mem_free/1024, "used": mem_used/1024, "free_perc": mem_free_perc, "used_perc": mem_used_perc, "available": mem_avail/1024}
+            memhash=set(memhash, "mem", hashy)
 
-swap_output=split(trim(system("swapinfo")), "\n")
-swap_output=rest(swap_output)
-swap_output=fields(swap_output[0])
-total=swap_output[1]
-used=swap_output[2]
-sfree=int(total) - int(used)
-avail=swap_output[3]
-swap_used_perc=sprintf("%.2f", float(used) / float(total)*100)
-swap_free_perc=sprintf("%.2f", float(100.00 - float(swap_used_perc)))
-hashy={"total": total, "free": sfree, "used": used, "used_perc": swap_used_perc, "free_perc": swap_free_perc}
-memhash=set(memhash, "swap", hashy)
-}
+            swap_output=split(trim(system("swapinfo")), "\n")
+            swap_output=rest(swap_output)
+            swap_output=fields(swap_output[0])
+            total=swap_output[1]
+            used=swap_output[2]
+            sfree=int(total) - int(used)
+            avail=swap_output[3]
+            swap_used_perc=sprintf("%.2f", float(used) / float(total)*100)
+            swap_free_perc=sprintf("%.2f", float(100.00 - float(swap_used_perc)))
+            hashy={"total": total, "free": sfree, "used": used, "used_perc": swap_used_perc, "free_perc": swap_free_perc}
+            memhash=set(memhash, "swap", hashy)
+        }
         return memhash;
     }
 
