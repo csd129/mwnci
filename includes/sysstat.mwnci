@@ -5,28 +5,30 @@ if (!INCLUDE["SYSSTAT"]) {
         switch(OS) {
 	    case "linux" {
 	    	out=system("iostat -o JSON")
-		data=eval(out)
-		hosts=data["sysstat"]["hosts"][0]
-		host_hash={
-			"nodename": hosts["nodename"],
-			"sysname": hosts["sysname"],
-			"release": hosts["release"],
-			"machine": hosts["machine"],
-			"number-of-cpus": hosts["number-of-cpus"]}
+			data=eval(out)
+			hosts=data["sysstat"]["hosts"][0]
+			host_hash={
+				"nodename": hosts["nodename"],
+				"sysname": hosts["sysname"],
+				"release": hosts["release"],
+				"machine": hosts["machine"],
+				"number-of-cpus": hosts["number-of-cpus"]
+			}
 	    }
 	    case "freebsd" {
-	    	 sysname=split(regexp("^NAME=", "/etc/os-release")[0], "=")[1]
-		 release=split(regexp("^VERSION=", "/etc/os-release")[0], "=")[1]
-		 machine=fields(system("uname -a"))
-		 machine=machine[len(machine)-1]
-		 cpus=fields(regexp("Multiprocessor System Detected:", "/var/run/dmesg.boot")[0])
-		 cpus=cpus[len(cpus)-2]
-	    	 host_hash={
-			"nodename": hostname(),
-			"sysname": sysname,
-			"release": release,
-			"machine": machine,
-			"number-of-cpus": cpus}
+	    	sysname=split(regexp("^NAME=", "/etc/os-release")[0], "=")[1]
+			release=split(regexp("^VERSION=", "/etc/os-release")[0], "=")[1]
+			machine=fields(system("uname -a"))
+			machine=machine[len(machine)-1]
+			cpus=fields(regexp("Multiprocessor System Detected:", "/var/run/dmesg.boot")[0])
+			cpus=cpus[len(cpus)-2]
+	    	host_hash={
+				"nodename": hostname(),
+				"sysname": sysname,
+				"release": release,
+				"machine": machine,
+				"number-of-cpus": cpus
+			}
 	    }
 	}
 	return host_hash;
