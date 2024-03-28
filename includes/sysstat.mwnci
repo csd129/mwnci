@@ -110,14 +110,7 @@ if (!INCLUDE["SYSSTAT"]) {
 
     function pidmem(ops="") {
 		include("pwd")
-		switch(OS) {
-		    case "linux" {
-		        CMD="ps -o pid,user,%cpu,%mem,command ax"
-		    }
-		    case "freebsd" {
-		        CMD="ps ax -o pid,user,%cpu,%mem,command"
-		    }
-		}
+		CMD="ps ax -o pid,user,%cpu,%mem,command | grep -v \"\]$\""
 		if (len(ops) == 0) {ops="[a-z]"}
 		ProcList=trim(system(CMD))
 		ProcList=rest(ProcList.split("\n"))

@@ -59,7 +59,7 @@ if (!INCLUDE["OS"]) {
                 memhash=set(memhash, entryarray[0], entryarray[1])
             }
         }
-    return memhash;
+        return memhash;
     }
 
     function free() {
