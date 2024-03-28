@@ -1,0 +1,43 @@
+function netstat() {
+    netarray=[]
+    protocols=["tcp", "tcp6", "raw", "udp", "udp6", "raw6"]
+    foreach protocol in protocols {
+        procfile="/proc/net/" + protocol
+        data=shift(split(cat(procfile), "\n"))
+        foreach line in data {
+            temparray=[]
+            if (len(line) > 0) {
+                sline=fields(line)
+                Local=parseconn(sline[1], protocol)
+                Remote=parseconn(sline[2], protocol)
+                State=TCP_STATES[sline[3]]
+                if (State == "CLOSE") {State=""}
+                    temparray=[protocol, Local, Remote, State]
+                    netarray=push(netarray, temparray)
+                }
+            }
+        }
+    }
+    return netarray;
+}
+
+function nettrans(iface="") {
+    if (!checkfunctype("nettrans", "string", iface, 1)) {exit(1)}
+    data=split(cat("/proc/net/dev"), "\n")
+    data=shift(data, 2)
+    iface_hash={}
+    foreach line in data {
+        sline=fields(line)
+        if (len(sline) > 0) {
+            device=replace(sline[0], ":", "", 1)
+            iface_data={"RX-OK": sline[2], "RX-ERR": sline[3], "RX-DRP": sline[4],
+                        "TX-OK": sline[10], "TX-ERR": sline[11], "TX-DRP": sline[12]}
+	    iface_hash=set(iface_hash, device, iface_data)
+	}
+    }
+    if (len(iface) > 0) {
+        return iface_hash[iface];
+    }
+    return iface_hash;
+}
+    

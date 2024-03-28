@@ -1,0 +1,22 @@
+function netstat() {
+    netarray=[]
+    data=split(system("netstat -an | egrep \"^tcp|^udp\""), "\n")
+    foreach line in data {
+        if (len(line) > 0) {
+            sline=fields(line)
+            local=reverse(sline[3])
+            remote=reverse(sline[4])
+            local=reverse(replace(local, ".", ":", 1))
+            remote=reverse(replace(remote, ".", ":", 1))
+            if (len(sline) == 6) {
+                temparray=[sline[0], local, remote, sline[5]]
+            } else {
+                temparray=[sline[0], local, remote, ""]
+            }
+            netarray=push(netarray, temparray)
+        }
+    }
+    return netarray;
+}
+
+

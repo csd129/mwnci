@@ -2,6 +2,7 @@ FILES=file.mwnci grp.mwnci http.mwnci main.mwnci math.mwnci net.mwnci \
 	os.mwnci ps.mwnci pwd.mwnci sysstat.mwnci ansicolor.mwnci \
 	units.mwnci certs.mwnci fstab.mwnci methods.mwnci mysql.mwnci \
 	json.mwnci
+SYSTEM=linux/net.mwnci freebsd/net.mwnci
 NETFILES=net/tcp_states.mwnci net/netflags.mwnci
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
@@ -15,7 +16,12 @@ install: ${FILES}
 	cp ${FILES} ${INCLUDEDIR}
 	sudo chmod 755 ${INCLUDEDIR}
 	sudo chmod 644 ${INCLUDEDIR}/*.mwnci
-	mkdir -p ${INCLUDEDIR}/net
+	mkdir -p ${INCLUDEDIR}/net ${INCLUDEDIR}/linux ${INCLUDEDIR}/freebsd
+	cp linux/*.mwnci ${INCLUDEDIR}/linux
+	cp freebsd/*.mwnci ${INCLUDEDIR}/freebsd
+	sudo chmod 755 ${INCLUDEDIR}/linux ${INCLUDEDIR}/freebsd
+	sudo chmod 644 ${INCLUDEDIR}/linux/*.mwnci
+	sudo chmod 644 ${INCLUDEDIR}/freebsd/*.mwnci
 	cp ${NETFILES} ${INCLUDEDIR}/net
 	sudo chmod 755 ${INCLUDEDIR}/net
 	sudo chmod 644 ${INCLUDEDIR}/net/*.mwnci
