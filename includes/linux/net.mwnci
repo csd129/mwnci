@@ -12,9 +12,8 @@ function netstat() {
                 Remote=parseconn(sline[2], protocol)
                 State=TCP_STATES[sline[3]]
                 if (State == "CLOSE") {State=""}
-                    temparray=[protocol, Local, Remote, State]
-                    netarray=push(netarray, temparray)
-                }
+                temparray=[protocol, Local, Remote, State]
+                netarray=push(netarray, temparray)
             }
         }
     }
@@ -40,4 +39,3 @@ function nettrans(iface="") {
     }
     return iface_hash;
 }
-    
