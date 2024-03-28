@@ -84,7 +84,7 @@ if (!INCLUDE["OS"]) {
             hashy={"buff_cache": mem_bufcache, "cache": mem_cached, "shared": mem_shared, "total": mem_total, "free": mem_free, "available": mem_available, "used": mem_used, "used_perc": mem_used_perc, "free_perc": mem_free_perc}
             memhash=set(memhash, "mem", hashy)
 
-            hashy={"total": swap_total, "free": swap_free, "used": swap_used, "used_perc": swap_used_perc, "free_perc": swap_free_perc}
+            hashy={"total": swap_total, "free": swap_free, "used": swap_used, "used_perc": float(swap_used_perc), "free_perc": float(swap_free_perc)}
             memhash=set(memhash, "swap", hashy)
 	    }
 	    if (OS == "freebsd") {
@@ -101,7 +101,7 @@ if (!INCLUDE["OS"]) {
             mem_cache = int(sysctl["vm.stats.vm.v_cache_count"]) * int(sysctl["hw.pagesize"])
             mem_free = int(sysctl["vm.stats.vm.v_free_count"]) * int(sysctl["hw.pagesize"])
 
-            mem_total = mem_hw
+            mem_total = mem_all
             mem_avail = mem_inactive + mem_cache + mem_free
             mem_used = mem_total - mem_avail
             mem_used_perc = sprintf("%.2f", float(mem_used) / float(mem_total)*100)
@@ -120,7 +120,7 @@ if (!INCLUDE["OS"]) {
             avail=swap_output[3]
             swap_used_perc=sprintf("%.2f", float(used) / float(total)*100)
             swap_free_perc=sprintf("%.2f", float(100.00 - float(swap_used_perc)))
-            hashy={"total": total, "free": sfree, "used": used, "used_perc": swap_used_perc, "free_perc": swap_free_perc}
+            hashy={"total": int(total), "free": int(sfree), "used": int(used), "used_perc": float(swap_used_perc), "free_perc": float(swap_free_perc)}
             memhash=set(memhash, "swap", hashy)
         }
         return memhash;
@@ -132,7 +132,7 @@ if (!INCLUDE["OS"]) {
         foreach entry in mounted {
             if (len(entry) > 0) {
                 splitline=fields(entry)
-	            if (splitline[0].contains("/")) {
+	        if (splitline[0].contains("/")) {
                     perc_used=int(trimsuffix(splitline[4], "%"))
                     perc_free=100 - perc_used
                     temphash={"blocks": int(splitline[1]), "used": int(splitline[2]), "available": int(splitline[3]), "usedperc": perc_used, "freeperc": perc_free, "mount": splitline[5]}
