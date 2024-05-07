@@ -1,0 +1,20 @@
+FILES=ansicolor.mwnci  http.mwnci  methods.mwnci  ps.mwnci\
+certs.mwnci	 json.mwnci  mysql.mwnci    pwd.mwnci\
+file.mwnci	 main.mwnci  net.mwnci	    string.mwnci\
+grp.mwnci	 math.mwnci  os.mwnci	    sysstat.mwnci
+INCLUDEDIR=@INCLUDE@
+INSTALL=install
+OWNER=@OWNER@
+GROUP=@GROUP@
+
+dummy:
+
+install: ${FILES}
+	mkdir -p ${INCLUDEDIR}
+	cp ${FILES} ${INCLUDEDIR}
+	sudo chmod 755 ${INCLUDEDIR}
+	sudo chmod 644 ${INCLUDEDIR}/*.mwnci
+
+clean:
+	rm -f *~ \#*\#	
+

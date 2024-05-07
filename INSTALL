@@ -1,0 +1,6 @@
+1. Edit config.conf
+2. Run ./configure
+3. Run make
+
+If all is well
+4. Run make install

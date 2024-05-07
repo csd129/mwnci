@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+my_hash={"Name": "Eccles", "DOB": "01/02/01"}
+println(my_hash)
+my_hash=delete(my_hash, "DOB")
+println(my_hash)

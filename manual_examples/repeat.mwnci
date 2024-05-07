@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+str="TEST"
+test_list = repeat(str, 15, ", ")
+println("Test list: ", test_list)

@@ -1,0 +1,15 @@
+#!/usr/bin/env mwnci
+str1="Welcome to mwnci"
+str2="The is the example to go with the manual"
+
+println("Original strings")
+println("String 1: ", str1)
+println("string 2: ", str2)
+
+res1=replaceall(str1, "mwnci", "MWNCI")
+res2=replace(str2,"the ", "t'",1)
+
+println("\nStrings after replacement")
+println("String 1: ", res1)
+println("string 2: ", res2)
+

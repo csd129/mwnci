@@ -1,0 +1,126 @@
+if (!INCLUDE["GRP"]) {
+    INCLUDE=set(INCLUDE, "GRP", true)
+
+    function getgrent(group="") {
+        GROUP="/etc/group"
+        GroupArray=[]
+        FileArray=split(trim(cat(GROUP)), "\n")
+
+        foreach line in FileArray {
+            grouphash={}
+            line=trim(line)
+	        if (line[0] != "#") {
+                groupinfo=split(trim(line), ":")
+    	        if (groupinfo) {
+	                if (len(groupinfo[3]) > 0) {
+	                    Members=split(groupinfo[3], ",")
+	                } else {
+	                    Members=[]
+	                }
+                    grouphash={"Group": groupinfo[0], "Password": groupinfo[1], "Gid": groupinfo[2], "Members": Members}
+	                GroupArray=push(GroupArray, grouphash)
+	            }
+	        }
+        }
+        if (group != "") {
+            foreach entry in GroupArray {
+	            if (entry["Group"] == group || entry["Gid"] == string(group)) {
+	                return entry
+	            }
+	        }
+	        return {}
+        }
+        return GroupArray
+    }
+
+    
+    function groups(user="") {
+        if (!checkfunctype("groups", "string", user)) {exit(1)}
+        if (user == "") {user=whoami()}
+        group_hash={}
+        gr=getgroups(user)
+        foreach grp in gr {
+            group_hash=group_hash.set(grp, getgrent(grp)["Group"])
+        }
+        return group_hash
+    }
+    
+    // getgrgid() and getgrnam() are available for backward compatibility
+    // scripts coded with older versions of mwnci
+    
+    function getgrgid(Gid=-1) {
+        if (!checkfunctype("getgrgid", "integer", Gid, 1)) {exit(1)}
+        if (Gid == -1) {
+            println("Error calling `getgrgid`: ERROR: TypeError: getgrgid() takes exactly 1 argument (0 given)")
+            exit(1)
+        }
+    	    return getgrent(Gid)
+    }
+    
+    function getgrnam(Gname="") {
+        if (!checkfunctype("getgrnam", "string", Gname, 1)) {exit(1)}
+        if (Gname == "") {
+           println("Error calling `getgrnam`: ERROR: TypeError: getgrnam() takes exactly 1 argument (0 given)")
+           exit(1) 
+        }
+    	return getgrent(Gname)
+    }
+    
+    function hashgrp() {
+        GrpHash={}
+        GrpEntries=split(trim(cat("/etc/group")), "\n")
+    	foreach line in GrpEntries {
+            line=string(split(line, "#")[0])
+            if (len(line) > 0) {
+                SplitLine=split(line,":")
+                Members=string(SplitLine[3])
+                Members=(len(Members) > 0 ? split(Members,",") : [])
+                NewHash={"Gid": SplitLine[2], "Members": Members}
+                GrpHash=set(GrpHash, SplitLine[0], NewHash)
+            }
+        }
+        return GrpHash
+    }
+
+    function getgroups(Username="") {
+        if (!checkfunctype("groups", "string", Username, 1)) {exit(1)}
+        GroupArray=[]
+        PASSWD="/etc/passwd"
+        GROUP="/etc/group"
+
+        if (Username == "") {
+            Username=whoami()
+        }
+        PWLine=regexp("^"+Username+":", PASSWD)
+        if (len(PWLine) == 0) {
+            return GroupArray
+        }
+        GroupArray=GroupArray.push(int(split(PWLine[0],":")[3]))
+        GrpData=regexp(Username, GROUP)
+        foreach Line in GrpData {
+            SLine=split(Line, ":")
+            GrGid=SLine[2]
+            Users=fields(replaceall(SLine[3],",", " "))
+            if (index(Users, Username) > -1) {
+                GroupArray=GroupArray.push(int(GrGid))
+            }
+        }
+        return usort(GroupArray)
+    }
+
+
+    function string.groups() {
+        return groups(self)
+    }
+    
+    function string.getgroups() {
+        return getgroups(self)
+    }
+    function integer.getgrgid() {
+        return getgrgid(self)
+    }
+    
+    function string.getgrnam() {
+        return getgrnam(self)
+    }
+}

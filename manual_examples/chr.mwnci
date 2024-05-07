@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+foreach n in 30..127 {
+    print(chr(n))
+}
+print("\n")

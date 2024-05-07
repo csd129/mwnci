@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+a=["Some", "Entries"]
+println(first(a))
+b=[]
+println(first(b))

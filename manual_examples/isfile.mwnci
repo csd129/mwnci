@@ -1,0 +1,22 @@
+#!/usr/bin/env mwnci
+include("file")
+//
+// This example demonstrates 'isfile()', but is relevent for
+// isblock(), isdir(), isfifo(), islink(), issock(), isspec()
+//
+
+filename="/etc/passwd"
+if (isfile(filename)) {
+    println(filename, " is a file")
+}
+
+//
+//
+// The "main" library is loaded when 'mwnci' starts, so it's possible
+// to use the object-method, so the following code can be used
+//
+//
+groupfile="/etc/group"
+if (groupfile.isfile()) {
+     println(groupfile, " is a file")
+}

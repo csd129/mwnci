@@ -1,0 +1,10 @@
+#!/usr/bin/env mwnci
+raw_time=time()
+default_output=asctime(raw_time)
+printf("raw time is %d, default asctime() output is %s\n", raw_time, default_output)
+output_with_format=asctime(raw_time, "Day is %A, Month is %B, Time is %X, Timezone is %Z")
+printf("%s\n", output_with_format)
+
+
+default_output=raw_time.asctime()
+printf("raw time is %d, default asctime() output is %s\n", raw_time, default_output)

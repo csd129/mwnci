@@ -1,0 +1,111 @@
+// This file contains the object methods for functions in main.mwnci
+// and builtin commands. It is autoloaded within main.mwnci
+
+if (!INCLUDE["METHODS"]) {
+    INCLUDE=set(INCLUDE, "METHODS", true)
+
+    function array.copy() {return copy(self)}
+    function array.cumulative() {return cumulative(self)}
+    function array.extend(NextArray=[]) {return extend(self, NextArray)}
+    function array.find(item) {return index(self, item)}
+    function array.first() {return first(self)}
+    function array.head(lines=0) {return head(self, lines)}
+    function array.index(item) {return index(self, item)}
+    function array.insert(element=-1, value="") {return insert(self, element, value)}
+    function array.intersect(data) {return intersect(self, data)}
+    function array.isrsorted() {return isrsorted(self)}
+    function array.issorted() {return issorted(self)}
+    function array.join(char) {return join(self, char)}
+    function array.last() {return last(self)}
+    function array.lines() {return lines(self)}
+    function array.map(fnc) {return map(self, fnc)}
+    function array.max() {return max(self)}
+    function array.min() {return min(self)}
+    function array.push(item) {return push(self, item)}
+    function array.remove(element=-1) {return remove(self, element)}
+    function array.rest() {return rest(self)}
+    function array.rsort() {return rsort(self)}
+    function array.set(element=-1, value="") {return set(self, element, value)}
+    function array.shift(num=0) {return shift(self, num)}
+    function array.shuffle() {return shuffle(self)}
+    function array.sort() {return sort(self)}
+    function array.sum() {return sum(self)}
+    function array.swap( a, b ) {return swap(self, a, b)}
+    function array.tail(lines=0) {return tail(self, lines)}
+    function array.ucount() {return ucount(self)}
+    function array.uniq() {return uniq(self)}
+    function array.usort() {return usort(self)}
+    function float.int() {return (int(self))}
+    function hash.delete(key) {return delete(self, key)}          
+    function hash.keys() {return keys(self)}
+    function hash.set(element="", value="") {return set(self, element, value)} 
+    function integer.bin() {return bin(self)}
+    function integer.chr() {return chr(self)}
+    function integer.procexists() {return procexists(self)}
+    function object.abs() {return abs(self)}
+    function object.asctime(format="") {if (len(format) == 0) {return asctime(self)}return asctime(self,format)}
+    function object.bin2dec() {return bin2dec(self)}
+    function object.bin2hex() {return bin2hex(self)}
+    function object.bin2oct() {return bin2oct(self)}
+    function object.ceil() {return ceil(self)}
+    function object.float() {return float(self)}
+    function object.float() {return float(self)}
+    function object.floor() {return floor(self)}
+    function object.hex2bin() {return hex2bin(self)}
+    function object.hex2dec() {return hex2dec(self)}
+    function object.hex2oct() {return hex2oct(self)}
+    function object.int() {return int(self)}
+    function object.isalpha() {return isalpha(self)}
+    function object.len() {return len(self)}
+    function object.oct2bin() {return oct2bin(self)}
+    function object.oct2dec() {return oct2dec(self)}
+    function object.oct2hex() {return oct2hex(self)}
+    function object.reverse() {return reverse(self)}
+    function object.rotl(RotAmount=1) {return rotl(self, RotAmount)}
+    function object.rotr(RotAmount=1) {return rotr(self, RotAmount)}
+    function object.string() {return string(self)}
+    function string.basename() {return basename(self)}
+    function string.cat() {return cat(self)}
+    function string.checkip() {return checkip(self)}
+    function string.chmod(mode="") {if (len(mode) == 0) {mode="600"} return chmod(self, mode)}
+    function string.contains(search) {return contains(self, search)}
+    function string.cut(piv) {return cut(self, piv)}
+    function string.dirpath() {return dirpath(self)}
+    function string.fields() {return fields(self)}
+    function string.file(dummy) {return file(self, dummy)}
+    function string.find(item) {return index(self, item)}
+    function string.getenv() {return getenv(self)}          
+    function string.hasprefix(data) {return hasprefix(self, data)}
+    function string.hassuffix(data) {return hassuffix(self, data)}
+    function string.index(item) {return index(self, item)}
+    function string.interpol(data) {return interpol(data, self)}
+    function string.isincidr(cidr) {return isincidr(cidr, self)}
+    function string.isnumber() {return isnumber(self)}
+    function string.lines() {return lines(self)}
+    function string.listcidrips() {return listcidrips(self)}
+    function string.lookupcname() {return lookupcname(self)}
+    function string.lookuphost() {return lookuphost(self)}
+    function string.lookupip() {return lookupip(self)}
+    function string.lookupmx() {return lookupmx(self)}
+    function string.lookupns() {return lookupns(self)}
+    function string.lookupptr() {return lookupptr(self)}
+    function string.lookuptxt() {return lookuptxt(self)}
+    function string.ltrim(trimmer="") {if (trimmer == "") {return ltrim(self)} return ltrim(self, trimmer)}          
+    function string.match(search) {return match(search, self)}
+    function string.oct2sym() {return oct2sym(self)}
+    function string.ord() {return ord(self)}
+    function string.repeat(count=0, separator="") {return repeat(self, count, separator)}
+    function string.replace(old, new, amount) {return replace(self, old, new, amount)}
+    function string.replaceall( old, new ) {return replaceall(self, old, new)}
+    function string.rtrim(trimmer="") {if (trimmer == "") {return rtrim(self)} return rtrim(self, trimmer)}
+    function string.set(element=-1, value="") {return set(self, element, value)}
+    function string.split(separator="") {return split(self, separator)}
+    function string.splithostport() {return splithostport(self)}
+    function string.substr(start,long) {return substr(self, start, long)}
+    function string.tail(lines=0) {return tail(self, lines)}
+    function string.tolower() {return tolower(self)}
+    function string.toupper() {return toupper(self)}
+    function string.trim() {return trim(self)}
+    function string.trimprefix(pref) {return trimprefix(self, pref)}
+    function string.trimsuffix(suff) {return trimsuffix(self, suff)}
+}

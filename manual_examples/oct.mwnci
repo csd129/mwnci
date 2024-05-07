@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+num=25
+octal=oct(num)
+println("Decimal 25 is ", octal, " in octal")

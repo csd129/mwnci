@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+include("math")
+printf(" e = %7.4f\n",exp(1.0))
+printf(" 1/e = %7.4f\n",exp(-1.0));
+printf(" e^2 = %7.4f\n",exp(2.0));

@@ -1,0 +1,355 @@
+if (!INCLUDE["MATH"]) {
+    INCLUDE=set(INCLUDE, "MATH", true)
+
+    function mode(x) {
+        ucounted=ucount(x)
+        largest=0
+        numbers=""
+        foreach amount in keys(ucounted) {
+            if (ucounted[amount] > largest) {
+                numbers=amount
+                largest=ucounted[amount]
+            } else {
+                if (ucounted[amount] == largest) {
+                    numbers=numbers + " " + amount
+                }
+            }
+        }
+        return fields(numbers)
+    }
+
+    function average(ave_array) {
+        if (!checkfunctype("average", "array", ave_array, 1)) {exit(1)}
+        return float(sum(ave_array) / float(len(ave_array)))
+    }
+
+    function cbrt(n=0) {
+        if (!checkfunctype("cbrt", "number", n, 1)) {exit(1)}
+        return float(sprintf("%.6f", n**0.3333333333333333))
+    }
+
+    function ceil(Value) {
+        if (!checkfunctype("ceil", "number", Value, 1)) {exit(1)}
+        return (Value > int(Value)) ? int(Value) + 1 : int(Value)
+    }
+
+    function degrees(radian) {
+        if (!checkfunctype("degrees", "number", radian, 1)) {exit(1)}
+        return radian * (180/PI)
+    }
+
+    function dim(x=0,y=0) {
+        if (!checkfunctype("dim", "number", x, 1)) {exit(1)}
+        if (!checkfunctype("dim", "number", y, 2)) {exit(1)}
+        v=float(x)-float(y)
+        return v < 0 ? float(0) : v
+    }
+
+    function divmod(a=0,b=0) {
+        if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
+        if (!checkfunctype("divmod", "integer", b, 2)) {exit(1)}
+	    if (b == 0) {
+	        println("Error calling `divmod`: Error: argument #2 Division by zero")
+	        exit(1)
+	    }
+        return [a/b, a%b]
+    }
+
+    function exp(x=0) {
+    	if (!checkfunctype("exp", "number", x, 1)) {exit(1)}
+        return float(E**x)
+    }
+
+    function exp2(x=0) {
+        if (!checkfunctype("exp2", "number", x, 1)) {exit(1)}
+        return float(2.0**x)
+    }
+
+    function expm1(x=0) {
+        if (!checkfunctype("expm1", "number", x, 1)) {exit(1)}
+        return E**float(x)-1
+    }
+
+    function factorial(n) {
+        if (!checkfunctype("factorial", "integer", n, 1)) {exit(1)}
+        result=1
+        fnum=n
+        while (n >= 1) {
+            result *= n
+            if (result < 0) {
+                println("factorial(), result too large for ",fnum,"!")
+                exit(1)
+            }
+            n--
+        }
+        return result
+    }
+    
+    function floor(Value) {
+        if (!checkfunctype("floor", "number", Value, 1)) {exit(1)}
+        if  (Value < 0) {
+            return (int(Value) > Value) ? int(Value)-1 : int(Value);
+        }
+        return int(Value)
+    }
+    
+    function fma(X=0, Y=0, Z=0) {
+        if (!checkfunctype("fma", "number", X, 1)) {exit(1)}
+        if (!checkfunctype("fma", "number", Y, 2)) {exit(1)}
+        if (!checkfunctype("fma", "number", Z, 3)) {exit(1)}
+        return float(float(X) * float(Y) + float(Z));
+    }
+
+    function fmod(n=0,d=0) {
+        if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
+        if (!checkfunctype("fmod", "number", d, 2)) {exit(1)}
+	    if (d == 0) {
+	        println("Error calling `fmod`: Error: argument #2 Division by zero")
+	        exit(1)
+	    }
+        tq=float(int(n/d))
+        return float(sprintf("%.15f", n-tq*d))
+    }
+
+    function gcd(dividend, divisor) {
+        if (!checkfunctype("gcd", "integer", dividend, 1)) {exit(1)}
+        if (!checkfunctype("gcd", "integer", divisor, 2)) {exit(1)}    
+        remainder=1
+        while (remainder != 0) {
+            remainder=dividend % divisor
+            dividend=divisor
+            divisor=remainder
+        }
+        return dividend
+    }
+
+    function highest(a, b) {
+        if (!checkfunctype("highest", "number", a, 1)) {exit(1)}
+        if (!checkfunctype("highest", "number", b, 2)) {exit(1)}
+        return a > b ? a : b
+    }
+
+    function hypot(p, q) {
+        if (!checkfunctype("hypot", "number", p, 1)) {exit(1)}
+        if (!checkfunctype("hypot", "number", q, 2)) {exit(1)}
+        p=abs(p)
+        q=abs(q)
+    
+        if (p < q) {
+            t = p
+            p = q
+            q = t
+        }
+    
+        if (p == 0) {return 0}
+    
+        q = q / p
+        return p * sqrt(1+q*q)
+    }
+
+    function isprime(n=0) {
+        if (!checkfunctype("isprime", "integer", n, 1)) {exit(1)}
+        i=2
+        if (n < 2) {return false}
+        while (i <= n/2) {
+            if (n % i == 0) {
+	            return false
+	        }
+            i++
+        }
+        return true
+    }
+    
+    function lcm(num1, num2) {
+        if (!checkfunctype("lcm", "integer", num1, 1)) {exit(1)}
+        if (!checkfunctype("lcm", "integer", num2, 2)) {exit(1)}
+        mult=num1 * num2
+        gcdiv=gcd(num1, num2)
+        return mult/gcdiv
+    }
+
+    function lowest(a, b) {
+        if (!checkfunctype("lowest", "number", a, 1)) {exit(1)}
+        if (!checkfunctype("lowest", "number", b, 2)) {exit(1)}
+        return a < b ? a : b
+    }
+    
+    //
+    // For the mathematical pedants ;)
+    //
+
+    function mean(ave_array) {
+        return average(ave_array)
+    }
+
+    // End pedantry
+
+    function median(MedianArray) {
+        if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
+        MedianArray=sort(MedianArray)
+        Len=len(MedianArray)
+        Calc=divmod(Len, 2)
+        Pos=Calc[0]
+        Remainder=Calc[1]
+        if (Remainder == 1) {
+            Median=MedianArray[Pos]
+        } else {
+            Median=(float(MedianArray[Pos]) + float(MedianArray[Pos-1]))/2.0
+        }
+        return Median
+    }    
+    
+    function modf(num=0) {
+        if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
+        inty=int(num)
+        remainder=float(num) - float(inty)
+        remainder=float(sprintf("%.15f", remainder))
+        return [float(inty), float(remainder)]
+
+    }
+    
+    function pow(num=1, power=1) {
+        if (!checkfunctype("pow", "number", num, 1)) {exit(1)}
+        if (!checkfunctype("pow", "number", power, 1)) {exit(1)}
+        return float(num ** power)
+    }
+    
+    function pow10(x=0) {
+        if (!checkfunctype("pow10", "integer", x, 1)) {exit(1)}
+        return float(10**x)
+    }
+
+    function radians(deg) {
+        if (!checkfunctype("radians", "number", deg, 1)) {exit(1)}
+        return deg * (PI / 180)
+    }
+       
+    function round(rnum) {
+        if (!checkfunctype("round", "number", rnum, 1)) {exit(1)}
+        intnum=int(rnum)
+        if (rnum > 0) {
+            remain=float(rnum-intnum)
+            if (remain > 0.4) {
+                result=float(intnum + 1)
+            } else {
+                result=float(intnum)
+            }
+        } else {
+            remain=float(rnum+abs(intnum))
+            if (remain < -0.4) {
+                result=float(intnum - 1)
+            } else {
+                result=intnum
+            }
+        }
+        return result
+    }
+
+    function sqrt(n=0) {
+        if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
+        return float(sprintf("%.6f", n**0.5))
+    }
+
+    function trunc(Float) {
+        if (!checkfunctype("trunc", "number", Float, 1)) {exit(1)}
+        return float(int(Float))
+    }
+
+    function float.round() {
+        return round(self)
+    }
+    
+    function integer.isprime() {
+        return isprime(self)
+    }
+    
+    function integer.factorial() {
+        return factorial(self)
+    }
+    
+    function object.degrees() {
+        return degrees(self)
+    }
+    
+    function object.radians() {
+        return radians(self)
+    }
+    
+    function integer.divmod(divid) {
+        return divmod(self, divid)
+    }
+    
+    function array.average() {
+        return average(self)
+    }
+    
+    function object.pow(power) {
+        return pow(self, power)
+    }
+
+    function float.trunc() {
+        return trunc(self)
+    }
+
+    function object.exp() {
+        return exp(self)
+    }
+
+    function object.dim(y=0) {
+        return dim(self,y)
+    }
+
+    function object.exp2() {
+        return exp2(self)
+    }
+
+    function object.expm1() {
+        return expm1(self)
+    }
+
+    function object.pow10() {
+        return pow10(self)
+    }
+
+    function object.modf() {
+        return modf(self)
+    }
+
+    function object.sqrt() {
+        return sqrt(self)
+    }
+
+    function object.cbrt() {
+        return cbrt(self)
+    }
+
+    function array.mean() {
+        return average(self)
+    }
+
+    function array.median() {
+        return median(self)
+    }
+
+    function array.mode() {
+        return mode(self)
+    }
+}
+
+/*
+ Math constants - add more here if needed
+*/
+const PI=     3.141592653589793;
+const PI_2=   PI/2;
+const PI_4=   PI/4;
+const E=      2.718281828459045;
+const TAU=    PI*2;
+const PHI=    1.618033988749894;
+const SQRT2=  sqrt(2);
+const SQRTE=  sqrt(E);
+const SQRTPI= sqrt(PI);
+const SQRTPHI=sqrt(PHI);
+const LN2=    0.693147180559945;
+const LOG2E=  1/LN2;
+const LN10=   2.302585092994045;
+const LOGH10E=1/LN10;

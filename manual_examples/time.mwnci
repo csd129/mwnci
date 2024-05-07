@@ -1,0 +1,6 @@
+#!/usr/bin/env mwnci
+seconds=time()
+current=asctime(seconds)
+printf("seconds since 00:00:00 GMT January 1, 1970 : %d\n", seconds)
+printf("     current date and time using asctime() : %s\n", current)
+printf("        current date and time using date() : %s\n", date())

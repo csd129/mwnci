@@ -1,0 +1,56 @@
+if (!INCLUDE["OS"]) {
+    include("os")
+}
+    
+if (!INCLUDE["CERTS"]) {
+    INCLUDE=set(INCLUDE, "CERTS", true)
+    
+    function getcert(domain="") {
+        if (!checkfunctype("getcert", "string", domain)) {
+            exit(1)
+        }
+        if (len(domain) == 0) {
+            println("`getcert` expects a domain name, none given")
+    	    return false;
+        }
+        command=sprintf("openssl s_client -servername %s -connect %s:443", domain, domain)
+        return system(command)
+    }
+    
+    function certexpiredays(file="") {
+        if (!checkfunctype("certexpiredays", "string", file)) {
+            exit(1)
+        }
+        cfile=tmpnam("/tmp")
+        if (len(file) == 0) {
+            return false
+        }
+        cert=getfileblock("-BEGIN CERTIFICATE-", "-END CERTIFICATE-", file)
+        ch=open(cfile, "w")
+        foreach line in cert {
+            line=trim(line)
+            ch.write(line + "\n")
+        }
+        ch.close()
+        command=sprintf("openssl x509 -in %s -enddate -noout", cfile)
+        certdate=system(command)
+        certdate=trim(split(certdate, "=")[1])
+        certepoch=datetoepoch(certdate)
+        unlink(cfile)
+	    return (certepoch - time()) / 86400
+    }
+    
+    function sitecertexp(domain="") {
+        if (!checkfunctype("sitecertexp", "string", domain)) {
+            exit(1)
+        }
+        TEMPF=tmpnam("/tmp")
+        cert_info=getcert(domain)
+        fh=open(TEMPF, "w")
+        fh.write(cert_info)
+        fh.close()
+        certdate=certexpiredays(TEMPF)
+        unlink(TEMPF)
+        return certdate
+    }
+}

@@ -1,0 +1,29 @@
+// A simple script to read a file and count the characters.
+//
+
+// Open the file
+let path = "/etc/passwd";
+let fh = open(path);
+if ( ! fh ) {
+   print( "Failed to open file" )
+   exit(0);
+}
+
+// Count of characters
+let c = 0;
+
+// Read a line
+let r = fh.read();
+
+// Loop while that is none-empty
+while ( len(r) > 0  ) {
+
+   // Add this line
+   c += len(r);
+
+   // Read the next one.
+   r = fh.read();
+}
+
+print( "Read " , c, " characters from ", path , "\n" );
+fh.close();

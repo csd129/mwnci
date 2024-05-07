@@ -1,0 +1,49 @@
+if (!INCLUDE["JSON"]) {
+    INCLUDE=set(INCLUDE, "JSON", true)
+
+    function tomarkup(data, mu_type="json") {
+        if (!checkfunctype("tomarkup", "collection", data, 1)) {exit(1)}
+        if (!checkfunctype("tomarkup", "string", mu_type, 2)) {exit(1)}
+        tempfile="/tmp/markup." + string(getpid())
+        data=replaceall(string(data), " : ", " -- ")
+        writefile(tempfile, data + "\n")
+        switch(mu_type) {
+            case "xml", "json", "yaml" {
+                cmd=sprintf("cat %s | yq --output-format %s", tempfile, mu_type)
+            }
+            default {
+                return false
+            }
+        }
+        result=trim(system(cmd))
+        unlink(tempfile)
+        return replaceall(result, " -- ", " : ")
+    }
+
+    function tojson(JsonData) {
+        if (!checkfunctype("tojson", "collection", JsonData, 1)) {exit(1)}
+        return tomarkup(JsonData, "json")
+    }
+
+    function toyaml(JsonData) {
+        if (!checkfunctype("toyaml", "collection", JsonData, 1)) {exit(1)}
+        return tomarkup(JsonData, "yaml")
+    }
+
+    function toxml(JsonData) {
+        if (!checkfunctype("toxml", "collection", JsonData, 1)) {exit(1)}
+        return tomarkup(JsonData, "xml")
+    }
+
+    function object.tojson() {
+        return tojson(self)
+    }
+
+    function object.toyaml() {
+        return toyaml(self)
+    }
+
+    function object.toxml() {
+        return toxml(self)
+    }
+}

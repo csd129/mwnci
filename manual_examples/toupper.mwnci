@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+text="THIS is SOME text"
+println(toupper(text))
+new_text=text.toupper()
+println(new_text, "\n", text)

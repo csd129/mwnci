@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+path="/path/to/some/file"
+println("Full path to file is: ", path)
+println("Path up-to file is: ",dirpath(path))

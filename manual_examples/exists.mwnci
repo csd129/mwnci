@@ -1,0 +1,8 @@
+#!/usr/bin/env mwnci
+include("file")
+filename="/etc/passwd"
+if (isexist(filename)) {
+    println(filename, " exists")
+} else {
+    println(filename, "does not exist")
+}

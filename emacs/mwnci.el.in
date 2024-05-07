@@ -1,0 +1,66 @@
+;; Add the following to your .emacs file
+
+(add-to-list 'auto-mode-alist (cons "\\.mwnci\\'" 'mwnci-mode))
+(add-to-list 'interpreter-mode-alist (cons "\\mwnci\\'" 'mwnci-mode))
+;;; Code:
+
+(defvar mwnci-constants
+  '(@CONSTS@ "true" "false" "null"
+    ))
+
+(defvar mwnci-keywords
+  '(
+    "else" "fn" "foreach" "function" "if" "in"
+    "let" "return" "while" "switch" "case"
+    "default" "const"
+    ))
+
+
+
+;; The language-core and functions from the standard-library.
+(defvar mwnci-functions
+  '(
+    @EMFUNCTIONS@
+    ))
+(defvar mwnci-includes
+  '(
+@EMINCLUDES@
+    ))
+(defvar mwnci-font-lock-defaults
+  `((
+     ("\"\\.\\*\\?" . font-lock-string-face)
+     (";\\|,\\|=\\|<<\\|>>\\|&" . font-lock-keyword-face)
+     ( ,(regexp-opt mwnci-keywords 'words) . font-lock-builtin-face)
+     ( ,(regexp-opt mwnci-includes 'words) . font-lock-type-face)
+     ( ,(regexp-opt mwnci-constants 'words) . font-lock-constant-face)
+     ( ,(regexp-opt mwnci-functions 'words) . font-lock-function-name-face)
+     )))
+
+(define-derived-mode mwnci-mode fundamental-mode "mwnci script"
+  "mwnci-mode is a major mode for editing mwnci scripts"
+  (setq font-lock-defaults mwnci-font-lock-defaults)
+
+  ;; Comment handler for single & multi-line modes
+  (modify-syntax-entry ?\/ ". 124b" mwnci-mode-syntax-table)
+  (modify-syntax-entry ?\* ". 23n" mwnci-mode-syntax-table)
+
+  ;; Comment ender for single-line comments.
+  (modify-syntax-entry ?\n "> b" mwnci-mode-syntax-table)
+  (modify-syntax-entry ?\r "> b" mwnci-mode-syntax-table)
+  )
+
+(provide 'mwnci)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(inhibit-startup-screen t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+

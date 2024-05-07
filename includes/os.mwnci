@@ -1,0 +1,110 @@
+if (!INCLUDE["OS"]) {
+    INCLUDE=set(INCLUDE, "OS", true)
+   
+    function hostinfo() {
+        Data=fields(trim(system("uname -n -s -r -m")))
+        DataHash={
+            "nodename": Data[0], "sysname": Data[1],
+            "release": Data[2], "machine": Data[3]
+        }
+        return DataHash
+    }
+
+    function env() {
+        h={}
+        env_vars=split(system("env"), "\n")
+        foreach ev in env_vars {
+            v=cut(ev, "=")
+            h=set(h, v[0], v[1])
+        }
+        return h
+    } 
+    
+    function syslog(priority="syslog.info", message="") {
+        if (!checkfunctype("syslog", "string", priority, 1)) {exit(1)}
+        if (!checkfunctype("syslog", "string", message, 2)) {exit(1)}
+        if (message == "") {
+            println("'syslog' requires a message, none given")
+            return false
+        }
+        cmd=sprintf("`logger -p %s \"%s\"`", priority, message)
+        result=eval(cmd)["stdout"]
+        return result
+    }
+    
+    function df() {
+        diskhash={}
+        mounted=shift(split(system("df"),"\n"))
+        foreach entry in mounted {
+            if (len(entry) > 0) {
+                splitline=fields(entry)
+	            if (splitline[0].contains("/")) {
+                    perc_used=int(trimsuffix(splitline[4], "%"))
+                    perc_free=100 - perc_used
+                    temphash={"blocks": int(splitline[1]), "used": int(splitline[2]), "available": int(splitline[3]), "usedperc": perc_used, "freeperc": perc_free, "mount": splitline[5]}
+                    diskhash=set(diskhash, splitline[0], temphash)
+                }
+            }
+        }
+        return diskhash
+    }
+
+    function free() {
+        memhash={}
+        mem=meminfo()
+        mem_total=int(mem["MemTotal"])
+        mem_free=int(mem["MemFree"])
+        mem_available=int(mem["MemAvailable"])
+        mem_shared=int(mem["Shmem"])
+        mem_cached=int(mem["Cached"]) + int(mem["SReclaimable"])
+        mem_bufcache=int(mem["Buffers"]) + mem_cached
+        mem_used=mem_total - mem_available
+        mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
+        mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
+        swap_total=int(mem["SwapTotal"])
+        swap_free=int(mem["SwapFree"])
+        swap_used=swap_total - swap_free
+        swap_used_perc=sprintf("%.2f", float(swap_used) / float(swap_total)*100)
+        swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
+
+        hashy={"buff_cache": mem_bufcache, "cache": mem_cached, "shared": mem_shared, "total": mem_total, "free": mem_free, "available": mem_available, "used": mem_used, "used_perc": mem_used_perc, "free_perc": mem_free_perc}
+        memhash=set(memhash, "mem", hashy)
+
+        hashy={"total": swap_total, "free": swap_free, "used": swap_used, "used_perc": float(swap_used_perc), "free_perc": float(swap_free_perc)}
+        memhash=set(memhash, "swap", hashy)
+        return memhash
+    }
+
+    function datetoepoch(datey="") {
+        if (!checkfunctype("datetoepoch", "string", datey)) {
+            exit(1)
+        }
+        if (datey == "") {
+            cmd="date +%s"
+        } else {
+            cmd="date +%s -d \"" + datey + "\""
+        }
+        result=system(cmd)
+        secs=int(trim(result))
+        return secs
+    }
+
+    function meminfo() {
+        memhash={}
+        data=split(cat("/proc/meminfo"), "\n")
+        foreach entry in data {
+            if (len(entry) > 0) {
+                entry=replaceall(entry, ":", "")
+                entryarray=fields(entry)
+                memhash=set(memhash, entryarray[0], entryarray[1])
+            }
+        }
+        return memhash
+    }
+    
+    function string.datetoepoch() {
+        return datetoepoch(self)
+    }
+}
+
+

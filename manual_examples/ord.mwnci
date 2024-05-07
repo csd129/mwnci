@@ -1,0 +1,7 @@
+#!/usr/bin/env mwnci
+line="0123456789This is a line"
+println("Chr   Ascii value")
+println("-----------------")
+foreach n in line {
+println(n, "          ", ord(n))
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+num=25
+hexadecimal=hex(num)
+println("Decimal 25 is ", hexadecimal, " in hexadecimal")

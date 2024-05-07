@@ -1,0 +1,25 @@
+//
+// Showcase some of our string-functions.
+//
+
+
+let input = "  Eccles Cake  ";
+
+print( "Input: '", input, "'\n" );
+
+// Case-conversion
+print( "Upper: '", input.toupper(), "'\n");
+print( "Lower: '", input.tolower(), "'\n");
+
+// Removing whitespace
+print( "ltrim: '", input.ltrim(), "'\n");
+print( "rtrim: '", input.rtrim(), "'\n");
+print( "trim: '",  input.trim(), "'\n");
+
+// Reversing
+let str = "The quick brown 狐 jumped over the lazy 犬";
+print( "String  : '" + str + "'\n" );
+print( "Reversed: '" + str.reverse() + "'\n" );
+
+// Escapes are good.
+print( "We also allow escaping quotes, like so: \"\n" );

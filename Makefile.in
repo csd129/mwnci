@@ -1,0 +1,29 @@
+BIN=@BIN@
+OWNER=@OWNER@
+GROUP=@GROUP@
+INSTALL=install
+INSTALL_OPTS=--compare -o ${OWNER} -g ${GROUP}
+
+build: 
+	CGO_ENABLED=0 go build
+
+install: build
+	sudo mkdir -p ${BIN}
+	sudo cp mwnci ${BIN}
+	sudo chmod 755 ${BIN}/mwnci
+	sudo chown ${OWNER}:${GROUP} ${BIN}/mwnci
+	(cd ./includes; sudo make install)
+
+clean:
+	find . -name \#\* -type f -exec rm {} \;
+	find . -name \*~ -type f -exec rm {} \;
+
+distclean:
+	go clean
+	make clean
+	rm -f mwnci main Makefile includes/Makefile \
+              emacs/mwnci.el evaluator/include.go vim/mwnci.vim
+
+test:
+	go test -v -race ./...
+

@@ -1,0 +1,6 @@
+#!/usr/bin/env mwnci
+include("pwd")
+uid=0
+pw_entry=getpwuid(uid)
+println("Uid ", uid, " has a password entry ", pw_entry)
+

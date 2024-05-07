@@ -1,0 +1,484 @@
+if (!INCLUDE["FILE"]) {
+    include("file")
+}
+if (!INCLUDE["METHODS"]) {
+    include("methods")
+}
+
+
+/*
+ Define some handy constants
+*/
+const OS=getos();
+const ARGV=args();
+const ARGC=len(ARGV);
+const PID=getpid();
+const NULL=chr(0);
+
+/*
+ File-objects for STDIN, STDOUT, and STDERR.
+
+ Rather than opening these by name/path we have magic-strings which
+ are recognized by our "open" primitive.
+*/
+
+const STDIN= open( "!STDIN!" );
+const STDOUT=open( "!STDOUT!" );
+const STDERR=open( "!STDERR!" );
+
+if (!INCLUDE["MAIN"]) {
+    INCLUDE=set(INCLUDE, "MAIN", true)
+
+    function abs(number=0) {
+        if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
+        return number < 0 ? number *= -1 : number
+    }
+
+    function splithostport(hostp="") {
+        if (!checkfunctype("splithostport", "string", hostp, 1)) {exit(1)}
+        splitport=split(hostp, ":")
+        port=splitport[len(splitport)-1]
+        address=trimsuffix(hostp, ":"+port)
+        return [address, port]
+    }
+
+// Rest() moved to here because buitlin shift() has replaced it 
+    function rest(arr) {
+        if (!checkfunctype("rest", "array", arr, 1)) {exit(1)}
+        return shift(arr)
+    }
+
+// Binary to Decimal
+    function bin2dec(b_number) {
+        number=reverse(string(b_number))
+        counter=0
+        foreach i, x in number {
+            if (int(x) == 1) {counter += 2 ** i}
+        }
+        return counter
+    }
+
+// Binary to Hexadecimal
+    function bin2hex(b_number) {
+        dec=bin2dec(b_number)
+        return hex(dec)
+    }
+
+// Binary to Octal
+    function bin2oct(b_number) {
+        dec=bin2dec(b_number)
+        return oct(dec)
+    }
+
+//
+// Argument checker for all functions
+//
+    function checkfunctype(func, expected, received, argnum=1) {
+        ReceivedType=type(received)
+	    if (expected == "number") {
+            if (ReceivedType == "integer" || ReceivedType == "float") {
+	            return true
+	        } else {
+	            println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
+                return false
+	        }
+	    }
+        if (expected == "iterable") {
+            if (ReceivedType == "string" || ReceivedType == "array") {
+                return true
+            } else {
+                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `STRING` or `ARRAY`, got `", toupper(ReceivedType), "`")
+                return false
+            }
+        }
+        if (expected == "collection") {
+            if (ReceivedType == "hash" || ReceivedType == "array") {
+                return true
+            } else {
+                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `HASH` or `ARRAY`, got `", toupper(ReceivedType), "`")
+                return false
+            }
+        }
+        if (ReceivedType != expected) {
+            println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `",
+            toupper(expected), "` got `", toupper(ReceivedType), "`")
+            return false
+        }
+        return true
+    }
+
+    function cls() {
+        print("[H[2J")
+        return null
+    }
+
+    function contains(line="", search="") {
+        if (index(line, search) != -1) {return true}
+        return false
+    }
+
+    function find(data, search) {
+        return index(data, search)
+    }
+
+    function getblock(start_block, end_block, array_name) {
+        if (!checkfunctype("getblock", "string", start_block, 1)) {exit(1)}
+        if (!checkfunctype("getblock", "string", end_block, 2)) {exit(1)}
+        if (!checkfunctype("getblock", "array", array_name, 3)) {exit(1)}
+        found_line=[]
+        inblock=false
+        foreach line in array_name {
+            if (match(start_block, line)) {
+                inblock=true
+            } else {
+                if (match(end_block, line)) {
+                    found_line=push(found_line, line)
+                    inblock=false
+                }
+            }
+            if (inblock) {
+                found_line=push(found_line, line)
+            }
+        }
+        return found_line
+    }
+
+    function getfileblock(start_block, end_block, filename) {
+        if (!checkfunctype("getfileblock", "string", start_block, 1)) {exit(1)}
+        if (!checkfunctype("getfileblock", "string", end_block, 2)) {exit(1)}
+        if (!checkfunctype("getfileblock", "string", filename, 3)) {exit(1)}
+        if (!file(filename)) {
+            println("Can't open ", filename)
+            return false
+        }
+        file_output=split(cat(filename), "\n")
+        getblock(start_block, end_block, file_output)
+    }
+
+    function head(data, lines=0) {
+        if (!checkfunctype("head", "iterable", data, 1)) {exit(1)}
+        if (!checkfunctype("head", "integer", lines, 2)) {exit(1)}
+        type_string=false
+        if (type(data) == "string") {
+            data=split(data, "\n")
+            type_string=true
+        }
+        tdata=[]
+        if (lines == 0) {lines = 10}
+        l=len(data)
+        if (lines >= l) {
+            if (type_string) {
+                return(join(data, "\n"))
+            }
+            return data
+        }
+        count=0
+        while (count < lines) {
+            tdata=push(tdata, data[count])
+            count++
+        }
+        if (type_string) {
+            return(join(tdata, "\n"))
+        }
+        return tdata
+    }
+
+    // Hexadecimal to Binary
+    function hex2bin(h_number) {
+        return bin(hex2dec(h_number))
+    }
+
+    // Hexadecimal to Decimal
+    function hex2dec(h_number) {
+        hexnums={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "a": 10, "b": 11, "c":12 , "d":13 ,"e": 14, "f": 15}
+        number=tolower(reverse(string(h_number)))
+        number=trimsuffix(number, "x0")
+        counter=0
+        foreach i, x in number {
+            nindex=string(x)
+    	    hnum=hexnums[nindex]
+            sum = hnum * (16 ** i)
+    	    counter += sum
+        }
+        return counter
+    }
+
+    // Hexadecimal to Octal
+    function hex2oct(h_number) {
+        return oct(hex2dec(h_number))
+    }
+
+    function interpol(data={}, text="") {
+        if (!checkfunctype("interpol", "hash", data, 1)) {exit(1)}
+        if (!checkfunctype("interpol", "string", text, 2)) {exit(1)}
+        foreach key in keys(data) {
+            rstring="${"+key+"}"
+            text=replaceall(text, rstring, string(data[key]))
+        }
+        return text
+    }
+
+    function intersect(array_a, array_b) {
+        if (!checkfunctype("intersect", "array", array_a, 1)) {exit(1)}
+        if (!checkfunctype("intersect", "array", array_b, 2)) {exit(1)}
+        InterArray=[]
+        array_a=sort(array_a)
+        array_b=sort(array_b)
+        foreach Value in array_a {
+            found=contains(array_b, Value)
+            if (found) {
+    	        InterArray=push(InterArray, Value)
+    	    }
+        }
+        return uniq(InterArray)
+    }
+
+    function isalpha(data="") {
+        return (!isnumber(data) ? true : false)
+    }
+
+    function isrsorted(SortedArray) {
+        if (!checkfunctype("isrsorted", "array", SortedArray, 1)) {exit(1)}
+        return issorted(reverse(SortedArray))
+    }
+
+    function lines(data) {
+        if (type(data) == "string") {
+            return len(split(data, "\n"))
+        }
+        if (type(data) == "array") {
+            return len(data)
+        }
+        println("Error calling `lines`: ERROR: TypeError lines() expected argument #1 to be `STRING` or `ARRAY`, got `", toupper(type(data)), "`")
+        exit(1)
+    }
+
+    function map(marray,fnc) {
+       result = []
+       foreach item in marray {
+          result=push(result,fnc(item))
+       }
+       return result
+    }
+
+    function max(arr=[]) {
+        if (!checkfunctype("max", "array", arr, 1)) {exit(1)}
+        arr_len=len(arr)
+        if (arr_len == 0) {return 0}
+        return arr.sort()[arr_len - 1]
+    }
+
+    function min(arr=[]) {
+        if (!checkfunctype("min", "array", arr, 1)) {exit(1)}
+        arr_len=len(arr)
+        if (arr_len == 0) {return 0}
+        return arr.sort()[0]
+    }
+
+    // Octal to Binary
+    function oct2bin(o_number) {
+        return bin(oct2dec(o_number))
+    }
+
+    // Octal to Decimal
+    function oct2dec(o_number) {
+        number=reverse(string(o_number))
+        counter=0
+        foreach i, x in number {
+            counter += int(x) * (8 ** i)
+        }
+        return counter
+    }
+
+    // Octal to Hexadecimal
+    function oct2hex(o_number) {
+        return hex(oct2dec(o_number))
+    }
+
+    function procexists(pid=-1) {
+        if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
+        if (isexist("/proc/" + string(pid))) {
+            return true
+        }
+        return false
+    }
+
+    function rotl(Array, Amount=0) {
+        if (!checkfunctype("rotl", "iterable", Array, 1)) {exit(1)}
+        if (!checkfunctype("rotl", "integer", Amount, 2)) {exit(1)}
+	    if (Amount < 1) {Amount=1}
+        VarType=type(Array)
+        Valid=false
+        isString=false
+        if (VarType == "string") {
+            Array=split(Array, "")
+            isString=true
+            Valid=true
+        }
+        if (VarType == "array") {
+            Valid=true
+        }
+        if (!Valid) {
+            println("Error calling `rotl`: ERROR: argument to rotl() not supported, expected STRING or ARRAY, got ", toupper(type(Array)))
+            exit(1)
+        }
+        NewArray=Array.copy()
+        foreach n in 1..Amount {
+            ToMove=NewArray[0]
+            NewArray=delete(NewArray,0)
+            NewArray=push(NewArray, ToMove)
+        }
+        if (isString) {
+            NewArray=join(NewArray, "")
+        }
+        return NewArray
+    }
+
+    function rotr(Array, Amount=0) {
+        if (!checkfunctype("rotr", "iterable", Array, 1)) {exit(1)}
+        if (!checkfunctype("rotr", "integer", Amount, 2)) {exit(1)}
+        if (Amount < 1) {Amount=1}
+        VarType=type(Array)
+        Valid=false
+        isString=false
+        if (VarType == "string") {
+            Array=split(Array, "")
+            isString=true
+            Valid=true
+        }
+        if (VarType == "array") {
+            Valid=true
+        }
+        if (!Valid) {
+            println("Error calling `rotr`: ERROR: argument to rotr() not supported, expected STRING or ARRAY, got ", toupper(type(Array)))
+            exit(1)
+        }
+        NewArray=Array.copy()
+        foreach n in 1..Amount {
+            ToMove=pop(NewArray)
+            NewArray=insert(NewArray, 0, ToMove)
+        }
+        if (isString) {
+            NewArray=join(NewArray, "")
+        }
+        return NewArray
+    }
+
+
+    function rsort(arr) {
+        return reverse(sort(arr))
+    }
+
+    function sec2time(seconds=0) {
+        if (!checkfunctype("sec2time", "integer", seconds, 1)) {exit(1)}
+        elapse={}
+        elapse=set(elapse, "Day", seconds/60/60/24)
+        elapse=set(elapse, "Hour", (seconds/60/60)%24)
+        elapse=set(elapse, "Min", (seconds/60)%60)
+        elapse=set(elapse, "Sec", seconds%60)
+        return elapse
+    }
+ 
+    function tail(data, lines=0) {
+        if (!checkfunctype("tail", "iterable", data, 1)) {exit(1)}
+        if (!checkfunctype("tail", "integer", lines, 2)) {exit(1)}
+        type_string=false
+        if (type(data) == "string") {
+            data=split(data, "\n")
+    	    type_string=true
+        }
+        tdata=[]
+        if (lines == 0) {lines = 10}
+        l=len(data)
+        if (lines >= l) {
+            if (type_string) {
+                return(join(data, "\n"))
+            }
+            return data
+        }
+        count=l-lines
+        while (count < l) {
+            tdata=push(tdata, data[count])
+            count++
+        }
+        if (type_string) {
+            return(join(tdata, "\n"))
+        }
+        return tdata
+    }
+
+    function unzip(hash1={}) {
+    	if (!checkfunctype("unzip", "hash", hash1, 1)) {exit(1)}
+        keyArray=keys(hash1)
+        valueArray=[]
+        ret_array=[]
+        foreach key in keyArray {
+            ValueArray=push(valueArray, hash1[key])
+        }
+        ret_array=push(ret_array, keyArray)
+        ret_array=push(ret_array, valueArray)
+        return ret_array
+    }
+
+    function usort(arr) {
+        return sort(uniq(arr))
+    }
+
+    function lookupcname(Search="") {return nslookup(Search, "cname")}
+    function lookuphost(Search="") {return nslookup(Search, "host")}
+    function lookupip(Search="") {return nslookup(Search, "ip")}
+    function lookuptxt(Search="") {return nslookup(Search, "txt")}
+    function lookupptr(Search="") {return nslookup(Search, "ptr")}
+    function lookupns(Search="") {return nslookup(Search, "ns")}
+    function lookupmx(Search="") {return nslookup(Search, "mx")}
+    
+    function permsym(BPerms="") {
+        DefPerms=["-", "-", "-"]
+        if (BPerms[0] == "1") {DefPerms=set(DefPerms, 0, "r")}
+        if (BPerms[1] == "1") {DefPerms=set(DefPerms, 1, "w")}
+        if (BPerms[2] == "1") {DefPerms=set(DefPerms, 2, "x")}
+        return join(DefPerms, "")
+    }
+
+    function oct2sym(Perms="") {
+        Binary=trimprefix(oct2bin(Perms), "0b")
+        while (len(Binary) < 12) {
+            Binary="0" + Binary
+        }
+        Spec=substr(Binary,0,3)
+        User=substr(Binary,3,3)
+        Group=substr(Binary,6,3)
+        Other=substr(Binary,9,3)
+
+        SymUser=permsym(User)
+        SymGroup=permsym(Group)
+        SymOther=permsym(Other)
+
+        FullPerms=split(SymUser + SymGroup + SymOther, "")
+        BSpec=split(Spec, "")
+        if (BSpec[2] == "1") {
+            if (FullPerms[8] != "x") {
+	            FullPerms=set(FullPerms, 8, "T")
+	        } else {
+	            FullPerms=set(FullPerms, 8, "t")
+	        }
+        }
+        if (BSpec[1] == "1") {
+            if (FullPerms[5] != "x") {
+	            FullPerms=set(FullPerms, 5, "S")
+	        } else {
+	            FullPerms=set(FullPerms, 5, "s")
+	        }
+        }
+        if (BSpec[0] == "1") {
+            if (FullPerms[2] != "x") {
+	            FullPerms=set(FullPerms, 2, "S")
+	        } else {
+	            FullPerms=set(FullPerms, 2, "s")
+	        }
+        }
+        FullPerms=join(FullPerms, "")
+
+           return FullPerms
+    }
+}

@@ -1,0 +1,9 @@
+#!/usr/bin/env mwnci
+filename="/etc/passwd"
+a=file(filename)
+if (a) {
+    println("Enhanced Information: \n",file(filename,1))
+} else {
+    println("File does not exist")
+}
+

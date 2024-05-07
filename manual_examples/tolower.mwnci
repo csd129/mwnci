@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+text="THIS is SOME text"
+println(tolower(text))
+new_text=text.tolower()
+println(new_text, "\n", text)

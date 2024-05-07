@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+include("math")
+any_float = 8.4
+ceil_any_float = ceil(any_float)
+printf("Ceiling of %.2f is %d\n", any_float, ceil_any_float)

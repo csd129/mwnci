@@ -1,0 +1,6 @@
+#!/usr/bin/env mwnci
+line="This is a line with some words in it"
+split_line=fields(line)
+println("The line is: ", line)
+println("The first word is: ", split_line[0])
+println("The third word is: ", split_line[2])

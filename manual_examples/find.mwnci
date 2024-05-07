@@ -1,0 +1,8 @@
+#!/usr/bin/env mwnci
+//println(find([1,2,3,4],2))
+harry=[1,2,3,4]
+println(harry.find(2))
+
+sentence="The quick red fox jumped over the lazy brown dogs"
+//println(find(sentence, "fox"))
+println(sentence.find("fox"))

@@ -1,0 +1,7 @@
+#!/usr/bin/env mwnci
+line = "1234567.0011223300"
+printf("             line as an string: %s\n", line)
+printf("            line as an integer: %d\n", int(line))
+printf("                line as a real: %f\n", float(line))
+printf("      line as a formatted real: %12.4f\n", float(line))
+printf("   line in scientific notation: %e\n", float(line))

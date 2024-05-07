@@ -1,0 +1,118 @@
+if (!INCLUDE["HTTP"]) {
+    INCLUDE=set(INCLUDE, "HTTTP", true)
+        
+    function httpcontent(url="", expr="") {
+        if (!checkfunctype("httpcontent", "string", url, 1)) {exit(1)}
+        if (!checkfunctype("httpcontent", "string", expr, 2)) {exit(1)}
+        if (expr == "" || url == "") {
+            return false
+        }
+        if (match (expr, httpget(url))) {return true}
+        return false
+    }
+    
+    function httpsave(url="", filename="") {
+        if (url == "" || filename == "") {
+            println("`httpsave` expects 2 arguments")
+            return false
+        }
+        if (!checkfunctype("httpsave", "string", url, 1)) {exit(1)}
+        if (!checkfunctype("httpsave", "string", filename, 2)) {exit(1)}
+        if (isexist(filename)) {
+            print("File ", filename, " exists. Overwrite(y/N)? ")
+            choice=STDIN.read()
+            if (!match("[yY]", choice)) {return false}
+        } 
+        fh=open(filename, "w")
+        fh.write(httpget(url))
+        fh.close()
+        return true
+    }
+    
+    function getweb(url="", header={}){
+        if (url == "") {
+            println("`getweb` expects a URL, none given")
+            return false
+        }
+    
+        if (!checkfunctype("getweb", "string", url, 1)) {exit(1)}
+        if (!checkfunctype("getweb", "hash", header, 2)) {exit(1)}
+        
+        AUTH=""
+        HEADER=""
+        COOKIE=""
+        OPTIONS=""
+    //
+    // Check we have any auth, headers etc.
+    //
+    
+        k=keys(header)
+        if (len(k) > 0) {
+            foreach hkey in k {
+    //
+    // If we have basic auth, then parse the useranme and password
+    //
+                if (hkey  == "Auth") {
+                    ak=keys(header[hkey])
+    		        if (len(ak) > 0) {
+                        AUTH=sprintf("-u %s:%s", header[ hkey]["User"], header[hkey]["Password"])
+                    }
+                }
+    //
+    // If we have header to add
+    //
+                if (hkey == "Header") {
+                    headers=header[hkey]
+    		        hk=keys(headers)
+    		        if (len(hk) > 0) {
+    		            foreach h in hk {
+    		                HEADER=sprintf("%s -H \"%s: %s\"", HEADER, h, headers[h])
+    		            }
+    		        }
+                }
+    
+    //
+    // If we need cookies "NAME1=VALUE1; NAME2=VALUE2"
+    //
+    	        if (hkey == "Cookie") {
+    	            cookies=header[hkey]
+    		        ck=keys(cookies)
+    		        if (len(ck) > 0) {
+    		            foreach c in ck {
+    		                COOKIE=sprintf("%s %s=%s;", COOKIE, c, cookies[c])
+    		            }
+                    }
+                    COOKIE=trim(COOKIE)
+    		        COOKIE=substr(COOKIE, 0, len(COOKIE)-1)
+    		        COOKIE=sprintf("-b \"%s\"", COOKIE)
+    	        }
+    //
+    // Add other if hkey here
+    //
+    	        if (hkey == "Options") {
+    	            OPTIONS=header[hkey]
+    	        }
+            }
+        }
+        command=sprintf("`curl %s %s %s %s \"%s\"`", OPTIONS, COOKIE, HEADER, AUTH, url)
+        return eval(command)
+    } 
+    
+    function httpstat(url="") {
+        if (len(url) == 0) {
+            println("httpstat: URL using bad/illegal format or missing URL")
+    	    return false
+        }
+        if (!checkfunctype("httpstat", "string", url)) {
+            exit(1)
+        }
+        data={
+    	"Options": "-s -o /dev/null -I -w \"%{http_code}\""
+        }
+        result=getweb(url, data)["stdout"]
+        if (result == "000" || len(result) == 0) {
+            return false
+        }
+        return result
+    }
+}

@@ -1,0 +1,9 @@
+#!/usr/bin/env mwnci
+include("file")
+
+if (isexist("/tmp/foo")) {
+    exit(0)
+}
+exit(1) 
+
+

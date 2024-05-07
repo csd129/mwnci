@@ -1,0 +1,61 @@
+package evaluator
+
+import (
+	"fmt"
+	"mwnci/lexer"
+	"mwnci/object"
+	"mwnci/parser"
+	"mwnci/typing"
+	"os"
+	"path/filepath"
+)
+
+func Include(env *object.Environment, args ...object.Object) object.Object {
+	if err := typing.Check(
+		"include", args,
+		typing.MinimumArgs(1),
+		typing.WithTypes(object.STRING_OBJ),
+	); err != nil {
+		return newError(err.Error())
+	}
+	includes := ""
+	userincludes := os.Getenv("INCLUDEPATH")
+	if len(userincludes) == 0 {
+		includes = "@INCLUDE@:."
+	} else {
+		includes = fmt.Sprintf("%s:%s", userincludes, "@INCLUDE@:.")
+	}
+	incpaths := filepath.SplitList(includes)
+	found := 0
+	for i := 0; i < len(args); i++ {
+		import_file := args[i].Inspect()
+
+		if len(import_file) == 0 {
+			return newError("ArgError: include() expects a file identifier, none given")
+		}
+		imp_filename := fmt.Sprintf("%s.mwnci", import_file)
+		for _, ipath := range incpaths {
+			import_file = fmt.Sprintf("%s/%s", ipath, imp_filename)
+			data, err := os.ReadFile(import_file)
+			if err == nil {
+				l := lexer.New(string(data))
+				p := parser.New(l)
+				program := p.ParseProgram()
+				if len(p.Errors()) == 0 {
+					Eval(program, env)
+					found = 1
+					break
+				} else {
+					fmt.Printf("%v\n", p.Errors())
+					return newError("ParseError: include() failed to parse %s", import_file)
+				}
+			}
+		}
+		if found == 0 {
+			fmt.Printf("ReadError: include() failed to read %s\n", imp_filename)
+		} else {
+			found = 0
+		}
+	}
+	return nil
+}

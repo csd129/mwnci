@@ -1,0 +1,12 @@
+#!/usr/local/bin/mwnci
+(ARGC == 1) ? rows=5 : rows=int(ARGV[1])
+
+foreach i in 1..rows {
+    k=0
+    print(repeat("  ", rows - i))
+    while ( k != 2 * i -1 ) {
+        print("* ")
+	k++
+    }
+    println()
+}

@@ -1,0 +1,19 @@
+#!/usr/bin/env mwnci
+include("math")
+println(" n      n^4         n^5         n^6")
+println("--   ---------   ---------   ---------")
+base=1
+while (base <= 9) {
+    printf("%2d", base)
+    exponent=4
+    while (exponent <= 6) {
+        printf("   %9d", int(pow(base, exponent)))
+
+//An alternative is:
+//        printf("   %9d", base ** exponent)
+
+	exponent++
+    }
+    print("\n")
+    base++
+}

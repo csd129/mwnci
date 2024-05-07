@@ -1,0 +1,126 @@
+if (!INCLUDE["STRING"]) {
+    INCLUDE=set(INCLUDE, "STRING", true)
+
+    function ljust(text="", length, spacer=" ") {
+        if (!checkfunctype("ljust", "string", text, 1)) {exit(1)}
+	    if (!checkfunctype("ljust", "integer", length, 2)) {exit(1)}
+        if (!checkfunctype("ljust", "string", spacer, 3)) {exit(1)}
+	    if (len(spacer) != 1) {
+	        println("Error calling `ljust`: ERROR: fill character must be exactly one character long")
+	        exit(1)
+	    }
+
+	    if (length <= len(text)) {return text}
+
+	    rep=repeat(spacer, length-len(text))
+	    return text + rep
+    }
+
+    function rjust(text="", length, spacer=" ") {
+        if (!checkfunctype("rjust", "string", text, 1)) {exit(1)}
+	    if (!checkfunctype("rjust", "integer", length, 2)) {exit(1)}
+        if (!checkfunctype("rjust", "string", spacer, 3)) {exit(1)}
+	    if (len(spacer) != 1) {
+	        println("Error calling `rjust`: ERROR: fill character must be exactly one character long")
+	        exit(1)
+	    }
+
+	    if (length <= len(text)) {return text}
+	    rep=repeat(spacer, length-len(text))
+	    return rep + text
+    }
+
+    function center(text="", length, spacer=" ") {
+        if (!checkfunctype("rjust", "string", text, 1)) {exit(1)}
+        if (!checkfunctype("rjust", "integer", length, 1)) {exit(1)}
+        if (!checkfunctype("rjust", "string", spacer, 3)) {exit(1)}
+        if (len(spacer) != 1) {
+            println("Error calling `rjust`: ERROR: fill character must be exactly one character long")
+            exit(1)
+        }
+
+        if (length <= len(text)) {return text}
+        beginning=int((length-len(text))/2)
+        end=length-(len(text)+beginning)
+        front=repeat(spacer, beginning)
+        back=repeat(spacer, end)
+        return front + text + back
+    }
+
+    function title(text="") {
+        if (!checkfunctype("title", "string", text, 1)) {exit(1)}
+        if (len(text) == 0) {return text}
+        textArray=fields(text)
+        Title=""
+        foreach Word in textArray {
+            Lower=tolower(Word)
+            First=toupper(Lower[0])
+            NewWord=set(Lower,0,First)
+            Title=Title + " " + NewWord
+        }
+        return trim(Title)
+    }
+
+    function isspace(text) {
+        if (!checkfunctype("isspace", "string", text, 1)) {exit(1)}
+        if (len(text) == 0) {return text}
+        return (len(trim(text)) == 0) ? true : false
+    }
+
+    function islower(text) {
+        if (!checkfunctype("islower", "string", text, 1)) {exit(1)}
+        foreach n in text {
+            if (tolower(n) != n) {return false}
+        }
+        return true
+    }
+
+    function isupper(text) {
+        if (!checkfunctype("isupper", "string", text, 1)) {exit(1)}
+        foreach n in text {
+            if (toupper(n) != n) {return false}
+        }
+        return true
+    }
+
+    function swapcase(text) {
+        if (!checkfunctype("swapcase", "string", text, 1)) {exit(1)}
+        foreach i, n in text {
+            New=n
+            if (isupper(n)) {
+                New=tolower(n)
+            }
+            if (islower(n)) {
+                New=toupper(n)
+            }
+            text=text.set(i, New)
+        }
+        return text
+    }
+
+function partition(text, search) {                                          
+        if (!checkfunctype("partition", "string", text, 1)) {exit(1)}           
+        if (!checkfunctype("partition", "string", search, 2)) {exit(1)}         
+        data=[text, "", ""]                                                     
+        Position=find(text, search)                                             
+        if (Position == -1) {                                                   
+            return data                                                         
+        }                                                                       
+        First=substr(text, 0, Position)                                         
+        Start=len(First + search)                                               
+        length=len(text) - Start                                                
+        Second=substr(text, Start, length)                                      
+        data=[First, search, Second]                                            
+        return data                                                             
+    }
+}
+
+function string.ljust(length, spacer) {return ljust(self, length, spacer)}
+function string.rjust(length, spacer) {return rjust(self, length, spacer)}
+function string.center(length, spacer) {return center(self, length, spacer)}
+function string.title() {return title(self)}
+function string.isspace() {return isspace(self)}
+function string.islower() {return islower(self)}
+function string.isupper() {return isupper(self)}
+function string.swapcase() {return swapcase(self)}
+function string.partition(search) {return partition(self, search)}

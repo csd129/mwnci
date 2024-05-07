@@ -1,0 +1,11 @@
+#!/usr/bin/env mwnci
+include("math")
+println("Arcsine(Arctangent) Identity Verification\n")
+println("  Tan      Expected   Returned")
+println("------------------------------")
+tangent = -1.5
+while (tangent < 1.5) {
+    expect = tangent / sqrt(1 + (tangent ** 2))
+    printf("%+8.6f  %+8.6f  %+8.6f\n", tangent, expect, sin(atan(tangent)))
+    tangent = tangent + 0.1
+}

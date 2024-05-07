@@ -1,0 +1,7 @@
+#!/usr/bin/env mwnci
+text="   This is an example   "
+println("Text ->",text,"<-")
+println("Trim both sides ->",trim(text),"<-")
+println("Trim left side  ->",ltrim(text), "<-")
+println("Trim right side ->", rtrim(text), "<-")
+

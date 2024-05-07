@@ -1,0 +1,3 @@
+#!/usr/bin/env mwnci
+include("math")
+println(floor(12.12345))

@@ -1,0 +1,98 @@
+if (!INCLUDE["SYSSTAT"]) {
+	INCLUDE=set(INCLUDE, "SYSSTAT", true)
+
+    function vmstat() {
+    	DataHash={}
+    	Data=shift(split(trim(system("vmstat")), "\n"),2)
+    	Info=fields(Data[0])
+    	ProcHash={"Run": int(Info[0]), "Block": int(Info[1])}
+    	MemHash={"Swap": int(Info[2]), "Free": int(Info[3]), "Buff": int(Info[4]), "Cache": int(Info[5])}
+    	SwapHash={"SwapIn": int(Info[6]), "SwapTo": int(Info[7])}
+    	IOHash={"BlockIn": int(Info[8]), "BlockOut": int(Info[9])}
+    	SysHash={"Inter": int(Info[10]), "Contxt": int(Info[11])}
+    	CpuHash={"User": int(Info[12]), "Sys": int(Info[13]), "Idle": int(Info[14]), "Wait": int(Info[15]), "Steal": int(Info[16])}
+		if (len(Info) == 18) {
+	    	CpuHash=set(CpuHash, "Guest", int(Info[17]))
+		}
+		DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
+		return DataHash
+	}
+
+    function mpstat() {
+        Mpstat=system("mpstat -P ALL -o JSON")
+		Json=eval(Mpstat)
+		Cpu_Hash={}
+		Load=Json["sysstat"]["hosts"][0]["statistics"][0]["cpu-load"]
+		foreach n in Load {
+			busy=sprintf("%.2f", 100.00 - float(n["idle"]))
+			key=n["cpu"]
+			line_data=delete(n,"cpu")
+			line_data=set(line_data, "busy", busy)
+			Cpu_Hash=set(Cpu_Hash, key, line_data)
+		}
+        return Cpu_Hash
+    }
+    
+    function iostat() {
+        Iostat=system("iostat -p ALL -o JSON")
+		Iostat=replaceall(Iostat, "kB_", "kb_")
+		Iostat=replaceall(Iostat, "/", "")
+		Json=eval(Iostat)
+		Io_Hash={}
+		Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
+		foreach n in Disk {
+			key=n["disk_device"]
+			line_data=delete(n, "disk_device")
+			Io_Hash=set(Io_Hash, key, line_data)
+		}
+        return Io_Hash
+    }
+
+    function pidstat(opts="") {
+        CMD="pidstat -l"
+		if (len(opts) > 0) {
+	    	CMD=CMD + " -C " + opts
+		}
+		ProcessLine=trim(system(CMD))
+		ProcessLine=shift(ProcessLine.split("\n"), 3)
+		pid_hash={}
+		foreach line in ProcessLine {
+			sline=fields(line)
+			pid=sline[2]
+			temp_hash={
+				"uid": int(sline[1]),
+				"pc_usr": float(sline[3]),
+				"pc_sys": float(sline[4]),
+				"pc_guest": float(sline[5]),
+				"pc_wait": float(sline[6]),
+				"pc_cpu": float(sline[7]),
+				"cpu": int(sline[8]),
+				"cmd": sline[9]
+			}
+			pid_hash=set(pid_hash, pid, temp_hash)
+        }
+		return pid_hash
+	}
+
+
+    function pidmem(ops="") {
+		include("pwd")
+		CMD="ps ax -o pid,user,%cpu,%mem,command | grep -v \"\]$\""
+		if (len(ops) == 0) {ops="[a-z]"}
+		ProcList=trim(system(CMD))
+		ProcList=rest(ProcList.split("\n"))
+		mem_hash={}
+		foreach line in ProcList {
+			temp_hash={}
+			sline=fields(line)
+			if (len(ops) > 1) {
+				if (match(ops, sline[4])) {
+					uid=getpwnam(sline[1])["Uid"]
+					temp_hash={"uid": int(uid), "pc_cpu": float(sline[2]), "pc_mem": float(sline[3]), "command": sline[4] }
+					mem_hash=set(mem_hash, sline[0], temp_hash)
+				}
+			}
+		}
+		return mem_hash
+    }
+}

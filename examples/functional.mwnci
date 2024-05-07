@@ -1,0 +1,79 @@
+//
+// This script contains some functional programming examples.
+//
+// Launch this like so:
+//
+//  ~$ mwnci examples/functional.mon
+//
+
+
+
+//
+// Return true if the given number is even
+//
+function even?(n) {
+  return( n % 2 == 0 );
+}
+
+
+//
+// Return true if the given number is odd.
+//
+function odd?(n) {
+  return( n % 2 == 1 );
+}
+
+
+/*
+ * Return true if the given number is prime
+ *
+ * Remember we can use multi-line comments too!
+ */
+function prime?(n) {
+   // negative numbers are not prime
+   if ( n < 0 ) { return false ; }
+
+   // 0, 1, 2 are prime
+   if ( n < 3 ) { return true ; }
+
+   // Now the rest - we're testing all factors between 2 & SQRT(n).
+   let i = int(sqrt(n)) + 1;
+
+   while( i > 2 ) {
+     i--;
+     if (n % i == 0) {
+        return false;
+     }
+   }
+   return true;
+}
+
+
+//
+// Square the given number.
+//
+function square(n) { return n * n ; }
+
+//
+// The list of numbers we'll operate upon.
+//
+let ints = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+             11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ];
+
+// Show them ..
+print( "\nIntegers:\n" );
+print( "\t", ints, "\n" );
+
+//
+// Show their squares ..
+//
+print( "\nSquares:\n" );
+print( "\t", ints.map(square), "\n");
+
+//
+// Show their cubes, using an anonymous function
+//
+print( "\nCubes:\n" );
+print( "\t", ints.map( fn(n) { return n * n * n; }), "\n");
+print( "\nCubes via POW:\n" );
+print( "\t", ints.map( fn(n) { return n ** 3; }), "\n");

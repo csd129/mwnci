@@ -1,0 +1,5 @@
+#!/usr/bin/env mwnci
+X="28 characters in this string"
+println(len(X))
+X=[1,2,3,4]
+println(len(X))

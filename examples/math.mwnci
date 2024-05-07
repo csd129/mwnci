@@ -1,0 +1,26 @@
+include("math")
+//
+// Sample function showing some simple math operations
+//
+
+print( "abs(1)     -> " ,abs( 1 ),     "\n" );
+print( "abs(-1)    -> " ,abs( -1 ),    "\n" );
+print( "abs(3.13)  -> " ,abs( 3.13 ),  "\n" );
+print( "abs(-3.13) -> " ,abs( -3.13 ), "\n" );
+
+//
+// The random function returns a floating-point number between 0 & 1
+//
+// To show a number from 0-10 we need to multiply and convert to an
+// integer.
+//
+let rand = random(1000);
+let val = int( rand * 11 ) ;
+print( "random() -> ", val , "\n");
+
+//
+// We can convert numbers to strings easily enough too
+//
+let str = string( 3.14 * 22 + random(100) );
+let str = "The result was : " + str + "\n";
+print( str );

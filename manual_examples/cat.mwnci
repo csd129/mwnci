@@ -1,0 +1,12 @@
+#!/usr/bin/env mwnci
+filename="/etc/passwd"
+people=split(cat(filename), "\n")
+foreach person in people {
+    name=split(person, ":")[0]
+    if (len(name) > 0) {
+        print("name of person is: ", name, "\n")
+    }
+}
+
+people=split(filename.cat(), "\n")
+println(people[2])

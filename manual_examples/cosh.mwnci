@@ -1,0 +1,12 @@
+#!/usr/bin/env mwnci
+include("math")
+println("Test cosh(x) = 0.5 * (exp(x) + exp(-x))")
+println("over the interval from -5 to 5\n")
+println(" x cosh(x) 0.5 * (exp(x) + exp(-x))")
+println("---------- ---------- ------------------------")
+i=-5
+while (i <= 5) {
+    coshdef = 0.5 * (exp(float(i)) + exp(float(-i)))
+    printf("%+10.6f %+10.6f %+10.6f\n",float(i),cosh(float(i)),coshdef)
+    i++
+}

@@ -1,0 +1,34 @@
+// Iterating over the contents of an array
+println( "Array: value\n")
+a = [ "My", "name", "is", "Neddie" ]
+foreach item in a {
+     println( "\t",  item);
+}
+println( "Array: index/value\n")
+foreach index, item in a {
+     println( "\t", index, "\t",  item );
+}
+
+// Iterating over the contents of a string.
+println( "String: value\n")
+foreach char in "Neddie Seagoon" {
+     println( "\t", char );
+}
+
+// character + index
+println( "String: index/value\n")
+foreach idx, char in "Neddie Seagoon" {
+     println( "\t", idx, "\t", char );
+}
+
+
+// Iterating over a hash
+h = { "Foo": "Bar", "Neddie": "Seagoon"}
+println( "Hash: key\n")
+foreach key in h {
+     println( "\t", key);
+}
+println( "Hash: key/value\n")
+foreach key,val in h {
+     println( "\t", key, "\t=>\t", val);
+}

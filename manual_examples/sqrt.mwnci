@@ -1,0 +1,9 @@
+#!/usr/bin/env mwnci
+include("math")
+i=1
+println(" n   sqrt(n)")
+println("--   -------")
+while (i <= 10) {
+    printf("%2d   %7.5f\n", i, sqrt(i))
+    i++
+}

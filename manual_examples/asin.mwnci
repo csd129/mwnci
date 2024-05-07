@@ -1,0 +1,11 @@
+#!/usr/bin/env mwnci
+include("math")
+HALFPI = PI / 2
+println("Arcsine + Arcosine Identity Verification\n")
+println("  Sine     Expected   Returned")
+println("------------------------------")
+sine = -0.9
+while (sine < 1.0) {
+    printf("%+8.6f  %+8.6f  %+8.6f\n", sine, HALFPI, asin(sine) + acos(sine))
+    sine = sine + 0.1
+}

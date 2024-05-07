@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+a=input("Prompt> ")
+println(a)
+

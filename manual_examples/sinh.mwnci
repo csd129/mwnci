@@ -1,0 +1,15 @@
+#!/usr/bin/env mwnci
+include("math")
+println("Hyperbolic Sine Test")
+println("   value   sinh(x)   pow(sinh(x),2)  0.5 (cosh(2x)-1)")
+println("-----------------------------------------------------")
+count=-2
+while (count <= 2) {
+    printf("    %+3d  %+9.5f     %+9.5f          %+9.5f\n",
+    int(count), result=sinh(count),
+    pow(result, 2), 0.5 * cosh(2*count)-1)
+    count += 0.1
+}
+
+
+    

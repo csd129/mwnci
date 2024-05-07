@@ -1,0 +1,33 @@
+#!/bin/sh
+
+TEMP=/tmp/config.$$
+trap "rm -f ${TEMP}" 0 1 2 3 5 15
+
+. ./config.conf
+
+INFILE=$(find . -name \*.in)
+emconsts=`find includes -name \*.mwnci -exec  grep -w "const.*=.*;$" {} \; | tr '=' ' ' | awk '{printf("\"%s\"\n", $2)}' | tr '\n' ' '`
+vimconsts=`echo $emconsts | sed -e s/"\""/""/g`
+emincludes=`find includes -name \*.mwnci -exec awk '$1 == "function"' {} \; | tr '(' ' '  | awk '{printf("\"%s\"\n", $2)}' | grep -v "\." | tr '\n' ' '`
+vimincludes=`echo $emincludes | sed -e s/"\""/""/g | sed -e s/"contains"/""/g`
+emfunctions=`grep RegisterBuiltin  evaluator/register_builtins.go | awk '{print $1}' | grep "^Reg" |awk -F\" '{printf("\"%s\" ", $2)}'`
+vimfunctions=`echo $emfunctions | sed -e s/"\""/""/g`
+for n in $INFILE
+do
+    new=$(echo $n | sed -e s/"\.in$"/""/g)
+    echo "Creating ${new}"
+    cat $n |\
+    sed -e s:"@BIN@":"${BIN}":g \
+        -e s:"@INCLUDE@":"${INCLUDE}":g \
+	-e s:"@OWNER@":"${OWNER}":g \
+	-e s:"@GROUP@":"${GROUP}":g \
+	-e s:"@CONSTS@":"${emconsts}":g \
+	-e s:"@VIMCONSTS@":"${vimconsts}":g \
+	-e s:"@EMFUNCTIONS@":"${emfunctions}":g \
+	-e s:"@VIMFUNCTIONS@":"${vimfunctions}":g \
+	-e s:"@EMINCLUDES@":"${emincludes}":g \
+	-e s:"@VIMINCLUDES@":"${vimincludes}":g \
+	> ${TEMP}
+     [ -s ${TEMP} ] && mv ${TEMP} ${new}
+done
+rm -f ${TEMP}

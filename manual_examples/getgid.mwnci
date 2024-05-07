@@ -1,0 +1,2 @@
+#!/usr/bin/env mwnci
+println("The group id of this process is: ", getgid())

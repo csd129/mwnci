@@ -1,0 +1,25 @@
+#!/usr/bin/env mwnci
+include("math")
+function simfract(Fraction="") {
+    if (!checkfunctype("simfract", "string", Fraction, 1)){
+        exit(1)
+    }
+    SFract=cut(Fraction,"/")
+    num1=int(SFract[0])
+    num2=int(SFract[1])
+    Gcd=gcd(num1, num2)
+    new1=int(num1/Gcd)
+    new2=int(num2/Gcd)
+    if (new1 == new2 || new2 == 1) {
+        return string(new1);
+    }
+    if (new1 > new2) {
+        divvy=divmod(new1, new2)
+	newfract=sprintf("%d/%d", divvy[1], new2)
+	return sprintf("%d %s", divvy[0], newfract);
+    }
+    return sprintf("%d/%d", new1, new2);
+}
+
+
+println(simfract("75/10"))
