@@ -102,7 +102,7 @@ func (e *Environment) Set(name string, val Object) Object {
 	//
 	cur := e.store[name]
 	if cur != nil && e.readonly[name] {
-		fmt.Printf("Attempting to modify '%s' denied; it was defined as a constant.\n", name)
+		fmt.Printf("Read-only variable '%s' is not assignable\n", name)
 		os.Exit(3)
 	}
 
