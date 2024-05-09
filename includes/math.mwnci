@@ -339,17 +339,17 @@ if (!INCLUDE["MATH"]) {
 /*
  Math constants - add more here if needed
 */
-const PI=     3.141592653589793;
-const PI_2=   PI/2;
-const PI_4=   PI/4;
-const E=      2.718281828459045;
-const TAU=    PI*2;
-const PHI=    1.618033988749894;
-const SQRT2=  sqrt(2);
-const SQRTE=  sqrt(E);
-const SQRTPI= sqrt(PI);
-const SQRTPHI=sqrt(PHI);
-const LN2=    0.693147180559945;
-const LOG2E=  1/LN2;
-const LN10=   2.302585092994045;
-const LOGH10E=1/LN10;
+const PI=     3.141592653589793
+const PI_2=   PI/2
+const PI_4=   PI/4
+const E=      2.718281828459045
+const TAU=    PI*2
+const PHI=    1.618033988749894
+const SQRT2=  sqrt(2)
+const SQRTE=  sqrt(E)
+const SQRTPI= sqrt(PI)
+const SQRTPHI=sqrt(PHI)
+const LN2=    0.693147180559945
+const LOG2E=  1/LN2
+const LN10=   2.302585092994045
+const LOGH10E=1/LN10

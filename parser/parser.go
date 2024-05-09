@@ -297,13 +297,8 @@ func (p *Parser) parseConstStatement() *ast.ConstStatement {
 	}
 	p.nextToken()
 	stmt.Value = p.parseExpression(LOWEST)
-	for !p.curTokenIs(token.SEMICOLON) {
 
-		if p.curTokenIs(token.EOF) {
-			p.errors = append(p.errors, "unterminated const statement")
-			return nil
-		}
-
+	if p.peekTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
 	return stmt

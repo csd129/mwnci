@@ -9,11 +9,11 @@ if (!INCLUDE["METHODS"]) {
 /*
  Define some handy constants
 */
-const OS=getos();
-const ARGV=args();
-const ARGC=len(ARGV);
-const PID=getpid();
-const NULL=chr(0);
+const OS=getos()
+const ARGV=args()
+const ARGC=len(ARGV)
+const PID=getpid()
+const NULL=chr(0)
 
 /*
  File-objects for STDIN, STDOUT, and STDERR.
@@ -22,9 +22,9 @@ const NULL=chr(0);
  are recognized by our "open" primitive.
 */
 
-const STDIN= open( "!STDIN!" );
-const STDOUT=open( "!STDOUT!" );
-const STDERR=open( "!STDERR!" );
+const STDIN= open( "!STDIN!" )
+const STDOUT=open( "!STDOUT!" )
+const STDERR=open( "!STDERR!" )
 
 if (!INCLUDE["MAIN"]) {
     INCLUDE=set(INCLUDE, "MAIN", true)
