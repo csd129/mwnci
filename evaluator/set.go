@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -44,7 +43,7 @@ func setFun(args ...object.Object) object.Object {
 	}
 	if args[0].Type() == object.STRING_OBJ {
 		text := args[0].(*object.String).Value
-		texty:= make([]byte, len(text))
+		texty := make([]byte, len(text))
 		val := args[2].(*object.String).Value
 		if len(val) != 1 {
 			return newError("StringError: Inserted string must be one character")
@@ -54,12 +53,11 @@ func setFun(args ...object.Object) object.Object {
 			return newError("IndexError: string index [%d] out of range ", elem)
 		} else {
 			for k, v := range []byte(text) {
-				texty[k]=byte(v)
+				texty[k] = byte(v)
 			}
 		}
 		texty[elem] = val[0]
-		return &object.String{Value: fmt.Sprintf("%s", texty)}
+		return &object.String{Value: string(texty[:])}
 	}
-	return newError("argument to set() not supported, expected HASH or ARRAY, got=%s", args[0].Type())
+	return newError("argument to set() not supported, expected HASH, ARRAY or STRING, got=%s", args[0].Type())
 }
-
