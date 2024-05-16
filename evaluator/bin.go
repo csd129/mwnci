@@ -2,9 +2,9 @@ package evaluator
 
 import (
 	"fmt"
-	"strconv"
 	"mwnci/object"
 	"mwnci/typing"
+	"strconv"
 )
 
 // Bin ...
