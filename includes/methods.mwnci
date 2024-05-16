@@ -9,7 +9,7 @@ if (!INCLUDE["METHODS"]) {
     function array.extend(NextArray=[]) {return extend(self, NextArray)}
     function array.find(item) {return index(self, item)}
     function array.first() {return first(self)}
-    function array.head(lines=0) {return head(self, lines)}
+    function array.head(Lines=0) {return head(self, Lines)}
     function array.index(item) {return index(self, item)}
     function array.insert(element=-1, value="") {return insert(self, element, value)}
     function array.intersect(data) {return intersect(self, data)}
@@ -31,14 +31,16 @@ if (!INCLUDE["METHODS"]) {
     function array.sort() {return sort(self)}
     function array.sum() {return sum(self)}
     function array.swap( a, b ) {return swap(self, a, b)}
-    function array.tail(lines=0) {return tail(self, lines)}
+    function array.tail(Lines=0) {return tail(self, Lines)}
     function array.ucount() {return ucount(self)}
     function array.uniq() {return uniq(self)}
     function array.usort() {return usort(self)}
     function float.int() {return (int(self))}
     function hash.delete(key) {return delete(self, key)}          
+    function hash.items() {return items(self)}
     function hash.keys() {return keys(self)}
-    function hash.set(element="", value="") {return set(self, element, value)} 
+    function hash.set(element="", value="") {return set(self, element, value)}
+    function hash.values() {return values(self)}
     function integer.bin() {return bin(self)}
     function integer.chr() {return chr(self)}
     function integer.procexists() {return procexists(self)}
@@ -102,7 +104,7 @@ if (!INCLUDE["METHODS"]) {
     function string.split(separator="") {return split(self, separator)}
     function string.splithostport() {return splithostport(self)}
     function string.substr(start,long) {return substr(self, start, long)}
-    function string.tail(lines=0) {return tail(self, lines)}
+    function string.tail(Lines=0) {return tail(self, Lines)}
     function string.tolower() {return tolower(self)}
     function string.toupper() {return toupper(self)}
     function string.trim() {return trim(self)}

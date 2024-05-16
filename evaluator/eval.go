@@ -21,31 +21,26 @@ func evalFun(env *object.Environment, args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	switch args[0].(type) {
-	case *object.String:
-		txt := args[0].(*object.String).Value
+	txt := args[0].(*object.String).Value
+	if len(txt) == 0 {
+		return newError("argument to `eval` not supported, got an empty string")
+	}
 
-		// Lex the input
-		l := lexer.New(txt)
+	// Lex the input
+	l := lexer.New(txt)
 
-		// parse it.
-		p := parser.New(l)
+	// parse it.evaluator/eval.go
+	p := parser.New(l)
 
-		// If there are no errors
-		program := p.ParseProgram()
-		if len(p.Errors()) == 0 {
-			// evaluate it, and return the output.
-			return (EvalContext(context.Background(), program, env))
-		}
+	// If there are no errors
+	program := p.ParseProgram()
 
-		// Otherwise abort.  We should have try { } catch
-		// to allow this kind of error to be caught in the future!
+	if len(p.Errors()) > 0 {
 		fmt.Printf("Error parsing eval-string: %s", txt)
 		for _, msg := range p.Errors() {
 			fmt.Printf("\t%s\n", msg)
 		}
 		os.Exit(1)
 	}
-	return newError("argument to `eval` not supported, got %s", args[0].Type())
+	return (EvalContext(context.Background(), program, env))
 }
-

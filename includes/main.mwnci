@@ -155,25 +155,25 @@ if (!INCLUDE["MAIN"]) {
         getblock(start_block, end_block, file_output)
     }
 
-    function head(data, lines=0) {
+    function head(data, Lines=0) {
         if (!checkfunctype("head", "iterable", data, 1)) {exit(1)}
-        if (!checkfunctype("head", "integer", lines, 2)) {exit(1)}
+        if (!checkfunctype("head", "integer", Lines, 2)) {exit(1)}
         type_string=false
         if (type(data) == "string") {
             data=split(data, "\n")
             type_string=true
         }
         tdata=[]
-        if (lines == 0) {lines = 10}
+        if (Lines == 0) {Lines = 10}
         l=len(data)
-        if (lines >= l) {
+        if (Lines >= l) {
             if (type_string) {
                 return(join(data, "\n"))
             }
             return data
         }
         count=0
-        while (count < lines) {
+        while (count < Lines) {
             tdata=push(tdata, data[count])
             count++
         }
@@ -379,24 +379,24 @@ if (!INCLUDE["MAIN"]) {
         return elapse
     }
  
-    function tail(data, lines=0) {
+    function tail(data, Lines=0) {
         if (!checkfunctype("tail", "iterable", data, 1)) {exit(1)}
-        if (!checkfunctype("tail", "integer", lines, 2)) {exit(1)}
+        if (!checkfunctype("tail", "integer", Lines, 2)) {exit(1)}
         type_string=false
         if (type(data) == "string") {
             data=split(data, "\n")
     	    type_string=true
         }
         tdata=[]
-        if (lines == 0) {lines = 10}
+        if (Lines == 0) {Lines = 10}
         l=len(data)
-        if (lines >= l) {
+        if (Lines >= l) {
             if (type_string) {
                 return(join(data, "\n"))
             }
             return data
         }
-        count=l-lines
+        count=l-Lines
         while (count < l) {
             tdata=push(tdata, data[count])
             count++
@@ -480,5 +480,23 @@ if (!INCLUDE["MAIN"]) {
         FullPerms=join(FullPerms, "")
 
            return FullPerms
+    }
+
+    function values(Data={}) {
+        if (!checkfunctype("values", "hash", Data, 1)) {exit(1)}
+        MyArray=[]
+	foreach key in keys(Data) {
+	    MyArray=MyArray.push(Data[key])
+	}
+	return MyArray
+    }
+
+    function items(Data={}) {
+        if (!checkfunctype("items", "hash", Data, 1)) {exit(1)}
+	MyArray=[]
+	foreach item, key in Data {
+	     MyArray=MyArray.push([key, item])
+	}
+	return MyArray
     }
 }
