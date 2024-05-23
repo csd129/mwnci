@@ -19,7 +19,7 @@ func init() {
 	RegisterBuiltin("bind", func(env *object.Environment, args ...object.Object) object.Object { return (Bind(args...)) })
 	RegisterBuiltin("bool", func(env *object.Environment, args ...object.Object) object.Object { return (Bool(args...)) })
 	RegisterBuiltin("cargs", func(env *object.Environment, args ...object.Object) object.Object { return (Cargs(args...)) })
-	RegisterBuiltin("cat", func(env *object.Environment, args ...object.Object) object.Object { return (Cat(args...)) })
+	RegisterBuiltin("cat", func(env *object.Environment, args ...object.Object) object.Object { return (ConCat(args...)) })
 	RegisterBuiltin("cd", func(env *object.Environment, args ...object.Object) object.Object { return (Cd(args...)) })
 	RegisterBuiltin("checkip", func(env *object.Environment, args ...object.Object) object.Object { return (CheckIP(args...)) })
 	RegisterBuiltin("chmod", func(env *object.Environment, args ...object.Object) object.Object { return (chmodFun(args...)) })
