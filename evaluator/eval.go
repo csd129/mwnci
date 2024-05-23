@@ -29,7 +29,7 @@ func evalFun(env *object.Environment, args ...object.Object) object.Object {
 	// Lex the input
 	l := lexer.New(txt)
 
-	// parse it.evaluator/eval.go
+	// parse it.
 	p := parser.New(l)
 
 	// If there are no errors

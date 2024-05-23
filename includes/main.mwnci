@@ -322,16 +322,15 @@ if (!INCLUDE["MAIN"]) {
             println("Error calling `rotl`: ERROR: argument to rotl() not supported, expected STRING or ARRAY, got ", toupper(type(Array)))
             exit(1)
         }
-        NewArray=Array.copy()
         foreach n in 1..Amount {
-            ToMove=NewArray[0]
-            NewArray=delete(NewArray,0)
-            NewArray=push(NewArray, ToMove)
+            ToMove=Array[0]
+            Array=delete(Array,0)
+            Array=push(Array, ToMove)
         }
         if (isString) {
-            NewArray=join(NewArray, "")
+            Array=join(Array, "")
         }
-        return NewArray
+        return Array
     }
 
     function rotr(Array, Amount=0) {
@@ -353,15 +352,14 @@ if (!INCLUDE["MAIN"]) {
             println("Error calling `rotr`: ERROR: argument to rotr() not supported, expected STRING or ARRAY, got ", toupper(type(Array)))
             exit(1)
         }
-        NewArray=Array.copy()
         foreach n in 1..Amount {
-            ToMove=pop(NewArray)
-            NewArray=insert(NewArray, 0, ToMove)
+            ToMove=pop(Array)
+            Array=insert(Array, 0, ToMove)
         }
         if (isString) {
-            NewArray=join(NewArray, "")
+            Array=join(Array, "")
         }
-        return NewArray
+        return Array
     }
 
 
