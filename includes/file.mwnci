@@ -10,7 +10,7 @@ if (!INCLUDE["FILE"]) {
             prefix=repeat("0", sizeb)
             binary=prefix + binary
         }
-        return binary;
+        return binary
     }
     
     function isdoable(filename="", bit) {
@@ -25,12 +25,12 @@ if (!INCLUDE["FILE"]) {
         fgid=data[8]
     
         if (int(fuid) == getuid()) {
-            return (int(owner) == 1 ? true : false);
+            return (int(owner) == 1 ? true : false)
         }
         if (int(fgid) == getgid()) {
-            return (int(group) == 1 ? true : false);
+            return (int(group) == 1 ? true : false)
         }
-        return (int(other) == 1 ? true : false);
+        return (int(other) == 1 ? true : false)
     }
         
     function FileType(filename="") {
@@ -40,15 +40,15 @@ if (!INCLUDE["FILE"]) {
             exit(1)
         }
         if (isexist(filename)) {
-            return fields(file(filename, 1))[6];
+            return fields(file(filename, 1))[6]
         } else {
-            return "NOEXIST";
+            return "NOEXIST"
         }
     }
 
     function filetype(filename="") {
         if (!checkfunctype("filetype", "string", filename)) {exit(1)}
-        return FileType(filename);
+        return FileType(filename)
     }
 
     function isfile(filename="") {
@@ -57,7 +57,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isfile`: ERROR: TypeError: isfile() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(filename) == "FILE" ? true : false);
+        return (FileType(filename) == "FILE" ? true : false)
     }
     
     function isblock(filename="") {
@@ -66,7 +66,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isblock`: ERROR: TypeError: isblock() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(filename) == "BLOCK" ? true : false);
+        return (FileType(filename) == "BLOCK" ? true : false)
     }
     
     function isdir(filename="") {
@@ -75,7 +75,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isdir`: ERROR: TypeError: isdir() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(filename) == "DIR" ? true : false);
+        return (FileType(filename) == "DIR" ? true : false)
     }
     
     function ischr(filename="") {
@@ -84,7 +84,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `ischr`: ERROR: TypeError: ischr() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(filename) == "CHR" ? true : false);
+        return (FileType(filename) == "CHR" ? true : false)
     }
     
     function isfifo(filename="") {
@@ -93,7 +93,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isfifo`: ERROR: TypeError: isfifo() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(filename) == "FIFO" ? true : false);
+        return (FileType(filename) == "FIFO" ? true : false)
    }
     
     function islink(filename="") {
@@ -102,7 +102,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `islink`: ERROR: TypeError: islink() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(filename) == "LINK" ? true : false);
+        return (FileType(filename) == "LINK" ? true : false)
     }
     
     function issock(filename="") {
@@ -111,7 +111,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `issock`: ERROR: TypeError: issock() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(filename) == "SOCKET" ? true : false);
+        return (FileType(filename) == "SOCKET" ? true : false)
     }
 
     function isexist(filename="") {
@@ -120,7 +120,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isexist`: ERROR: TypeError: isexist() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (len(glob(filename)) > 0 ? true : false);
+        return (len(glob(filename)) > 0 ? true : false)
     }   
 
 
@@ -131,7 +131,7 @@ if (!INCLUDE["FILE"]) {
             exit(1)
         }         
         fileinfo=fields(file(filename, 1))
-        return (int(fileinfo[4]) == 0 ? true : false);
+        return (int(fileinfo[4]) == 0 ? true : false)
     }
     
     
@@ -144,29 +144,29 @@ if (!INCLUDE["FILE"]) {
         if (!checkfunctype("isnewer", "string", s_file, 2)) {exit(1)}
         if (s_file == "" || f_file == "") {
             println("Error caliing `isnewer`: ERROR: TypeError: isnewer() takes exactly 2 arguments (1 or less given)")
-    	    exit(1);
+    	    exit(1)
         }
         f_stat=file(f_file, 1)
         s_stat=file(s_file, 1)
         if (!f_stat || !s_stat) {
-            return false;
+            return false
         }
     
         f_mdate=int(fields(f_stat)[0])    
         s_mdate=int(fields(s_stat)[0])
     
-        return (f_mdate > s_mdate ? true : false);
-    };
+        return (f_mdate > s_mdate ? true : false)
+    }
     
     function isolder(f_file="", s_file="") {
         if (!checkfunctype("isolder", "string", f_file, 1)) {exit(1)}
         if (!checkfunctype("isolder", "string", s_file, 2)) {exit(1)}
         if (s_file == "" || f_file == "") {
             println("Error calling `isolder`: ERROR: TypeError: isolder() takes exactly 2 arguments (1 or less given)")
-    	    exit(1);
+    	    exit(1)
         }
-        return (!isnewer(f_file, s_file));
-    };
+        return (!isnewer(f_file, s_file))
+    }
     
     function isowner(filename="", user="") {
         if (!checkfunctype("isowner", "string", filename, 1)) {exit(1)}
@@ -174,7 +174,7 @@ if (!INCLUDE["FILE"]) {
     
         if (filename == "") {
             println("Error calling `isowner`: ERROR: TypeError: isowner() expected argument #1 to be `STRING` got `NULL`")
-    	    exit(1);
+    	    exit(1)
         }
         
         if (user == "") {

@@ -46,7 +46,7 @@ if (!INCLUDE["NET"]) {
         }
         port_array=usort(port_array)
         return port_array
-    };
+    }
     
     function cidrrange(cidr="") {
         if (!checkfunctype("cidrrange", "string", cidr)) {exit(1)}

@@ -11,7 +11,7 @@ if (!INCLUDE["CERTS"]) {
         }
         if (len(domain) == 0) {
             println("`getcert` expects a domain name, none given")
-    	    return false;
+    	    return false
         }
         command=sprintf("openssl s_client -servername %s -connect %s:443", domain, domain)
         return system(command)
