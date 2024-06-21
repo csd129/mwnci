@@ -139,6 +139,7 @@ func init() {
 	RegisterBuiltin("union", func(env *object.Environment, args ...object.Object) object.Object { return (ArrUnion(args...)) })
 	RegisterBuiltin("uniq", func(env *object.Environment, args ...object.Object) object.Object { return (Uniq(args...)) })
 	RegisterBuiltin("unlink", func(env *object.Environment, args ...object.Object) object.Object { return (unlinkFun(args...)) })
+	RegisterBuiltin("unsetenv", func(env *object.Environment, args ...object.Object) object.Object { return (unsetEnvFun(args...)) })
 	RegisterBuiltin("toupper", func(env *object.Environment, args ...object.Object) object.Object { return (Upper(args...)) })
 	RegisterBuiltin("whoami", func(env *object.Environment, args ...object.Object) object.Object { return (Whoami(args...)) })
 	RegisterBuiltin("write", func(env *object.Environment, args ...object.Object) object.Object { return (Write(args...)) })
