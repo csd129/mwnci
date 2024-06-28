@@ -13,3 +13,11 @@ while ( i < len(a) ) {
    print( "\t", i, " " , a[i], "\n");
    i++
 }
+
+// And to use the pre-defined constants
+
+i=0
+while ( i < ARGC ) {
+   print( "\t", i, " " , ARGV[i], "\n")
+   i++
+}
