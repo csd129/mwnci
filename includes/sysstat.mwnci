@@ -95,4 +95,34 @@ if (!INCLUDE["SYSSTAT"]) {
 		}
 		return mem_hash
     }
+
+    function sndev(iface="") {
+		if (!checkfunctype("sndev", "string", iface, 1)) {exit(1)}
+		CMD="sar -n DEV"
+		if (iface != "") {
+			CMD=CMD + " --iface=" + iface
+		}
+		Result=split(system(CMD), "\n")
+		Length=len(Result) - 5
+		Result=tail(Result, Length)
+		Iface_Hash={}
+		foreach Line in Result {
+			if (match("[a-z]", Line)) {
+				if (!match("IFACE", Line) &&
+					!match("Average", Line) &&
+					!match("LINUX", Line)) {
+						SInterface=fields(Line)
+						Iface_Hash=set(Iface_Hash, SInterface[1],
+						{"rxpcks": SInterface[2],
+						"txpcks": SInterface[3],
+						"rxkbs": SInterface[4],
+						"txkbs": SInterface[5],
+						"rxcmps": SInterface[6],
+						"txcmps": SInterface[7],
+						"rxmcsts": SInterface[8],
+						"ifutil": SInterface[9]})}
+			}
+		}
+		return Iface_Hash
+	}
 }

@@ -12,8 +12,8 @@ dummy:
 install: ${FILES}
 	mkdir -p ${INCLUDEDIR}
 	cp ${FILES} ${INCLUDEDIR}
-	sudo chmod 755 ${INCLUDEDIR}
-	sudo chmod 644 ${INCLUDEDIR}/*.mwnci
+	chmod 755 ${INCLUDEDIR}
+	chmod 644 ${INCLUDEDIR}/*.mwnci
 
 clean:
 	rm -f *~ \#*\#	

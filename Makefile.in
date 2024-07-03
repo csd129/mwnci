@@ -3,16 +3,23 @@ OWNER=@OWNER@
 GROUP=@GROUP@
 INSTALL=install
 INSTALL_OPTS=--compare -o ${OWNER} -g ${GROUP}
+AST=$(shell find ast -type f | sed 's/ /\\ /g')
+EVAL=$(shell find evaluator -type f | sed 's/ /\\ /g')
+LEXER=$(shell find lexer -type f | sed 's/ /\\ /g')
+OBJECT=$(shell find object -type f | sed 's/ /\\ /g')
+PARSER=$(shell find parser -type f | sed 's/ /\\ /g')
+TOKEN=$(shell find token -type f | sed 's/ /\\ /g')
+TYPING=$(shell find typing -type f | sed 's/ /\\ /g')
 
-build: 
+mwnci: ${AST} ${EVAL} ${LEXER} ${OBJECT} ${PARSER} ${TOKEN} ${TYPING} mwnci.go
 	CGO_ENABLED=0 go build
 
-install: build
-	sudo mkdir -p ${BIN}
-	sudo cp mwnci ${BIN}
-	sudo chmod 755 ${BIN}/mwnci
-	sudo chown ${OWNER}:${GROUP} ${BIN}/mwnci
-	(cd ./includes; sudo make install)
+install: mwnci
+	mkdir -p ${BIN}
+	cp mwnci ${BIN}
+	chmod 755 ${BIN}/mwnci
+	chown ${OWNER}:${GROUP} ${BIN}/mwnci
+	(cd ./includes; make install)
 
 clean:
 	find . -name \#\* -type f -exec rm {} \;
