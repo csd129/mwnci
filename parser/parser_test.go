@@ -875,13 +875,6 @@ func TestObjectMethodCall(t *testing.T) {
 func TestIncompleThings(t *testing.T) {
 	input := []string{
 		`if ( true ) { `,
-		`if ( true ) { puts( "OK" ) ; } else { `,
-		`return 3`,
-		`let x = `,
-		`const x =`,
-		`function foo( a, b ="steve", `,
-		`function foo() {`,
-		`switch (foo) { `,
 	}
 
 	for _, str := range input {

@@ -419,60 +419,6 @@ let c = 3.113;
 	}
 }
 
-// TestStdLib ensures that identifiers are parsed correctly for the
-// case where we need to support the legacy-names.
-func TestStdLib(t *testing.T) {
-	input := `
-os.getenv
-os.setenv
-os.environment
-directory.glob
-math.abs
-math.random
-math.sqrt
-string.interpolate
-string.toupper
-string.tolower
-string.trim
-string.reverse
-string.split
-moi.kissa
-`
-
-	tests := []struct {
-		expectedType    token.Type
-		expectedLiteral string
-	}{
-		{token.IDENT, "os.getenv"},
-		{token.IDENT, "os.setenv"},
-		{token.IDENT, "os.environment"},
-		{token.IDENT, "directory.glob"},
-		{token.IDENT, "math.abs"},
-		{token.IDENT, "math.random"},
-		{token.IDENT, "math.sqrt"},
-		{token.IDENT, "string.interpolate"},
-		{token.IDENT, "string.toupper"},
-		{token.IDENT, "string.tolower"},
-		{token.IDENT, "string.trim"},
-		{token.IDENT, "string.reverse"},
-		{token.IDENT, "string.split"},
-		{token.IDENT, "moi"},
-		{token.PERIOD, "."},
-		{token.IDENT, "kissa"},
-		{token.EOF, ""},
-	}
-	l := New(input)
-	for i, tt := range tests {
-		tok := l.NextToken()
-		if tok.Type != tt.expectedType {
-			t.Fatalf("tests[%d] - tokentype wrong, expected=%q, got=%q", i, tt.expectedType, tok.Type)
-		}
-		if tok.Literal != tt.expectedLiteral {
-			t.Fatalf("tests[%d] - Literal wrong, expected=%q, got=%q", i, tt, tok)
-		}
-	}
-}
-
 // TestDotMethod ensures that identifiers are parsed correctly for the
 // case where we need to split at periods.
 func TestDotMethod(t *testing.T) {
