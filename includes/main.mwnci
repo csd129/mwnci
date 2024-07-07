@@ -29,7 +29,8 @@ const STDERR=open( "!STDERR!" )
 if (!INCLUDE["MAIN"]) {
     INCLUDE=set(INCLUDE, "MAIN", true)
 
-    function abs(number=0) {
+    function abs(number=NULL) {
+        if (number == NULL) {return false}
         if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
         return number < 0 ? number *= -1 : number
     }
@@ -46,22 +47,6 @@ if (!INCLUDE["MAIN"]) {
     function rest(arr) {
         if (!checkfunctype("rest", "array", arr, 1)) {exit(1)}
         return shift(arr)
-    }
-
-// Binary to Decimal
-    function bin2dec(b_number) {
-        number=reverse(string(b_number))
-        counter=0
-        foreach i, x in number {
-            if (int(x) == 1) {counter += 2 ** i}
-        }
-        return counter
-    }
-
-// Binary to Hexadecimal
-    function bin2hex(b_number) {
-        dec=bin2dec(b_number)
-        return hex(dec)
     }
 
 // Binary to Octal
