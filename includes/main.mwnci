@@ -48,6 +48,22 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("rest", "array", arr, 1)) {exit(1)}
         return shift(arr)
     }
+// Binary to Decimal
+    function bin2dec(b_number=NULL) {
+        if (b_number == NULL) {return false}
+        b_number=trimprefix(string(b_number), "0b")
+	    if (!match("^[0-1]{1,}$", b_number)) {
+	        println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", b_number)
+	        return false
+	    }
+	    Len=len(b_number)-1
+	    Result=0
+	    foreach n in 0..Len {
+	        Value=int(b_number[n])
+	        Result = Result*2 + Value
+	    }
+	    return Result
+    }   
 
 // Binary to Octal
     function bin2oct(b_number) {

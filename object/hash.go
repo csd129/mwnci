@@ -39,6 +39,10 @@ func (h *Hash) Type() Type {
 	return HASH_OBJ
 }
 
+func (h *Hash) String() string {
+	return h.Inspect()
+}
+
 // Inspect returns a string-representation of the given object.
 func (h *Hash) Inspect() string {
 	var out bytes.Buffer

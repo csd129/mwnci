@@ -7,7 +7,7 @@ import (
 
 func putsFun(args ...object.Object) object.Object {
 	for _, arg := range args {
-		fmt.Print(arg.Inspect())
+		fmt.Print(arg)
 	}
 	return NULL
 }
