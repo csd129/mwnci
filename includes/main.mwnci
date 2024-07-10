@@ -63,7 +63,13 @@ if (!INCLUDE["MAIN"]) {
 	        Result = Result*2 + Value
 	    }
 	    return Result
-    }   
+    }
+
+// Binary to Hexadecimal
+    function bin2hex(b_number) {
+        dec=bin2dec(b_number)
+        return hex(dec)
+    }
 
 // Binary to Octal
     function bin2oct(b_number) {
