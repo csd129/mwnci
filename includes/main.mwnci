@@ -59,8 +59,7 @@ if (!INCLUDE["MAIN"]) {
 	    Len=len(b_number)-1
 	    Result=0
 	    foreach n in 0..Len {
-	        Value=int(b_number[n])
-	        Result = Result*2 + Value
+	        Result = Result*2 + int(b_number[n])
 	    }
 	    return Result
     }
@@ -198,8 +197,7 @@ if (!INCLUDE["MAIN"]) {
     // Hexadecimal to Decimal
     function hex2dec(h_number) {
         hexnums={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "a": 10, "b": 11, "c":12 , "d":13 ,"e": 14, "f": 15}
-        number=tolower(reverse(string(h_number)))
-        number=trimsuffix(number, "x0")
+        number=trimsuffix(tolower(reverse(string(h_number))), "x0")
         counter=0
         foreach i, x in number {
             nindex=string(x)
@@ -490,18 +488,18 @@ if (!INCLUDE["MAIN"]) {
     function values(Data={}) {
         if (!checkfunctype("values", "hash", Data, 1)) {exit(1)}
         MyArray=[]
-	foreach key in keys(Data) {
-	    MyArray=MyArray.push(Data[key])
-	}
-	return MyArray
+        foreach key in keys(Data) {
+            MyArray=MyArray.push(Data[key])
+        }
+        return MyArray
     }
 
     function items(Data={}) {
         if (!checkfunctype("items", "hash", Data, 1)) {exit(1)}
-	MyArray=[]
-	foreach item, key in Data {
-	     MyArray=MyArray.push([key, item])
-	}
-	return MyArray
+        MyArray=[]
+        foreach item, key in Data {
+            MyArray=MyArray.push([key, item])
+        }
+        return MyArray
     }
 }
