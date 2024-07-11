@@ -1,3 +1,6 @@
+//go:build !bsd
+// +build !bsd
+
 package evaluator
 
 import (
