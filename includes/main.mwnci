@@ -302,10 +302,15 @@ if (!INCLUDE["MAIN"]) {
 
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
-        if (isexist("/proc/" + string(pid))) {
-            return true
-        }
-        return false
+	Procs=split(trim(system("ps aux")), "\n")
+	Procs=tail(Procs, len(Procs)-1)
+	foreach Proc in Procs {
+	    Pid=int(fields(Proc)[1])
+	    if (Pid == pid) {
+	        return true
+	    }
+	}
+	return false
     }
 
     function rotl(Array, Amount=0) {
