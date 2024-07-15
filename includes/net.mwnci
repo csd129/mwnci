@@ -166,60 +166,42 @@ if (!INCLUDE["NET"]) {
 	    return join(reverse(split(converted, ".")), ".")
     }
 
-    function netstat(Option="") {
-        netarray=[]
-        protocols=["tcp", "tcp6", "raw", "udp", "udp6", "raw6"]
-        foreach protocol in protocols {
-            procfile="/proc/net/" + protocol
-	        data=shift(split(cat(procfile), "\n"))
-	        foreach line in data {
-	            temparray=[]
-	            if (len(line) > 0) {
-	                sline=fields(line)
-		            Local=parseconn(sline[1], protocol)
-		            LocalSplit=splithostport(Local)
-		            LocalIP=LocalSplit[0]
-		            LocalPort=LocalSplit[1]
-		            Remote=parseconn(sline[2], protocol)
-		            RemoteSplit=splithostport(Remote)
-		            RemoteIP=RemoteSplit[0]
-		            RemotePort=RemoteSplit[1]
-		            State=TCP_STATES[sline[3]]
-		            if (State == "CLOSE") {State=""}
-		            if (Option == "port" || Option == "all") {
-		                if (LocalPort != "*") {
-		                    PName=lookupport(int(LocalPort))
-		                    if (PName) {
-		                        LocalPort=PName
-		                    }
-		                }
-		                if (RemotePort != "*") {
-		                    Pname=lookupport(int(RemotePort))
-			                if (Pname) {
-			                    RemotePort=Pname
-			                }
-		                }
-		            } 
-		            if (Option == "host" || Option == "all") {
-		                Hname=lookupptr(LocalIP)
-		                if (Hname) {
-		                    LocalIP=trimsuffix(Hname[0], ".")
-		                }
-		                Hname=lookupptr(RemoteIP)
-		                if (Hname) {
-		                    RemoteIP=trimsuffix(Hname[0], ".")
-		                }
-		            }
-		            Local=LocalIP + ":" + LocalPort
-		            Remote=RemoteIP + ":" + RemotePort
-		            temparray=[protocol, Local, Remote, State]
-		            netarray=push(netarray, temparray)
-	            }
-	        }
-        }
-        return netarray
+    function ns() {
+        NetArray=[]
+        Data=split(trim(system("netstat -an")), "\n")
+	foreach Line in Data {
+	// We just need the lines starting with tcp or udp
+	    if (match("^tcp", Line) || match("^udp", Line)) {
+	        Sline=fields(Line)
+		Sline=set(Sline, 0, replaceall(Sline[0], "tcp4", "tcp"))
+		Sline=set(Sline, 0, replaceall(Sline[0], "udp4", "udp"))
+		Local=reverse(Sline[3])
+		Remote=reverse(Sline[4])
+		Local=reverse(replace(Local, ".", ":", 1))
+		Remote=reverse(replace(Remote, ".", ":", 1))
+		if (Sline[0] == "tcp6" || Sline[0] == "udp6") {
+		    Local=replaceall(Local, "*:", ":::")
+		    Remote=replaceall(Remote, "*:", ":::")
+		} else {
+		    Local=replaceall(Local, "*:", "0.0.0.0:")
+		    Remote=replaceall(Remote, "*:", "0.0.0.0:")
+		}
+		Sline=set(Sline, 3, Local)
+		Sline=set(Sline, 4, Remote)
+		
+		if (Sline[0] == "tcp6" || Sline[0] == "udp6") {
+		    Line=replaceall(Line, "*.", ":::")
+		} else {
+		    Line=replaceall(Line, "*.", "0.0.0.0:")
+		}
+		Sline=delete(Sline,1)
+		Sline=delete(Sline,1)
+		NetArray=push(NetArray, Sline)
+	    }
+	}
+	return NetArray
     }
-
+    
     function nettrans(iface="") {
         if (!checkfunctype("nettrans", "string", iface, 1)) {exit(1)}
         data=split(cat("/proc/net/dev"), "\n")
