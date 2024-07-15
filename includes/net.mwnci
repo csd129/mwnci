@@ -166,7 +166,7 @@ if (!INCLUDE["NET"]) {
 	    return join(reverse(split(converted, ".")), ".")
     }
 
-    function ns() {
+    function netstat() {
         NetArray=[]
         Data=split(trim(system("netstat -an")), "\n")
 	foreach Line in Data {
