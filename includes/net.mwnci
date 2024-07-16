@@ -144,21 +144,26 @@ if (!INCLUDE["NET"]) {
     }
 
     function route() {
-        Data=shift(split(cat("/proc/net/route"), "\n"))
         RouteArray=[]
-        foreach Line in Data {
-            if (len(Line) > 0) {
-                SLine=fields(Line)
-                Iface=SLine[0]
-                Flags=RTF_FLAGS[SLine[3]]
-                Mask=hextoipv4(SLine[7])
-                DestIP=hextoipv4(SLine[1])
-                GateIP=hextoipv4(SLine[2])
-                tempHash={"Destination": DestIP, "Gateway": GateIP, "Genmask": Mask, "Flags": Flags, "Iface":Iface}
-                RouteArray=RouteArray.push(tempHash)
-            }
-        }
-        return RouteArray
+        Cmd="netstat -nr | egrep -v \"^[A-Z]|^$\""
+	Data=split(trim(system(Cmd)), "\n")
+	foreach Line in Data {
+	    TempHash={}
+	    Sline=fields(Line)
+	    switch(OS) {
+	        case "freebsd" {
+		    TempHash={"Destination": Sline[0], "Gateway": Sline[1], "Flags": Sline[2], "Iface": Sline[3]}
+		    if (len(Sline) > 4) {
+		        TempHash=set(TempHash, "Expire", Sline[4])
+		    }
+		}
+		default {
+		    TempHash={"Destination": Sline[0], "Gateway": Sline[1], "Genmask": Sline[2], "Flags": Sline[3], "MSS": Sline[4], "Window": Sline[5], "irtt": Sline[6], "Iface": Sline[7]}
+		}
+	    }
+	    RouteArray=RouteArray.push(TempHash)
+	}
+	return RouteArray
     }
 
     function hextoipv4(hexaIP="") {
