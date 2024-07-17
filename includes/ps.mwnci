@@ -55,7 +55,14 @@ if (!INCLUDE["PS"]) {
     function procstat(pid=-1) {
         if (!checkfunctype("procstat", "integer", pid)) {exit(1)}
         Data={}
-        Command="ps -eo pcpu,pmem,pid,user,args --no-headers"
+        switch (OS) {
+            case "freebsd" {
+                Command="ps -axo pcpu,pmem,pid,user,args | tail +2"
+            }
+            default {
+                Command="ps -eo pcpu,pmem,pid,user,args --no-headers"
+            }
+        }
         Result=split(trim(system(Command)), "\n")
         foreach Line in Result {
             SLine=fields(Line)
