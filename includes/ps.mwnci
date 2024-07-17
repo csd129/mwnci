@@ -12,7 +12,7 @@ if (!INCLUDE["PS"]) {
             b=shift(line, 10)
             Cmd=trim(join(b, " "))
     	    CmdHash={"USER": line[0], "CPU": line[2], "MEM": line[3], "VSZ": line[4], "RSS": line[5], "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
-    	    ProcessTable=set(ProcessTable, int(line[1]), CmdHash)
+    	    ProcessTable=set(ProcessTable, line[1], CmdHash)
         }
         return ProcessTable
     }
@@ -42,13 +42,12 @@ if (!INCLUDE["PS"]) {
     
     function getpname(pid=0) {
         if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
-        if (pid == 0) {
-            pid=getpid()
-        }
-        cmdp="/proc/" + string(pid) + "/cmdline"
-        if (isexist(cmdp)) {
-            pname=split(cat(cmdp), NULL)[0]
-            return(pname)
+        if (pid == 0) {pid=getpid()}
+        Processes=process()
+        Pname=Processes[string(pid)]["COMMAND"]
+        if (Pname) {
+            Pname=basename(fields(Pname)[0])
+            return Pname
         }
         return false
     }
