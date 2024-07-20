@@ -1,11 +1,68 @@
 if (!INCLUDE["JSON"]) {
     INCLUDE=set(INCLUDE, "JSON", true)
 
+    function ParseArray(ArrayData) {
+        JsonBuild="["
+        foreach Entry in ArrayData {
+            switch(type(Entry)) {
+	            case "string" {
+		            JsonBuild=JsonBuild + sprintf("\"%s\",", Entry)
+	            }
+	            case "float", "integer" {
+		            JsonBuild=JsonBuild + sprintf("%s,", string(Entry))
+	            }
+	            case "array" {
+		            JsonBuild=JsonBuild + ParseArray(Entry)
+	            }
+	            case "hash" {
+		            JsonBuild=JsonBuild + ParseHash(Entry) + ","
+	            }
+	        }
+        }
+        JsonBuild=JsonBuild + "]"
+        return JsonBuild
+    }
+
+    function ParseHash(HashData) {
+        JsonBuild="{"
+        foreach Val, Key in HashData {
+            switch(type(Val)) {
+	            case "string" {
+		            JsonBuild=JsonBuild + sprintf("\"%s\": \"%s\",", Key, Val)
+	            }
+	            case "float", "integer" {
+		            JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, string(Val))
+	            }
+	            case "array" {
+		            JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, ParseArray(Val))
+	            }
+	                case "hash" {
+		                JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, ParseHash(Val))
+	            }
+	        }
+        }
+        JsonBuild=JsonBuild + "}"
+        return JsonBuild
+    }
+
+    function tjson(Data, JsonOutput) {
+        switch(type(Data)) {
+            case "array" {
+	            Result=ParseArray(Data)
+	        }
+	        case "hash" {
+	            Result=ParseHash(Data)
+	        }
+        }
+        Result=replaceall(Result, ",}", "}")
+        Result=replaceall(Result, ",]", "]")
+        return string(Result)
+    }
+
     function tomarkup(data, mu_type="json") {
-        if (!checkfunctype("tomarkup", "collection", data, 1)) {exit(1)}
+        if (!checkfunctype("tomarkup", "string", data, 1)) {exit(1)}
         if (!checkfunctype("tomarkup", "string", mu_type, 2)) {exit(1)}
         tempfile="/tmp/markup." + string(getpid())
-        data=replaceall(string(data), " : ", " -- ")
         writefile(tempfile, data + "\n")
         switch(mu_type) {
             case "xml", "json", "yaml" {
@@ -17,22 +74,22 @@ if (!INCLUDE["JSON"]) {
         }
         result=trim(system(cmd))
         unlink(tempfile)
-        return replaceall(result, " -- ", " : ")
+        return result
     }
 
     function tojson(JsonData) {
         if (!checkfunctype("tojson", "collection", JsonData, 1)) {exit(1)}
-        return tomarkup(JsonData, "json")
+        return tomarkup(tjson(JsonData), "json")
     }
 
     function toyaml(JsonData) {
         if (!checkfunctype("toyaml", "collection", JsonData, 1)) {exit(1)}
-        return tomarkup(JsonData, "yaml")
+        return tomarkup(tjson(JsonData), "yaml")
     }
 
     function toxml(JsonData) {
         if (!checkfunctype("toxml", "collection", JsonData, 1)) {exit(1)}
-        return tomarkup(JsonData, "xml")
+        return tomarkup(tjson(JsonData), "xml")
     }
 
     function object.tojson() {
