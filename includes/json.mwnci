@@ -45,7 +45,7 @@ if (!INCLUDE["JSON"]) {
         JsonBuild="{"
         foreach Val, Key in HashData {
             if (Val == null) {
-                JsonBuild=JsonBuild + sprintf("\"%s\": \"%s\",",Key, Val)
+                JsonBuild=JsonBuild + sprintf("\"%s\": %v,",Key, Val)
             } else {
                 switch(type(Val)) {
 	                case "string" {
