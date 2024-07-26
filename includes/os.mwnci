@@ -76,7 +76,6 @@ if (!INCLUDE["OS"]) {
 		memhash=set(memhash, "swap", hashy)
 	    }    
 	    case "freebsd" {
-	        sysctl_output=`/sbin/sysctl -a | egrep `
 		sysctl_cmd="/sbin/sysctl -a | egrep \"vm.stats.vm.v|hw.physmem|hw.pagesize\""
 		sysctl_output=split(system(sysctl_cmd),"\n")
 		sysctl={}
