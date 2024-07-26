@@ -97,9 +97,24 @@ if (!INCLUDE["OS"]) {
 		mem_total = mem_hw
 		mem_avail = mem_inactive + mem_cache + mem_free
 		mem_used = mem_total - mem_avail
-
-		hashy={"mem_cache": mem_cache / 1024, "total": mem_all / 1024, "mem_wire": mem_wire / 1024, "mem_active": mem_active / 1204, "mem_inactive": mem_inactive / 1024, "mem_free": mem_free / 1024}
+		mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
+		mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
+		hashy={"mem_cache": mem_cache / 1024, "total": mem_total / 1024, "mem_avail": mem_avail / 1024, "mem_used": mem_used / 1024, "mem_inactive": mem_inactive / 1024, "mem_free": mem_free / 1024, "used_perc": mem_used_perc, "free_perc": mem_free_perc, "mem_active": mem_active}
 		memhash=set(memhash, "mem", hashy)
+
+		Swap=split(trim(system("swapinfo")), "\n")
+		Swap=shift(Swap)
+		Total=Used=Avail=0
+		foreach Line in Swap {
+		    Fields=fields(Line)
+		    Total += int(Fields[1])
+		    Used += int(Fields[2])
+		    Avail += int(Fields[3])
+		}
+		swap_used_perc=sprintf("%.2f", float(Used) / float(Total)*100)
+		swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
+		hashy={"total": Total, "free": Avail, "used": Used, "used_perc": float(swap_used_perc), "free_perc": float(swap_free_perc)}
+		memhash=set(memhash, "swap", hashy)
             }
         }
         return memhash
