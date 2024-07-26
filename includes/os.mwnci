@@ -51,27 +51,31 @@ if (!INCLUDE["OS"]) {
 
     function free_linux() {
         memhash={}
-        mem=meminfo()
-	mem_total=int(mem["MemTotal"])
-	mem_free=int(mem["MemFree"])
-	mem_available=int(mem["MemAvailable"])
-	mem_shared=int(mem["Shmem"])
-	mem_cached=int(mem["Cached"]) + int(mem["SReclaimable"])
-	mem_bufcache=int(mem["Buffers"]) + mem_cached
-	mem_used=mem_total - mem_available
-	mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
-	mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
-	swap_total=int(mem["SwapTotal"])
-	swap_free=int(mem["SwapFree"])
-	swap_used=swap_total - swap_free
-	swap_used_perc=sprintf("%.2f", float(swap_used) / float(swap_total)*100)
-	swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
-
-	hashy={"buff_cache": mem_bufcache, "cache": mem_cached, "shared": mem_shared, "total": mem_total, "free": mem_free, "available": mem_available, "used": mem_used, "used_perc": mem_used_perc, "free_perc": mem_free_perc}
-	memhash=set(memhash, "mem", hashy)
-
-	hashy={"total": swap_total, "free": swap_free, "used": swap_used, "used_perc": float(swap_used_perc), "free_perc": float(swap_free_perc)}
-	memhash=set(memhash, "swap", hashy)
+        Data=split(trim(system("free")), "\n")
+	foreach Line in Data {
+	    Sline=fields(Line)
+	    if (Sline[0] == "Mem:") {
+	        Total=int(Sline[1])
+		Used=int(Sline[2])
+		Free=int(Sline[3])
+		Shared=int(Sline[4])
+		Buff=int(Sline[5])
+		Avail=int(Sline[6])
+		UsedPC=sprintf("%.2f", float(Used) / float(Total) * 100)
+		FreePC=sprintf("%.2f", float(100.0 - float(UsedPC)))
+	        Hashy={"total": Total, "used": Used, "free": Free, "shared": Shared, "cache": Buff, "avail": Avail, "usedperc": float(UsedPC), "freeperc": float(FreePC)}
+		memhash=set(memhash, "mem", Hashy)
+            }
+	    if (Sline[0] == "Swap:") {
+	        Total=int(Sline[1])
+		Used=int(Sline[2])
+		Free=int(Sline[3])
+		UsedPC=sprintf("%.2f", float(Used) / float(Total) * 100)
+		FreePC=sprintf("%.2f", float(100.0 - float(UsedPC)))
+		Hashy={"total": Total, "used": Used, "free": Free, "usedperc": float(UsedPC), "freeperc": float(FreePC)}
+		memhash=set(memhash, "swap", Hashy)
+	    }
+	}
 	return memhash
     }
 
