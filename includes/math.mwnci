@@ -72,17 +72,8 @@ if (!INCLUDE["MATH"]) {
 
     function factorial(n) {
         if (!checkfunctype("factorial", "integer", n, 1)) {exit(1)}
-        result=1
         fnum=n
-        while (n >= 1) {
-            result *= n
-            if (result < 0) {
-                println("factorial(), result too large for ",fnum,"!")
-                exit(1)
-            }
-            n--
-        }
-        return result
+        return product(1..fnum)
     }
     
     function floor(Value) {
