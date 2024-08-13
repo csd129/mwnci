@@ -1,41 +1,23 @@
 if (!INCLUDE["JSON"]) {
     INCLUDE=set(INCLUDE, "JSON", true)
 
-// JSON       ->  Mmwci equivalient
-
-// Number     ->  Number
-// String     ->  String
-// Boolean    ->  Boolean
-// Array      ->  Array
-// Object     ->  Hash
-// Whitespace ->  Whitespace
-// Null       ->  null
-
-
     function ParseArray(ArrayData) {
         JsonBuild="["
         foreach Entry in ArrayData {
-            if (Entry == null) {
-                JsonBuild=JsonBuild + sprintf("%v,", Entry)
-            } else {
-                switch(type(Entry)) {
-	                case "string" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\",", Entry)
-	                }
-	                case "float", "integer" {
-		                JsonBuild=JsonBuild + sprintf("%s,", string(Entry))
-	                }
-                    case "bool" {
-                        JsonBuild=JsonBuild + sprintf("%v,", bool(Entry))
-                    }
-	                case "array" {
-		                JsonBuild=JsonBuild + ParseArray(Entry)
-	                }
-	                case "hash" {
-		                JsonBuild=JsonBuild + ParseHash(Entry) + ","
-	                }
+            switch(type(Entry)) {
+	            case "string" {
+		            JsonBuild=JsonBuild + sprintf("\"%s\",", Entry)
 	            }
-            }
+	            case "float", "integer" {
+		            JsonBuild=JsonBuild + sprintf("%s,", string(Entry))
+	            }
+	            case "array" {
+		            JsonBuild=JsonBuild + ParseArray(Entry)
+	            }
+	            case "hash" {
+		            JsonBuild=JsonBuild + ParseHash(Entry) + ","
+	            }
+	        }
         }
         JsonBuild=JsonBuild + "]"
         return JsonBuild
@@ -44,27 +26,20 @@ if (!INCLUDE["JSON"]) {
     function ParseHash(HashData) {
         JsonBuild="{"
         foreach Val, Key in HashData {
-            if (Val == null) {
-                JsonBuild=JsonBuild + sprintf("\"%s\": %v,",Key, Val)
-            } else {
-                switch(type(Val)) {
-	                case "string" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\": \"%s\",", Key, Val)
-	                }
-	                case "float", "integer" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, string(Val))
-	                }
-                    case "bool" {
-                        JsonBuild=JsonBuild + sprintf("\"%s\": %v,", Key, bool(Val))
-                    }
-	                case "array" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, ParseArray(Val))
-	                }
+            switch(type(Val)) {
+	            case "string" {
+		            JsonBuild=JsonBuild + sprintf("\"%s\": \"%s\",", Key, Val)
+	            }
+	            case "float", "integer" {
+		            JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, string(Val))
+	            }
+	            case "array" {
+		            JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, ParseArray(Val))
+	            }
 	                case "hash" {
 		                JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, ParseHash(Val))
-	                }
 	            }
-            }
+	        }
         }
         JsonBuild=JsonBuild + "}"
         return JsonBuild
@@ -79,10 +54,9 @@ if (!INCLUDE["JSON"]) {
 	            Result=ParseHash(Data)
 	        }
         }
-        Result=replaceall(Result, "<NULL>", "null")
         Result=replaceall(Result, ",}", "}")
         Result=replaceall(Result, ",]", "]")
-        return Result
+        return string(Result)
     }
 
     function tomarkup(data, mu_type="json") {
@@ -128,9 +102,5 @@ if (!INCLUDE["JSON"]) {
 
     function object.toxml() {
         return toxml(self)
-    }
-
-    function object.tjson() {
-        return tjson(self)
     }
 }

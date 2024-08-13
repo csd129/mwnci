@@ -5,52 +5,51 @@ if (!INCLUDE["OS"]) {
 if (!INCLUDE["CERTS"]) {
     INCLUDE=set(INCLUDE, "CERTS", true)
     
-    function getcert(domain="") {
-        if (!checkfunctype("getcert", "string", domain)) {
+    function getcert(Domain="") {
+        if (!checkfunctype("getcert", "string", Domain)) {
             exit(1)
         }
-        if (len(domain) == 0) {
+        if (len(Domain) == 0) {
             println("`getcert` expects a domain name, none given")
     	    return false
         }
-        command=sprintf("openssl s_client -servername %s -connect %s:443", domain, domain)
-        return system(command)
+        Command=sprintf("openssl s_client -servername %s -connect %s:443", Domain, Domain)
+        return system(Command)
     }
     
-    function certexpiredays(file="") {
-        if (!checkfunctype("certexpiredays", "string", file)) {
+    function certexpiredays(File="") {
+        if (!checkfunctype("certexpiredays", "string", File)) {
             exit(1)
         }
-        cfile=tmpnam("/tmp")
-        if (len(file) == 0) {
+        CFile=tmpnam("/tmp")
+        if (len(File) == 0) {
             return false
         }
-        cert=getfileblock("-BEGIN CERTIFICATE-", "-END CERTIFICATE-", file)
-        ch=open(cfile, "w")
-        foreach line in cert {
-            line=trim(line)
-            ch.write(line + "\n")
+        Cert=getfileblock("-BEGIN CERTIFICATE-", "-END CERTIFICATE-", File)
+        CH=open(CFile, "w")
+        foreach Line in Cert {
+            CH.write(Line)
         }
-        ch.close()
-        command=sprintf("openssl x509 -in %s -enddate -noout", cfile)
-        certdate=system(command)
-        certdate=trim(split(certdate, "=")[1])
-        certepoch=datetoepoch(certdate)
-        unlink(cfile)
-	    return (certepoch - time()) / 86400
+        CH.close()
+        Command=sprintf("openssl x509 -in %s -enddate -noout", CFile)
+        CertDate=system(command)
+        CertDate=trim(split(CertDate, "=")[1])
+        CertEpoch=datetoepoch(CertDate)
+        unlink(CFile)
+	return (CertEpoch - time()) / 86400
     }
     
-    function sitecertexp(domain="") {
-        if (!checkfunctype("sitecertexp", "string", domain)) {
+    function sitecertexp(Domain="") {
+        if (!checkfunctype("sitecertexp", "string", Domain)) {
             exit(1)
         }
         TEMPF=tmpnam("/tmp")
-        cert_info=getcert(domain)
-        fh=open(TEMPF, "w")
-        fh.write(cert_info)
-        fh.close()
-        certdate=certexpiredays(TEMPF)
+        CertInfo=getcert(Domain)
+        FH=open(TEMPF, "w")
+        FH.write(CertInfo)
+        FH.close()
+        CertDate=certexpiredays(TEMPF)
         unlink(TEMPF)
-        return certdate
+        return CertDate
     }
 }
