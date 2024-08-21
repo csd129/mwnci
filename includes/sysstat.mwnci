@@ -34,16 +34,29 @@ if (!INCLUDE["SYSSTAT"]) {
     }
     
     function iostat() {
-        Iostat=system("iostat -p ALL -o JSON")
-		Iostat=replaceall(Iostat, "kB_", "kb_")
-		Iostat=replaceall(Iostat, "/", "")
-		Json=eval(Iostat)
 		Io_Hash={}
-		Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
-		foreach n in Disk {
-			key=n["disk_device"]
-			line_data=delete(n, "disk_device")
-			Io_Hash=set(Io_Hash, key, line_data)
+		switch (OS) {
+			case "freebsd" {
+				Data=split(trim(system("iostat -x")), "\n")
+				Data=shift(Data,2)
+				foreach Line in Data {
+					F=fields(Line)
+					TempHash={"rs": F[1], "ws": F[2], "krs": F[3], "kws": F[4], "msr": F[5], "msw": F[6], "mso": F[7], "mst": F[8], "qlen": F[9], "pcb": F[10]}
+					Io_Hash=set(Io_Hash, F[0], TempHash)
+				}
+			}
+			default {
+				Iostat=system("iostat -p ALL -o JSON")
+				Iostat=replaceall(Iostat, "kB_", "kb_")
+				Iostat=replaceall(Iostat, "/", "")
+				Json=eval(Iostat)
+				Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
+				foreach n in Disk {
+					key=n["disk_device"]
+					line_data=delete(n, "disk_device")
+					Io_Hash=set(Io_Hash, key, line_data)
+				}
+			}
 		}
         return Io_Hash
     }

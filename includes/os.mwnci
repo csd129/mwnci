@@ -132,18 +132,29 @@ if (!INCLUDE["OS"]) {
 	}
     }
 
-    function datetoepoch(datey="") {
-        if (!checkfunctype("datetoepoch", "string", datey)) {
+    function datetoepoch(Date="", Format="") {
+       if (!checkfunctype("datetoepoch", "string", Date)) {
             exit(1)
         }
-        if (datey == "") {
-            cmd="date +%s"
-        } else {
-            cmd="date +%s -d \"" + datey + "\""
-        }
-        result=system(cmd)
-        secs=int(trim(result))
-        return secs
+	switch (OS) {
+	    case "linux" {
+                if (Date == "") {
+                    Cmd="date +%s"
+                } else {
+                    Cmd="date +%s -d \"" + Date + "\""
+	       }
+ 	    }
+	    case "freebsd" {
+	        if (Date == "") {
+	            Date=date()
+		    Format="%a %b %d %T %Y"
+	        }
+	        Cmd="date -jf \"" + Format + "\" \"" + Date + "\" \"+%s\""
+	    }
+	}
+        Result=system(Cmd)
+        Secs=int(trim(Result))
+        return Secs
     }
 
     function meminfo() {

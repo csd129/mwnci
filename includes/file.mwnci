@@ -1,131 +1,137 @@
 if (!INCLUDE["FILE"]) {
     INCLUDE=set(INCLUDE, "FILE", true)
     
-    function getbin(PermBit) {
-        if (!checkfunctype("getbin", "integer", PermBit)) {exit(1)}
-        Binary=bin(PermBit)
-        Binary=trimprefix(Binary, "0b")
-        SizeB=3-len(Binary)
-        if (SizeB > 0) {
-            Prefix=repeat("0", SizeB)
-            Binary=Prefix + Binary
+    function getbin(permbit) {
+        if (!checkfunctype("getbin", "integer", permbit)) {exit(1)}
+        binary=bin(permbit)
+        binary=trimprefix(binary, "0b")
+        sizeb=3-len(binary)
+        if (sizeb > 0) {
+            prefix=repeat("0", sizeb)
+            binary=prefix + binary
         }
-        return Binary
+        return binary
     }
     
-    function isdoable(FileName="", Bit) {
-        if (!checkfunctype("isdoable", "string", FileName)) {exit(1)}
-        if (!checkfunctype("isdoable", "integer", Bit, 2)) {exit(1)}
-        Data=fields(file(FileName, 1))
-        Perms=Data[3]
-        Owner=getbin(int(Perms[1]))[bit]
-        Group=getbin(int(Perms[2]))[Bit]
-        Other=getbin(int(Perms[3]))[Bit]
-        FUid=data[7]
-        FGid=data[8]
+    function isdoable(filename="", bit) {
+        if (!checkfunctype("isdoable", "string", filename)) {exit(1)}
+        if (!checkfunctype("isdoable", "integer", bit, 2)) {exit(1)}
+        data=fields(file(filename, 1))
+        perms=data[3]
+        owner=getbin(int(perms[1]))[bit]
+        group=getbin(int(perms[2]))[bit]
+        other=getbin(int(perms[3]))[bit]
+        fuid=data[7]
+        fgid=data[8]
     
-        if (int(FUid) == getuid()) {
-            return (int(Owner) == 1 ? true : false)
+        if (int(fuid) == getuid()) {
+            return (int(owner) == 1 ? true : false)
         }
-        if (int(FGid) == getgid()) {
-            return (int(Group) == 1 ? true : false)
+        if (int(fgid) == getgid()) {
+            return (int(group) == 1 ? true : false)
         }
-        return (int(Other) == 1 ? true : false)
+        return (int(other) == 1 ? true : false)
     }
         
-    function filetype(FileName="") {
-        if (!checkfunctype("filetype", "string", FileName)) {exit(1)}
-        if (len(FileName) == 0) {
-            println("Error calling `filetype`: ERROR: TypeError: filetype() takes exactly 1 argument (0 given)")
+    function FileType(filename="") {
+        if (!checkfunctype("FileType", "string", filename)) {exit(1)}
+        if (len(filename) == 0) {
+            println("Error calling `FileType`: ERROR: TypeError: FileType() takes exactly 1 argument (0 given)")
             exit(1)
         }
-        if (isexist(FileName)) {
-            return fields(file(FileName, 1))[6]
+        if (isexist(filename)) {
+            return fields(file(filename, 1))[6]
         } else {
             return "NOEXIST"
         }
     }
 
-    function isfile(FileName="") {
-        if (!checkfunctype("isfile", "string", FileName, 1)) {exit(1)}
-        if (len(FileName) == 0) {
+    function filetype(filename="") {
+        if (!checkfunctype("filetype", "string", filename)) {exit(1)}
+        return FileType(filename)
+    }
+
+    function isfile(filename="") {
+        if (!checkfunctype("isfile", "string", filename, 1)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `isfile`: ERROR: TypeError: isfile() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (filetype(FileName) == "FILE" ? true : false)
+        return (FileType(filename) == "FILE" ? true : false)
     }
     
-    function isblock(FileName="") {
-        if (!checkfunctype("isblock", "string", FileName, 1)) {exit(1)}
-        if (len(FileName) == 0) {
+    function isblock(filename="") {
+        if (!checkfunctype("isblock", "string", filename, 1)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `isblock`: ERROR: TypeError: isblock() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (filetype(FileName) == "BLOCK" ? true : false)
+        return (FileType(filename) == "BLOCK" ? true : false)
     }
     
-    function isdir(FileName="") {
-        if (!checkfunctype("isdir", "string", FileName, 1)) {exit(1)}
-        if (len(FileName) == 0) {
+    function isdir(filename="") {
+        if (!checkfunctype("isdir", "string", filename, 1)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `isdir`: ERROR: TypeError: isdir() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (filetype(FileName) == "DIR" ? true : false)
+        return (FileType(filename) == "DIR" ? true : false)
     }
     
-    function ischr(FileName="") {
-        if (!checkfunctype("ischr", "string", FileName, 1)) {exit(1)}
-        if (len(FileName) == 0) {
+    function ischr(filename="") {
+        if (!checkfunctype("ischr", "string", filename, 1)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `ischr`: ERROR: TypeError: ischr() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (filetype(FileName) == "CHR" ? true : false)
+        return (FileType(filename) == "CHR" ? true : false)
     }
     
-    function isfifo(FileName="") {
-        if (!checkfunctype("isfifo", "string", FileName, 1)) {exit(1)}
-        if (len(FileName) == 0) {
+    function isfifo(filename="") {
+        if (!checkfunctype("isfifo", "string", filename, 1)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `isfifo`: ERROR: TypeError: isfifo() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (filetype(FileName) == "FIFO" ? true : false)
+        return (FileType(filename) == "FIFO" ? true : false)
    }
     
-    function islink(FileName="") {
-        if (!checkfunctype("islink", "string", FileName, 1)) {exit(1)}
-        if (len(FileName) == 0) {
+    function islink(filename="") {
+        if (!checkfunctype("islink", "string", filename, 1)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `islink`: ERROR: TypeError: islink() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (filetype(FileName) == "LINK" ? true : false)
+        return (FileType(filename) == "LINK" ? true : false)
     }
     
-    function issock(FileName="") {
-        if (!checkfunctype("issock", "string", FileName, 1)) {exit(1)}
-        if (len(FileName) == 0) {
+    function issock(filename="") {
+        if (!checkfunctype("issock", "string", filename, 1)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `issock`: ERROR: TypeError: issock() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (filetype(FileName) == "SOCKET" ? true : false)
+        return (FileType(filename) == "SOCKET" ? true : false)
     }
 
-    function isexist(FileName="") {
-        if (!checkfunctype("isexist", "string", FileName, 1)) {exit(1)}
-        if (len(FileName) == 0) {
+    function isexist(filename="") {
+        if (!checkfunctype("isexist", "string", filename, 1)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `isexist`: ERROR: TypeError: isexist() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (len(glob(FileName)) > 0 ? true : false)
+        return (len(glob(filename)) > 0 ? true : false)
     }   
 
-    function isempty(FileName="") {
-        if (!checkfunctype("isempty", "string", FileName)) {exit(1)}
-        if (len(FileName) == 0) {
+
+    function isempty(filename="") {
+        if (!checkfunctype("isempty", "string", filename)) {exit(1)}
+        if (len(filename) == 0) {
             println("Error calling `isempty`: ERROR: TypeError: isempty() takes exactly 1 argument (0 given)")
             exit(1)
         }         
-        FileInfo=fields(file(FileName, 1))
-        return (int(FileInfo[4]) == 0 ? true : false)
+        fileinfo=fields(file(filename, 1))
+        return (int(fileinfo[4]) == 0 ? true : false)
     }
     
     
@@ -162,67 +168,67 @@ if (!INCLUDE["FILE"]) {
         return (!isnewer(f_file, s_file))
     }
     
-    function isowner(FileName="", User="") {
-        if (!checkfunctype("isowner", "string", FileName, 1)) {exit(1)}
-        if (!checkfunctype("isowner", "string", User, 2)) {exit(1)}
+    function isowner(filename="", user="") {
+        if (!checkfunctype("isowner", "string", filename, 1)) {exit(1)}
+        if (!checkfunctype("isowner", "string", user, 2)) {exit(1)}
     
-        if (FileName == "") {
+        if (filename == "") {
             println("Error calling `isowner`: ERROR: TypeError: isowner() expected argument #1 to be `STRING` got `NULL`")
     	    exit(1)
         }
         
         if (user == "") {
-            Uid=int(getuid())
+            uid=int(getuid())
         } else {
-            if (match("[a-z]", User)) {
-                Uid=int(getpwnam(User)[2])
+            if (match("[a-z]", user)) {
+                uid=int(getpwnam(user)[2])
     	    } else {
-    	        Uid=int(User)
+    	        uid=int(user)
             }
         }
     
-        if (isexist(FileName)) {
-            Owner=int(fields(file(FileName, 1))[7])
-    	    if (Owner == uid) {
+        if (isexist(filename)) {
+            owner=int(fields(file(filename, 1))[7])
+    	    if (owner == uid) {
     	        return true
     	    }
         }
         return false
     }
     
-    function isgroup(FileName="", grp="") {
-        if (!checkfunctype("isgroup", "string", FileName, 1)) {exit(1)}
+    function isgroup(filename="", grp="") {
+        if (!checkfunctype("isgroup", "string", filename, 1)) {exit(1)}
         if (!checkfunctype("isgroup", "string", grp, 2)) {exit(1)}
-        if (FileName == "") {
+        if (filename == "") {
             println("Error calling `isgroup`: ERROR: TypeError: isgroup() expected argument #1 to be `STRING` got `NULL`")
     	    exit(1)
         }
-        if (Grp == "") {
-            Gid=int(getgid())
+        if (grp == "") {
+            gid=int(getgid())
         } else {
-            if (match("[a-z]", Grp)) {
-                Gid=int(getgrnam(Grp)[2])
+            if (match("[a-z]", grp)) {
+                gid=int(getgrnam(grp)[2])
     	    } else {
-    	        Gid=int(Grp)
+    	        gid=int(grp)
             }
         }
-        if (isexist(FileName)) {
-            Owner=int(fields(file(FileName, 1))[8])
-    	    if (Owner == Gid) {
+        if (isexist(filename)) {
+            owner=int(fields(file(filename, 1))[8])
+    	    if (owner == gid) {
     	        return true
     	    }
         }
         return false
     }
     
-    function isexec(FileName="") {
-        if (!checkfunctype("isexec", "string", FileName, 1)) {exit(1)}
-        if (FileName == "") {
+    function isexec(filename="") {
+        if (!checkfunctype("isexec", "string", filename, 1)) {exit(1)}
+        if (filename == "") {
             println("Error calling `isexec`: ERROR: TypeError: isexec() expected argument #1 to be `STRING` got `NULL`")
             exit(1)
         }    
-        if (isreadable(FileName)) {
-            if(isdoable(FileName, 2)) {
+        if (isreadable(filename)) {
+            if(isdoable(filename, 2)) {
     	        return true
     	    }
         }
@@ -294,8 +300,8 @@ if (!INCLUDE["FILE"]) {
         return issock(self)
     }
     
-    function writetofile(FileName="", mode="w", data) {
-        if (!checkfunctype("writetofile", "string", FileName, 1)) {exit(1)}
+    function writetofile(filename="", mode="w", data) {
+        if (!checkfunctype("writetofile", "string", filename, 1)) {exit(1)}
         if (!checkfunctype("writetofile", "string", mode, 2)) {exit(1)}
         switch(type(data)) {
             case "array" {
@@ -312,7 +318,8 @@ if (!INCLUDE["FILE"]) {
                 wstring=data
     	    }
         }
-        writefile(FileName, wstring)
+        writefile(filename, wstring)
         return true
     }
 }
+

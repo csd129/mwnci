@@ -105,6 +105,7 @@ if (!INCLUDE["MATH"]) {
     function gcd(dividend, divisor) {
         if (!checkfunctype("gcd", "integer", dividend, 1)) {exit(1)}
         if (!checkfunctype("gcd", "integer", divisor, 2)) {exit(1)}    
+	if (dividend == 0 && divisor == 0) {return 0}
         remainder=1
         while (remainder != 0) {
             remainder=dividend % divisor
@@ -236,6 +237,16 @@ if (!INCLUDE["MATH"]) {
         return result
     }
 
+    function perm(a, b) {
+        Perm=int(factorial(a) / factorial(a-b))
+	return Perm
+    }
+
+    function comb(a, b) {
+        Comb=int(factorial(a) / (factorial(b) * factorial(a-b)))
+	return Comb
+    }
+    
     function sqrt(n=0) {
         if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
         return float(sprintf("%.6f", n**0.5))

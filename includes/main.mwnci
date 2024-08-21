@@ -35,6 +35,21 @@ if (!INCLUDE["MAIN"]) {
         return number < 0 ? number *= -1 : number
     }
 
+    function release() {
+        Release="/etc/os-release"
+        release={}
+        if (isexist(Release)) {
+	    Data=split(trim(cat(Release)), "\n")
+	    foreach Entry in Data {
+	        Info=cut(Entry,"=")
+		Var=Info[0]
+		Value=trim(Info[1], "\"")
+		release=release.set(Var, Value)
+	    }
+	}
+	return release
+    }
+    
     function splithostport(hostp="") {
         if (!checkfunctype("splithostport", "string", hostp, 1)) {exit(1)}
         splitport=split(hostp, ":")

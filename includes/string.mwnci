@@ -63,7 +63,7 @@ if (!INCLUDE["STRING"]) {
 
     function isspace(text) {
         if (!checkfunctype("isspace", "string", text, 1)) {exit(1)}
-        if (len(text) == 0) {return text}
+        if (len(text) == 0) {return false}
         return (len(trim(text)) == 0) ? true : false
     }
 
@@ -99,19 +99,19 @@ if (!INCLUDE["STRING"]) {
     }
 
 function partition(text, search) {                                          
-        if (!checkfunctype("partition", "string", text, 1)) {exit(1)}           
-        if (!checkfunctype("partition", "string", search, 2)) {exit(1)}         
-        data=[text, "", ""]                                                     
-        Position=find(text, search)                                             
-        if (Position == -1) {                                                   
-            return data                                                         
-        }                                                                       
-        First=substr(text, 0, Position)                                         
-        Start=len(First + search)                                               
-        length=len(text) - Start                                                
-        Second=substr(text, Start, length)                                      
-        data=[First, search, Second]                                            
-        return data                                                             
+        if (!checkfunctype("partition", "string", text, 1)) {exit(1)}
+        if (!checkfunctype("partition", "string", search, 2)) {exit(1)}
+        data=[text, "", ""]
+        Position=find(text, search)
+        if (Position == -1) {
+            return data
+        }
+        First=substr(text, 0, Position)
+        Start=len(First + search)
+        length=len(text) - Start
+        Second=substr(text, Start, length)
+        data=[First, search, Second]
+        return data
     }
 }
 
