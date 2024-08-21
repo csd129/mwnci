@@ -44,7 +44,6 @@ if (!INCLUDE["METHODS"]) {
     function integer.bin() {return bin(self)}
     function integer.chr() {return chr(self)}
     function integer.procexists() {return procexists(self)}
-    function object.abs() {return abs(self)}
     function object.asctime(format="") {if (len(format) == 0) {return asctime(self)}return asctime(self,format)}
     function object.bin2dec() {return bin2dec(self)}
     function object.bin2hex() {return bin2hex(self)}

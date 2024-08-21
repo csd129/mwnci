@@ -1,6 +1,13 @@
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
+    function abs(number=NULL) {
+        if (number == NULL) {return false}
+        if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
+        return number < 0 ? number *= -1 : number
+    }
+
+
     function mode(x) {
         ucounted=ucount(x)
         largest=0
@@ -239,12 +246,12 @@ if (!INCLUDE["MATH"]) {
 
     function perm(a, b) {
         Perm=int(factorial(a) / factorial(a-b))
-	return Perm
+        return Perm
     }
 
     function comb(a, b) {
         Comb=int(factorial(a) / (factorial(b) * factorial(a-b)))
-	return Comb
+        return Comb
     }
     
     function sqrt(n=0) {
@@ -260,7 +267,10 @@ if (!INCLUDE["MATH"]) {
     function float.round() {
         return round(self)
     }
-    
+    function object.abs() {
+        return abs(self)
+    }   
+
     function integer.isprime() {
         return isprime(self)
     }
