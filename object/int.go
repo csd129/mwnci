@@ -78,3 +78,8 @@ func (i *Integer) String() string {
         return i.Inspect()
 }
 
+func(i *Integer) ToIP() string {
+	n := int64(i.Value)
+	IP:=fmt.Sprintf("%d.%d.%d.%d", (n >> 24) & 255, (n >> 16) & 255, (n >> 8) & 255, n & 255)
+	return IP
+}

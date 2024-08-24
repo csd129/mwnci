@@ -73,37 +73,6 @@ if (!INCLUDE["NET"]) {
         return len(listcidrips(cidr))
     }
     
-    function iptoint(IP) {
-        if (!checkfunctype("iptoint", "string", IP, 1)) {exit(1)}
-        if (!checkip(IP)) {return false}
-        octets=IP.split(".")
-        return int(octets[3]) + (int(octets[2]) << 8) + (int(octets[1]) << 16) + (int(octets[0]) << 24)
-    }
-
-    function inttoip(number) {
-        if (!checkfunctype("inttoip", "integer", number, 1)) {exit(1)}
-        return sprintf("%d.%d.%d.%d", (number >> 24) & 255, (number >> 16) & 255, (number >> 8) & 255, number & 255)
-    }
-
-    function sortips(iparray=[]) {
-        if (!checkfunctype("sortips", "array", iparray, 1)) {exit(1)}
-        if (len(iparray) <= 1) {return iparray}
-        foreach i, ip in iparray {
-            iparray=set(iparray, i, iptoint(ip))
-        }
-        iparray=sort(iparray)
-        foreach i, ip in iparray {
-            iparray=set(iparray, i, inttoip(ip))
-        }
-        return iparray
-    }
-
-    function rsortips(ip_array=[]) {
-        if (!checkfunctype("rsortips", "array", ip_array, 1)) {exit(1)}
-	    if (len(ip_array) <= 1) {return ip_array}
-	    return reverse(sortips(ip_array))
-    }
-
     function hextoipv6(hexaIP="") {
         i=0
 	    result=""
@@ -255,19 +224,7 @@ if (!INCLUDE["NET"]) {
         return iptoint(self)
     }
 
-    function integer.inttoip() {
-    	return inttoip(self)
-    }
-
     function string.nettrans() {
         return nettrans(self)
-    }
-
-    function array.sortips() {
-        return sortips(self)
-    }
-
-    function array.rsortips() {
-        return rsourtips(serlf)
     }
 }

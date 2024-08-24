@@ -25,10 +25,12 @@ if (!INCLUDE["METHODS"]) {
     function array.remove(element=-1) {return remove(self, element)}
     function array.rest() {return rest(self)}
     function array.rsort() {return rsort(self)}
+    function array.rsortips() {return rsortips(self)}
     function array.set(element=-1, value="") {return set(self, element, value)}
     function array.shift(num=0) {return shift(self, num)}
     function array.shuffle() {return shuffle(self)}
     function array.sort() {return sort(self)}
+    function array.sortips() {return sortips(self)}
     function array.sum() {return sum(self)}
     function array.swap( a, b ) {return swap(self, a, b)}
     function array.tail(Lines=0) {return tail(self, Lines)}
@@ -43,6 +45,7 @@ if (!INCLUDE["METHODS"]) {
     function hash.values() {return values(self)}
     function integer.bin() {return bin(self)}
     function integer.chr() {return chr(self)}
+    function integer.inttoip() {return inttoip(self)}
     function integer.procexists() {return procexists(self)}
     function object.asctime(format="") {if (len(format) == 0) {return asctime(self)}return asctime(self,format)}
     function object.bin2dec() {return bin2dec(self)}

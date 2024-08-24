@@ -516,4 +516,10 @@ if (!INCLUDE["MAIN"]) {
         }
         return MyArray
     }
+
+    function rsortips(ip_array=[]) {
+        if (!checkfunctype("rsortips", "array", ip_array, 1)) {exit(1)}
+	    if (len(ip_array) <= 1) {return ip_array}
+	    return reverse(sortips(ip_array))
+    }
 }
