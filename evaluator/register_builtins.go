@@ -5,6 +5,7 @@ import (
 )
 
 func init() {
+	RegisterBuiltin("abs", func(env *object.Environment, args ...object.Object) object.Object { return (Abs(args...)) })
 	RegisterBuiltin("accept", func(env *object.Environment, args ...object.Object) object.Object { return (Accept(args...)) })
 	RegisterBuiltin("acos", func(env *object.Environment, args ...object.Object) object.Object { return (mathAcos(args...)) })
 	RegisterBuiltin("args", func(env *object.Environment, args ...object.Object) object.Object { return (Args(args...)) })

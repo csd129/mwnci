@@ -22,68 +22,12 @@ const NULL=chr(0)
  are recognized by our "open" primitive.
 */
 
-const STDIN= open( "!STDIN!" )
-const STDOUT=open( "!STDOUT!" )
-const STDERR=open( "!STDERR!" )
+const STDIN= open("!STDIN!")
+const STDOUT=open("!STDOUT!")
+const STDERR=open("!STDERR!")
 
 if (!INCLUDE["MAIN"]) {
     INCLUDE=set(INCLUDE, "MAIN", true)
-
-    function release() {
-        Release="/etc/os-release"
-        release={}
-        if (isexist(Release)) {
-            Data=split(trim(cat(Release)), "\n")
-            foreach Entry in Data {
-                Info=cut(Entry,"=")
-                Var=Info[0]
-                Value=trim(Info[1], "\"")
-                release=release.set(Var, Value)
-            }
-        }
-        return release
-    }
-    
-    function splithostport(hostp="") {
-        if (!checkfunctype("splithostport", "string", hostp, 1)) {exit(1)}
-        splitport=split(hostp, ":")
-        port=splitport[len(splitport)-1]
-        address=trimsuffix(hostp, ":"+port)
-        return [address, port]
-    }
-
-// Rest() moved to here because buitlin shift() has replaced it 
-    function rest(arr) {
-        if (!checkfunctype("rest", "array", arr, 1)) {exit(1)}
-        return shift(arr)
-    }
-// Binary to Decimal
-    function bin2dec(b_number=NULL) {
-        if (b_number == NULL) {return false}
-        b_number=trimprefix(string(b_number), "0b")
-	    if (!match("^[0-1]{1,}$", b_number)) {
-	        println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", b_number)
-	        return false
-	    }
-	    Len=len(b_number)-1
-	    Result=0
-	    foreach n in 0..Len {
-	        Result = Result*2 + int(b_number[n])
-	    }
-	    return Result
-    }
-
-// Binary to Hexadecimal
-    function bin2hex(b_number) {
-        dec=bin2dec(b_number)
-        return hex(dec)
-    }
-
-// Binary to Octal
-    function bin2oct(b_number) {
-        dec=bin2dec(b_number)
-        return oct(dec)
-    }
 
 //
 // Argument checker for all functions
@@ -122,104 +66,165 @@ if (!INCLUDE["MAIN"]) {
         return true
     }
 
+    function release() {
+        Release="/etc/os-release"
+        ReleaseHash={}
+        if (isexist(Release)) {
+            Data=split(trim(cat(Release)), "\n")
+            foreach Entry in Data {
+                Info=cut(Entry,"=")
+                Var=Info[0]
+                Value=trim(Info[1], "\"")
+                ReleaseHash=ReleaseHash.set(Var, Value)
+            }
+        }
+        return ReleaseHash
+    }
+    
+    function splithostport(HostPort="") {
+        if (!checkfunctype("splithostport", "string", HostPort, 1)) {exit(1)}
+        SplitPort=split(HostPort, ":")
+        Port=SplitPort[len(SplitPort)-1]
+        Address=trimsuffix(HostPort, ":" + Port)
+        return [Address, Port]
+    }
+
+// Rest() moved to here because buitlin shift() has replaced it 
+    function rest(Array) {
+        if (!checkfunctype("rest", "array", Array, 1)) {exit(1)}
+        return shift(Array)
+    }
+    
+// Binary to Decimal
+    function bin2dec(BinaryNumber=NULL) {
+        if (BinaryNumber == NULL) {return false}
+        BinaryNumber=trimprefix(string(BinaryNumber), "0b")
+	    if (!match("^[0-1]{1,}$", BinaryNumber)) {
+	        println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", BinaryNumber)
+	        return false
+	    }
+	    Len=len(BinaryNumber)-1
+	    Result=0
+	    foreach n in 0..Len {
+	        Result = Result*2 + int(BinaryNumber[n])
+	    }
+	    return Result
+    }
+
+// Binary to Hexadecimal
+    function bin2hex(BinaryNumber) {
+        Decimal=bin2dec(BinaryNumber)
+        return hex(Decimal)
+    }
+
+// Binary to Octal
+    function bin2oct(BinaryNumber) {
+        Decimal=bin2dec(BinaryNumber)
+        return oct(Decimal)
+    }
+
+
     function cls() {
         print("[H[2J")
         return null
     }
 
-    function contains(line="", search="") {
-        if (index(line, search) != -1) {return true}
+    function contains(Line="", Search="") {
+        if (index(Line, Search) != -1) {return true}
         return false
     }
 
-    function find(data, search) {
-        return index(data, search)
+    function find(Data, Search) {
+        return index(Data, Search)
     }
 
-    function getblock(start_block, end_block, array_name) {
-        if (!checkfunctype("getblock", "string", start_block, 1)) {exit(1)}
-        if (!checkfunctype("getblock", "string", end_block, 2)) {exit(1)}
-        if (!checkfunctype("getblock", "array", array_name, 3)) {exit(1)}
-        found_line=[]
-        inblock=false
-        foreach line in array_name {
-            if (match(start_block, line)) {
-                inblock=true
+    function getblock(StartBlock, EndBlock, ArrayName) {
+        if (!checkfunctype("getblock", "string", StartBlock, 1)) {exit(1)}
+        if (!checkfunctype("getblock", "string", EndBlock, 2)) {exit(1)}
+        if (!checkfunctype("getblock", "array", ArrayName, 3)) {exit(1)}
+        FoundLine=[]
+        InBlock=false
+        foreach Line in ArrayName {
+            if (match(StartBlock, Line)) {
+                InBlock=true
             } else {
-                if (match(end_block, line)) {
-                    found_line=push(found_line, line)
-                    inblock=false
+                if (match(EndBlock, Line)) {
+                    FoundLine=push(FoundLine, Line)
+                    InBlock=false
                 }
             }
-            if (inblock) {
-                found_line=push(found_line, line)
+            if (InBlock) {
+                FoundLine=push(FoundLine, Line)
             }
         }
-        return found_line
+        return FoundLine
     }
 
-    function getfileblock(start_block, end_block, filename) {
-        if (!checkfunctype("getfileblock", "string", start_block, 1)) {exit(1)}
-        if (!checkfunctype("getfileblock", "string", end_block, 2)) {exit(1)}
-        if (!checkfunctype("getfileblock", "string", filename, 3)) {exit(1)}
-        if (!file(filename)) {
-            println("Can't open ", filename)
+    function getfileblock(StartBlock, EndBlock, FileName) {
+        if (!checkfunctype("getfileblock", "string", StartBlock, 1)) {exit(1)}
+        if (!checkfunctype("getfileblock", "string", EndBlock, 2)) {exit(1)}
+        if (!checkfunctype("getfileblock", "string", FileName, 3)) {exit(1)}
+        if (!file(FileName)) {
+            println("Can't open ", FileName)
             return false
         }
-        file_output=split(cat(filename), "\n")
-        getblock(start_block, end_block, file_output)
+        FileOutput=split(cat(FileName), "\n")
+        getblock(StartBlock, EndBlock, FileOutput)
     }
 
-    function head(data, Lines=0) {
-        if (!checkfunctype("head", "iterable", data, 1)) {exit(1)}
+    function head(Data, Lines=0) {
+        if (!checkfunctype("head", "iterable", Data, 1)) {exit(1)}
         if (!checkfunctype("head", "integer", Lines, 2)) {exit(1)}
-        type_string=false
-        if (type(data) == "string") {
-            data=split(data, "\n")
-            type_string=true
+        IsString=false
+        if (type(Data) == "string") {
+            Data=split(Data, "\n")
+            IsString=true
         }
         tdata=[]
         if (Lines == 0) {Lines = 10}
-        l=len(data)
-        if (Lines >= l) {
-            if (type_string) {
-                return(join(data, "\n"))
+        Length=len(data)
+        if (Lines >= Length) {
+            if (IsString) {
+                return(join(Data, "\n"))
             }
-            return data
+            return Data
         }
-        count=0
-        while (count < Lines) {
-            tdata=push(tdata, data[count])
-            count++
+        Count=0
+        while (Count < Lines) {
+            tdata=push(tdata, Data[Count])
+            Count++
         }
-        if (type_string) {
+        if (IsString) {
             return(join(tdata, "\n"))
         }
         return tdata
     }
 
     // Hexadecimal to Binary
-    function hex2bin(h_number) {
-        return bin(hex2dec(h_number))
+    function hex2bin(Hexadecimal) {
+        return bin(hex2dec(Hexadecimal))
     }
 
     // Hexadecimal to Decimal
-    function hex2dec(h_number) {
-        hexnums={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "a": 10, "b": 11, "c":12 , "d":13 ,"e": 14, "f": 15}
-        number=trimsuffix(tolower(reverse(string(h_number))), "x0")
-        counter=0
-        foreach i, x in number {
+    function hex2dec(Hexadecimal) {
+        HexHash={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "a": 10, "b": 11, "c":12 , "d":13 ,"e": 14, "f": 15}
+        Number=trimsuffix(tolower(reverse(string(Hexadecimal))), "x0")
+        Counter=0
+        foreach i, x in Number {
             nindex=string(x)
-    	    hnum=hexnums[nindex]
-            sum = hnum * (16 ** i)
-    	    counter += sum
+    	    HexNum=HexHash[nindex]
+	    if (!HexNum) {
+	        println("Error calling `hex2dec`: ERROR; TypeError: hex2dec() expected a hexadecimal value, got \"", string(x), "\"")
+		exit(1)
+	   }
+    	    Counter += HexNum * (16 ** i)
         }
-        return counter
+        return Counter
     }
 
     // Hexadecimal to Octal
-    function hex2oct(h_number) {
-        return oct(hex2dec(h_number))
+    function hex2oct(Hexadecimal) {
+        return oct(hex2dec(Hexadecimal))
     }
 
     function interpol(data={}, text="") {
@@ -228,7 +233,7 @@ if (!INCLUDE["MAIN"]) {
         foreach key in keys(data) {
             rstring="${"+key+"}"
             text=replaceall(text, rstring, string(data[key]))
-        }
+	}
         return text
     }
 
@@ -297,11 +302,11 @@ if (!INCLUDE["MAIN"]) {
     // Octal to Decimal
     function oct2dec(o_number) {
         number=reverse(string(o_number))
-        counter=0
+        Counter=0
         foreach i, x in number {
-            counter += int(x) * (8 ** i)
+            Counter += int(x) * (8 ** i)
         }
-        return counter
+        return Counter
     }
 
     // Octal to Hexadecimal
@@ -388,57 +393,62 @@ if (!INCLUDE["MAIN"]) {
 
     function sec2time(seconds=0) {
         if (!checkfunctype("sec2time", "integer", seconds, 1)) {exit(1)}
-        elapse={}
-        elapse=set(elapse, "Day", seconds/60/60/24)
-        elapse=set(elapse, "Hour", (seconds/60/60)%24)
-        elapse=set(elapse, "Min", (seconds/60)%60)
-        elapse=set(elapse, "Sec", seconds%60)
+        elapse={"Day": seconds/60/60/24,
+                "Hour": (seconds/60/60)%24,
+                "Min": (seconds/60)%60,
+                "Sec": seconds%60}
         return elapse
     }
  
     function tail(data, Lines=0) {
         if (!checkfunctype("tail", "iterable", data, 1)) {exit(1)}
         if (!checkfunctype("tail", "integer", Lines, 2)) {exit(1)}
-        type_string=false
+        IsString=false
         if (type(data) == "string") {
             data=split(data, "\n")
-    	    type_string=true
+    	    IsString=true
         }
         tdata=[]
         if (Lines == 0) {Lines = 10}
         l=len(data)
         if (Lines >= l) {
-            if (type_string) {
+            if (IsString) {
                 return(join(data, "\n"))
             }
             return data
         }
-        count=l-Lines
-        while (count < l) {
-            tdata=push(tdata, data[count])
-            count++
+        Count=l-Lines
+        while (Count < l) {
+            tdata=push(tdata, data[Count])
+            Count++
         }
-        if (type_string) {
+        if (IsString) {
             return(join(tdata, "\n"))
         }
         return tdata
     }
 
-    function unzip(hash1={}) {
-    	if (!checkfunctype("unzip", "hash", hash1, 1)) {exit(1)}
-        keyArray=keys(hash1)
-        valueArray=[]
-        ret_array=[]
-        foreach key in keyArray {
-            ValueArray=push(valueArray, hash1[key])
+    function unzip(MyArray=[]) {
+        if (len(MyArray) == 0) {
+            return MyArray
+    	}
+    	ZipArray=[]
+    	DataLen=len(MyArray[0])
+    	foreach Blank in 1..DataLen {
+            ZipArray=ZipArray.push([])
+    	}
+    	foreach Block in MyArray {
+            foreach Index, Entry in Block {
+	        Temp=ZipArray[Index]
+	        Temp=Temp.push(Entry)
+	        ZipArray=ZipArray.set(Index, Temp)
+            }
         }
-        ret_array=push(ret_array, keyArray)
-        ret_array=push(ret_array, valueArray)
-        return ret_array
+        return ZipArray
     }
 
-    function usort(arr) {
-        return sort(uniq(arr))
+    function usort(MyArray) {
+        return sort(uniq(MyArray))
     }
 
     function lookupcname(Search="") {return nslookup(Search, "cname")}
@@ -502,8 +512,8 @@ if (!INCLUDE["MAIN"]) {
     function values(Data={}) {
         if (!checkfunctype("values", "hash", Data, 1)) {exit(1)}
         MyArray=[]
-        foreach key in keys(Data) {
-            MyArray=MyArray.push(Data[key])
+        foreach Value, _ in Data {
+            MyArray=push(MyArray, Value)
         }
         return MyArray
     }
@@ -511,15 +521,15 @@ if (!INCLUDE["MAIN"]) {
     function items(Data={}) {
         if (!checkfunctype("items", "hash", Data, 1)) {exit(1)}
         MyArray=[]
-        foreach item, key in Data {
-            MyArray=MyArray.push([key, item])
+        foreach Value, Key in Data {
+            MyArray=MyArray.push([Key, Value])
         }
         return MyArray
     }
 
-    function rsortips(ip_array=[]) {
-        if (!checkfunctype("rsortips", "array", ip_array, 1)) {exit(1)}
-	    if (len(ip_array) <= 1) {return ip_array}
-	    return reverse(sortips(ip_array))
+    function rsortips(IPArray=[]) {
+        if (!checkfunctype("rsortips", "array", IPArray, 1)) {exit(1)}
+	    if (len(IPArray) <= 1) {return IPArray}
+	    return reverse(sortips(IPArray))
     }
 }

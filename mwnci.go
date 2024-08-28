@@ -21,7 +21,7 @@ import (
 )
 
 // The current version
-var version = "0.1.9.r08-20240815"
+var version = "0.1.9.r09-20240828"
 
 var stdlib string
 
@@ -61,14 +61,8 @@ func Execute(input string) int {
 	initProg := initP.ParseProgram()
 	evaluator.Eval(initProg, env)
 
-	//
-	//  Now evaluate the code the user wanted to load.
-	//
-	//  Note that here our environment will still contain
-	// the code we just loaded from our data-resource
-	//
-	//  (i.e. Our monkey-based standard library.)
-	//
+	// Evaluate the requested program
+	// The library previously loaded will still remain
 	evaluator.Eval(program, env)
 	return 0
 }

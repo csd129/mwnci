@@ -1,38 +1,31 @@
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
-    function abs(number=NULL) {
-        if (number == NULL) {return false}
-        if (!checkfunctype("abs", "number", number, 1)) {exit(1)}
-        return number < 0 ? number *= -1 : number
-    }
-
-
-    function mode(x) {
-        ucounted=ucount(x)
-        largest=0
-        numbers=""
-        foreach amount in keys(ucounted) {
-            if (ucounted[amount] > largest) {
-                numbers=amount
-                largest=ucounted[amount]
+    function mode(MyArray) {
+        UniqCount=ucount(MyArray)
+        Largest=0
+        Numbers=""
+        foreach Amount in keys(UniqCount) {
+            if (UniqCount[Amount] > Largest) {
+                Numbers=Amount
+                Largest=UniqCount[Amount]
             } else {
-                if (ucounted[amount] == largest) {
-                    numbers=numbers + " " + amount
+                if (UniqCount[Amount] == Largest) {
+                    Numbers=Numbers + " " + Amount
                 }
             }
         }
-        return fields(numbers)
+        return sort(fields(Numbers))
     }
 
-    function average(ave_array) {
-        if (!checkfunctype("average", "array", ave_array, 1)) {exit(1)}
-        return float(sum(ave_array) / float(len(ave_array)))
+    function average(MyArray) {
+        if (!checkfunctype("average", "array", MyArray, 1)) {exit(1)}
+        return float(sum(MyArray) / float(len(MyArray)))
     }
 
-    function cbrt(n=0) {
-        if (!checkfunctype("cbrt", "number", n, 1)) {exit(1)}
-        return float(sprintf("%.6f", n**0.3333333333333333))
+    function cbrt(Value=0) {
+        if (!checkfunctype("cbrt", "number", Value, 1)) {exit(1)}
+        return float(sprintf("%.6f", Value**0.3333333333333333))
     }
 
     function ceil(Value) {
@@ -40,47 +33,46 @@ if (!INCLUDE["MATH"]) {
         return (Value > int(Value)) ? int(Value) + 1 : int(Value)
     }
 
-    function degrees(radian) {
-        if (!checkfunctype("degrees", "number", radian, 1)) {exit(1)}
-        return radian * (180/PI)
+    function degrees(Radian) {
+        if (!checkfunctype("degrees", "number", Radian, 1)) {exit(1)}
+        return Radian * (180/PI)
     }
 
-    function dim(x=0,y=0) {
-        if (!checkfunctype("dim", "number", x, 1)) {exit(1)}
-        if (!checkfunctype("dim", "number", y, 2)) {exit(1)}
-        v=float(x)-float(y)
-        return v < 0 ? float(0) : v
+    function dim(X=0,Y=0) {
+        if (!checkfunctype("dim", "number", X, 1)) {exit(1)}
+        if (!checkfunctype("dim", "number", Y, 2)) {exit(1)}
+        V=float(X)-float(Y)
+        return V < 0 ? float(0) : V
     }
 
-    function divmod(a=0,b=0) {
-        if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
-        if (!checkfunctype("divmod", "integer", b, 2)) {exit(1)}
-	    if (b == 0) {
+    function divmod(Dividend=0,Divisor=0) {
+        if (!checkfunctype("divmod", "integer", Dividend, 1)) {exit(1)}
+        if (!checkfunctype("divmod", "integer", Divisor, 2)) {exit(1)}
+	    if (Divisor == 0) {
 	        println("Error calling `divmod`: Error: argument #2 Division by zero")
 	        exit(1)
 	    }
-        return [a/b, a%b]
+        return [Dividend/Divisor, Dividend%Divisor]
     }
 
-    function exp(x=0) {
-    	if (!checkfunctype("exp", "number", x, 1)) {exit(1)}
-        return float(E**x)
+    function exp(X=0) {
+    	if (!checkfunctype("exp", "number", X, 1)) {exit(1)}
+        return float(E**X)
     }
 
-    function exp2(x=0) {
-        if (!checkfunctype("exp2", "number", x, 1)) {exit(1)}
-        return float(2.0**x)
+    function exp2(X=0) {
+        if (!checkfunctype("exp2", "number", X, 1)) {exit(1)}
+        return float(2.0**X)
     }
 
-    function expm1(x=0) {
-        if (!checkfunctype("expm1", "number", x, 1)) {exit(1)}
-        return E**float(x)-1
+    function expm1(X=0) {
+        if (!checkfunctype("expm1", "number", X, 1)) {exit(1)}
+        return E**float(X)-1
     }
 
-    function factorial(n) {
-        if (!checkfunctype("factorial", "integer", n, 1)) {exit(1)}
-        fnum=n
-        return product(1..fnum)
+    function factorial(Number) {
+        if (!checkfunctype("factorial", "integer", Number, 1)) {exit(1)}
+        return product(1..Number)
     }
     
     function floor(Value) {
@@ -109,23 +101,23 @@ if (!INCLUDE["MATH"]) {
         return float(sprintf("%.15f", n-tq*d))
     }
 
-    function gcd(dividend, divisor) {
-        if (!checkfunctype("gcd", "integer", dividend, 1)) {exit(1)}
-        if (!checkfunctype("gcd", "integer", divisor, 2)) {exit(1)}    
-	if (dividend == 0 && divisor == 0) {return 0}
-        remainder=1
-        while (remainder != 0) {
-            remainder=dividend % divisor
-            dividend=divisor
-            divisor=remainder
+    function gcd(Dividend, Divisor) {
+        if (!checkfunctype("gcd", "integer", Dividend, 1)) {exit(1)}
+        if (!checkfunctype("gcd", "integer", Divisor, 2)) {exit(1)}    
+	if (Dividend == 0 && Divisor == 0) {return 0}
+        Remainder=1
+        while (Remainder != 0) {
+            Remainder=Dividend % Divisor
+            Dividend=Divisor
+            Divisor=Remainder
         }
-        return dividend
+        return Dividend
     }
 
-    function highest(a, b) {
-        if (!checkfunctype("highest", "number", a, 1)) {exit(1)}
-        if (!checkfunctype("highest", "number", b, 2)) {exit(1)}
-        return a > b ? a : b
+    function highest(A, B) {
+        if (!checkfunctype("highest", "number", A, 1)) {exit(1)}
+        if (!checkfunctype("highest", "number", B, 2)) {exit(1)}
+        return A > B ? A : B
     }
 
     function hypot(p, q) {
@@ -218,9 +210,9 @@ if (!INCLUDE["MATH"]) {
         return float(10**x)
     }
 
-    function radians(deg) {
-        if (!checkfunctype("radians", "number", deg, 1)) {exit(1)}
-        return deg * (PI / 180)
+    function radians(Degrees) {
+        if (!checkfunctype("radians", "number", Degrees, 1)) {exit(1)}
+        return Degrees * (PI / 180)
     }
        
     function round(rnum) {

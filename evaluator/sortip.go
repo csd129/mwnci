@@ -1,4 +1,3 @@
-
 package evaluator
 
 import (
@@ -21,12 +20,13 @@ func SortIP(args ...object.Object) object.Object {
 	newArray := arr.Copy()
 	if newArray.SameType(newArray) {
 		for i, v := range newArray.Elements {
+			if CheckIP(v) == FALSE {
+				return newError("Array contains non-IP data [\"%v\"]", v)
+			}
 			newArray.Aset(i, IP2I(v))
 		}
-				
-			
 		sort.Sort(newArray)
-		for i ,v := range newArray.Elements {
+		for i, v := range newArray.Elements {
 			newArray.Aset(i, I2IP(v))
 		}
 	} else {
@@ -34,4 +34,3 @@ func SortIP(args ...object.Object) object.Object {
 	}
 	return newArray
 }
-
