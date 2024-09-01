@@ -20,18 +20,6 @@ if (!INCLUDE["OS"]) {
         return h
     } 
     
-    function syslog(priority="syslog.info", message="") {
-        if (!checkfunctype("syslog", "string", priority, 1)) {exit(1)}
-        if (!checkfunctype("syslog", "string", message, 2)) {exit(1)}
-        if (message == "") {
-            println("'syslog' requires a message, none given")
-            return false
-        }
-        cmd=sprintf("`logger -p %s \"%s\"`", priority, message)
-        result=eval(cmd)["stdout"]
-        return result
-    }
-    
     function df() {
         diskhash={}
         mounted=shift(split(system("df"),"\n"))
