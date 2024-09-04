@@ -30,7 +30,7 @@ func Count(args ...object.Object) object.Object {
 		}
 	default:
 		return newError(
-		"TypeError: count() expected argument #1 to be `array` got `%s`",args[0].Type(),)
+		"TypeError: count() expected argument #1 to be `array` or `string` got `%s`",args[0].Type(),)
 	}
 	return &object.Integer{Value: int64(counter)}
 }
