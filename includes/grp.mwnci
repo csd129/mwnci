@@ -1,48 +1,48 @@
 if (!INCLUDE["GRP"]) {
     INCLUDE=set(INCLUDE, "GRP", true)
 
-    function getgrent(group="") {
+    function getgrent(Group="") {
         GROUP="/etc/group"
         GroupArray=[]
         FileArray=split(trim(cat(GROUP)), "\n")
 
-        foreach line in FileArray {
-            grouphash={}
-            line=trim(line)
-	        if (line[0] != "#") {
-                groupinfo=split(trim(line), ":")
-    	        if (groupinfo) {
-	                if (len(groupinfo[3]) > 0) {
-	                    Members=split(groupinfo[3], ",")
-	                } else {
-	                    Members=[]
-	                }
-                    grouphash={"Group": groupinfo[0], "Password": groupinfo[1], "Gid": groupinfo[2], "Members": Members}
-	                GroupArray=push(GroupArray, grouphash)
+        foreach Line in FileArray {
+            GroupHash={}
+            Line=trim(Line)
+	    if (Line[0] != "#") {
+                GroupInfo=split(trim(Line), ":")
+    	        if (GroupInfo) {
+	            if (len(GroupInfo[3]) > 0) {
+	                Members=split(GroupInfo[3], ",")
+	            } else {
+	                Members=[]
+	            }
+                    GroupHash={"Group": GroupInfo[0], "Password": GroupInfo[1], "Gid": GroupInfo[2], "Members": Members}
+	               GroupArray=push(GroupArray, GroupHash)
 	            }
 	        }
-        }
-        if (group != "") {
-            foreach entry in GroupArray {
-	            if (entry["Group"] == group || entry["Gid"] == string(group)) {
-	                return entry
-	            }
+            }
+            if (Group != "") {
+            foreach Entry in GroupArray {
+	        if (Entry["Group"] == Group || Entry["Gid"] == string(Group)) {
+	            return Entry
 	        }
-	        return {}
+	    }
+	    return {}
         }
         return GroupArray
     }
 
     
-    function groups(user="") {
-        if (!checkfunctype("groups", "string", user)) {exit(1)}
-        if (user == "") {user=whoami()}
-        group_hash={}
-        gr=getgroups(user)
-        foreach grp in gr {
-            group_hash=group_hash.set(grp, getgrent(grp)["Group"])
+    function groups(User="") {
+        if (!checkfunctype("groups", "string", User)) {exit(1)}
+        if (User == "") {User=whoami()}
+        GroupHash={}
+        Groups=getgroups(user)
+        foreach Group in Groups	{
+            GroupHash=GroupHash.set(Group, getgrent(Group)["Group"])
         }
-        return group_hash
+        return GroupHash
     }
     
     // getgrgid() and getgrnam() are available for backward compatibility
