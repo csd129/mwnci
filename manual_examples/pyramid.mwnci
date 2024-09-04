@@ -1,4 +1,4 @@
-#!/usr/local/bin/mwnci
+#!/usr/bin/env mwnci
 (ARGC == 1) ? rows=5 : rows=int(ARGV[1])
 
 foreach i in 1..rows {

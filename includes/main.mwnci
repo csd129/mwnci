@@ -16,12 +16,19 @@ const PID=getpid()
 const NULL=chr(0)
 
 /*
+ PROGNAME will hold the basename of the script that's
+ being called
+*/
+if (ARGC > 0) {
+    const PROGNAME=basename(ARGV[0])
+}
+
+/*
  File-objects for STDIN, STDOUT, and STDERR.
 
  Rather than opening these by name/path we have magic-strings which
  are recognized by our "open" primitive.
 */
-
 const STDIN= open("!STDIN!")
 const STDOUT=open("!STDOUT!")
 const STDERR=open("!STDERR!")
@@ -36,9 +43,9 @@ if (!INCLUDE["MAIN"]) {
         ReceivedType=type(received)
 	    if (expected == "number") {
             if (ReceivedType == "integer" || ReceivedType == "float") {
-	            return true
-	        } else {
-	            println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
+	        return true
+	    } else {
+	        println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
                 return false
 	        }
 	    }
@@ -63,24 +70,9 @@ if (!INCLUDE["MAIN"]) {
             toupper(expected), "` got `", toupper(ReceivedType), "`")
             return false
         }
-        return true
+	return true
     }
 
-    function release() {
-        Release="/etc/os-release"
-        ReleaseHash={}
-        if (isexist(Release)) {
-            Data=split(trim(cat(Release)), "\n")
-            foreach Entry in Data {
-                Info=cut(Entry,"=")
-                Var=Info[0]
-                Value=trim(Info[1], "\"")
-                ReleaseHash=ReleaseHash.set(Var, Value)
-            }
-        }
-        return ReleaseHash
-    }
-    
     function splithostport(HostPort="") {
         if (!checkfunctype("splithostport", "string", HostPort, 1)) {exit(1)}
         SplitPort=split(HostPort, ":")
@@ -99,16 +91,16 @@ if (!INCLUDE["MAIN"]) {
     function bin2dec(BinaryNumber=NULL) {
         if (BinaryNumber == NULL) {return false}
         BinaryNumber=trimprefix(string(BinaryNumber), "0b")
-	    if (!match("^[0-1]{1,}$", BinaryNumber)) {
-	        println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", BinaryNumber)
-	        return false
-	    }
-	    Len=len(BinaryNumber)-1
-	    Result=0
-	    foreach n in 0..Len {
-	        Result = Result*2 + int(BinaryNumber[n])
-	    }
-	    return Result
+	if (!match("^[0-1]{1,}$", BinaryNumber)) {
+	    println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", BinaryNumber)
+	    return false
+	}
+	Len=len(BinaryNumber)-1
+	Result=0
+	foreach n in 0..Len {
+	    Result = Result*2 + int(BinaryNumber[n])
+	}
+	return Result
     }
 
 // Binary to Hexadecimal
@@ -134,9 +126,9 @@ if (!INCLUDE["MAIN"]) {
         return false
     }
 
-    function find(Data, Search) {
-        return index(Data, Search)
-    }
+//    function find(Data, Search) {
+//        return index(Data, Search)
+//    }
 
     function getblock(StartBlock, EndBlock, ArrayName) {
         if (!checkfunctype("getblock", "string", StartBlock, 1)) {exit(1)}
@@ -241,15 +233,15 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("intersect", "array", array_a, 1)) {exit(1)}
         if (!checkfunctype("intersect", "array", array_b, 2)) {exit(1)}
         InterArray=[]
-        array_a=sort(array_a)
-        array_b=sort(array_b)
+        array_a=uniq(array_a)
+        array_b=uniq(array_b)
         foreach Value in array_a {
             found=contains(array_b, Value)
             if (found) {
     	        InterArray=push(InterArray, Value)
     	    }
         }
-        return uniq(InterArray)
+        return InterArray
     }
 
     function isalpha(data="") {
@@ -280,18 +272,15 @@ if (!INCLUDE["MAIN"]) {
        return result
     }
 
-    function max(arr=[]) {
-        if (!checkfunctype("max", "array", arr, 1)) {exit(1)}
-        arr_len=len(arr)
-        if (arr_len == 0) {return 0}
-        return arr.sort()[arr_len - 1]
+    function max(MyArray=[]) {
+        if (!checkfunctype("max", "array", MyArray, 1)) {exit(1)}
+	ArrayLen=len(MyArray)
+	return (ArrayLen == 0) ? 0 : MyArray.sort()[ArrayLen -1]
     }
 
-    function min(arr=[]) {
-        if (!checkfunctype("min", "array", arr, 1)) {exit(1)}
-        arr_len=len(arr)
-        if (arr_len == 0) {return 0}
-        return arr.sort()[0]
+    function min(MyArray=[]) {
+        if (!checkfunctype("min", "array", MyArray, 1)) {exit(1)}
+	return (len(MyArray) == 0) ? 0 : MyArray.sort()[0]
     }
 
     // Octal to Binary

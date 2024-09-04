@@ -7,7 +7,7 @@ if (!INCLUDE["METHODS"]) {
     function array.copy() {return copy(self)}
     function array.cumulative() {return cumulative(self)}
     function array.extend(NextArray=[]) {return extend(self, NextArray)}
-    function array.find(item) {return index(self, item)}
+//    function array.find(item) {return index(self, item)}
     function array.first() {return first(self)}
     function array.head(Lines=0) {return head(self, Lines)}
     function array.index(item) {return index(self, item)}
@@ -77,7 +77,7 @@ if (!INCLUDE["METHODS"]) {
     function string.dirpath() {return dirpath(self)}
     function string.fields() {return fields(self)}
     function string.file(dummy) {return file(self, dummy)}
-    function string.find(item) {return index(self, item)}
+//    function string.find(item) {return index(self, item)}
     function string.getenv() {return getenv(self)}          
     function string.hasprefix(data) {return hasprefix(self, data)}
     function string.hassuffix(data) {return hassuffix(self, data)}

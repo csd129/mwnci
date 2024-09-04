@@ -12,58 +12,58 @@ if (!INCLUDE["JSON"]) {
 // Null       ->  null
 
 
-    function ParseArray(ArrayData) {
+    function parsearray(ArrayData) {
         JsonBuild="["
         foreach Entry in ArrayData {
             if (Entry == null) {
                 JsonBuild=JsonBuild + sprintf("%v,", Entry)
             } else {
                 switch(type(Entry)) {
-	                case "string" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\",", Entry)
-	                }
-	                case "float", "integer" {
-		                JsonBuild=JsonBuild + sprintf("%s,", string(Entry))
-	                }
+		    case "string" {
+		        JsonBuild=JsonBuild + sprintf("\"%s\",", Entry)
+		    }
+		    case "float", "integer" {
+		        JsonBuild=JsonBuild + sprintf("%s,", string(Entry))
+		    }
                     case "bool" {
                         JsonBuild=JsonBuild + sprintf("%v,", bool(Entry))
                     }
-	                case "array" {
-		                JsonBuild=JsonBuild + ParseArray(Entry)
-	                }
-	                case "hash" {
-		                JsonBuild=JsonBuild + ParseHash(Entry) + ","
-	                }
+	            case "array" {
+		        JsonBuild=JsonBuild + parsearray(Entry)
 	            }
+	            case "hash" {
+		        JsonBuild=JsonBuild + parsehash(Entry) + ","
+	            }
+	        }
             }
         }
         JsonBuild=JsonBuild + "]"
         return JsonBuild
     }
 
-    function ParseHash(HashData) {
+    function parsehash(HashData) {
         JsonBuild="{"
         foreach Val, Key in HashData {
             if (Val == null) {
                 JsonBuild=JsonBuild + sprintf("\"%s\": %v,",Key, Val)
             } else {
                 switch(type(Val)) {
-	                case "string" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\": \"%s\",", Key, Val)
-	                }
-	                case "float", "integer" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, string(Val))
-	                }
+	            case "string" {
+		        JsonBuild=JsonBuild + sprintf("\"%s\": \"%s\",", Key, Val)
+	            }
+	            case "float", "integer" {
+		        JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, string(Val))
+	            }
                     case "bool" {
                         JsonBuild=JsonBuild + sprintf("\"%s\": %v,", Key, bool(Val))
                     }
-	                case "array" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, ParseArray(Val))
-	                }
-	                case "hash" {
-		                JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, ParseHash(Val))
-	                }
+	            case "array" {
+		        JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, parsearray(Val))
 	            }
+	            case "hash" {
+		        JsonBuild=JsonBuild + sprintf("\"%s\": %s,", Key, parsehash(Val))
+	            }
+	        }
             }
         }
         JsonBuild=JsonBuild + "}"
@@ -73,11 +73,11 @@ if (!INCLUDE["JSON"]) {
     function tjson(Data, JsonOutput) {
         switch(type(Data)) {
             case "array" {
-	            Result=ParseArray(Data)
-	        }
-	        case "hash" {
-	            Result=ParseHash(Data)
-	        }
+	        Result=parsearray(Data)
+	    }
+	    case "hash" {
+	        Result=parsehash(Data)
+	    }
         }
         Result=replaceall(Result, "<NULL>", "null")
         Result=replaceall(Result, ",}", "}")
