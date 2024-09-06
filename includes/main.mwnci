@@ -103,21 +103,9 @@ if (!INCLUDE["MAIN"]) {
 	return Result
     }
 
-// Binary to Hexadecimal
-    function bin2hex(BinaryNumber) {
-        Decimal=bin2dec(BinaryNumber)
-        return hex(Decimal)
-    }
-
-// Binary to Octal
-    function bin2oct(BinaryNumber) {
-        Decimal=bin2dec(BinaryNumber)
-        return oct(Decimal)
-    }
-
-
     function cls() {
-        print("[H[2J")
+        print("
+")
         return null
     }
 
@@ -125,10 +113,6 @@ if (!INCLUDE["MAIN"]) {
         if (index(Line, Search) != -1) {return true}
         return false
     }
-
-//    function find(Data, Search) {
-//        return index(Data, Search)
-//    }
 
     function getblock(StartBlock, EndBlock, ArrayName) {
         if (!checkfunctype("getblock", "string", StartBlock, 1)) {exit(1)}
@@ -190,33 +174,6 @@ if (!INCLUDE["MAIN"]) {
             return(join(tdata, "\n"))
         }
         return tdata
-    }
-
-    // Hexadecimal to Binary
-    function hex2bin(Hexadecimal) {
-        return bin(hex2dec(Hexadecimal))
-    }
-
-    // Hexadecimal to Decimal
-    function hex2dec(Hexadecimal) {
-        HexHash={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "a": 10, "b": 11, "c":12 , "d":13 ,"e": 14, "f": 15}
-        Number=trimsuffix(tolower(reverse(string(Hexadecimal))), "x0")
-        Counter=0
-        foreach i, x in Number {
-            nindex=string(x)
-    	    HexNum=HexHash[nindex]
-	    if (!HexNum) {
-	        println("Error calling `hex2dec`: ERROR; TypeError: hex2dec() expected a hexadecimal value, got \"", string(x), "\"")
-		exit(1)
-	   }
-    	    Counter += HexNum * (16 ** i)
-        }
-        return Counter
-    }
-
-    // Hexadecimal to Octal
-    function hex2oct(Hexadecimal) {
-        return oct(hex2dec(Hexadecimal))
     }
 
     function interpol(data={}, text="") {
@@ -281,26 +238,6 @@ if (!INCLUDE["MAIN"]) {
     function min(MyArray=[]) {
         if (!checkfunctype("min", "array", MyArray, 1)) {exit(1)}
 	return (len(MyArray) == 0) ? 0 : MyArray.sort()[0]
-    }
-
-    // Octal to Binary
-    function oct2bin(o_number) {
-        return bin(oct2dec(o_number))
-    }
-
-    // Octal to Decimal
-    function oct2dec(o_number) {
-        number=reverse(string(o_number))
-        Counter=0
-        foreach i, x in number {
-            Counter += int(x) * (8 ** i)
-        }
-        return Counter
-    }
-
-    // Octal to Hexadecimal
-    function oct2hex(o_number) {
-        return hex(oct2dec(o_number))
     }
 
     function procexists(pid=-1) {
@@ -520,5 +457,18 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("rsortips", "array", IPArray, 1)) {exit(1)}
 	    if (len(IPArray) <= 1) {return IPArray}
 	    return reverse(sortips(IPArray))
+    }
+
+    function oct2bin(o_number) {
+        return bin(oct2dec(o_number))
+    }
+
+    function oct2dec(OctNumber) {
+        Number=reverse(string(OctNumber))
+	Counter=0
+	foreach i, x in Number {
+	    Counter += int(x) * (8 ** i)
+	}
+	return Counter
     }
 }

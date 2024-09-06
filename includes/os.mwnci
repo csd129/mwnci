@@ -11,34 +11,34 @@ if (!INCLUDE["OS"]) {
     }
 
     function env() {
-        h={}
-        env_vars=split(system("env"), "\n")
-        foreach ev in env_vars {
-            v=cut(ev, "=")
-            h=set(h, v[0], v[1])
+        EnvHash={}
+        EnvVars=split(system("env"), "\n")
+        foreach Var in EnvVars {
+            SplitVar=cut(Var, "=")
+            EnvHash=EnvHash.set(SplitVar[0], SplitVar[1])
         }
-        return h
+        return EnvHash
     } 
     
     function df() {
-        diskhash={}
-        mounted=shift(split(system("df"),"\n"))
-        foreach entry in mounted {
-            if (len(entry) > 0) {
-                splitline=fields(entry)
-	            if (splitline[0].contains("/")) {
-                    perc_used=int(trimsuffix(splitline[4], "%"))
-                    perc_free=100 - perc_used
-                    temphash={"blocks": int(splitline[1]), "used": int(splitline[2]), "available": int(splitline[3]), "usedperc": perc_used, "freeperc": perc_free, "mount": splitline[5]}
-                    diskhash=set(diskhash, splitline[0], temphash)
+        DiskHash={}
+        Mounted=shift(split(system("df"),"\n"))
+        foreach Entry in Mounted {
+            if (len(Entry) > 0) {
+                SplitLine=fields(Entry)
+	        if (SplitLine[0].contains("/")) {
+                    PercentUsed=int(trimsuffix(SplitLine[4], "%"))
+                    PercentFree=100 - PercentUsed
+                    TempHash={"blocks": int(SplitLine[1]), "used": int(SplitLine[2]), "available": int(SplitLine[3]), "usedperc": PercentUsed, "freeperc": PercentFree, "mount": SplitLine[5]}
+                    DiskHash=set(DiskHash, SplitLine[0], TempHash)
                 }
             }
         }
-        return diskhash
+        return DiskHash
     }
 
     function free_linux() {
-        memhash={}
+        MemoryHash={}
         Data=split(trim(system("free")), "\n")
 	foreach Line in Data {
 	    Sline=fields(Line)
@@ -52,7 +52,7 @@ if (!INCLUDE["OS"]) {
 		UsedPC=sprintf("%.2f", float(Used) / float(Total) * 100)
 		FreePC=sprintf("%.2f", float(100.0 - float(UsedPC)))
 	        Hashy={"total": Total, "used": Used, "free": Free, "shared": Shared, "cache": Buff, "avail": Avail, "usedperc": float(UsedPC), "freeperc": float(FreePC)}
-		memhash=set(memhash, "mem", Hashy)
+		MemoryHash=set(MemoryHash, "mem", Hashy)
             }
 	    if (Sline[0] == "Swap:") {
 	        Total=int(Sline[1])
@@ -61,37 +61,37 @@ if (!INCLUDE["OS"]) {
 		UsedPC=sprintf("%.2f", float(Used) / float(Total) * 100)
 		FreePC=sprintf("%.2f", float(100.0 - float(UsedPC)))
 		Hashy={"total": Total, "used": Used, "free": Free, "usedperc": float(UsedPC), "freeperc": float(FreePC)}
-		memhash=set(memhash, "swap", Hashy)
+		MemoryHash=set(MemoryHash, "swap", Hashy)
 	    }
 	}
-	return memhash
+	return MemoryHash
     }
 
     function free_bsd() {
-        memhash={}
-	sysctl_cmd="/sbin/sysctl -a | egrep \"vm.stats.vm.v|hw.physmem|hw.pagesize\""
-	sysctl_output=split(system(sysctl_cmd),"\n")
+        MemoryHash={}
+	SysctlCmd="/sbin/sysctl -a | egrep \"vm.stats.vm.v|hw.physmem|hw.pagesize\""
+	SysctlOutput=split(system(SysctlCmd),"\n")
 	sysctl={}
-	foreach Line in sysctl_output {
+	foreach Line in SysctlOutput {
 	    Sline=cut(Line, ": ")
-	    sysctl=set(sysctl, Sline[0], Sline[1])
+	    Sysctl=set(Sysctl, Sline[0], Sline[1])
     	}
-	page_size=int(sysctl["hw.pagesize"])
-	mem_hw = int(sysctl["hw.physmem"])
-	mem_phys= int(sysctl["hw.physmem"])
-	mem_all=int(sysctl["vm.stats.vm.v_page_count"])  * page_size
-	mem_wire=int(sysctl["vm.stats.vm.v_wire_count"]) * page_size
-	mem_active=int(sysctl["vm.stats.vm.v_active_count"]) * page_size
-	mem_inactive=int(sysctl["vm.stats.vm.v_inactive_count"]) * page_size
-	mem_cache=int(sysctl["vm.stats.vm.v_cache_count"]) * page_size
-	mem_free=int(sysctl["vm.stats.vm.v_free_count"]) * page_size
+	PageSize=int(Sysctl["hw.pagesize"])
+	mem_hw = int(Sysctl["hw.physmem"])
+	mem_phys= int(Sysctl["hw.physmem"])
+	mem_all=int(Sysctl["vm.stats.vm.v_page_count"])  * PageSize
+	mem_wire=int(Sysctl["vm.stats.vm.v_wire_count"]) * PageSize
+	mem_active=int(Sysctl["vm.stats.vm.v_active_count"]) * PageSize
+	mem_inactive=int(Sysctl["vm.stats.vm.v_inactive_count"]) * PageSize
+	mem_cache=int(Sysctl["vm.stats.vm.v_cache_count"]) * PageSize
+	mem_free=int(Sysctl["vm.stats.vm.v_free_count"]) * PageSize
 	mem_total = mem_hw
 	mem_avail = mem_inactive + mem_cache + mem_free
 	mem_used = mem_total - mem_avail
 	mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
 	mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
 	hashy={"mem_cache": mem_cache / 1024, "total": mem_total / 1024, "mem_avail": mem_avail / 1024, "mem_used": mem_used / 1024, "mem_inactive": mem_inactive / 1024, "mem_free": mem_free / 1024, "used_perc": mem_used_perc, "free_perc": mem_free_perc, "mem_active": mem_active}
-	memhash=set(memhash, "mem", hashy)
+	MemoryHash=set(MemoryHash, "mem", hashy)
 	Swap=split(trim(system("swapinfo")), "\n")
 	Swap=shift(Swap)
 	Total=Used=Avail=0
@@ -104,8 +104,8 @@ if (!INCLUDE["OS"]) {
 	swap_used_perc=sprintf("%.2f", float(Used) / float(Total)*100)
 	swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
 	hashy={"total": Total, "free": Avail, "used": Used, "used_perc": float(swap_used_perc), "free_perc": float(swap_free_perc)}
-	memhash=set(memhash, "swap", hashy)
-	return memhash
+	MemoryHash=set(MemoryHash, "swap", hashy)
+	return MemoryHash
     }
 
 
@@ -146,16 +146,16 @@ if (!INCLUDE["OS"]) {
     }
 
     function meminfo() {
-        memhash={}
-        data=split(cat("/proc/meminfo"), "\n")
-        foreach entry in data {
-            if (len(entry) > 0) {
-                entry=replaceall(entry, ":", "")
-                entryarray=fields(entry)
-                memhash=set(memhash, entryarray[0], entryarray[1])
+        MemoryHash={}
+        Data=split(cat("/proc/meminfo"), "\n")
+        foreach Entry in Data {
+            if (len(Entry) > 0) {
+                Entry=replaceall(Entry, ":", "")
+                Entryarray=fields(Entry)
+                MemoryHash=set(MemoryHash, Entryarray[0], Entryarray[1])
             }
         }
-        return memhash
+        return MemoryHash
     }
     
     function string.datetoepoch() {

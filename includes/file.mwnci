@@ -331,6 +331,18 @@ if (!INCLUDE["FILE"]) {
         return issock(self)
     }
     
+    function string.issetuid() {
+        return issetuid(self)
+    }
+
+    function string.issetgid() {
+        return issetgid(self)
+    }
+
+    function string.issticky() {
+        return issticky(self)
+    }
+
     function writetofile(Filename="", mode="w", data) {
         if (!checkfunctype("writetofile", "string", Filename, 1)) {exit(1)}
         if (!checkfunctype("writetofile", "string", mode, 2)) {exit(1)}

@@ -1,56 +1,53 @@
 if (!INCLUDE["STRING"]) {
     INCLUDE=set(INCLUDE, "STRING", true)
 
-    function ljust(text="", length, spacer=" ") {
-        if (!checkfunctype("ljust", "string", text, 1)) {exit(1)}
-	    if (!checkfunctype("ljust", "integer", length, 2)) {exit(1)}
-        if (!checkfunctype("ljust", "string", spacer, 3)) {exit(1)}
-	    if (len(spacer) != 1) {
-	        println("Error calling `ljust`: ERROR: fill character must be exactly one character long")
-	        exit(1)
-	    }
-
-	    if (length <= len(text)) {return text}
-
-	    rep=repeat(spacer, length-len(text))
-	    return text + rep
+    function ljust(Text="", Length, Spacer=" ") {
+        if (!checkfunctype("ljust", "string", Text, 1)) {exit(1)}
+	if (!checkfunctype("ljust", "integer", Length, 2)) {exit(1)}
+	if (!checkfunctype("ljust", "string", Spacer, 3)) {exit(1)}
+	if (len(Spacer) != 1) {
+	    println("Error calling `ljust`: ERROR: fill character must be exactly one character long")
+	    exit(1)
+	}
+	if (Length <= len(Text)) {return Text}
+	Repeat=repeat(Spacer, Length-len(Text))
+	return Text + Repeat
     }
 
-    function rjust(text="", length, spacer=" ") {
-        if (!checkfunctype("rjust", "string", text, 1)) {exit(1)}
-	    if (!checkfunctype("rjust", "integer", length, 2)) {exit(1)}
-        if (!checkfunctype("rjust", "string", spacer, 3)) {exit(1)}
-	    if (len(spacer) != 1) {
-	        println("Error calling `rjust`: ERROR: fill character must be exactly one character long")
-	        exit(1)
-	    }
-
-	    if (length <= len(text)) {return text}
-	    rep=repeat(spacer, length-len(text))
-	    return rep + text
+    function rjust(Text="", Length, Spacer=" ") {
+        if (!checkfunctype("rjust", "string", Text, 1)) {exit(1)}
+	if (!checkfunctype("rjust", "integer", Length, 2)) {exit(1)}
+	if (!checkfunctype("rjust", "string", Spacer, 3)) {exit(1)}
+	if (len(Spacer) != 1) {
+	    println("Error calling `rjust`: ERROR: fill character must be exactly one character long")
+	    exit(1)
+	}
+	if (Length <= len(Text)) {return Text}
+	Repeat=repeat(Spacer, Length-len(Text))
+	return Repeat + Text
     }
 
-    function center(text="", length, spacer=" ") {
-        if (!checkfunctype("rjust", "string", text, 1)) {exit(1)}
-        if (!checkfunctype("rjust", "integer", length, 1)) {exit(1)}
-        if (!checkfunctype("rjust", "string", spacer, 3)) {exit(1)}
-        if (len(spacer) != 1) {
-            println("Error calling `rjust`: ERROR: fill character must be exactly one character long")
-            exit(1)
-        }
+    function center(Text="", Length, Spacer=" ") {
+        if (!checkfunctype("center", "string", Text, 1)) {exit(1)}
+        if (!checkfunctype("center", "integer", Length, 1)) {exit(1)}
+        if (!checkfunctype("center", "string", Spacer, 3)) {exit(1)}
+        if (len(Spacer) != 1) {
+	    println("Error calling `center`: ERROR: fill character must be exactly one character long")
+	    exit(1)
+	}
 
-        if (length <= len(text)) {return text}
-        beginning=int((length-len(text))/2)
-        end=length-(len(text)+beginning)
-        front=repeat(spacer, beginning)
-        back=repeat(spacer, end)
-        return front + text + back
+        if (Length <= len(Text)) {return Text}
+        Beginning=int((Length-len(Text))/2)
+        End=Length-(len(Text)+Beginning)
+        Front=repeat(Spacer, Beginning)
+        Back=repeat(Spacer, End)
+        return Front + Text + Back
     }
 
-    function title(text="") {
-        if (!checkfunctype("title", "string", text, 1)) {exit(1)}
-        if (len(text) == 0) {return text}
-        textArray=fields(text)
+    function title(Text="") {
+        if (!checkfunctype("title", "string", Text, 1)) {exit(1)}
+        if (len(Text) == 0) {return Text}
+        textArray=fields(Text)
         Title=""
         foreach Word in textArray {
             Lower=tolower(Word)
@@ -61,30 +58,24 @@ if (!INCLUDE["STRING"]) {
         return trim(Title)
     }
 
-    function isspace(text) {
-        if (!checkfunctype("isspace", "string", text, 1)) {exit(1)}
-        if (len(text) == 0) {return false}
-        return (len(trim(text)) == 0) ? true : false
+    function isspace(Text) {
+        if (!checkfunctype("isspace", "string", Text, 1)) {exit(1)}
+        if (len(Text) == 0) {return false}
+        return (len(trim(Text)) == 0) ? true : false
     }
 
-    function islower(text) {
-        if (!checkfunctype("islower", "string", text, 1)) {exit(1)}
-        foreach n in text {
-            if (tolower(n) != n) {return false}
-        }
-        return true
+    function islower(Text) {
+        if (!checkfunctype("islower", "string", Text, 1)) {exit(1)}
+        return (tolower(Text) == Text) ? true : false
     }
 
-    function isupper(text) {
-        if (!checkfunctype("isupper", "string", text, 1)) {exit(1)}
-        foreach n in text {
-            if (toupper(n) != n) {return false}
-        }
-        return true
+    function isupper(Text) {
+        if (!checkfunctype("isupper", "string", Text, 1)) {exit(1)}
+	return (toupper(Text) == Text) ? true : false
     }
 
-    function swapcase(text) {
-        if (!checkfunctype("swapcase", "string", text, 1)) {exit(1)}
+    function swapcase(Text) {
+        if (!checkfunctype("swapcase", "string", Text, 1)) {exit(1)}
         foreach i, n in text {
             New=n
             if (isupper(n)) {
@@ -95,23 +86,23 @@ if (!INCLUDE["STRING"]) {
             }
             text=text.set(i, New)
         }
-        return text
+        return Text
     }
 
-function partition(text, search) {                                          
-        if (!checkfunctype("partition", "string", text, 1)) {exit(1)}
-        if (!checkfunctype("partition", "string", search, 2)) {exit(1)}
-        data=[text, "", ""]
-        Position=find(text, search)
+function partition(Text, Search) {                                          
+        if (!checkfunctype("partition", "string", Text, 1)) {exit(1)}
+        if (!checkfunctype("partition", "string", Search, 2)) {exit(1)}
+        Data=[Text, "", ""]
+        Position=index(Text, Search)
         if (Position == -1) {
-            return data
+            return Data
         }
-        First=substr(text, 0, Position)
-        Start=len(First + search)
-        length=len(text) - Start
-        Second=substr(text, Start, length)
-        data=[First, search, Second]
-        return data
+        First=substr(Text, 0, Position)
+        Start=len(First + Search)
+        Length=len(Text) - Start
+        Second=substr(Text, Start, Length)
+        Data=[First, Search, Second]
+        return Data
     }
 }
 

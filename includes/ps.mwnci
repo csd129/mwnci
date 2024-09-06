@@ -4,8 +4,7 @@ if (!INCLUDE["PS"]) {
     function process() {
         CmdHash={}
         ProcessTable={}
-        Processes=split(trim(system("ps aux | grep -v \"\\[\" | tail +2")), "\n"
-)
+        Processes=split(trim(system("ps aux | grep -v \"\\[\" | tail +2")), "\n")
         foreach process in Processes {
             Cmd=""
             line=fields(process)
@@ -67,7 +66,7 @@ if (!INCLUDE["PS"]) {
         foreach Line in Result {
             SLine=fields(Line)
             if (len(SLine) > 0) {
-                if (find(SLine[4], "[") == -1) {
+                if (index(SLine[4], "[") == -1) {
                     Proc_Hash={"pcpu": SLine[0], "pmem": SLine[1], "user": SLine[3], "cmd": SLine[4]}
                     Key=SLine[2]
                     Data=set(Data, Key, Proc_Hash)
