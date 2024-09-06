@@ -1,41 +1,6 @@
 if (!INCLUDE["NET"]) {
     INCLUDE=set(INCLUDE, "NET", true)
 
-    RTF_FLAGS={
-        "0001": "U",
-        "0002": "G",
-        "0003": "UG",
-        "0004": "H",
-    }
-
-    TCP_STATES={
-        "01": "ESTABLISHED",
-        "02": "SYN_SENT",
-        "03": "SYN_RECV",
-        "04": "FIN_WAIT1",
-        "05": "FIN_WAIT2",
-        "06": "TIME_WAIT",
-        "07": "CLOSE",
-        "08": "CLOSE_WAIT",
-        "09": "LAST_ACK",
-        "0A": "LISTEN",
-        "0B": "CLOSING",
-        "0C": "NEW_SYN_RECV",
-        "0D": "MAX_STATES"
-    }
-
-    function parseconn(conn="", proto="") {
-        SplitConn=splithostport(conn)
-        if (hassuffix(proto, "6")) {
-            IP=hextoipv6(SplitConn[0])
-        } else {
-            IP=hextoipv4(SplitConn[0])
-        }
-        Port=string(hex2dec(SplitConn[1]))
-        if (Port == "0") {Port="*"}
-        return sprintf("%s:%s", IP, Port)
-    }
-
     function openports() {
         port_array=[]
         foreach line in netstat() {
@@ -73,27 +38,6 @@ if (!INCLUDE["NET"]) {
         return len(listcidrips(cidr))
     }
     
-    function hextoipv6(hexaIP="") {
-        i=0
-	    result=""
-	    while (i < len(hexaIP)) {
-	        word=hexaIP.substr(i, 8)
-	        foreach n in [6, 7, 4, 5, 2, 3, 0, 1] {
-	            result=result + string(word[n])
-		        if (n==5 || n==1){result=result + ":"}
-	        }
-	        i += 8
-	    }
-	    result=split(substr(result,0, len(result)-1), ":")
-	    ipv6_result=""
-	    foreach hexy in result {
-	        temp=ltrim(hexy, "0")
-	        if (len(temp) == 0) {temp="0"}
-	        ipv6_result=ipv6_result + temp + ":"
-	    }
-	    return tolower(substr(ipv6_result,0, len(ipv6_result)-1))
-    }
-
     function lookupport(Port=0, Proto="tcp") {
         if (!checkfunctype("lookupport", "integer", Port, 1)) {exit(1)}
         if (!checkfunctype("lookupport", "string", Proto, 2)) {exit(1)}
@@ -133,11 +77,6 @@ if (!INCLUDE["NET"]) {
 	    RouteArray=RouteArray.push(TempHash)
 	}
 	return RouteArray
-    }
-
-    function hextoipv4(hexaIP="") {
-        converted=inttoip(hex2dec(hexaIP))
-	    return join(reverse(split(converted, ".")), ".")
     }
 
     function netstat() {
@@ -194,14 +133,6 @@ if (!INCLUDE["NET"]) {
             return iface_hash[iface]
         }
         return iface_hash
-    }
-
-    function string.hextoipv6() {
-        return hextoipv6(self)
-    }
-
-    function string.hextoipv4() {
-        return hextoipv4(self)
     }
 
     function string.cidrrange() {

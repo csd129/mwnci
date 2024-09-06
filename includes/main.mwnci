@@ -409,30 +409,35 @@ if (!INCLUDE["MAIN"]) {
 
         FullPerms=split(SymUser + SymGroup + SymOther, "")
         BSpec=split(Spec, "")
+
+// Sticky
         if (BSpec[2] == "1") {
             if (FullPerms[8] != "x") {
-	            FullPerms=set(FullPerms, 8, "T")
-	        } else {
-	            FullPerms=set(FullPerms, 8, "t")
-	        }
+	        FullPerms=set(FullPerms, 8, "T")
+	    } else {
+	        FullPerms=set(FullPerms, 8, "t")
+	    }
         }
+
+// Setgid
         if (BSpec[1] == "1") {
             if (FullPerms[5] != "x") {
-	            FullPerms=set(FullPerms, 5, "S")
-	        } else {
-	            FullPerms=set(FullPerms, 5, "s")
-	        }
+	        FullPerms=set(FullPerms, 5, "S")
+	    } else {
+	        FullPerms=set(FullPerms, 5, "s")
+	    }
         }
+
+// Setuid
         if (BSpec[0] == "1") {
             if (FullPerms[2] != "x") {
-	            FullPerms=set(FullPerms, 2, "S")
-	        } else {
-	            FullPerms=set(FullPerms, 2, "s")
-	        }
+	        FullPerms=set(FullPerms, 2, "S")
+	    } else {
+	        FullPerms=set(FullPerms, 2, "s")
+	    }
         }
         FullPerms=join(FullPerms, "")
-
-           return FullPerms
+	 return FullPerms
     }
 
     function values(Data={}) {
