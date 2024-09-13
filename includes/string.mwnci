@@ -3,28 +3,28 @@ if (!INCLUDE["STRING"]) {
 
     function ljust(Text="", Length, Spacer=" ") {
         if (!checkfunctype("ljust", "string", Text, 1)) {exit(1)}
-	if (!checkfunctype("ljust", "integer", Length, 2)) {exit(1)}
-	if (!checkfunctype("ljust", "string", Spacer, 3)) {exit(1)}
-	if (len(Spacer) != 1) {
-	    println("Error calling `ljust`: ERROR: fill character must be exactly one character long")
-	    exit(1)
-	}
-	if (Length <= len(Text)) {return Text}
-	Repeat=repeat(Spacer, Length-len(Text))
-	return Text + Repeat
+        if (!checkfunctype("ljust", "integer", Length, 2)) {exit(1)}
+        if (!checkfunctype("ljust", "string", Spacer, 3)) {exit(1)}
+        if (len(Spacer) != 1) {
+            println("Error calling `ljust`: ERROR: fill character must be exactly one character long")
+            exit(1)
+        }
+        if (Length <= len(Text)) {return Text}
+        Repeat=repeat(Spacer, Length-len(Text))
+        return Text + Repeat
     }
 
     function rjust(Text="", Length, Spacer=" ") {
         if (!checkfunctype("rjust", "string", Text, 1)) {exit(1)}
-	if (!checkfunctype("rjust", "integer", Length, 2)) {exit(1)}
-	if (!checkfunctype("rjust", "string", Spacer, 3)) {exit(1)}
-	if (len(Spacer) != 1) {
-	    println("Error calling `rjust`: ERROR: fill character must be exactly one character long")
-	    exit(1)
-	}
-	if (Length <= len(Text)) {return Text}
-	Repeat=repeat(Spacer, Length-len(Text))
-	return Repeat + Text
+        if (!checkfunctype("rjust", "integer", Length, 2)) {exit(1)}
+        if (!checkfunctype("rjust", "string", Spacer, 3)) {exit(1)}
+        if (len(Spacer) != 1) {
+            println("Error calling `rjust`: ERROR: fill character must be exactly one character long")
+            exit(1)
+        }
+        if (Length <= len(Text)) {return Text}
+        Repeat=repeat(Spacer, Length-len(Text))
+        return Repeat + Text
     }
 
     function center(Text="", Length, Spacer=" ") {
@@ -32,9 +32,9 @@ if (!INCLUDE["STRING"]) {
         if (!checkfunctype("center", "integer", Length, 1)) {exit(1)}
         if (!checkfunctype("center", "string", Spacer, 3)) {exit(1)}
         if (len(Spacer) != 1) {
-	    println("Error calling `center`: ERROR: fill character must be exactly one character long")
-	    exit(1)
-	}
+            println("Error calling `center`: ERROR: fill character must be exactly one character long")
+            exit(1)
+        }
 
         if (Length <= len(Text)) {return Text}
         Beginning=int((Length-len(Text))/2)
@@ -71,7 +71,7 @@ if (!INCLUDE["STRING"]) {
 
     function isupper(Text) {
         if (!checkfunctype("isupper", "string", Text, 1)) {exit(1)}
-	return (toupper(Text) == Text) ? true : false
+        return (toupper(Text) == Text) ? true : false
     }
 
     function swapcase(Text) {

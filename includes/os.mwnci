@@ -26,7 +26,7 @@ if (!INCLUDE["OS"]) {
         foreach Entry in Mounted {
             if (len(Entry) > 0) {
                 SplitLine=fields(Entry)
-	        if (SplitLine[0].contains("/")) {
+	        	if (SplitLine[0].contains("/")) {
                     PercentUsed=int(trimsuffix(SplitLine[4], "%"))
                     PercentFree=100 - PercentUsed
                     TempHash={"blocks": int(SplitLine[1]), "used": int(SplitLine[2]), "available": int(SplitLine[3]), "usedperc": PercentUsed, "freeperc": PercentFree, "mount": SplitLine[5]}
@@ -40,28 +40,28 @@ if (!INCLUDE["OS"]) {
     function free_linux() {
         MemoryHash={}
         Data=split(trim(system("free")), "\n")
-	foreach Line in Data {
+		foreach Line in Data {
 	    Sline=fields(Line)
 	    if (Sline[0] == "Mem:") {
 	        Total=int(Sline[1])
-		Used=int(Sline[2])
-		Free=int(Sline[3])
-		Shared=int(Sline[4])
-		Buff=int(Sline[5])
-		Avail=int(Sline[6])
-		UsedPC=sprintf("%.2f", float(Used) / float(Total) * 100)
-		FreePC=sprintf("%.2f", float(100.0 - float(UsedPC)))
-	        Hashy={"total": Total, "used": Used, "free": Free, "shared": Shared, "cache": Buff, "avail": Avail, "usedperc": float(UsedPC), "freeperc": float(FreePC)}
-		MemoryHash=set(MemoryHash, "mem", Hashy)
-            }
+			Used=int(Sline[2])
+			Free=int(Sline[3])
+			Shared=int(Sline[4])
+			Buff=int(Sline[5])
+			Avail=int(Sline[6])
+			UsedPC=sprintf("%.2f", float(Used) / float(Total) * 100)
+			FreePC=sprintf("%.2f", float(100.0 - float(UsedPC)))
+			Hashy={"total": Total, "used": Used, "free": Free, "shared": Shared, "cache": Buff, "avail": Avail, "usedperc": float(UsedPC), "freeperc": float(FreePC)}
+			MemoryHash=set(MemoryHash, "mem", Hashy)
+        }
 	    if (Sline[0] == "Swap:") {
 	        Total=int(Sline[1])
-		Used=int(Sline[2])
-		Free=int(Sline[3])
-		UsedPC=sprintf("%.2f", float(Used) / float(Total) * 100)
-		FreePC=sprintf("%.2f", float(100.0 - float(UsedPC)))
-		Hashy={"total": Total, "used": Used, "free": Free, "usedperc": float(UsedPC), "freeperc": float(FreePC)}
-		MemoryHash=set(MemoryHash, "swap", Hashy)
+			Used=int(Sline[2])
+			Free=int(Sline[3])
+			UsedPC=sprintf("%.2f", float(Used) / float(Total) * 100)
+			FreePC=sprintf("%.2f", float(100.0 - float(UsedPC)))
+			Hashy={"total": Total, "used": Used, "free": Free, "usedperc": float(UsedPC), "freeperc": float(FreePC)}
+			MemoryHash=set(MemoryHash, "swap", Hashy)
 	    }
 	}
 	return MemoryHash
@@ -69,43 +69,41 @@ if (!INCLUDE["OS"]) {
 
     function free_bsd() {
         MemoryHash={}
-	SysctlCmd="/sbin/sysctl -a | egrep \"vm.stats.vm.v|hw.physmem|hw.pagesize\""
-	SysctlOutput=split(system(SysctlCmd),"\n")
-	sysctl={}
-	foreach Line in SysctlOutput {
-	    Sline=cut(Line, ": ")
-	    Sysctl=set(Sysctl, Sline[0], Sline[1])
+		SysctlCmd="/sbin/sysctl -a | egrep \"vm.stats.vm.v|hw.physmem|hw.pagesize\""
+		SysctlOutput=split(system(SysctlCmd),"\n")
+		sysctl={}
+		foreach Line in SysctlOutput {
+			Sline=cut(Line, ": ")
+			Sysctl=set(Sysctl, Sline[0], Sline[1])
     	}
-	PageSize=int(Sysctl["hw.pagesize"])
-	mem_hw = int(Sysctl["hw.physmem"])
-	mem_phys= int(Sysctl["hw.physmem"])
-	mem_all=int(Sysctl["vm.stats.vm.v_page_count"])  * PageSize
-	mem_wire=int(Sysctl["vm.stats.vm.v_wire_count"]) * PageSize
-	mem_active=int(Sysctl["vm.stats.vm.v_active_count"]) * PageSize
-	mem_inactive=int(Sysctl["vm.stats.vm.v_inactive_count"]) * PageSize
-	mem_cache=int(Sysctl["vm.stats.vm.v_cache_count"]) * PageSize
-	mem_free=int(Sysctl["vm.stats.vm.v_free_count"]) * PageSize
-	mem_total = mem_hw
-	mem_avail = mem_inactive + mem_cache + mem_free
-	mem_used = mem_total - mem_avail
-	mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
-	mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
-	hashy={"mem_cache": mem_cache / 1024, "total": mem_total / 1024, "mem_avail": mem_avail / 1024, "mem_used": mem_used / 1024, "mem_inactive": mem_inactive / 1024, "mem_free": mem_free / 1024, "used_perc": mem_used_perc, "free_perc": mem_free_perc, "mem_active": mem_active}
-	MemoryHash=set(MemoryHash, "mem", hashy)
-	Swap=split(trim(system("swapinfo")), "\n")
-	Swap=shift(Swap)
-	Total=Used=Avail=0
-	foreach Line in Swap {
-	    Fields=fields(Line)
-	    Total += int(Fields[1])
-	    Used += int(Fields[2])
-	    Avail += int(Fields[3])
-	}
-	swap_used_perc=sprintf("%.2f", float(Used) / float(Total)*100)
-	swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
-	hashy={"total": Total, "free": Avail, "used": Used, "used_perc": float(swap_used_perc), "free_perc": float(swap_free_perc)}
-	MemoryHash=set(MemoryHash, "swap", hashy)
-	return MemoryHash
+		PageSize=int(Sysctl["hw.pagesize"])
+		mem_hw = int(Sysctl["hw.physmem"])
+		mem_phys= int(Sysctl["hw.physmem"])
+		mem_all=int(Sysctl["vm.stats.vm.v_page_count"])  * PageSize
+		mem_wire=int(Sysctl["vm.stats.vm.v_wire_count"]) * PageSize
+		mem_active=int(Sysctl["vm.stats.vm.v_active_count"]) * PageSize
+		mem_inactive=int(Sysctl["vm.stats.vm.v_inactive_count"]) * PageSize
+		mem_cache=int(Sysctl["vm.stats.vm.v_cache_count"]) * PageSize
+		mem_free=int(Sysctl["vm.stats.vm.v_free_count"]) * PageSize
+		mem_total = mem_hw
+		mem_avail = mem_inactive + mem_cache + mem_free
+		mem_used = mem_total - mem_avail
+		mem_used_perc=sprintf("%.2f", float(mem_used) / float(mem_total)*100)
+		mem_free_perc=sprintf("%.2f", float(100.00 - float(mem_used_perc)))
+		hashy={"mem_cache": mem_cache / 1024, "total": mem_total / 1024, "mem_avail": mem_avail / 1024, "mem_used": mem_used / 1024, "mem_inactive": mem_inactive / 1024, "mem_free": mem_free / 1024, "used_perc": mem_used_perc, "free_perc": mem_free_perc, "mem_active": mem_active}
+		MemoryHash=set(MemoryHash, "mem", hashy)
+		Swap=split(trim(system("swapinfo")), "\n")
+		Swap=shift(Swap)
+		Total=Used=Avail=0
+		foreach Line in Swap {
+	    	Fields=fields(Line)
+	    	Total += int(Fields[1])
+	   	}
+		swap_used_perc=sprintf("%.2f", float(Used) / float(Total)*100)
+		swap_free_perc=sprintf("%.2f", float(100.0 - float(swap_used_perc)))
+		hashy={"total": Total, "free": Avail, "used": Used, "used_perc": float(swap_used_perc), "free_perc": float(swap_free_perc)}
+		MemoryHash=set(MemoryHash, "swap", hashy)
+		return MemoryHash
     }
 
 

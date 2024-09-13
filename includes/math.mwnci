@@ -104,7 +104,7 @@ if (!INCLUDE["MATH"]) {
     function gcd(Dividend, Divisor) {
         if (!checkfunctype("gcd", "integer", Dividend, 1)) {exit(1)}
         if (!checkfunctype("gcd", "integer", Divisor, 2)) {exit(1)}    
-	if (Dividend == 0 && Divisor == 0) {return 0}
+	    if (Dividend == 0 && Divisor == 0) {return 0}
         Remainder=1
         while (Remainder != 0) {
             Remainder=Dividend % Divisor
@@ -220,18 +220,10 @@ if (!INCLUDE["MATH"]) {
         intnum=int(rnum)
         if (rnum > 0) {
             remain=float(rnum-intnum)
-            if (remain > 0.4) {
-                result=float(intnum + 1)
-            } else {
-                result=float(intnum)
-            }
+            result = (remain > 0.4) ? float(intnum + 1) : float(intnum)
         } else {
             remain=float(rnum+abs(intnum))
-            if (remain < -0.4) {
-                result=float(intnum - 1)
-            } else {
-                result=intnum
-            }
+            result = (remain < -0.4) ? float(intnum - 1) : float(intnum)
         }
         return result
     }
