@@ -58,6 +58,21 @@ if (!INCLUDE["STRING"]) {
         return trim(Title)
     }
 
+    function isalpha(data="") {
+        if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
+	return match("^[a-zA-Z0-9]*$", String) ? true : false
+    }
+
+    function isalnum(String) {
+        if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
+	return match("^[a-zA-Z0-9]*$", String) ? true : false
+    }
+
+    function isnum(String) {
+        if (!checkfunctype("isnum", "string", String, 1)) {exit(1)}
+	return match("^[0-9]*$", String) ? true : false
+    }
+
     function isspace(Text) {
         if (!checkfunctype("isspace", "string", Text, 1)) {exit(1)}
         if (len(Text) == 0) {return false}
@@ -69,6 +84,11 @@ if (!INCLUDE["STRING"]) {
         return (tolower(Text) == Text) ? true : false
     }
 
+    function istitle(Text) {
+        if (!checkfunctype("istitle", "string", Text, 1)) {exit(1)}
+	return (title(Text) == trim(Text)) ? true : false
+    }
+    
     function isupper(Text) {
         if (!checkfunctype("isupper", "string", Text, 1)) {exit(1)}
         return (toupper(Text) == Text) ? true : false
@@ -76,7 +96,7 @@ if (!INCLUDE["STRING"]) {
 
     function swapcase(Text) {
         if (!checkfunctype("swapcase", "string", Text, 1)) {exit(1)}
-        foreach i, n in text {
+        foreach i, n in Text {
             New=n
             if (isupper(n)) {
                 New=tolower(n)
@@ -84,7 +104,7 @@ if (!INCLUDE["STRING"]) {
             if (islower(n)) {
                 New=toupper(n)
             }
-            text=text.set(i, New)
+            Text=Text.set(i, New)
         }
         return Text
     }
@@ -115,3 +135,6 @@ function string.islower() {return islower(self)}
 function string.isupper() {return isupper(self)}
 function string.swapcase() {return swapcase(self)}
 function string.partition(search) {return partition(self, search)}
+function string.isalpha() {return isalpha(self)}
+function string.isalnum() {return isalnum(self)}
+function string.isnum() {return isnum(self)}

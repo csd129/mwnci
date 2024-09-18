@@ -458,19 +458,4 @@ if (!INCLUDE["MAIN"]) {
 	}
 	return Counter
     }
-
-    function isalpha(data="") {
-        if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
-	return match("^[a-zA-Z0-9]*$", String) ? true : false
-    }
-
-    function isalnum(String) {
-        if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
-	return match("^[a-zA-Z0-9]*$", String) ? true : false
-    }
-
-    function isnum(String) {
-        if (!checkfunctype("isnum", "string", String, 1)) {exit(1)}
-	return match("^[0-9]*$", String) ? true : false
-    }
 }
