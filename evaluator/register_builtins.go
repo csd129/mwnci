@@ -124,6 +124,7 @@ func init() {
 	RegisterBuiltin("sort", func(env *object.Environment, args ...object.Object) object.Object { return (Sorted(args...)) })
 	RegisterBuiltin("sortips", func(env *object.Environment, args ...object.Object) object.Object { return (SortIP(args...)) })
 	RegisterBuiltin("split", func(env *object.Environment, args ...object.Object) object.Object { return (Split(args...)) })
+	RegisterBuiltin("splithostport", func(env *object.Environment, args ...object.Object) object.Object { return (SplitHP(args...)) })
 	RegisterBuiltin("sprintf", func(env *object.Environment, args ...object.Object) object.Object { return (sprintfFun(args...)) })
 	RegisterBuiltin("string", func(env *object.Environment, args ...object.Object) object.Object { return (strFun(args...)) })
 	RegisterBuiltin("substr", func(env *object.Environment, args ...object.Object) object.Object { return (subStrFun(args...)) })

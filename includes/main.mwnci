@@ -73,14 +73,6 @@ if (!INCLUDE["MAIN"]) {
 	return true
     }
 
-    function splithostport(HostPort="") {
-        if (!checkfunctype("splithostport", "string", HostPort, 1)) {exit(1)}
-        SplitPort=split(HostPort, ":")
-        Port=SplitPort[len(SplitPort)-1]
-        Address=trimsuffix(HostPort, ":" + Port)
-        return [Address, Port]
-    }
-
 // Rest() moved to here because buitlin shift() has replaced it 
     function rest(Array) {
         if (!checkfunctype("rest", "array", Array, 1)) {exit(1)}
