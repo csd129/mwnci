@@ -52,7 +52,6 @@ if (!INCLUDE["METHODS"]) {
     function object.float() {return float(self)}
     function object.floor() {return floor(self)}
     function object.int() {return int(self)}
-    function object.isalpha() {return isalpha(self)}
     function object.len() {return len(self)}
     function object.reverse() {return reverse(self)}
     function object.rotl(RotAmount=1) {return rotl(self, RotAmount)}
@@ -73,6 +72,9 @@ if (!INCLUDE["METHODS"]) {
     function string.index(item) {return index(self, item)}
     function string.interpol(data) {return interpol(data, self)}
     function string.ipincidr(cidr) {return ipincidr(cidr, self)}
+    function string.isalpha() {return isalpha(self)}
+    function string.isalnum() {return isalnum(self)}
+    function string.isnum() {return isnum(self)}
     function string.isnumber() {return isnumber(self)}
     function string.lines() {return lines(self)}
     function string.listcidrips() {return listcidrips(self)}

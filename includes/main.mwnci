@@ -95,12 +95,6 @@ if (!INCLUDE["MAIN"]) {
 	return Result
     }
 
-    function cls() {
-        print("
-")
-        return null
-    }
-
     function contains(Line="", Search="") {
         if (index(Line, Search) != -1) {return true}
         return false
@@ -191,10 +185,6 @@ if (!INCLUDE["MAIN"]) {
     	    }
         }
         return InterArray
-    }
-
-    function isalpha(data="") {
-        return (!isnumber(data) ? true : false)
     }
 
     function isrsorted(SortedArray) {
@@ -467,5 +457,20 @@ if (!INCLUDE["MAIN"]) {
 	    Counter += int(x) * (8 ** i)
 	}
 	return Counter
+    }
+
+    function isalpha(data="") {
+        if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
+	return match("^[a-zA-Z0-9]*$", String) ? true : false
+    }
+
+    function isalnum(String) {
+        if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
+	return match("^[a-zA-Z0-9]*$", String) ? true : false
+    }
+
+    function isnum(String) {
+        if (!checkfunctype("isnum", "string", String, 1)) {exit(1)}
+	return match("^[0-9]*$", String) ? true : false
     }
 }

@@ -72,7 +72,6 @@ func init() {
 	RegisterBuiltin("inttoip", func(env *object.Environment, args ...object.Object) object.Object { return (I2IP(args...)) })
 	RegisterBuiltin("ipincidr", func(env *object.Environment, args ...object.Object) object.Object { return (Ipincidr(args...)) })
 	RegisterBuiltin("iptoint", func(env *object.Environment, args ...object.Object) object.Object { return (IP2I(args...)) })
-	RegisterBuiltin("isnumber", func(env *object.Environment, args ...object.Object) object.Object { return (IsNumber(args...)) })
 	RegisterBuiltin("isreadable", func(env *object.Environment, args ...object.Object) object.Object { return (IsReadable(args...)) })
 	RegisterBuiltin("iswriteable", func(env *object.Environment, args ...object.Object) object.Object { return (IsWriteable(args...)) })
 	RegisterBuiltin("issorted", func(env *object.Environment, args ...object.Object) object.Object { return (Issorted(args...)) })
