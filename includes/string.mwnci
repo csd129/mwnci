@@ -158,3 +158,4 @@ function string.isalpha() {return isalpha(self)}
 function string.isalnum() {return isalnum(self)}
 function string.isnum() {return isnum(self)}
 function string.capitalize() {return capitalize(self)}
+function string.istitle() {return istitle(self)}
