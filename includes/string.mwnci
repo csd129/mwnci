@@ -47,18 +47,23 @@ if (!INCLUDE["STRING"]) {
     function title(Text="") {
         if (!checkfunctype("title", "string", Text, 1)) {exit(1)}
         if (len(Text) == 0) {return Text}
-        textArray=fields(Text)
-        Title=""
-        foreach Word in textArray {
-            Lower=tolower(Word)
-            First=toupper(Lower[0])
-            NewWord=set(Lower,0,First)
-            Title=Title + " " + NewWord
-        }
-        return trim(Title)
+
+	First=Text[0]
+	First=First.toupper()
+	Text=Text.set(0, First)
+	TLen=len(Text)-1
+	foreach Char in 1..TLen {
+	    if (isalpha(Text[Char])) {
+	        if (isspace(Text[Char-1])) {
+		    Up=toupper(Text[Char])
+		    Text=Text.set(Char, Up)
+		}
+	    }
+	}
+	return Text
     }
 
-    function isalpha(data="") {
+    function isalpha(String="") {
         if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
 	return match("^[a-zA-Z0-9]*$", String) ? true : false
     }
@@ -109,7 +114,21 @@ if (!INCLUDE["STRING"]) {
         return Text
     }
 
-function partition(Text, Search) {                                          
+    function capitalize(Text) {
+        if (!checkfunctype("capitalize", "string", Text, 1)) {exit(1)}
+	if (len(Text) == 0) {return Text}
+	First=Text[0]
+	First=First.toupper()
+	Text=Text.set(0, First)
+	TLen=len(Text)-1
+	foreach Char in 1..TLen {
+	    New=tolower(Text[Char])
+	    Text=Text.set(Char, New)
+	}
+	return Text
+    }
+
+    function partition(Text, Search) {
         if (!checkfunctype("partition", "string", Text, 1)) {exit(1)}
         if (!checkfunctype("partition", "string", Search, 2)) {exit(1)}
         Data=[Text, "", ""]
@@ -138,3 +157,4 @@ function string.partition(search) {return partition(self, search)}
 function string.isalpha() {return isalpha(self)}
 function string.isalnum() {return isalnum(self)}
 function string.isnum() {return isnum(self)}
+function string.capitalize() {return capitalize(self)}
