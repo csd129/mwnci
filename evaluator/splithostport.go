@@ -20,7 +20,6 @@ func SplitHP(args ...object.Object) object.Object {
 	if err != nil {
 		return newError(err.Error())
 	}
-	//Joined := fmt.Sprintf("%s %s", host, port)
 	elements := make([]object.Object, 2)
 	elements[0] = &object.String{Value: host}
 	elements[1] = &object.String{Value: port}
