@@ -54,6 +54,7 @@ const (
 	MOD_EQUALS      = "%="
 	NOT_CONTAINS    = "!~"
 	NOT_EQ          = "!="
+	NOOP            = "NOOP"
 	NULL            = "null"
 	OR              = "||"
 	PERIOD          = "."
@@ -95,6 +96,7 @@ var keywords = map[string]Type{
 	"if":       IF,
 	"in":       IN,
 	"let":      LET,
+	"noop":     NOOP,
 	"null":     NULL,
 	"return":   RETURN,
 	"switch":   SWITCH,

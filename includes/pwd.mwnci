@@ -2,35 +2,30 @@ if (!INCLUDE["PWD"]) {
     INCLUDE=set(INCLUDE, "PWD", true)
     
     function getpwent(user="") {
-        user=string(user)
-        PASSWD="/etc/passwd"
-        PasswdArray=[]
-        FileArray=split(trim(cat(PASSWD)), "\n")
-
-        foreach line in FileArray {
-            userhash={}
-            userinfo=split(trim(line), ":")
-            if (userinfo) {
-                gecos=split(userinfo[4], ",")
-                userhash=set(userhash, "Gecos", gecos)
-                userhash=set(userhash, "User", userinfo[0])
-                userhash=set(userhash, "Uid", int(userinfo[2]))
-                userhash=set(userhash, "Gid", int(userinfo[3]))
-                userhash=set(userhash, "Home", userinfo[5])
-                shell = (len(userinfo[6]) == 0) ? "/bin/sh" : userinfo[6]
-                userhash=set(userhash, "Shell", shell)
-                PasswdArray=push(PasswdArray, userhash)
-            }
-        }
-	    if (user != "") {
-            foreach entry in PasswdArray {
-	            if (entry["User"] == user || string(entry["Uid"]) == user) {
-                    return entry
-                }
-	        }
-	        return {}
-        }
-        return PasswdArray
+	FindUser=string(User)
+	PasswdArray=[]
+	if (len(FindUser) > 0) {
+	    FileArray=regexp(FindUser, "/etc/passwd")
+	    foreach Entry in FileArray {
+	    	UserHash={}
+	        UserInfo=split(trim(Entry), ":")
+		Gecos=split(UserInfo[4], ",")
+		UserHash=set(UserHash, "Gecos", Gecos)
+		UserHash=set(UserHash, "User", UserInfo[0])
+		UserHash=set(UserHash, "Uid", int(UserInfo[2]))
+		UserHash=set(UserHash, "Gid", int(UserInfo[3]))
+		UserHash=set(UserHash, "Home", UserInfo[5])
+		Shell=(len(UserInfo[6]) == 0) ? "/bin/sh" : UserInfo[6]
+		UserHash=set(UserHash, "Shell", Shell)
+		PasswdArray=push(PasswdArray, UserHash)
+	    }
+	}
+	foreach Entry in PasswdArray {
+	    if (Entry["User"] == FindUser || string(Entry["Uid"]) == FindUser) {
+	        return Entry
+	    }
+	}
+	return {}
     }
 
     function getpwnam(User="") {

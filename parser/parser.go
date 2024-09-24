@@ -150,6 +150,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
 	p.registerPrefix(token.NULL, p.parseNull)
+	p.registerPrefix(token.NOOP, p.parseNull)
 	p.registerPrefix(token.REGEXP, p.parseRegexpLiteral)
 	p.registerPrefix(token.REGEXP, p.parseRegexpLiteral)
 	p.registerPrefix(token.STRING, p.parseStringLiteral)
