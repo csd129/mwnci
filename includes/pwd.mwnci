@@ -1,7 +1,7 @@
 if (!INCLUDE["PWD"]) {
     INCLUDE=set(INCLUDE, "PWD", true)
     
-    function getpwent(user="") {
+    function getpwent(User="") {
 	FindUser=string(User)
 	PasswdArray=[]
 	if (len(FindUser) > 0) {
