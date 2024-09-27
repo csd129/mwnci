@@ -45,16 +45,6 @@ if (!INCLUDE["MATH"]) {
         return V < 0 ? float(0) : V
     }
 
-    function divmod(Dividend=0,Divisor=0) {
-        if (!checkfunctype("divmod", "integer", Dividend, 1)) {exit(1)}
-        if (!checkfunctype("divmod", "integer", Divisor, 2)) {exit(1)}
-	    if (Divisor == 0) {
-	        println("Error calling `divmod`: Error: argument #2 Division by zero")
-	        exit(1)
-	    }
-        return [Dividend/Divisor, Dividend%Divisor]
-    }
-
     function exp(X=0) {
     	if (!checkfunctype("exp", "number", X, 1)) {exit(1)}
         return float(E**X)

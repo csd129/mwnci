@@ -1124,7 +1124,7 @@ func evalIndexExpression(left, index object.Object) object.Object {
 	case left.Type() == object.STRING_OBJ:
 		return evalStringIndexExpression(left, index)
 	default:
-		return newError("index operator not support:%s", left.Type())
+		return newError("index operator not supported: %s", left.Type())
 
 	}
 }

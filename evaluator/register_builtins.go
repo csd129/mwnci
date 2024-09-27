@@ -39,6 +39,7 @@ func init() {
 	RegisterBuiltin("delete", func(env *object.Environment, args ...object.Object) object.Object { return (harrayDelete(args...)) })
 	RegisterBuiltin("difference", func(env *object.Environment, args ...object.Object) object.Object { return (ArrDiff(args...)) })
 	RegisterBuiltin("dirpath", func(env *object.Environment, args ...object.Object) object.Object { return (Dirpath(args...)) })
+	RegisterBuiltin("divmod", func(env *object.Environment, args ...object.Object) object.Object { return (Divmod(args...)) })
 	RegisterBuiltin("eval", func(env *object.Environment, args ...object.Object) object.Object { return (evalFun(env, args...)) })
 	RegisterBuiltin("exit", func(env *object.Environment, args ...object.Object) object.Object { return (exitFun(args...)) })
 	RegisterBuiltin("extend", func(env *object.Environment, args ...object.Object) object.Object { return (ArrExtend(args...)) })
