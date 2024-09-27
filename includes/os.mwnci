@@ -143,19 +143,6 @@ if (!INCLUDE["OS"]) {
         return Secs
     }
 
-    function meminfo() {
-        MemoryHash={}
-        Data=split(cat("/proc/meminfo"), "\n")
-        foreach Entry in Data {
-            if (len(Entry) > 0) {
-                Entry=replaceall(Entry, ":", "")
-                Entryarray=fields(Entry)
-                MemoryHash=set(MemoryHash, Entryarray[0], Entryarray[1])
-            }
-        }
-        return MemoryHash
-    }
-    
     function string.datetoepoch() {
         return datetoepoch(self)
     }

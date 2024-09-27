@@ -23,6 +23,7 @@ if (!INCLUDE["METHODS"]) {
     function array.push(item) {return push(self, item)}
     function array.remove(element=-1) {return remove(self, element)}
     function array.rest() {return rest(self)}
+    function array.rindex(item) {return rindex(self, item)}
     function array.rsort() {return rsort(self)}
     function array.rsortips() {return rsortips(self)}
     function array.set(element=-1, value="") {return set(self, element, value)}
@@ -88,6 +89,7 @@ if (!INCLUDE["METHODS"]) {
     function string.repeat(count=0, separator="") {return repeat(self, count, separator)}
     function string.replace(old, new, amount) {return replace(self, old, new, amount)}
     function string.replaceall( old, new ) {return replaceall(self, old, new)}
+    function string.rindex(item) {return rindex(self, item)}
     function string.rtrim(trimmer="") {if (trimmer == "") {return rtrim(self)} return rtrim(self, trimmer)}
     function string.set(element=-1, value="") {return set(self, element, value)}
     function string.split(separator="") {return split(self, separator)}

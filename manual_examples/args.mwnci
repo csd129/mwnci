@@ -1,0 +1,4 @@
+#!/usr/bin/env mwnci
+println("args()=", args())
+println("ARGV=", ARGV)
+println("ARGC=", ARGC)

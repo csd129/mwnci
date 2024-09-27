@@ -452,10 +452,38 @@ if (!INCLUDE["MAIN"]) {
 
     function oct2dec(OctNumber) {
         Number=reverse(string(OctNumber))
-	Counter=0
-	foreach i, x in Number {
-	    Counter += int(x) * (8 ** i)
-	}
-	return Counter
+        Counter=0
+        foreach i, x in Number {
+            Counter += int(x) * (8 ** i)
+        }
+	    return Counter
+    }
+
+    function rindex(Haystack, Needle) {
+        Pos=-1
+        switch (type(Haystack)) {
+	        case "array" {
+	            HayLen=len(Haystack)-1
+	            Haystack=reverse(Haystack)
+	            Pos=index(Haystack, Needle)
+	            if (Pos != -1) {
+	                Pos=HayLen-Pos
+	            }
+	        }
+	        case "string" {
+	            HayLen=len(Haystack)
+	            Nsearch=reverse(Needle)
+		        Nstack=reverse(Haystack)
+		        Pos=index(Nstack, Nsearch)
+		        if (Pos != -1) {
+		            Pos=HayLen - len(Nsearch) - Pos
+		        }
+	        }
+	        default {
+	            println("Error calling `rindex`: ERROR: TypeError: rindex() expected argument #1 to be `STRING` or `ARRAY`, got `", toupper(type(Haystack)), "`")
+	            exit(1)
+	        }
+	    }
+	    return Pos
     }
 }
