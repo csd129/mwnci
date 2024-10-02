@@ -71,7 +71,7 @@ if (!INCLUDE["OS"]) {
         MemoryHash={}
 		SysctlCmd="/sbin/sysctl -a | egrep \"vm.stats.vm.v|hw.physmem|hw.pagesize\""
 		SysctlOutput=split(system(SysctlCmd),"\n")
-		sysctl={}
+		Sysctl={}
 		foreach Line in SysctlOutput {
 			Sline=cut(Line, ": ")
 			Sysctl=set(Sysctl, Sline[0], Sline[1])

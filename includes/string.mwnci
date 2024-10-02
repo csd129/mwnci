@@ -64,7 +64,7 @@ if (!INCLUDE["STRING"]) {
     }
 
     function isalpha(String="") {
-        if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
+        if (!checkfunctype("isalpha", "string", String, 1)) {exit(1)}
 	return match("^[a-zA-Z]*$", String) ? true : false
     }
 

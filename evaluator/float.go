@@ -2,7 +2,7 @@ package evaluator
 
 import (
 	"strconv"
-
+	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -38,6 +38,19 @@ func floatFun(args ...object.Object) object.Object {
 	case *object.Integer:
 		input := args[0].(*object.Integer).Value
 		return &object.Float{Value: float64(input)}
+	case *object.Array:
+		arr := args[0].(*object.Array)
+		newArray := arr.Copy()
+		for i, v := range newArray.Elements {
+			Num:=fmt.Sprintf("%v", v)
+			foo, err := strconv.ParseFloat(Num, 64)
+			if err != nil {
+				return newError("argument to `float` not supported, got=%s", v.Type())
+			} else {
+				newArray.Aset(i, &object.Float{Value: float64(foo)})
+			}
+		}
+		return newArray
 	default:
 		return newError("argument to `float` not supported, got=%s",
 			args[0].Type())

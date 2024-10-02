@@ -165,8 +165,10 @@ if (!INCLUDE["MATH"]) {
 
     // End pedantry
 
-    function median(MedianArray) {
+    function median(MedianArray=[]) {
         if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
+	NewArray=float(MedianArray)
+        MedianArray=copy(NewArray)
         MedianArray=sort(MedianArray)
         Len=len(MedianArray)
         Calc=divmod(Len, 2)
