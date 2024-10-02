@@ -21,7 +21,7 @@ import (
 )
 
 // The current version
-var version = "0.1.9.r10-20240906"
+var version = "0.1.9.r11-20241002"
 
 var stdlib string
 
