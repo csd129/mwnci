@@ -47,11 +47,13 @@ func intFun(args ...object.Object) object.Object {
 		newArray := arr.Copy()
 		for i, v := range newArray.Elements {
 			Num:=fmt.Sprintf("%v", v)
+			decimal := strings.Split(Num, ".")
+			Num=decimal[0]
 			foo, err := strconv.Atoi(Num)
 			if err != nil {
-				return newError("argument to `int` not supported, got=%s", v.Type())
+				return newError("Converting string '%v' to float failed %s",v, err.Error())
 			} else {
-				newArray.Aset(i, &object.Float{Value: float64(foo)})
+				newArray.Aset(i, &object.Integer{Value: int64(foo)})
 			}
 		}
 		return newArray

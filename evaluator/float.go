@@ -45,7 +45,7 @@ func floatFun(args ...object.Object) object.Object {
 			Num:=fmt.Sprintf("%v", v)
 			foo, err := strconv.ParseFloat(Num, 64)
 			if err != nil {
-				return newError("argument to `float` not supported, got=%s", v.Type())
+				return newError("Converting string '%v' to float failed %s",v, err.Error())
 			} else {
 				newArray.Aset(i, &object.Float{Value: float64(foo)})
 			}
