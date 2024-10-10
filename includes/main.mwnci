@@ -14,14 +14,7 @@ const ARGV=args()
 const ARGC=len(ARGV)
 const PID=getpid()
 const NULL=chr(0)
-
-/*
- PROGNAME will hold the basename of the script that's
- being called
-*/
-if (ARGC > 0) {
-    const PROGNAME=basename(ARGV[0])
-}
+const PROGNAME = (ARGC > 0) ? basename(ARGV[0]) : ""
 
 /*
  File-objects for STDIN, STDOUT, and STDERR.
@@ -70,7 +63,7 @@ if (!INCLUDE["MAIN"]) {
             toupper(expected), "` got `", toupper(ReceivedType), "`")
             return false
         }
-	return true
+        return true
     }
 
 // Rest() moved to here because buitlin shift() has replaced it 
@@ -83,16 +76,16 @@ if (!INCLUDE["MAIN"]) {
     function bin2dec(BinaryNumber=NULL) {
         if (BinaryNumber == NULL) {return false}
         BinaryNumber=trimprefix(string(BinaryNumber), "0b")
-	if (!match("^[0-1]{1,}$", BinaryNumber)) {
-	    println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", BinaryNumber)
-	    return false
-	}
-	Len=len(BinaryNumber)-1
-	Result=0
-	foreach n in 0..Len {
-	    Result = Result*2 + int(BinaryNumber[n])
-	}
-	return Result
+        if (!match("^[0-1]{1,}$", BinaryNumber)) {
+            println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", BinaryNumber)
+            return false
+        }
+        Len=len(BinaryNumber)-1
+        Result=0
+        foreach n in 0..Len {
+            Result = Result*2 + int(BinaryNumber[n])
+        }
+        return Result
     }
 
     function contains(Line="", Search="") {
@@ -168,7 +161,7 @@ if (!INCLUDE["MAIN"]) {
         foreach key in keys(data) {
             rstring="${"+key+"}"
             text=replaceall(text, rstring, string(data[key]))
-	}
+        }
         return text
     }
 
@@ -213,26 +206,26 @@ if (!INCLUDE["MAIN"]) {
 
     function max(MyArray=[]) {
         if (!checkfunctype("max", "array", MyArray, 1)) {exit(1)}
-	ArrayLen=len(MyArray)
-	return (ArrayLen == 0) ? 0 : MyArray.sort()[ArrayLen -1]
+        ArrayLen=len(MyArray)
+        return (ArrayLen == 0) ? 0 : MyArray.sort()[ArrayLen -1]
     }
 
     function min(MyArray=[]) {
         if (!checkfunctype("min", "array", MyArray, 1)) {exit(1)}
-	return (len(MyArray) == 0) ? 0 : MyArray.sort()[0]
+        return (len(MyArray) == 0) ? 0 : MyArray.sort()[0]
     }
 
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
-	Procs=split(trim(system("ps aux")), "\n")
-	Procs=tail(Procs, len(Procs)-1)
-	foreach Proc in Procs {
-	    Pid=int(fields(Proc)[1])
-	    if (Pid == pid) {
-	        return true
-	    }
-	}
-	return false
+        Procs=split(trim(system("ps aux")), "\n")
+        Procs=tail(Procs, len(Procs)-1)
+        foreach Proc in Procs {
+            Pid=int(fields(Proc)[1])
+            if (Pid == pid) {
+                return true
+            }
+        }
+        return false
     }
 
     function rotl(Array, Amount=0) {
@@ -395,31 +388,31 @@ if (!INCLUDE["MAIN"]) {
 // Sticky
         if (BSpec[2] == "1") {
             if (FullPerms[8] != "x") {
-	        FullPerms=set(FullPerms, 8, "T")
-	    } else {
-	        FullPerms=set(FullPerms, 8, "t")
-	    }
+                FullPerms=set(FullPerms, 8, "T")
+            } else {
+                FullPerms=set(FullPerms, 8, "t")
+            }
         }
 
 // Setgid
         if (BSpec[1] == "1") {
             if (FullPerms[5] != "x") {
-	        FullPerms=set(FullPerms, 5, "S")
-	    } else {
-	        FullPerms=set(FullPerms, 5, "s")
-	    }
+                FullPerms=set(FullPerms, 5, "S")
+            } else {
+                FullPerms=set(FullPerms, 5, "s")
+            }
         }
 
 // Setuid
         if (BSpec[0] == "1") {
             if (FullPerms[2] != "x") {
-	        FullPerms=set(FullPerms, 2, "S")
-	    } else {
-	        FullPerms=set(FullPerms, 2, "s")
-	    }
+                FullPerms=set(FullPerms, 2, "S")
+            } else {
+                FullPerms=set(FullPerms, 2, "s")
+            }
         }
         FullPerms=join(FullPerms, "")
-	 return FullPerms
+        return FullPerms
     }
 
     function values(Data={}) {
@@ -459,6 +452,25 @@ if (!INCLUDE["MAIN"]) {
 	    return Counter
     }
 
+    function enumerate(MyArray=[], Counter=0) {
+        if (!checkfunctype("enumerate", "array", MyArray, 1)) {exit(1)}
+        if (!checkfunctype("enumerate", "integer", Counter, 2)) {exit(1)}
+        MyHash={}
+        foreach Index, Value in MyArray {
+    	    MyHash=MyHash.set(Index + Counter, Value)
+        }
+        return MyHash
+    }
+
+    function fromkeys(MyArray, Value=0) {
+        if (!checkfunctype("fromkeys", "array", MyArray, 1)) {exit(1)}
+        MyHash={}
+        foreach Entry in MyArray {
+            MyHash=MyHash.set(Entry, Value)
+        }
+        return MyHash
+    }
+    
     function rindex(Haystack, Needle) {
         Pos=-1
         switch (type(Haystack)) {

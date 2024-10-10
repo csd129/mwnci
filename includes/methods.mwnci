@@ -6,8 +6,10 @@ if (!INCLUDE["METHODS"]) {
 
     function array.copy() {return copy(self)}
     function array.cumulative() {return cumulative(self)}
+    function array.enumerate(Counter=0) {return enumerate(self, Counter)}
     function array.extend(NextArray=[]) {return extend(self, NextArray)}
     function array.first() {return first(self)}
+    function array.fromkeys(Value=0) {return fromkeys(self, Value)}
     function array.head(Lines=0) {return head(self, Lines)}
     function array.index(item) {return index(self, item)}
     function array.insert(element=-1, value="") {return insert(self, element, value)}

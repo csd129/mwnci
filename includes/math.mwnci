@@ -167,7 +167,7 @@ if (!INCLUDE["MATH"]) {
 
     function median(MedianArray=[]) {
         if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
-	NewArray=float(MedianArray)
+        NewArray=float(MedianArray)
         MedianArray=copy(NewArray)
         MedianArray=sort(MedianArray)
         Len=len(MedianArray)

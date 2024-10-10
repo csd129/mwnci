@@ -2,30 +2,30 @@ if (!INCLUDE["PWD"]) {
     INCLUDE=set(INCLUDE, "PWD", true)
     
     function getpwent(User="") {
-	FindUser=string(User)
-	PasswdArray=[]
-	if (len(FindUser) > 0) {
-	    FileArray=regexp(FindUser, "/etc/passwd")
-	    foreach Entry in FileArray {
-	    	UserHash={}
-	        UserInfo=split(trim(Entry), ":")
-		Gecos=split(UserInfo[4], ",")
-		UserHash=set(UserHash, "Gecos", Gecos)
-		UserHash=set(UserHash, "User", UserInfo[0])
-		UserHash=set(UserHash, "Uid", int(UserInfo[2]))
-		UserHash=set(UserHash, "Gid", int(UserInfo[3]))
-		UserHash=set(UserHash, "Home", UserInfo[5])
-		Shell=(len(UserInfo[6]) == 0) ? "/bin/sh" : UserInfo[6]
-		UserHash=set(UserHash, "Shell", Shell)
-		PasswdArray=push(PasswdArray, UserHash)
-	    }
-	}
-	foreach Entry in PasswdArray {
-	    if (Entry["User"] == FindUser || string(Entry["Uid"]) == FindUser) {
-	        return Entry
-	    }
-	}
-	return {}
+        FindUser=string(User)
+        PasswdArray=[]
+        if (len(FindUser) > 0) {
+            FileArray=regexp(FindUser, "/etc/passwd")
+            foreach Entry in FileArray {
+                UserHash={}
+                UserInfo=split(trim(Entry), ":")
+                Gecos=split(UserInfo[4], ",")
+                UserHash=set(UserHash, "Gecos", Gecos)
+                UserHash=set(UserHash, "User", UserInfo[0])
+                UserHash=set(UserHash, "Uid", int(UserInfo[2]))
+                UserHash=set(UserHash, "Gid", int(UserInfo[3]))
+                UserHash=set(UserHash, "Home", UserInfo[5])
+                Shell=(len(UserInfo[6]) == 0) ? "/bin/sh" : UserInfo[6]
+                UserHash=set(UserHash, "Shell", Shell)
+                PasswdArray=push(PasswdArray, UserHash)
+            }
+        }
+        foreach Entry in PasswdArray {
+            if (Entry["User"] == FindUser || string(Entry["Uid"]) == FindUser) {
+                return Entry
+            }
+        }
+        return {}
     }
 
     function getpwnam(User="") {

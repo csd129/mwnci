@@ -54,6 +54,7 @@ func Start(in io.Reader, out io.Writer) {
 		program := p.ParseProgram()
 		if len(p.Errors()) != 0 {
 			printParserErrors(out, p.Errors())
+			cmds=cmds[:0]
 			continue
 		}
 
