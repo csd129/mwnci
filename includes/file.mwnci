@@ -1,5 +1,12 @@
 if (!INCLUDE["FILE"]) {
     INCLUDE=set(INCLUDE, "FILE", true)
+
+    if(!INCLUDE["PWD"]) {
+        include("pwd")
+    }
+    if(!INCLUDE["GRP"]) {
+        include("grp")
+    }
     
     function getbin(PermBit) {
         if (!checkfunctype("getbin", "integer", PermBit)) {exit(1)}
@@ -211,8 +218,8 @@ if (!INCLUDE["FILE"]) {
         if (User == "") {
             Uid=int(getuid())
         } else {
-            if (match("[a-z]", user)) {
-                Uid=int(getpwnam(user)[2])
+            if (match("[a-z]", User)) {
+                Uid=int(getpwnam(User)["Uid"])
     	    } else {
     	        Uid=int(User)
             }
@@ -238,7 +245,7 @@ if (!INCLUDE["FILE"]) {
             Gid=getgid()
         } else {
             if (match("[a-z]", Group)) {
-                gid=int(getgrnam(Group)[2])
+                Gid=int(getgrnam(Group)["Gid"])
     	    } else {
     	        Gid=int(Group)
             }
