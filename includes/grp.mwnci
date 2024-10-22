@@ -38,7 +38,7 @@ if (!INCLUDE["GRP"]) {
         if (!checkfunctype("groups", "string", User)) {exit(1)}
         if (User == "") {User=whoami()}
         GroupHash={}
-        Groups=getgroups(user)
+        Groups=getgroups(User)
         foreach Group in Groups	{
             GroupHash=GroupHash.set(Group, getgrent(Group)["Group"])
         }
