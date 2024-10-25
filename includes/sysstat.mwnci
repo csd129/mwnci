@@ -36,7 +36,14 @@ if (!INCLUDE["SYSSTAT"]) {
 
     function mpstat_freebsd() {
         Mpstat=split(trim(system("top -CHP -d 1 | grep \"^CPU\"")), "\n")
+	TotalCPU=len(Mpstat)
 	AllHash={}
+	User=0
+	Nice=0
+	System=0
+	Interrupt=0
+	Idle=0
+	ABusy=0
         foreach Line in Mpstat {
 	    Line=replaceall(Line, "CPU ","")
 	    Line=replaceall(Line, "%",   "")
@@ -45,14 +52,28 @@ if (!INCLUDE["SYSSTAT"]) {
 	    Sline=fields(Line)
 	    TempHash={}
 	    TempHash=TempHash.set("user", float(Sline[1]))
+	    User=User + float(Sline[1])
 	    TempHash=TempHash.set("nice", float(Sline[3]))
+	    Nice=Nice + float(Sline[3])
 	    TempHash=TempHash.set("system", float(Sline[5]))
+	    System=System + float(Sline[5])
 	    TempHash=TempHash.set("interrupt", float(Sline[7]))
+	    Interrupt=Interrupt + float(Sline[7])
 	    TempHash=TempHash.set("idle", float(Sline[9]))
+	    Idle=Idle + float(Sline[9])
 	    Busy=sprintf("%.2f", float(100 - float(Sline[9])))
 	    TempHash=TempHash.set("busy", float(Busy))
+	    ABusy=ABusy + float(Busy)
 	    AllHash=AllHash.set(Sline[0], TempHash)
 	}
+	User=User / TotalCPU
+	Nice=Nice / TotalCPU
+	System=float(sprintf("%.2f", System / TotalCPU))
+	Interrupt=Interrupt / TotalCPU
+	Idle=Idle / TotalCPU
+	ABusy=float(sprintf("%.2f", ABusy / TotalCPU))
+	TempHash={"user": User, "nice": Nice, "system": System, "interrupt": Interrupt, "idle": Idle, "busy": ABusy}
+	AllHash=AllHash.set("all", TempHash)
 	return AllHash
     }
 
