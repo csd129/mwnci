@@ -3,6 +3,7 @@
 package object
 
 import (
+	"fmt"
 	"hash/fnv"
 	"sort"
 	"strings"
@@ -25,7 +26,7 @@ func (s *String) Type() Type {
 
 // Inspect returns a string-representation of the given object.
 func (s *String) Inspect() string {
-	return s.Value
+	return fmt.Sprintf("%#v", s.Value) 
 }
 
 func (s *String) String() string {

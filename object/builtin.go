@@ -14,6 +14,10 @@ func (b *Builtin) Type() Type {
 	return BUILTIN_OBJ
 }
 
+func (b *Builtin) String() string {
+	return b.Inspect()
+}
+
 // Inspect returns a string-representation of the given object.
 func (b *Builtin) Inspect() string {
 	return "builtin function"

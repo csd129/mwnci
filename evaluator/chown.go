@@ -15,7 +15,7 @@ func Chown(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	path := args[0].Inspect()
+	path := args[0].String()
 	owner := int(args[1].(*object.Integer).Value)
 	group := int(args[2].(*object.Integer).Value)
 

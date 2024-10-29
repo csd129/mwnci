@@ -16,8 +16,8 @@ func FCp(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	orig := args[0].Inspect()
-	dest := args[1].Inspect()
+	orig := args[0].String()
+	dest := args[1].String()
 
 	source, err := os.Open(orig)
 	if err != nil {

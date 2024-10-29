@@ -15,7 +15,7 @@ func Md5sum(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	data := []byte(args[0].(*object.String).Inspect())
+	data := []byte(args[0].(*object.String).Value)
 	sum := fmt.Sprintf("%x", md5.Sum(data))
 	return &object.String{Value: sum}
 }

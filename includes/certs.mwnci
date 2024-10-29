@@ -1,6 +1,4 @@
-if (!INCLUDE["OS"]) {
-    include("os")
-}
+if (!INCLUDE["OS"]) {include("os")}
     
 if (!INCLUDE["CERTS"]) {
     INCLUDE=set(INCLUDE, "CERTS", true)

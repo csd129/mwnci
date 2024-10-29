@@ -1,6 +1,10 @@
+
 // Package object contains our core-definitions for objects.
 package object
 
+import (
+	"fmt"
+)
 // Type describes the type of an object.
 type Type string
 
@@ -29,11 +33,12 @@ type Comparable interface {
 
 // Object is the interface that all of our various object-types must implement.
 type Object interface {
-
+	fmt.Stringer
 
 	// Type returns the type of this object.
 	Type() Type
-
+	//	Bool() bool
+	//	Compare(Object) int
 	// Inspect returns a string-representation of the given object.
 	Inspect() string
 

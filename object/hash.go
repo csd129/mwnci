@@ -46,7 +46,7 @@ func (h *Hash) String() string {
 // Inspect returns a string-representation of the given object.
 func (h *Hash) Inspect() string {
 	var out bytes.Buffer
-	pairs := make([]string, 0)
+	pairs := []string{}
 	for _, pair := range h.Pairs {
 		pairs = append(pairs, fmt.Sprintf("%s: %s",
 			pair.Key.Inspect(), pair.Value.Inspect()))
@@ -136,7 +136,7 @@ func (h *Hash) Next() (Object, Object, bool) {
 //
 // It might also be helpful for embedded users.
 func (h *Hash) ToInterface() interface{} {
-	return "<HASH>"
+	return h.Inspect()
 }
 
 func (h *Hash) Len() int {

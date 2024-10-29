@@ -204,3 +204,7 @@ func (f *File) InvokeMethod(method string, env Environment, args ...Object) Obje
 func (f *File) ToInterface() interface{} {
 	return "<FILE>"
 }
+
+func (f *File) String() string {
+	return "<FILE>"
+}

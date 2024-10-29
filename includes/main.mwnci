@@ -1,9 +1,5 @@
-if (!INCLUDE["FILE"]) {
-    include("file")
-}
-if (!INCLUDE["METHODS"]) {
-    include("methods")
-}
+if (!INCLUDE["FILE"]) {include("file")}
+if (!INCLUDE["METHODS"]) {include("methods")}
 
 
 /*

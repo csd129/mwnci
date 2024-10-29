@@ -28,7 +28,7 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 	incpaths := filepath.SplitList(includes)
 	found := 0
 	for i := 0; i < len(args); i++ {
-		import_file := args[i].Inspect()
+		import_file := args[i].String()
 
 		if len(import_file) == 0 {
 			return newError("ArgError: include() expects a file identifier, none given")

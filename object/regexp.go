@@ -34,3 +34,7 @@ func (r *Regexp) InvokeMethod(method string, env Environment, args ...Object) Ob
 func (r *Regexp) ToInterface() interface{} {
 	return "<REGEXP>"
 }
+
+func (r *Regexp) String() string {
+	return r.Inspect()
+}

@@ -20,7 +20,7 @@ func Joiner(args ...object.Object) object.Object {
 	sep := args[1].(*object.String)
 	a := make([]string, len(arr.Elements))
 	for i, el := range arr.Elements {
-		a[i] = el.Inspect()
+		a[i] = el.String()
 	}
 	return &object.String{Value: strings.Join(a, sep.Value)}
 }

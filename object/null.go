@@ -26,3 +26,7 @@ func (n *Null) InvokeMethod(method string, env Environment, args ...Object) Obje
 func (n *Null) ToInterface() interface{} {
 	return "<NULL>"
 }
+
+func (n *Null) String() string {
+        return n.Inspect()
+}

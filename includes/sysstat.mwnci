@@ -12,38 +12,31 @@ if (!INCLUDE["SYSSTAT"]) {
     	IOHash={"BlockIn": int(Info[8]), "BlockOut": int(Info[9])}
     	SysHash={"Inter": int(Info[10]), "Contxt": int(Info[11])}
     	CpuHash={"User": int(Info[12]), "Sys": int(Info[13]), "Idle": int(Info[14]), "Wait": int(Info[15]), "Steal": int(Info[16])}
-	if (len(Info) == 18) {
-	    CpuHash=set(CpuHash, "Guest", int(Info[17]))
+		if (len(Info) == 18) {
+	    	CpuHash=set(CpuHash, "Guest", int(Info[17]))
+		}
+		DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
+		return DataHash
 	}
-	DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
-	return DataHash
-    }
 
     function mpstat_linux() {
         Mpstat=system("mpstat -P ALL -o JSON")
-	Json=eval(Mpstat)
-	Cpu_Hash={}
-	Load=Json["sysstat"]["hosts"][0]["statistics"][0]["cpu-load"]
-	foreach n in Load {
-	    busy=sprintf("%.2f", 100.00 - float(n["idle"]))
-	    key=n["cpu"]
-	    line_data=delete(n,"cpu")
-	    line_data=set(line_data, "busy", float(busy))
-	    Cpu_Hash=set(Cpu_Hash, key, line_data)
-	}
+		Json=eval(Mpstat)
+		Cpu_Hash={}
+		Load=Json["sysstat"]["hosts"][0]["statistics"][0]["cpu-load"]
+		foreach n in Load {
+			busy=sprintf("%.2f", 100.00 - float(n["idle"]))
+			key=n["cpu"]
+			line_data=delete(n,"cpu")
+			line_data=set(line_data, "busy", float(busy))
+			Cpu_Hash=set(Cpu_Hash, key, line_data)
+		}
         return Cpu_Hash
     }
 
     function mpstat_freebsd() {
         Mpstat=split(trim(system("top -CHP -d 1 | grep \"^CPU\"")), "\n")
-	TotalCPU=len(Mpstat)
 	AllHash={}
-	User=0
-	Nice=0
-	System=0
-	Interrupt=0
-	Idle=0
-	ABusy=0
         foreach Line in Mpstat {
 	    Line=replaceall(Line, "CPU ","")
 	    Line=replaceall(Line, "%",   "")
@@ -52,28 +45,14 @@ if (!INCLUDE["SYSSTAT"]) {
 	    Sline=fields(Line)
 	    TempHash={}
 	    TempHash=TempHash.set("user", float(Sline[1]))
-	    User=User + float(Sline[1])
 	    TempHash=TempHash.set("nice", float(Sline[3]))
-	    Nice=Nice + float(Sline[3])
 	    TempHash=TempHash.set("system", float(Sline[5]))
-	    System=System + float(Sline[5])
 	    TempHash=TempHash.set("interrupt", float(Sline[7]))
-	    Interrupt=Interrupt + float(Sline[7])
 	    TempHash=TempHash.set("idle", float(Sline[9]))
-	    Idle=Idle + float(Sline[9])
 	    Busy=sprintf("%.2f", float(100 - float(Sline[9])))
 	    TempHash=TempHash.set("busy", float(Busy))
-	    ABusy=ABusy + float(Busy)
 	    AllHash=AllHash.set(Sline[0], TempHash)
 	}
-	User=User / TotalCPU
-	Nice=Nice / TotalCPU
-	System=float(sprintf("%.2f", System / TotalCPU))
-	Interrupt=Interrupt / TotalCPU
-	Idle=Idle / TotalCPU
-	ABusy=float(sprintf("%.2f", ABusy / TotalCPU))
-	TempHash={"user": User, "nice": Nice, "system": System, "interrupt": Interrupt, "idle": Idle, "busy": ABusy}
-	AllHash=AllHash.set("all", TempHash)
 	return AllHash
     }
 
@@ -89,58 +68,58 @@ if (!INCLUDE["SYSSTAT"]) {
     }
 
     function iostat() {
-        Io_Hash={}
-	switch (OS) {
-	    case "freebsd" {
-		Data=split(trim(system("iostat -x")), "\n")
-		Data=shift(Data,2)
-		foreach Line in Data {
-		    F=fields(Line)
-		    TempHash={"rs": F[1], "ws": F[2], "krs": F[3], "kws": F[4], "msr": F[5], "msw": F[6], "mso": F[7], "mst": F[8], "qlen": F[9], "pcb": F[10]}
-		    Io_Hash=set(Io_Hash, F[0], TempHash)
+		Io_Hash={}
+		switch (OS) {
+			case "freebsd" {
+				Data=split(trim(system("iostat -x")), "\n")
+				Data=shift(Data,2)
+				foreach Line in Data {
+					F=fields(Line)
+					TempHash={"rs": F[1], "ws": F[2], "krs": F[3], "kws": F[4], "msr": F[5], "msw": F[6], "mso": F[7], "mst": F[8], "qlen": F[9], "pcb": F[10]}
+					Io_Hash=set(Io_Hash, F[0], TempHash)
+				}
+			}
+			default {
+				Iostat=system("iostat -p ALL -o JSON")
+				Iostat=replaceall(Iostat, "kB_", "kb_")
+				Iostat=replaceall(Iostat, "/", "")
+				Json=eval(Iostat)
+				Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
+				foreach n in Disk {
+					key=n["disk_device"]
+					line_data=delete(n, "disk_device")
+					Io_Hash=set(Io_Hash, key, line_data)
+				}
+			}
 		}
-	    }
-	    default {
-	        Iostat=system("iostat -p ALL -o JSON")
-		Iostat=replaceall(Iostat, "kB_", "kb_")
-		Iostat=replaceall(Iostat, "/", "")
-		Json=eval(Iostat)
-		Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
-		foreach n in Disk {
-		    key=n["disk_device"]
-		    line_data=delete(n, "disk_device")
-		    Io_Hash=set(Io_Hash, key, line_data)
-		}
-	    }
-	}
         return Io_Hash
     }
 
     function pidstat(opts="") {
         CMD="pidstat -l"
-	if (len(opts) > 0) {
-	    CMD=CMD + " -C " + opts
-	}
-	ProcessLine=trim(system(CMD))
-	ProcessLine=shift(ProcessLine.split("\n"), 3)
-	pid_hash={}
-	foreach line in ProcessLine {
-	    sline=fields(line)
-	    pid=sline[2]
-	    temp_hash={
-		"uid": int(sline[1]),
-		"pc_usr": float(sline[3]),
-		"pc_sys": float(sline[4]),
-		"pc_guest": float(sline[5]),
-		"pc_wait": float(sline[6]),
-		"pc_cpu": float(sline[7]),
-		"cpu": int(sline[8]),
-		"cmd": sline[9]
-	    }
-	    pid_hash=set(pid_hash, pid, temp_hash)
+		if (len(opts) > 0) {
+	    	CMD=CMD + " -C " + opts
+		}
+		ProcessLine=trim(system(CMD))
+		ProcessLine=shift(ProcessLine.split("\n"), 3)
+		pid_hash={}
+		foreach line in ProcessLine {
+			sline=fields(line)
+			pid=sline[2]
+			temp_hash={
+				"uid": int(sline[1]),
+				"pc_usr": float(sline[3]),
+				"pc_sys": float(sline[4]),
+				"pc_guest": float(sline[5]),
+				"pc_wait": float(sline[6]),
+				"pc_cpu": float(sline[7]),
+				"cpu": int(sline[8]),
+				"cmd": sline[9]
+			}
+			pid_hash=set(pid_hash, pid, temp_hash)
         }
-	return pid_hash
-    }
+		return pid_hash
+	}
 
 
     function pidmem(ops="") {
@@ -164,31 +143,32 @@ if (!INCLUDE["SYSSTAT"]) {
     }
 
     function sndev(iface="") {
-        if (!checkfunctype("sndev", "string", iface, 1)) {exit(1)}
-	CMD="sar -n DEV"
-	if (iface != "") {
-	    CMD=CMD + " --iface=" + iface
+		if (!checkfunctype("sndev", "string", iface, 1)) {exit(1)}
+		CMD="sar -n DEV"
+		if (iface != "") {
+			CMD=CMD + " --iface=" + iface
+		}
+		Result=split(system(CMD), "\n")
+		Length=len(Result) - 5
+		Result=tail(Result, Length)
+		Iface_Hash={}
+		foreach Line in Result {
+			if (match("[a-z]", Line)) {
+				if (!match("IFACE", Line) &&
+					!match("Average", Line) &&
+					!match("LINUX", Line)) {
+						SInterface=fields(Line)
+						Iface_Hash=set(Iface_Hash, SInterface[1],
+						{"rxpcks": SInterface[2],
+						"txpcks": SInterface[3],
+						"rxkbs": SInterface[4],
+						"txkbs": SInterface[5],
+						"rxcmps": SInterface[6],
+						"txcmps": SInterface[7],
+						"rxmcsts": SInterface[8],
+						"ifutil": SInterface[9]})}
+			}
+		}
+		return Iface_Hash
 	}
-	Result=split(system(CMD), "\n")
-	Length=len(Result) - 5
-	Result=tail(Result, Length)
-	Iface_Hash={}
-	foreach Line in Result {
-	    if (match("[a-z]", Line)) {
-	        if (!match("IFACE", Line) && !match("Average", Line) && !match("LINUX", Line)) {
-		    SInterface=fields(Line)
-		    Iface_Hash=set(Iface_Hash, SInterface[1],
-		    {"rxpcks": SInterface[2],
-		     "txpcks": SInterface[3],
-		     "rxkbs": SInterface[4],
-		     "txkbs": SInterface[5],
-		     "rxcmps": SInterface[6],
-		     "txcmps": SInterface[7],
-		     "rxmcsts": SInterface[8],
-		     "ifutil": SInterface[9]})
-		 }
-            }
-	}
-	return Iface_Hash
-    }
 }

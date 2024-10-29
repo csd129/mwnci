@@ -13,6 +13,6 @@ func strFun(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	return &object.String{Value: args[0].Inspect()}
+	return &object.String{Value: args[0].String()}
 }
 

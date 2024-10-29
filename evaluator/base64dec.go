@@ -16,7 +16,7 @@ func Base64Dec(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	data := args[0].(*object.String).Inspect()
+	data := args[0].(*object.String).String()
 	decoded, err := base64.StdEncoding.DecodeString(data)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error calling base64dec(): %v\n", err.Error())

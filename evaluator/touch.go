@@ -17,7 +17,7 @@ func Touch(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	path := args[0].Inspect()
+	path := args[0].String()
 
 	_, err := os.Stat(path)
 

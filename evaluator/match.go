@@ -21,7 +21,7 @@ func matchFun(args ...object.Object) object.Object {
 	//
 	reg, err := regexp.Compile(args[0].(*object.String).Value)
 	if err != nil {
-		return newError("failed to compile regexp %s: %s", args[0].Inspect(), err)
+		return newError("failed to compile regexp %s: %s", args[0].String(), err)
 	}
 	res := reg.FindStringSubmatch(args[1].(*object.String).Value)
 	if len(res) > 0 {

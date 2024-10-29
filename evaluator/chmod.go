@@ -19,7 +19,7 @@ func chmodFun(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	path := args[0].Inspect()
+	path := args[0].String()
 	mode := ""
 
 	switch args[1].(type) {

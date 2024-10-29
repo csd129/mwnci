@@ -85,7 +85,7 @@ func (ao *Array) Next() (Object, Object, bool) {
 //
 // It might also be helpful for embedded users.
 func (ao *Array) ToInterface() interface{} {
-	return "<ARRAY>"
+	return ao.Inspect()
 }
 
 func (a *Array) Copy() *Array {

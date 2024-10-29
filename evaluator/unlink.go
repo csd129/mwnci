@@ -15,7 +15,7 @@ func unlinkFun(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	path := args[0].Inspect()
+	path := args[0].String()
 
 	err := os.Remove(path)
 	if err != nil {

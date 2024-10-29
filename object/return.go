@@ -35,3 +35,7 @@ func (rv *ReturnValue) InvokeMethod(method string, env Environment, args ...Obje
 func (rv *ReturnValue) ToInterface() interface{} {
 	return "<RETURN_VALUE>"
 }
+
+func (rv *ReturnValue) String() string {
+	return rv.Value.Inspect()
+}

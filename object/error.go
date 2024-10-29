@@ -35,3 +35,7 @@ func (e *Error) InvokeMethod(method string, env Environment, args ...Object) Obj
 func (e *Error) ToInterface() interface{} {
 	return "<ERROR>"
 }
+
+func (e *Error) String() string {
+        return e.Message
+}

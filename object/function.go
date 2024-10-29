@@ -66,7 +66,7 @@ func (f *Function) InvokeMethod(method string, env Environment, args ...Object) 
 //
 // It might also be helpful for embedded users.
 func (f *Function) ToInterface() interface{} {
-	return "<FUNCTION>"
+	return f.Inspect()
 }
 
 func (f *Function) String() string {
