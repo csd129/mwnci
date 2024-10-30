@@ -24,7 +24,7 @@ if (!INCLUDE["GRP"]) {
         }
         if (Group != "") {
             foreach Entry in GroupArray {
-                if (Entry["Group"] == Group || Entry["Gid"] == string(Group)) {
+                if (Entry["Group"] == Group || Entry["Gid"] == Group) {
                     return Entry
                 }
             }

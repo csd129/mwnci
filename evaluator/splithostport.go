@@ -14,7 +14,7 @@ func SplitHP(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	Data := args[0].(*object.String).Inspect()
+	Data := args[0].(*object.String).String()
 
 	host, port, err := net.SplitHostPort(Data)
 	if err != nil {
