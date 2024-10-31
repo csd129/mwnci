@@ -24,12 +24,7 @@ if (!INCLUDE["CERTS"]) {
             return false
         }
         Cert=getfileblock("-BEGIN CERTIFICATE-", "-END CERTIFICATE-", File)
-        CertHandle=open(CertFile, "w")
-        foreach Line in Cert {
-            Line=trim(Line)
-            CertHandle.write(Line + "\n")
-        }
-        CertHandle.close()
+	writetofile(CertFile, "w", Cert)
         Command=sprintf("openssl x509 -in %s -enddate -noout", CertFile)
         CertDate=system(Command)
         CertDate=trim(split(CertDate, "=")[1])
@@ -47,9 +42,7 @@ if (!INCLUDE["CERTS"]) {
         }
         TEMPF=tmpnam("/tmp")
         CertInfo=getcert(Domain)
-        FileHandle=open(TEMPF, "w")
-        FileHandle.write(CertInfo)
-        FileHandle.close()
+	writetofile(TEMPF, "wa", CertInfo)
         CertDate=certexpiredays(TEMPF)
         unlink(TEMPF)
         return CertDate

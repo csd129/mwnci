@@ -346,9 +346,9 @@ if (!INCLUDE["FILE"]) {
         return issticky(self)
     }
 
-    function writetofile(Filename="", mode="w", data) {
+    function writetofile(Filename="", Mode="w", data) {
         if (!checkfunctype("writetofile", "string", Filename, 1)) {exit(1)}
-        if (!checkfunctype("writetofile", "string", mode, 2)) {exit(1)}
+        if (!checkfunctype("writetofile", "string", Mode, 2)) {exit(1)}
         switch(type(data)) {
             case "array" {
     	        wstring=join(data,"\n")
@@ -364,7 +364,9 @@ if (!INCLUDE["FILE"]) {
                 wstring=data
     	    }
         }
-        writefile(Filename, wstring)
+	fh=fopen(Filename, Mode)
+	write(fh, wstring)
+	close(fh)
         return true
     }
 }

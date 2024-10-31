@@ -63,7 +63,7 @@ if (!INCLUDE["METHODS"]) {
     function string.basename() {return basename(self)}
     function string.cat() {return cat(self)}
     function string.checkip() {return checkip(self)}
-    function string.chmod(mode="") {if (len(mode) == 0) {mode="600"} return chmod(self, mode)}
+    function string.chmod(Mode="") {if (len(Mode) == 0) {Mode="600"} return chmod(self, Mode)}
     function string.contains(search) {return contains(self, search)}
     function string.cut(piv) {return cut(self, piv)}
     function string.dirpath() {return dirpath(self)}
