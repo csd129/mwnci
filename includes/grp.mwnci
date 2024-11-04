@@ -38,7 +38,7 @@ if (!INCLUDE["GRP"]) {
         if (!checkfunctype("groups", "string", User)) {exit(1)}
         if (User == "") {User=whoami()}
         GroupHash={}
-        Groups=getgroups(user)
+        Groups=getgroups(User)
         foreach Group in Groups	{
             GroupHash=GroupHash.set(Group, getgrent(Group)["Group"])
         }
@@ -75,7 +75,7 @@ if (!INCLUDE["GRP"]) {
                 SplitLine=split(line,":")
                 Members=string(SplitLine[3])
                 Members=(len(Members) > 0 ? split(Members,",") : [])
-                NewHash={"Gid": SplitLine[2], "Members": Members}
+                NewHash={"Gid": int(SplitLine[2]), "Members": Members}
                 GrpHash=set(GrpHash, SplitLine[0], NewHash)
             }
         }
