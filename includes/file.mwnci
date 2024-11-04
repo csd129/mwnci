@@ -24,8 +24,8 @@ if (!INCLUDE["FILE"]) {
         Owner=getbin(int(Perms[1]))[Bit]
         Group=getbin(int(Perms[2]))[Bit]
         Other=getbin(int(Perms[3]))[Bit]
-        FileUID=data[7]
-        FileGID=data[8]
+        FileUID=Data[7]
+        FileGID=Data[8]
     
         if (int(FileUID) == getuid()) {
             return (int(Owner) == 1 ? true : false)
