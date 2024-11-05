@@ -46,8 +46,11 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 					found = 1
 					break
 				} else {
+					for _, msg := range p.Errors() {
+						fmt.Printf("ParseError: `%s`: %s\n", import_file,msg)
+					}
 					fmt.Printf("%v\n", p.Errors())
-					return newError("ParseError: include() failed to parse %s", import_file)
+					//return newError("ParseError: include() failed to parse %s", import_file)
 				}
 			}
 		}
