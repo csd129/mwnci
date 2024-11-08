@@ -4,10 +4,11 @@ if (!INCLUDE["PWD"]) {
     function getpwent(User="") {
         FindUser=string(User)
         PasswdArray=[]
-        if (len(FindUser) > 0) {
-            FileArray=regexp(FindUser, "/etc/passwd")
-            foreach Entry in FileArray {
-                UserHash={}
+        FileArray=regexp(FindUser, "/etc/passwd")
+        foreach Entry in FileArray {
+            UserHash={}
+	    Entry=trim(Entry)
+	    if (Entry[0] != "#") {
                 UserInfo=split(trim(Entry), ":")
                 Gecos=split(UserInfo[4], ",")
                 UserHash=set(UserHash, "Gecos", Gecos)
@@ -19,13 +20,16 @@ if (!INCLUDE["PWD"]) {
                 UserHash=set(UserHash, "Shell", Shell)
                 PasswdArray=push(PasswdArray, UserHash)
             }
-        }
-        foreach Entry in PasswdArray {
-            if (Entry["User"] == FindUser || string(Entry["Uid"]) == FindUser) {
-                return Entry
+	}
+	if (User != "") {
+            foreach Entry in PasswdArray {
+                if (Entry["User"] == FindUser || string(Entry["Uid"]) == FindUser) {
+                    return Entry
+                }
             }
-        }
-        return {}
+            return {}
+	}
+	return PasswdArray
     }
 
     function getpwnam(User="") {

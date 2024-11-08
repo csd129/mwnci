@@ -40,7 +40,7 @@ if (!INCLUDE["GRP"]) {
         GroupHash={}
         Groups=getgroups(User)
         foreach Group in Groups	{
-            GroupHash=GroupHash.set(Group, getgrent(Group)["Group"])
+            GroupHash=GroupHash.set(getgrent(Group)["Group"], Group)
         }
         return GroupHash
     }

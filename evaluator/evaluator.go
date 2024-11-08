@@ -22,7 +22,7 @@ var (
 	NULL    = &object.Null{}
 	TRUE    = &object.Boolean{Value: true}
 	FALSE   = &object.Boolean{Value: false}
-	PRAGMAS = make(map[string]int)
+	//	PRAGMAS = make(map[string]int)
 )
 
 // The built-in functions / standard-library methods are stored here.
@@ -821,16 +821,6 @@ func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *objec
 		return res
 
 	case "=":
-		// If we're running with the strict-pragma it is
-		// a bug to set a variable which wasn't declared (via let).
-		if PRAGMAS["strict"] == 1 {
-			_, ok := env.Get(a.Name.String())
-			if !ok {
-				fmt.Printf("Setting unknown variable '%s' is a bug under strict-pragma!\n", a.Name.String())
-				os.Exit(1)
-			}
-		}
-
 		env.Set(a.Name.String(), evaluated)
 	}
 	return evaluated

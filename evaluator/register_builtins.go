@@ -96,7 +96,7 @@ func init() {
 	RegisterBuiltin("open", func(env *object.Environment, args ...object.Object) object.Object { return (openFun(args...)) })
 	RegisterBuiltin("ord", func(env *object.Environment, args ...object.Object) object.Object { return (Ord(args...)) })
 	RegisterBuiltin("pop", func(env *object.Environment, args ...object.Object) object.Object { return (Pop(args...)) })
-	RegisterBuiltin("pragma", func(env *object.Environment, args ...object.Object) object.Object { return (pragmaFun(args...)) })
+//	RegisterBuiltin("pragma", func(env *object.Environment, args ...object.Object) object.Object { return (pragmaFun(args...)) })
 	RegisterBuiltin("print", func(env *object.Environment, args ...object.Object) object.Object { return (putsFun(args...)) })
 	RegisterBuiltin("printf", func(env *object.Environment, args ...object.Object) object.Object { return (printfFun(args...)) })
 	RegisterBuiltin("println", func(env *object.Environment, args ...object.Object) object.Object { return (Println(args...)) })
