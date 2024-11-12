@@ -113,19 +113,7 @@ if (!INCLUDE["MATH"]) {
     function hypot(p, q) {
         if (!checkfunctype("hypot", "number", p, 1)) {exit(1)}
         if (!checkfunctype("hypot", "number", q, 2)) {exit(1)}
-        p=abs(p)
-        q=abs(q)
-    
-        if (p < q) {
-            t = p
-            p = q
-            q = t
-        }
-    
-        if (p == 0) {return 0}
-    
-        q = q / p
-        return p * sqrt(1+q*q)
+	return sqrt(p * p + q * q)
     }
 
     function isprime(n=0) {
@@ -144,9 +132,7 @@ if (!INCLUDE["MATH"]) {
     function lcm(num1, num2) {
         if (!checkfunctype("lcm", "integer", num1, 1)) {exit(1)}
         if (!checkfunctype("lcm", "integer", num2, 2)) {exit(1)}
-        mult=num1 * num2
-        gcdiv=gcd(num1, num2)
-        return mult/gcdiv
+	return (num1 * num2) / gcd(num1, num2)
     }
 
     function lowest(a, b) {
@@ -187,8 +173,11 @@ if (!INCLUDE["MATH"]) {
         inty=int(num)
         remainder=float(num) - float(inty)
         remainder=float(sprintf("%.15f", remainder))
-        return [float(inty), float(remainder)]
-
+	if (remainder == 0) {
+	    return [float(remainder), float(inty)]
+	} else {
+            return [float(inty), float(remainder)]
+	}
     }
     
     function pow(num=1, power=1) {
@@ -232,7 +221,7 @@ if (!INCLUDE["MATH"]) {
     
     function sqrt(n=0) {
         if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
-        return float(sprintf("%.6f", n**0.5))
+        return float(sprintf("%f", n**0.5))
     }
 
     function trunc(Float) {
