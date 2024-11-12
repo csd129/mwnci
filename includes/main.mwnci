@@ -84,6 +84,11 @@ if (!INCLUDE["MAIN"]) {
         return Result
     }
 
+    function cls() {
+        print("c")
+	return true
+    }
+    
     function contains(Line="", Search="") {
         if (index(Line, Search) != -1) {return true}
         return false
