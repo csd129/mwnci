@@ -19,8 +19,8 @@ if (!INCLUDE["GRP"]) {
                     }
                     GroupHash={"Group": GroupInfo[0], "Password": GroupInfo[1], "Gid": int(GroupInfo[2]), "Members": Members}
                     GroupArray=push(GroupArray, GroupHash)
-		}
-	    }
+                }
+            }
         }
         if (Group != "") {
             foreach Entry in GroupArray {
@@ -52,7 +52,7 @@ if (!INCLUDE["GRP"]) {
         if (!checkfunctype("getgrgid", "integer", Gid, 1)) {exit(1)}
         if (Gid == -1) {
             println("Error calling `getgrgid`: ERROR: TypeError: getgrgid() takes exactly 1 argument (0 given)")
-            exit(1)
+            exit(1)  
         }
         return getgrent(Gid)
     }

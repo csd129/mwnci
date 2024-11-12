@@ -85,8 +85,9 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function cls() {
-        print("c")
-	return true
+        Clear=system("clear")
+        print(Clear)
+	    return true
     }
     
     function contains(Line="", Search="") {
