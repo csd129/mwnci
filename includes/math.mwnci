@@ -73,13 +73,6 @@ if (!INCLUDE["MATH"]) {
         return int(Value)
     }
     
-    function fma(X=0, Y=0, Z=0) {
-        if (!checkfunctype("fma", "number", X, 1)) {exit(1)}
-        if (!checkfunctype("fma", "number", Y, 2)) {exit(1)}
-        if (!checkfunctype("fma", "number", Z, 3)) {exit(1)}
-        return float(float(X) * float(Y) + float(Z));
-    }
-
     function fmod(n=0,d=0) {
         if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
         if (!checkfunctype("fmod", "number", d, 2)) {exit(1)}
@@ -198,15 +191,14 @@ if (!INCLUDE["MATH"]) {
        
     function round(rnum) {
         if (!checkfunctype("round", "number", rnum, 1)) {exit(1)}
-        intnum=int(rnum)
-        if (rnum > 0) {
-            remain=float(rnum-intnum)
-            result = (remain > 0.4) ? float(intnum + 1) : float(intnum)
-        } else {
-            remain=float(rnum+abs(intnum))
-            result = (remain < -0.4) ? float(intnum - 1) : float(intnum)
-        }
-        return result
+        if (!checkfunctype("round", "integer", fp, 1)) {exit(1)}
+
+	rnum=string(rnum)
+	if (!contains(rnum, ".")) {
+	    rnum=rnum + ".00"
+	}
+	cmd="sprintf(\"%." + string(fp) + "f\", " + rnum + ")"
+	return float(eval(cmd))
     }
 
     function perm(a, b) {
