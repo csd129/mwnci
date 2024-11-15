@@ -25,7 +25,11 @@ if (!INCLUDE["MATH"]) {
 
     function cbrt(Value=0) {
         if (!checkfunctype("cbrt", "number", Value, 1)) {exit(1)}
-        return float(sprintf("%.6f", Value**0.3333333333333333))
+        z=Value
+        foreach n in 1..20 {
+            z = z - ((z*z*z - Value) / (3.0*z*z))
+        }
+        return z
     }
 
     function ceil(Value) {
@@ -60,9 +64,10 @@ if (!INCLUDE["MATH"]) {
         return E**float(X)-1
     }
 
-    function factorial(Number) {
+    function factorial(Number=0) {
         if (!checkfunctype("factorial", "integer", Number, 1)) {exit(1)}
-        return product(1..Number)
+        Fact =  (Number == 0) ? 1 : product(1..Number) 
+        return Fact
     }
     
     function floor(Value) {
