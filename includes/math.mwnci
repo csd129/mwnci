@@ -111,7 +111,7 @@ if (!INCLUDE["MATH"]) {
     function hypot(p, q) {
         if (!checkfunctype("hypot", "number", p, 1)) {exit(1)}
         if (!checkfunctype("hypot", "number", q, 2)) {exit(1)}
-	return sqrt(p * p + q * q)
+	return sqrt(p ** 2 + q ** 2)
     }
 
     function isprime(n=0) {
@@ -194,7 +194,7 @@ if (!INCLUDE["MATH"]) {
         return Degrees * (PI / 180)
     }
        
-    function round(rnum) {
+    function round(rnum=0, fp=0) {
         if (!checkfunctype("round", "number", rnum, 1)) {exit(1)}
         if (!checkfunctype("round", "integer", fp, 1)) {exit(1)}
 
@@ -206,16 +206,6 @@ if (!INCLUDE["MATH"]) {
 	return float(eval(cmd))
     }
 
-    function perm(a, b) {
-        Perm=int(factorial(a) / factorial(a-b))
-        return Perm
-    }
-
-    function comb(a, b) {
-        Comb=int(factorial(a) / (factorial(b) * factorial(a-b)))
-        return Comb
-    }
-    
     function sqrt(n=0) {
         if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
         return float(sprintf("%f", n**0.5))
