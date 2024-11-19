@@ -464,7 +464,7 @@ if (!INCLUDE["MAIN"]) {
         return MyHash
     }
 
-    function fromkeys(MyArray, Value=0) {
+    function fromkeys(MyArray=[], Value=0) {
         if (!checkfunctype("fromkeys", "array", MyArray, 1)) {exit(1)}
         MyHash={}
         foreach Entry in MyArray {
