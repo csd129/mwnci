@@ -456,12 +456,16 @@ if (!INCLUDE["MAIN"]) {
 
     function enumerate(MyArray=[], Counter=0) {
         if (!checkfunctype("enumerate", "array", MyArray, 1)) {exit(1)}
-        if (!checkfunctype("enumerate", "integer", Counter, 2)) {exit(1)}
-        MyHash={}
-        foreach Index, Value in MyArray {
-    	    MyHash=MyHash.set(Index + Counter, Value)
-        }
-        return MyHash
+	if (!checkfunctype("enumerate", "integer", Counter, 2)) {exit(1)}
+	if (len(MyArray) == 0) {
+	    return MyArray
+	}
+	NewArray=[]
+	foreach Entry in MyArray {
+	    NewArray=NewArray.push([Counter, Entry])
+	    Counter++
+	}
+	return NewArray
     }
 
     function fromkeys(MyArray=[], Value=0) {
