@@ -19,11 +19,7 @@ func Sorted(args ...object.Object) object.Object {
 
 	arr := args[0].(*object.Array)
 	newArray := arr.Copy()
-	if newArray.SameType(newArray) {
-		sort.Sort(newArray)
-	} else {
-		return newError("Array contains mixed data.")
-	}
+	sort.Sort(newArray)
 	return newArray
 }
 

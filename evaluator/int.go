@@ -51,7 +51,7 @@ func intFun(args ...object.Object) object.Object {
 			Num=decimal[0]
 			foo, err := strconv.Atoi(Num)
 			if err != nil {
-				return newError("Converting string '%v' to float failed %s",v, err.Error())
+				newArray.Aset(i, &object.String{Value: Num})
 			} else {
 				newArray.Aset(i, &object.Integer{Value: int64(foo)})
 			}
