@@ -16,15 +16,19 @@ func subStrFun(args ...object.Object) object.Object {
 	
 	text := args[0].(*object.String).Value
 	i := int(args[1].(*object.Integer).Value)
+	if i < 0 {
+		i = len(text) + i
+	}
 	l := 0
 	if len(args) == 3 {
-	   l = int(args[2].(*object.Integer).Value)
+		l = int(args[2].(*object.Integer).Value)
+		if l < 1 {l=1}
 	} else {
 	   l = len(text) - i
         }
 	asRunes :=[]rune(text)
-	if i >= len(asRunes)-1 {
-		return &object.String{Value: ""}
+	if i == len(asRunes)-1 {
+		return &object.String{Value: string(asRunes[i])}
 	}
 	if i+l > len(asRunes)-1 {
 		l = len(asRunes) - i
