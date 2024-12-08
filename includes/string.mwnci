@@ -103,14 +103,8 @@ if (!INCLUDE["STRING"]) {
     function swapcase(Text) {
         if (!checkfunctype("swapcase", "string", Text, 1)) {exit(1)}
         foreach i, n in Text {
-            New=n
-            if (isupper(n)) {
-                New=tolower(n)
-            }
-            if (islower(n)) {
-                New=toupper(n)
-            }
-            Text=Text.set(i, New)
+            New = (isupper(n)) ? tolower(n) : toupper(n)
+	    Text=Text.set(i, New)
         }
         return Text
     }
@@ -144,7 +138,20 @@ if (!INCLUDE["STRING"]) {
         Data=[First, Search, Second]
         return Data
     }
+
+    function zfill(Text="", Len=0) {
+        if (!checkfunctype("zfill", "string", Text, 1)) {exit(1)}
+	if (!checkfunctype("zfill", "integer", Len, 2)) {exit(1)}
+
+	StringLength=len(Text)
+	if (Len > StringLength) {
+	    Zeros=repeat("0", Len-StringLength)
+	    Text=Zeros + Text
+	}
+	return Text
+    }
 }
+
 
 function string.ljust(length, spacer) {return ljust(self, length, spacer)}
 function string.rjust(length, spacer) {return rjust(self, length, spacer)}
@@ -160,3 +167,4 @@ function string.isalnum() {return isalnum(self)}
 function string.isnum() {return isnum(self)}
 function string.capitalize() {return capitalize(self)}
 function string.istitle() {return istitle(self)}
+function string.zfill(Len) {return zfill(self, Len)}

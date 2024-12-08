@@ -44,9 +44,7 @@ func floatFun(args ...object.Object) object.Object {
 		for i, v := range newArray.Elements {
 			Num:=fmt.Sprintf("%v", v)
 			foo, err := strconv.ParseFloat(Num, 64)
-			if err != nil {
-				newArray.Aset(i, &object.String{Value: Num})
-			} else {
+			if err == nil {
 				newArray.Aset(i, &object.Float{Value: float64(foo)})
 			}
 		}

@@ -1,3 +1,4 @@
+# @#$Id: Makefile.in,v 1.3 2024/11/19 13:51:01 afry Exp $
 BIN=@BIN@
 OWNER=@OWNER@
 GROUP=@GROUP@

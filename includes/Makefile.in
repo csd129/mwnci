@@ -1,7 +1,4 @@
-FILES=ansicolor.mwnci  http.mwnci  methods.mwnci  ps.mwnci\
-certs.mwnci	 json.mwnci  mysql.mwnci    pwd.mwnci\
-file.mwnci	 main.mwnci  net.mwnci	    string.mwnci\
-grp.mwnci	 math.mwnci  os.mwnci	    sysstat.mwnci
+FILES=$(shell find . -name \*.mwnci | sed 's/ /\\ /g')
 INCLUDEDIR=@INCLUDE@
 INSTALL=install
 OWNER=@OWNER@

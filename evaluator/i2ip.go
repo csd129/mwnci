@@ -5,7 +5,6 @@ import (
 	"mwnci/typing"
 )
 
-// Oct ...
 func I2IP(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"inttoip", args,

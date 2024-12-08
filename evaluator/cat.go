@@ -1,7 +1,7 @@
 package evaluator
 
 import (
-	"fmt"
+//	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
@@ -18,11 +18,9 @@ func ConCat(args ...object.Object) object.Object {
 	}
 
 	filename := args[0].(*object.String).Value
-	data := ""
-	contents, err := os.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error calling cat(): %v\n", err.Error())
-		return &object.String{Value: string(data)}
+		return newError("IOError: error reading from file %s: %s", filename, err)
 	}
-	return &object.String{Value: string(contents)}
+	return &object.String{Value: string(data)}
 }

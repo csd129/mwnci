@@ -1,5 +1,4 @@
 #!/bin/sh
-
 TEMP=/tmp/config.$$
 trap "rm -f ${TEMP}" 0 1 2 3 5 15
 

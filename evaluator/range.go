@@ -22,13 +22,11 @@ func Range(args ...object.Object) object.Object {
 	if len(args) == 1 {
 		End = args[0].(*object.Integer).Value
 	}
-	if len(args) == 2 {
+	if len(args) > 1 {
 		Start = args[0].(*object.Integer).Value
 		End = args[1].(*object.Integer).Value
 	}
-	if len(args) == 3 {
-		Start = args[0].(*object.Integer).Value
-		End = args[1].(*object.Integer).Value
+	if len(args) > 2 {
 		Step = args[2].(*object.Integer).Value
 	}
 	if Start > End && Step < 0 {

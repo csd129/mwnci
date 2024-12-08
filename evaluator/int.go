@@ -50,9 +50,7 @@ func intFun(args ...object.Object) object.Object {
 			decimal := strings.Split(Num, ".")
 			Num=decimal[0]
 			foo, err := strconv.Atoi(Num)
-			if err != nil {
-				newArray.Aset(i, &object.String{Value: Num})
-			} else {
+			if err == nil {
 				newArray.Aset(i, &object.Integer{Value: int64(foo)})
 			}
 		}

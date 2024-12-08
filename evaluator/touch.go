@@ -24,7 +24,7 @@ func Touch(args ...object.Object) object.Object {
 	if os.IsNotExist(err) {
 		file, err := os.Create(path)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error calling touch(): %v\n", err)
+			fmt.Fprintf(os.Stderr, "Error calling touch(): Can't create file %s\n", path)
 			return FALSE
 		}
 		defer file.Close()
@@ -32,7 +32,7 @@ func Touch(args ...object.Object) object.Object {
 		currentTime := time.Now().Local()
 		err = os.Chtimes(path, currentTime, currentTime)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error calling touch(): %v\n", err)
+			fmt.Fprintf(os.Stderr, "Error calling touch(): %s - Unable to modify time\n", path)
 			return FALSE
 		}
 	}
