@@ -26,44 +26,44 @@ func NSLookup(args ...object.Object) object.Object {
 	case "cname":
 		record, err := net.LookupCNAME(domain)
 		if err != nil {
-			return NULL
+			record=""
 		}
 		return &object.String{Value: record}
 	case "host":
-		record, err := net.LookupHost(domain)
-		if err != nil {
-			return NULL
-		}
+		record, _ := net.LookupHost(domain)
+		//		if err != nil {
+		//			return &object.Array{Elements: make([]object.Object, 0)}
+		//		} 
 		elements := make([]object.Object, len(record))
 		for i, ip := range record {
 			elements[i] = &object.String{Value: fmt.Sprint(ip)}
 		}
 		return &object.Array{Elements: elements}
 	case "ip":
-		record, err := net.LookupIP(domain)
-		if err != nil {
-			return NULL
-		}
+		record, _ := net.LookupIP(domain)
+		//		if err != nil {
+		//			return &object.Array{Elements: make([]object.Object, 0)}
+		//		}
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
 			elements[i] = &object.String{Value: fmt.Sprint(data)}
 		}
 		return &object.Array{Elements: elements}
 	case "txt":
-		record, err := net.LookupTXT(domain)
-		if err != nil {
-			return NULL
-		}
+		record, _ := net.LookupTXT(domain)
+		//		if err != nil {
+		//			return NULL
+		//		}
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
 			elements[i] = &object.String{Value: fmt.Sprint(data)}
 		}
 		return &object.Array{Elements: elements}
 	case "ptr":
-		record, err := net.LookupAddr(domain)
-		if err != nil {
-			return NULL
-		}
+		record, _ := net.LookupAddr(domain)
+		//		if err != nil {
+		//			return NULL
+		//		}
 		elements := make([]object.Object, len(record))
 		for i, data := range record {
 			elements[i] = &object.String{Value: fmt.Sprint(data)}

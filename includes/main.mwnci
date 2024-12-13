@@ -157,14 +157,14 @@ if (!INCLUDE["MAIN"]) {
         return tdata
     }
 
-    function interpol(data={}, text="") {
-        if (!checkfunctype("interpol", "hash", data, 1)) {exit(1)}
-        if (!checkfunctype("interpol", "string", text, 2)) {exit(1)}
-        foreach key in keys(data) {
-            rstring="${"+key+"}"
-            text=replaceall(text, rstring, string(data[key]))
+    function interpol(DataHash={}, Text="") {
+        if (!checkfunctype("interpol", "hash", DataHash, 1)) {exit(1)}
+        if (!checkfunctype("interpol", "string", Text, 2)) {exit(1)}
+        foreach Key in keys(DataHash) {
+            Rstring="${"+Key+"}"
+            Text=replaceall(Text, Rstring, string(DataHash[Key]))
         }
-        return text
+        return Text
     }
 
     function intersect(array_a, array_b) {
@@ -198,12 +198,12 @@ if (!INCLUDE["MAIN"]) {
         exit(1)
     }
 
-    function map(marray,fnc) {
-       result = []
-       foreach item in marray {
-          result=push(result,fnc(item))
+    function map(Iterable,Func) {
+       Result = []
+       foreach Item in Iterable {
+          Result=push(Result,Func(Item))
        }
-       return result
+       return Result
     }
 
     function max(MyArray=[]) {
