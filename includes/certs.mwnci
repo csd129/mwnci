@@ -42,7 +42,7 @@ if (!INCLUDE["CERTS"]) {
         }
         TEMPF=tmpnam("/tmp")
         CertInfo=getcert(Domain)
-	writetofile(TEMPF, "wa", CertInfo)
+        writefile(TEMPF, CertInfo)
         CertDate=certexpiredays(TEMPF)
         unlink(TEMPF)
         return CertDate

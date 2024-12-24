@@ -92,7 +92,7 @@ if (!INCLUDE["STRING"]) {
 
     function istitle(Text) {
         if (!checkfunctype("istitle", "string", Text, 1)) {exit(1)}
-	return (title(Text) == trim(Text)) ? true : false
+	return (title(Text) == Text) ? true : false
     }
     
     function isupper(Text) {

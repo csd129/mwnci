@@ -457,15 +457,12 @@ if (!INCLUDE["MAIN"]) {
     function enumerate(MyArray=[], Counter=0) {
         if (!checkfunctype("enumerate", "array", MyArray, 1)) {exit(1)}
 	if (!checkfunctype("enumerate", "integer", Counter, 2)) {exit(1)}
-	if (len(MyArray) == 0) {
-	    return MyArray
-	}
-	NewArray=[]
-	foreach Entry in MyArray {
-	    NewArray=NewArray.push([Counter, Entry])
-	    Counter++
-	}
-	return NewArray
+	Length=len(MyArray)
+	if (Length == 0) {return MyArray}
+	Length += Counter
+	CountArray=Counter..Length
+	return zip(CountArray, MyArray)
+	
     }
 
     function fromkeys(MyArray=[], Value=0) {
