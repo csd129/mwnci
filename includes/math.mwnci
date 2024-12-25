@@ -1,6 +1,21 @@
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
+    function variance(MyArray) {
+        DivNum=len(MyArray)-1
+	Mean=mean(MyArray)
+	VarCount=0
+	foreach Num in MyArray {
+	    VarNum=abs(Num - Mean) ** 2
+	    VarCount += VarNum
+	}
+	return VarCount / DivNum
+    }
+
+    function std(MyArray) {
+        return sqrt(variance(MyArray))
+    }
+
     function mode(MyArray) {
         UniqCount=ucount(MyArray)
         Largest=0
@@ -297,6 +312,14 @@ if (!INCLUDE["MATH"]) {
 
     function array.mode() {
         return mode(self)
+    }
+
+    function array.variance() {
+        return variance(self)
+    }
+
+    function array.std() {
+        return std(self)
     }
 }
 
