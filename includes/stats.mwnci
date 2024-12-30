@@ -51,7 +51,7 @@ if (!INCLUDE["STATS"]) {
         return VarCount / DivNum
     }
 
-    function std(MyArray) {
+    function stdev(MyArray) {
         return sqrt(variance(MyArray))
     }
 
@@ -102,6 +102,15 @@ if (!INCLUDE["STATS"]) {
             Median=(float(MedianArray[Pos]) + float(MedianArray[Pos-1]))/2.0
         }
         return Median
+    }
+    
+    function harmonicmean(MyArray) {
+        Obs=len(MyArray)
+        Counter=0
+        foreach n in MyArray {
+            Counter += (1/float(n))
+        }
+        return Obs / Counter
     }
 }  
     
