@@ -30,7 +30,7 @@ if (!INCLUDE["MATH"]) {
                 }
             }
         }
-        return sort(fields(Numbers))
+        return sort(float(fields(Numbers)))
     }
 
     function average(MyArray) {

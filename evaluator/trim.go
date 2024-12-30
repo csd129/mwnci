@@ -19,7 +19,5 @@ func Trim(args ...object.Object) object.Object {
 	if len(args) == 2 {
 		trimmer = args[1].(*object.String).Value
 	}
-	//s := strings.Trim(line, trimmer)
 	return &object.String{Value: strings.Trim(line, trimmer)}
 }
-

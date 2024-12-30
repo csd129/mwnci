@@ -1,0 +1,107 @@
+if (!INCLUDE["STATS"]) {
+    INCLUDE=set(INCLUDE, "STATS", true)
+    if(!INCLUDE["MATH"]) {
+        include("math")
+    }
+
+    function samcov(X, Y) {
+        LenX=len(X)
+        LenY=len(Y)
+        if (LenX != LenY) {
+            println("Error: `covariance` requires arrays of equal length.")
+            exit(1)
+        }
+        MeanX=mean(X)
+        MeanY=mean(Y)
+        Obs=LenX-1
+        Range=Obs
+        Counter=0
+        foreach Index in 0..Range {
+            Counter += (X[Index]-MeanX) * (Y[Index]-MeanY)
+        }
+        return  Counter / Obs
+    }
+
+    function popcov(X, Y) {
+        LenX=len(X)
+        LenY=len(Y)
+        if (LenX != LenY) {
+            println("Error: `covariance` requires arrays of equal length.")
+            exit(1)
+        }
+        MeanX=mean(X)
+        MeanY=mean(Y)
+        Obs=LenX
+        Range=Obs-1
+        Counter=0
+        foreach Index in 0..Range {
+            Counter += (X[Index]-MeanX) * (Y[Index]-MeanY)
+        }
+        return  Counter / Obs
+    }
+
+    function variance(MyArray) {
+        DivNum=len(MyArray)-1
+        Mean=mean(MyArray)
+        VarCount=0
+        foreach Num in MyArray {
+            VarNum=abs(Num - Mean) ** 2
+            VarCount += VarNum
+        }
+        return VarCount / DivNum
+    }
+
+    function std(MyArray) {
+        return sqrt(variance(MyArray))
+    }
+
+    function mode(MyArray) {
+        UniqCount=ucount(MyArray)
+        Largest=0
+        Numbers=""
+        foreach Amount in keys(UniqCount) {
+            if (UniqCount[Amount] > Largest) {
+                Numbers=Amount
+                Largest=UniqCount[Amount]
+            } else {
+                if (UniqCount[Amount] == Largest) {
+                    Numbers=Numbers + " " + Amount
+                }
+            }
+        }
+        return sort(fields(Numbers))
+    }
+
+    function average(MyArray) {
+        if (!checkfunctype("average", "array", MyArray, 1)) {exit(1)}
+        return float(sum(MyArray) / float(len(MyArray)))
+    }
+
+    //
+    // For the mathematical pedants ;)
+    //
+
+    function mean(ave_array) {
+        return average(ave_array)
+    }
+
+    // End pedantry
+
+    function median(MedianArray=[]) {
+        if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
+        NewArray=float(MedianArray)
+        MedianArray=copy(NewArray)
+        MedianArray=sort(MedianArray)
+        Len=len(MedianArray)
+        Calc=divmod(Len, 2)
+        Pos=Calc[0]
+        Remainder=Calc[1]
+        if (Remainder == 1) {
+            Median=MedianArray[Pos]
+        } else {
+            Median=(float(MedianArray[Pos]) + float(MedianArray[Pos-1]))/2.0
+        }
+        return Median
+    }
+}  
+    
