@@ -5,6 +5,8 @@ if (!INCLUDE["STATS"]) {
     }
 
     function samcov(X, Y) {
+        if (!checkfunctype("samcov", "array", MyArray, 1)) {exit(1)}
+        if (!checkfunctype("samcov", "array", MyArray, 2)) {exit(1)}
         LenX=len(X)
         LenY=len(Y)
         if (LenX != LenY) {
@@ -23,6 +25,8 @@ if (!INCLUDE["STATS"]) {
     }
 
     function popcov(X, Y) {
+        if (!checkfunctype("popcov", "array", MyArray, 1)) {exit(1)}
+        if (!checkfunctype("popcov", "array", MyArray, 2)) {exit(1)}
         LenX=len(X)
         LenY=len(Y)
         if (LenX != LenY) {
@@ -41,6 +45,7 @@ if (!INCLUDE["STATS"]) {
     }
 
     function variance(MyArray) {
+        if (!checkfunctype("variance", "array", MyArray, 1)) {exit(1)}
         DivNum=len(MyArray)-1
         Mean=mean(MyArray)
         VarCount=0
@@ -52,10 +57,12 @@ if (!INCLUDE["STATS"]) {
     }
 
     function stdev(MyArray) {
+        if (!checkfunctype("stdev", "array", MyArray, 1)) {exit(1)}
         return sqrt(variance(MyArray))
     }
 
     function mode(MyArray) {
+        if (!checkfunctype("mode", "array", MyArray, 1)) {exit(1)}
         UniqCount=ucount(MyArray)
         Largest=0
         Numbers=""
@@ -105,6 +112,7 @@ if (!INCLUDE["STATS"]) {
     }
     
     function harmonicmean(MyArray) {
+        if (!checkfunctype("harmonicmean", "array", MyArray, 1)) {exit(1)}
         Obs=len(MyArray)
         Counter=0
         foreach n in MyArray {
