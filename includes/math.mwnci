@@ -1,43 +1,6 @@
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
-    function variance(MyArray) {
-        DivNum=len(MyArray)-1
-	Mean=mean(MyArray)
-	VarCount=0
-	foreach Num in MyArray {
-	    VarNum=abs(Num - Mean) ** 2
-	    VarCount += VarNum
-	}
-	return VarCount / DivNum
-    }
-
-    function std(MyArray) {
-        return sqrt(variance(MyArray))
-    }
-
-    function mode(MyArray) {
-        UniqCount=ucount(MyArray)
-        Largest=0
-        Numbers=""
-        foreach Amount in keys(UniqCount) {
-            if (UniqCount[Amount] > Largest) {
-                Numbers=Amount
-                Largest=UniqCount[Amount]
-            } else {
-                if (UniqCount[Amount] == Largest) {
-                    Numbers=Numbers + " " + Amount
-                }
-            }
-        }
-        return sort(float(fields(Numbers)))
-    }
-
-    function average(MyArray) {
-        if (!checkfunctype("average", "array", MyArray, 1)) {exit(1)}
-        return float(sum(MyArray) / float(len(MyArray)))
-    }
-
     function cbrt(Value=0) {
         if (!checkfunctype("cbrt", "number", Value, 1)) {exit(1)}
         z=Value
@@ -154,33 +117,6 @@ if (!INCLUDE["MATH"]) {
         return a < b ? a : b
     }
     
-    //
-    // For the mathematical pedants ;)
-    //
-
-    function mean(ave_array) {
-        return average(ave_array)
-    }
-
-    // End pedantry
-
-    function median(MedianArray=[]) {
-        if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
-        NewArray=float(MedianArray)
-        MedianArray=copy(NewArray)
-        MedianArray=sort(MedianArray)
-        Len=len(MedianArray)
-        Calc=divmod(Len, 2)
-        Pos=Calc[0]
-        Remainder=Calc[1]
-        if (Remainder == 1) {
-            Median=MedianArray[Pos]
-        } else {
-            Median=(float(MedianArray[Pos]) + float(MedianArray[Pos-1]))/2.0
-        }
-        return Median
-    }    
-    
     function modf(num=0) {
         if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
         inty=int(num)
@@ -221,9 +157,10 @@ if (!INCLUDE["MATH"]) {
 	return float(eval(cmd))
     }
 
-    function sqrt(n=0) {
-        if (!checkfunctype("sqrt", "number", n, 1)) {exit(1)}
-        return float(sprintf("%f", n**0.5))
+    function sqrt(Value=0) {
+        if (!checkfunctype("sqrt", "number", Value, 1)) {exit(1)}
+	Mult = (Value < 0) ? -1 : 1
+	return (abs(Value) ** 0.5) * Mult
     }
 
     function trunc(Float) {
@@ -256,10 +193,6 @@ if (!INCLUDE["MATH"]) {
     
     function integer.divmod(divid) {
         return divmod(self, divid)
-    }
-    
-    function array.average() {
-        return average(self)
     }
     
     function object.pow(power) {
@@ -302,24 +235,8 @@ if (!INCLUDE["MATH"]) {
         return cbrt(self)
     }
 
-    function array.mean() {
-        return average(self)
-    }
-
-    function array.median() {
-        return median(self)
-    }
-
-    function array.mode() {
-        return mode(self)
-    }
-
-    function array.variance() {
-        return variance(self)
-    }
-
-    function array.std() {
-        return std(self)
+    function object.ceil() {
+        return ceil(self)
     }
 }
 

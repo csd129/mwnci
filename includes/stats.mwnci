@@ -5,12 +5,12 @@ if (!INCLUDE["STATS"]) {
     }
 
     function samcov(X, Y) {
-        if (!checkfunctype("samcov", "array", MyArray, 1)) {exit(1)}
-        if (!checkfunctype("samcov", "array", MyArray, 2)) {exit(1)}
+        if (!checkfunctype("samcov", "array", X, 1)) {exit(1)}
+        if (!checkfunctype("samcov", "array", Y, 2)) {exit(1)}
         LenX=len(X)
         LenY=len(Y)
         if (LenX != LenY) {
-            println("Error: `covariance` requires arrays of equal length.")
+            println("Error: `samcov` requires arrays of equal length.")
             exit(1)
         }
         MeanX=mean(X)
@@ -25,12 +25,12 @@ if (!INCLUDE["STATS"]) {
     }
 
     function popcov(X, Y) {
-        if (!checkfunctype("popcov", "array", MyArray, 1)) {exit(1)}
-        if (!checkfunctype("popcov", "array", MyArray, 2)) {exit(1)}
+        if (!checkfunctype("popcov", "array", X, 1)) {exit(1)}
+        if (!checkfunctype("popcov", "array", Y, 2)) {exit(1)}
         LenX=len(X)
         LenY=len(Y)
         if (LenX != LenY) {
-            println("Error: `covariance` requires arrays of equal length.")
+            println("Error: `popcov` requires arrays of equal length.")
             exit(1)
         }
         MeanX=mean(X)
@@ -89,6 +89,7 @@ if (!INCLUDE["STATS"]) {
     //
 
     function mean(ave_array) {
+        if (!checkfunctype("mean", "array", ave_array, 1)) {exit(1)}
         return average(ave_array)
     }
 
@@ -112,7 +113,7 @@ if (!INCLUDE["STATS"]) {
     }
     
     function harmonicmean(MyArray) {
-        if (!checkfunctype("harmonicmean", "array", MyArray, 1)) {exit(1)}
+        if (!checkfunctype("harmonicmean", "array", MyArray)) {exit(1)}
         Obs=len(MyArray)
         Counter=0
         foreach n in MyArray {
@@ -120,5 +121,33 @@ if (!INCLUDE["STATS"]) {
         }
         return Obs / Counter
     }
-}  
-    
+
+    function array.variance() {
+        return variance(self)
+    }
+
+    function array.stdev() {
+        return stdev(self)
+    }
+
+    function array.mode() {
+        return mode(self)
+    }
+
+    function array.average() {
+        return average(self)
+    }
+
+    function array.mean() {
+        return mean(self)
+    }
+
+    function array.median() {
+        return median(self)
+    }
+
+    function array.harmonicmean() {
+        return harmonicmean(self)
+    }
+}
+
