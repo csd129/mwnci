@@ -50,8 +50,8 @@ if (!INCLUDE["METHODS"]) {
     function integer.inttoip() {return inttoip(self)}
     function integer.procexists() {return procexists(self)}
     function object.asctime(format="") {if (len(format) == 0) {return asctime(self)}return asctime(self,format)}
+    function object.cbrt() {return cbrt(self)}
     function object.ceil() {return ceil(self)}
-    function object.float() {return float(self)}
     function object.float() {return float(self)}
     function object.floor() {return floor(self)}
     function object.int() {return int(self)}
@@ -59,6 +59,7 @@ if (!INCLUDE["METHODS"]) {
     function object.reverse() {return reverse(self)}
     function object.rotl(RotAmount=1) {return rotl(self, RotAmount)}
     function object.rotr(RotAmount=1) {return rotr(self, RotAmount)}
+    function object.sqrt() {return sqrt(self)}
     function object.string() {return string(self)}
     function string.basename() {return basename(self)}
     function string.cat() {return cat(self)}

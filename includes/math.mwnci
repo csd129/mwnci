@@ -1,15 +1,6 @@
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
-    function cbrt(Value=0) {
-        if (!checkfunctype("cbrt", "number", Value, 1)) {exit(1)}
-        z=Value
-        foreach n in 1..20 {
-            z = z - ((z*z*z - Value) / (3.0*z*z))
-        }
-        return z
-    }
-
     function ceil(Value) {
         if (!checkfunctype("ceil", "number", Value, 1)) {exit(1)}
         return (Value > int(Value)) ? int(Value) + 1 : int(Value)
@@ -157,12 +148,6 @@ if (!INCLUDE["MATH"]) {
 	return float(eval(cmd))
     }
 
-    function sqrt(Value=0) {
-        if (!checkfunctype("sqrt", "number", Value, 1)) {exit(1)}
-	Mult = (Value < 0) ? -1 : 1
-	return (abs(Value) ** 0.5) * Mult
-    }
-
     function trunc(Float) {
         if (!checkfunctype("trunc", "number", Float, 1)) {exit(1)}
         return float(int(Float))
@@ -225,14 +210,6 @@ if (!INCLUDE["MATH"]) {
 
     function object.modf() {
         return modf(self)
-    }
-
-    function object.sqrt() {
-        return sqrt(self)
-    }
-
-    function object.cbrt() {
-        return cbrt(self)
     }
 
     function object.ceil() {
