@@ -417,24 +417,6 @@ if (!INCLUDE["MAIN"]) {
         return FullPerms
     }
 
-    function values(Data={}) {
-        if (!checkfunctype("values", "hash", Data, 1)) {exit(1)}
-        MyArray=[]
-        foreach Value, _ in Data {
-            MyArray=push(MyArray, Value)
-        }
-        return MyArray
-    }
-
-    function items(Data={}) {
-        if (!checkfunctype("items", "hash", Data, 1)) {exit(1)}
-        MyArray=[]
-        foreach Value, Key in Data {
-            MyArray=MyArray.push([Key, Value])
-        }
-        return MyArray
-    }
-
     function rsortips(IPArray=[]) {
         if (!checkfunctype("rsortips", "array", IPArray, 1)) {exit(1)}
 	    if (len(IPArray) <= 1) {return IPArray}
