@@ -16,6 +16,7 @@ func init() {
 	RegisterBuiltin("basename", func(env *object.Environment, args ...object.Object) object.Object { return (basenameFun(args...)) })
 	RegisterBuiltin("base64dec", func(env *object.Environment, args ...object.Object) object.Object { return (Base64Dec(args...)) })
 	RegisterBuiltin("base64enc", func(env *object.Environment, args ...object.Object) object.Object { return (Base64Enc(args...)) })
+	RegisterBuiltin("batch", func(env *object.Environment, args ...object.Object) object.Object { return (Batch(args...)) })
 	RegisterBuiltin("bin", func(env *object.Environment, args ...object.Object) object.Object { return (Bin(args...)) })
 	RegisterBuiltin("bind", func(env *object.Environment, args ...object.Object) object.Object { return (Bind(args...)) })
 	RegisterBuiltin("bool", func(env *object.Environment, args ...object.Object) object.Object { return (Bool(args...)) })

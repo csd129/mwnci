@@ -4,6 +4,7 @@
 if (!INCLUDE["METHODS"]) {
     INCLUDE=set(INCLUDE, "METHODS", true)
 
+    function array.batch() {return batch(self)}
     function array.copy() {return copy(self)}
     function array.cumulative() {return cumulative(self)}
     function array.enumerate(Counter=0) {return enumerate(self, Counter)}

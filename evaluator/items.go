@@ -25,10 +25,11 @@ func hashItems(args ...object.Object) object.Object {
 	// Now copy the keys into it.
 	i := 0
 	for _, ent := range hash.Pairs {
-		temparray[0] = ent.Key
-		temparray[1] = ent.Value
-		//		array[i] = ent.Value
-		array[i] = &object.Array{Elements: temparray}
+		temparray[0]=ent.Key
+		temparray[1]=ent.Value
+		pushlist:=&object.Array{Elements: temparray}
+		foo:=pushlist.Copy()
+		array[i] = foo
 		i++
 	}
 

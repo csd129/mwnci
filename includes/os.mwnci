@@ -10,6 +10,19 @@ if (!INCLUDE["OS"]) {
         return DataHash
     }
 
+    function osrelease() {
+        RelHash={}
+        ReleaseFile="/etc/os-release"
+        if (file(ReleaseFile)) {
+            Data=split(trim(cat(ReleaseFile)), "\n")
+            foreach Line in Data {
+	        Sline=split(Line, "=")
+	        RelHash=RelHash.set(Sline[0], trim(Sline[1], "\""))
+	    }
+        }
+        return RelHash
+    }
+
     function env() {
         EnvHash={}
         EnvVars=split(system("env"), "\n")
