@@ -9,7 +9,7 @@ const OS=getos()
 const ARGV=args()
 const ARGC=len(ARGV)
 const PID=getpid()
-const NULL=chr(0)
+const NULL=null     // for those that like a good solid null
 const PROGNAME = (ARGC > 0) ? basename(ARGV[0]) : ""
 
 /*

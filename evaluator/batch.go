@@ -29,9 +29,7 @@ func Batch(args ...object.Object) object.Object {
 	n := 0
 	for i := 0; i < LenArray; i += Ilimit {
 		batch := NewArray[i:min(i+Ilimit, LenArray)]
-		pushlist := &object.Array{Elements: batch}
-		foo := pushlist.Copy()
-		NewList[n]=foo
+		NewList[n]=&object.Array{Elements: batch}
 		n++
 	}
 	return &object.Array{Elements: NewList}
