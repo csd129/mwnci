@@ -122,6 +122,7 @@ func init() {
 	RegisterBuiltin("sin", func(env *object.Environment, args ...object.Object) object.Object { return (mathSin(args...)) })
 	RegisterBuiltin("sinh", func(env *object.Environment, args ...object.Object) object.Object { return (mathSinh(args...)) })
 	RegisterBuiltin("sleep", func(env *object.Environment, args ...object.Object) object.Object { return (Sleep(args...)) })
+	RegisterBuiltin("slice", func(env *object.Environment, args ...object.Object) object.Object { return (Slice(args...)) })
 	RegisterBuiltin("socket", func(env *object.Environment, args ...object.Object) object.Object { return (Socket(args...)) })
 	RegisterBuiltin("sort", func(env *object.Environment, args ...object.Object) object.Object { return (Sorted(args...)) })
 	RegisterBuiltin("sortips", func(env *object.Environment, args ...object.Object) object.Object { return (SortIP(args...)) })

@@ -14,8 +14,7 @@ func Batch(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 
-	arr := args[0].(*object.Array)
-	NewArray:=arr.Copy().Elements
+	NewArray := args[0].(*object.Array).Elements
 	LenArray := len(NewArray)
 	limit := args[1].(*object.Integer).Value
 	Ilimit := int(limit)
