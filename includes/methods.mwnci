@@ -32,6 +32,7 @@ if (!INCLUDE["METHODS"]) {
     function array.set(element=-1, value="") {return set(self, element, value)}
     function array.shift(num=0) {return shift(self, num)}
     function array.shuffle() {return shuffle(self)}
+    function array.slice(Start, End) {return slice(self, Start, End)}
     function array.sort() {return sort(self)}
     function array.sortips() {return sortips(self)}
     function array.sum() {return sum(self)}
@@ -50,6 +51,7 @@ if (!INCLUDE["METHODS"]) {
     function integer.chr() {return chr(self)}
     function integer.inttoip() {return inttoip(self)}
     function integer.procexists() {return procexists(self)}
+    function object.abs() {return abs(self)}
     function object.asctime(format="") {if (len(format) == 0) {return asctime(self)}return asctime(self,format)}
     function object.cbrt() {return cbrt(self)}
     function object.ceil() {return ceil(self)}

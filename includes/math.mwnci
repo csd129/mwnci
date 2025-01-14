@@ -156,9 +156,6 @@ if (!INCLUDE["MATH"]) {
     function float.round() {
         return round(self)
     }
-    function object.abs() {
-        return abs(self)
-    }   
 
     function integer.isprime() {
         return isprime(self)
