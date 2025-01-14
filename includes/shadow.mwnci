@@ -1,0 +1,48 @@
+if (!INCLUDE["SHADOW"]) {
+    INCLUDE=set(INCLUDE, "SHADOW", true)
+
+    function hashspw(User="") {
+//
+// Passwd    : password
+// LastChange: days since Jan 1, 1970 password was last changed
+// MinAge    : days before which password may not be changed
+// MaxAge    : days after which password must be changed
+// Warning   : days before password is to expire that user is warned of pending password expiration
+// Inactive  : days after password expires that account is considered inactive and disabled
+// Expire    : days since Jan 1, 1970 when account will be disabled
+// Flag      : reserved for future use
+//
+	SpwHash={}
+	SPwEntries=split(trim(cat("/etc/shadow")), "\n")
+	foreach Line in SPwEntries {
+	    if (len(Line) > 0) {
+	        SplitLine=split(Line,":")
+		LastChange = (len(SplitLine[2]) > 0) ? int(SplitLine[2]) : null
+		MinAge = (len(SplitLine[3]) > 0) ? int(SplitLine[3]) : null
+		MaxAge = (len(SplitLine[4]) > 0) ? int(SplitLine[4]) : null
+		Warning = (len(SplitLine[5]) > 0) ? int(SplitLine[5]) : null
+		Inactive = (len(SplitLine[6]) > 0) ? int(SplitLine[6]) : null
+		Expire = (len(SplitLine[7]) > 0) ? int(SplitLine[7]) : null
+		Flag = (len(SplitLine[8]) > 0) ? int(SplitLine[8]) : null
+
+		TempHash={"Passwd": SplitLine[1], "LastChange": LastChange,
+		"MinAge": MinAge, "MaxAge": MaxAge,
+		"Warning": Warning, "Inactive": Inactive,
+		"Expire": Expire, "Flag": Flag}
+		SpwHash=set(SpwHash, SplitLine[0], TempHash)
+	    }
+	}
+	return SpwHash
+    }
+
+    function getspnam(User="") {
+        if (!checkfunctype("getspnam", "string", User, 1)) {exit(1)}
+        Data=hashspw()[User]
+        Data=(len(Data) > 0) ? Data.set("User", User) : {}
+	return Data
+    }
+
+    function string.getspnam() {
+        return getspnam(self)
+    }
+}
