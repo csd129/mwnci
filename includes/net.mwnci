@@ -151,10 +151,6 @@ if (!INCLUDE["NET"]) {
         return ping(self, count)
     }
 
-    function string.iptoint() {
-        return iptoint(self)
-    }
-
     function string.nettrans() {
         return nettrans(self)
     }

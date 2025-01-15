@@ -79,6 +79,7 @@ if (!INCLUDE["METHODS"]) {
     function string.index(item) {return index(self, item)}
     function string.interpol(data) {return interpol(data, self)}
     function string.ipincidr(cidr) {return ipincidr(cidr, self)}
+    function string.iptoint() {return iptoint(self)}
     function string.lines() {return lines(self)}
     function string.listcidrips() {return listcidrips(self)}
     function string.lookupcname() {return lookupcname(self)}
