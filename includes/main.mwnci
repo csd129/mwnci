@@ -217,19 +217,6 @@ if (!INCLUDE["MAIN"]) {
         return (len(MyArray) == 0) ? 0 : MyArray.sort()[0]
     }
 
-    function procexists(pid=-1) {
-        if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
-        Procs=split(trim(system("ps aux")), "\n")
-        Procs=tail(Procs, len(Procs)-1)
-        foreach Proc in Procs {
-            Pid=int(fields(Proc)[1])
-            if (Pid == pid) {
-                return true
-            }
-        }
-        return false
-    }
-
     function rotl(Array, Amount=0) {
         if (!checkfunctype("rotl", "iterable", Array, 1)) {exit(1)}
         if (!checkfunctype("rotl", "integer", Amount, 2)) {exit(1)}

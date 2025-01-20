@@ -53,7 +53,7 @@ if (!INCLUDE["NET"]) {
                 }
             }
         }
-	    return null
+	return null
     }
 
     function route() {
@@ -63,58 +63,41 @@ if (!INCLUDE["NET"]) {
         foreach Line in Data {
             TempHash={}
             Sline=fields(Line)
-            switch(OS) {
-                case "freebsd" {
-                    TempHash={"Destination": Sline[0], "Gateway": Sline[1], "Flags": Sline[2], "Iface": Sline[3]}
-                    if (len(Sline) > 4) {
-                        TempHash=set(TempHash, "Expire", Sline[4])
-                    }
-                }
-                default {
-                    TempHash={"Destination": Sline[0], "Gateway": Sline[1], "Genmask": Sline[2], "Flags": Sline[3], "MSS": Sline[4], "Window": Sline[5], "irtt": Sline[6], "Iface": Sline[7]}
-                }
-            }
-	        RouteArray=RouteArray.push(TempHash)
+            TempHash={"Destination": Sline[0], "Gateway": Sline[1], "Genmask": Sline[2], "Flags": Sline[3], "MSS": Sline[4], "Window": Sline[5], "irtt": Sline[6], "Iface": Sline[7]}
+            RouteArray=RouteArray.push(TempHash)
         }
         return RouteArray
     }
 
     function netstat() {
-        NetArray=[]
-        Data=split(trim(system("netstat -an")), "\n")
-        foreach Line in Data {
-	// We just need the lines starting with tcp or udp
-	        if (match("^tcp", Line) || match("^udp", Line)) {
-	            Sline=fields(Line)
-                Sline=set(Sline, 0, replaceall(Sline[0], "tcp4", "tcp"))
-                Sline=set(Sline, 0, replaceall(Sline[0], "udp4", "udp"))
-                Local=reverse(Sline[3])
-                Remote=reverse(Sline[4])
-                Local=reverse(replace(Local, ".", ":", 1))
-                Remote=reverse(replace(Remote, ".", ":", 1))
-                if (Sline[0] == "tcp6" || Sline[0] == "udp6") {
-                    Local=replaceall(Local, "*:", ":::")
-                    Remote=replaceall(Remote, "*:", ":::")
-                } else {
-                    Local=replaceall(Local, "*:", "0.0.0.0:")
-                    Remote=replaceall(Remote, "*:", "0.0.0.0:")
-                }
-                Sline=set(Sline, 3, Local)
-                Sline=set(Sline, 4, Remote)
-		
-                if (Sline[0] == "tcp6" || Sline[0] == "udp6") {
-                    Line=replaceall(Line, "*.", ":::")
-                } else {
-                    Line=replaceall(Line, "*.", "0.0.0.0:")
-                }
-                Sline=delete(Sline,1)
-                Sline=delete(Sline,1)
-	            NetArray=push(NetArray, Sline)
-	        }
+    	NetArray=[]
+	Data=split(trim(system("netstat -an")), "\n")
+	foreach Line in Data {
+	// We just need the lines starting with tcp, udp or raw
+	    if (match("^tcp", Line) || match("^udp", Line) || match("^raw", Line)) {
+	        Sline=fields(Line)
+		Sline=delete(Sline, 1)
+		Sline=delete(Sline, 1)
+		NetArray=NetArray.push(Sline)
 	    }
-	    return NetArray
+	}
+	return NetArray
     }
     
+    function conncount() {
+        Data=netstat()
+	TypeList=[]
+	foreach Entry in Data {
+	    Type=Entry[3]
+	    if (len(Type) > 4) {
+	        if (match("^[A-Z]", Type)) {
+	            TypeList=push(TypeList, Type)
+	        }
+	    }
+	}
+	return ucount(TypeList)
+    }    
+
     function nettrans(iface="") {
         if (!checkfunctype("nettrans", "string", iface, 1)) {exit(1)}
         data=split(cat("/proc/net/dev"), "\n")

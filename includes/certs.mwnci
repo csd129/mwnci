@@ -28,10 +28,7 @@ if (!INCLUDE["CERTS"]) {
         Command=sprintf("openssl x509 -in %s -enddate -noout", CertFile)
         CertDate=system(Command)
         CertDate=trim(split(CertDate, "=")[1])
-        switch (OS) {
-            case "linux" {CertEpoch=datetoepoch(CertDate)}
-            case "freebsd" {CertEpoch=datetoepoch(CertDate, "%b %d %T %Y %Z")}
-        }
+        CertEpoch=datetoepoch(CertDate)
         unlink(CertFile)
         return (CertEpoch - time()) / 86400
     }

@@ -42,26 +42,18 @@ if (!INCLUDE["PS"]) {
     function getpname(pid=0) {
         if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
         if (pid == 0) {pid=getpid()}
-        Processes=process()
-        Pname=Processes[string(pid)]["COMMAND"]
-        if (Pname) {
-            Pname=basename(fields(Pname)[0])
-            return Pname
+	ProcFile="/proc/" + string(pid) + "/comm"
+        if (file(ProcFile)) {
+            Data=fields(trim(cat(ProcFile)))
+	    return Data[0]
         }
-        return false
+      return false
     }
     
     function procstat(pid=-1) {
         if (!checkfunctype("procstat", "integer", pid)) {exit(1)}
         Data={}
-        switch (OS) {
-            case "freebsd" {
-                Command="ps -axo pcpu,pmem,pid,user,args | tail +2"
-            }
-            default {
-                Command="ps -eo pcpu,pmem,pid,user,args --no-headers"
-            }
-        }
+        Command="ps -eo pcpu,pmem,pid,user,args --no-headers"
         Result=split(trim(system(Command)), "\n")
         foreach Line in Result {
             SLine=fields(Line)
@@ -79,8 +71,15 @@ if (!INCLUDE["PS"]) {
             return Data
         }
     }
-    
+
+    function procexists(pid=-1) {
+        if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
+	ProcFile="/proc/" + string(pid)
+	return (file(ProcFile)) ? true : false
+    }
+
     function integer.getpname() {return getpname(self)}
     function string.pnametopid() {return pnametopid(self)}
     function integer.procstat() {return procstat(self)}
+    function integer.procexists() {return procexists(self)}
 }
