@@ -12,19 +12,30 @@ func IP2I(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"iptoint", args,
 		typing.ExactArgs(1),
-		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
 		return newError(err.Error())
 	}
-	ip := args[0].(*object.String).Value
-	if CheckIP(args[0].(*object.String)) == FALSE {
-		return newError("\"%v\" is not a valid IPv4 address", ip)
+	switch args[0].(type) {
+	case *object.String:
+		ip := args[0].(*object.String).Value
+		if CheckIP(args[0].(*object.String)) == FALSE {
+			return args[0]
+		}
+		tokens := strings.Split(ip, ".")
+		octets := make([]int, len(tokens))
+		for i, token := range tokens {
+			octets[i], _ = strconv.Atoi(token)
+		}
+		IPInt = octets[3] + (octets[2] << 8) + (octets[1] << 16) + (octets[0] << 24)
+		return &object.Integer{Value: int64(IPInt)}
+	case *object.Array:
+		arr := args[0].(*object.Array)
+		newArray := arr.Copy()
+		for i, v := range newArray.Elements {
+			newArray.Aset(i, IP2I(v))
+		}
+		return newArray
+	default:
+		return args[0]
 	}
-	tokens := strings.Split(ip, ".")
-	octets := make([]int, len(tokens))
-	for i, token := range tokens {
-		octets[i], _ = strconv.Atoi(token)
-	}
-	IPInt = octets[3] + (octets[2] << 8) + (octets[1] << 16) + (octets[0] << 24)
-	return &object.Integer{Value: int64(IPInt)}
 }

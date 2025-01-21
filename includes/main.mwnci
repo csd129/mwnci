@@ -470,4 +470,10 @@ if (!INCLUDE["MAIN"]) {
 	    }
 	    return Pos
     }
+
+    function sortips(MyArray=[]) {
+        if (!checkfunctype("sortips", "array", MyArray, 1)) {exit(1)}
+        MyArray=sort(iptoint(MyArray))
+        return inttoip(MyArray)
+    }
 }
