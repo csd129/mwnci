@@ -5,7 +5,6 @@ import (
 	"mwnci/typing"
 )
 
-// push something onto an array
 func acopyFun(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"copy", args,
@@ -18,4 +17,3 @@ func acopyFun(args ...object.Object) object.Object {
 	newArray := arr.Copy()
 	return newArray
 }
-

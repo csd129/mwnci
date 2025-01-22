@@ -28,4 +28,3 @@ func exitFun(args ...object.Object) object.Object {
 	// sigh
 	return nil
 }
-

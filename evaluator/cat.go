@@ -1,7 +1,7 @@
 package evaluator
 
 import (
-//	"fmt"
+	//	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
@@ -18,7 +18,7 @@ func ConCat(args ...object.Object) object.Object {
 	}
 
 	filename := args[0].(*object.String).Value
-	data, err := os.ReadFile(filename)
+	data, err := os.ReadFile(args[0].(*object.String).Value)
 	if err != nil {
 		return newError("IOError: error reading from file %s: %s", filename, err)
 	}

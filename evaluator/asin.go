@@ -20,6 +20,6 @@ func mathAsin(args ...object.Object) object.Object {
 	case *object.Float:
 		return &object.Float{Value: math.Asin(arg.Value)}
 	default:
-		return newError("argument to asin() not supported, expect INTEGER or FLOAT, got %s", args[0].Type())
+		return newError("argument to asin() not supported, expected INTEGER or FLOAT, got %s", args[0].Type())
 	}
 }

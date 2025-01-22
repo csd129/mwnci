@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"strings"
 	"mwnci/object"
 	"mwnci/typing"
+	"strings"
 )
 
 func Count(args ...object.Object) object.Object {
@@ -15,6 +15,9 @@ func Count(args ...object.Object) object.Object {
 	}
 
 	counter := 0
+	if args[1].Type() == object.HASH_OBJ || args[1].Type() == object.ARRAY_OBJ {
+		return newError("TypeError: count() argument #2 cannot be ARRAY or HASH")
+	}
 	switch args[0].(type) {
 	case *object.String:
 		needle := args[1].(*object.String).Value
@@ -30,8 +33,7 @@ func Count(args ...object.Object) object.Object {
 		}
 	default:
 		return newError(
-		"TypeError: count() expected argument #1 to be `array` or `string` got `%s`",args[0].Type(),)
+			"TypeError: count() expected argument #1 to be `array` or `string` got `%s`", args[0].Type())
 	}
 	return &object.Integer{Value: int64(counter)}
 }
-

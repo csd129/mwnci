@@ -32,7 +32,6 @@ func chmodFun(args ...object.Object) object.Object {
 	// convert from octal -> decimal
 	result, err := strconv.ParseInt(mode, 8, 64)
 	if err != nil {
-		//		return newError("Unable to create permissions with %v", args[1])
 		fmt.Fprintf(os.Stderr, "Error calling chmod(): Unable to create permissions with %v\n", args[1])
 		return FALSE
 	}
@@ -45,4 +44,3 @@ func chmodFun(args ...object.Object) object.Object {
 	}
 	return TRUE
 }
-
