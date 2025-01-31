@@ -87,12 +87,11 @@ if (!INCLUDE["MAIN"]) {
     function cls() {
         Clear=system("clear")
         print(Clear)
-	    return true
+        return true
     }
     
     function contains(Line="", Search="") {
-        if (index(Line, Search) != -1) {return true}
-        return false
+        return (index(Line, Search) != -1) ? true : false
     }
 
     function getblock(StartBlock, EndBlock, ArrayName) {

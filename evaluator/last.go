@@ -20,5 +20,5 @@ func Last(args ...object.Object) object.Object {
 	if length > 0 {
 		return arr.Elements[length-1]
 	}
-	return FALSE
+	return NULL
 }

@@ -10,7 +10,7 @@ if (!INCLUDE["PS"]) {
             line=fields(process)
             b=shift(line, 10)
             Cmd=trim(join(b, " "))
-    	    CmdHash={"user": line[0], "cpu": line[2], "mem": line[3], "vsz": int(line[4]), "rss": line[5], "tty": line[6], "stat": line[7], "start": line[8], "time": line[9], "command": Cmd}
+    	    CmdHash={"USER": line[0], "CPU": line[2], "MEM": line[3], "VSZ": int(line[4]), "RSS": line[5], "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
     	    ProcessTable=set(ProcessTable, line[1], CmdHash)
         }
         return ProcessTable

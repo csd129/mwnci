@@ -1,13 +1,11 @@
 package evaluator
 
 import (
-	//	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
 )
 
-// Cat ...
 func ConCat(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"cat", args,

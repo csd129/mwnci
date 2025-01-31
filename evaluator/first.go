@@ -19,6 +19,6 @@ func First(args ...object.Object) object.Object {
 	if len(arr.Elements) > 0 {
 		return arr.Elements[0]
 	}
-	return FALSE
+	return NULL
 }
 
