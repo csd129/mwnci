@@ -45,7 +45,7 @@ if (!INCLUDE["FILE"]) {
         if (isexist(Filename)) {
             return fields(file(Filename, 1))[6]
         } else {
-            return "NOEXIST"
+	    return null
         }
     }
 
