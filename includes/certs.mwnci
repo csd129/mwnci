@@ -24,7 +24,7 @@ if (!INCLUDE["CERTS"]) {
             return false
         }
         Cert=getfileblock("-BEGIN CERTIFICATE-", "-END CERTIFICATE-", File)
-	writetofile(CertFile, "w", Cert)
+        writetofile(CertFile, "w", Cert)
         Command=sprintf("openssl x509 -in %s -enddate -noout", CertFile)
         CertDate=system(Command)
         CertDate=trim(split(CertDate, "=")[1])

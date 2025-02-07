@@ -62,6 +62,23 @@ if (!INCLUDE["MAIN"]) {
         return true
     }
 
+    function getenv(EnvVar="") {
+        return env()[EnvVar]
+    } 
+    
+    function hex2dec(Hex="") {
+        if (!checkfunctype("hex2dec", "string", Hex, 1)) {exit(1)}
+        HDict={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7,
+        "8": 8, "9": 9, "A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15}
+        Hex=toupper(Hex)
+        Hex=reverse(trimprefix(Hex, "0X"))
+        Sum=0
+        foreach I, V in Hex {
+            Sum += HDict[V] * (16 ** I)
+        }
+        return Sum
+    }
+
 // Rest() moved to here because buitlin shift() has replaced it 
     function rest(Array) {
         if (!checkfunctype("rest", "array", Array, 1)) {exit(1)}
@@ -85,8 +102,7 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function cls() {
-        Clear=system("clear")
-        print(Clear)
+        print(system("clear"))
         return true
     }
     

@@ -28,12 +28,12 @@ if (!INCLUDE["FILE"]) {
         FileGID=Data[8]
     
         if (int(FileUID) == getuid()) {
-            return (int(Owner) == 1 ? true : false)
+            return (int(Owner) == 1) ? true : false
         }
         if (int(FileGID) == getgid()) {
-            return (int(Group) == 1 ? true : false)
+            return (int(Group) == 1) ? true : false
         }
-        return (int(Other) == 1 ? true : false)
+        return (int(Other) == 1) ? true : false
     }
         
     function FileType(Filename="") {
@@ -42,11 +42,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `FileType`: ERROR: TypeError: FileType() takes exactly 1 argument (0 given)")
             exit(1)
         }
-        if (isexist(Filename)) {
-            return fields(file(Filename, 1))[6]
-        } else {
-	    return null
-        }
+        return (isexist(Filename)) ? fields(file(Filename, 1))[6] : null
     }
 
     function filetype(Filename="") {
@@ -60,7 +56,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isfile`: ERROR: TypeError: isfile() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(Filename) == "FILE" ? true : false)
+        return (FileType(Filename) == "FILE") ? true : false
     }
     
     function isblock(Filename="") {
@@ -69,7 +65,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isblock`: ERROR: TypeError: isblock() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(Filename) == "BLOCK" ? true : false)
+        return (FileType(Filename) == "BLOCK") ? true : false
     }
     
     function isdir(Filename="") {
@@ -78,7 +74,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isdir`: ERROR: TypeError: isdir() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(Filename) == "DIR" ? true : false)
+        return (FileType(Filename) == "DIR") ? true : false
     }
     
     function ischr(Filename="") {
@@ -87,7 +83,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `ischr`: ERROR: TypeError: ischr() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(Filename) == "CHR" ? true : false)
+        return (FileType(Filename) == "CHR") ? true : false
     }
     
     function isfifo(Filename="") {
@@ -96,7 +92,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isfifo`: ERROR: TypeError: isfifo() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(Filename) == "FIFO" ? true : false)
+        return (FileType(Filename) == "FIFO") ? true : false
    }
     
     function islink(Filename="") {
@@ -105,7 +101,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `islink`: ERROR: TypeError: islink() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(Filename) == "LINK" ? true : false)
+        return (FileType(Filename) == "LINK") ? true : false
     }
     
     function issock(Filename="") {
@@ -114,7 +110,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `issock`: ERROR: TypeError: issock() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (FileType(Filename) == "SOCKET" ? true : false)
+        return (FileType(Filename) == "SOCKET") ? true : false
     }
 
     function isexist(Filename="") {
@@ -123,7 +119,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isexist`: ERROR: TypeError: isexist() takes exactly 1 argument (0 given)")
             exit(1)
         }        
-        return (len(glob(Filename)) > 0 ? true : false)
+        return (len(glob(Filename)) > 0) ? true : false
     }   
 
     function isempty(Filename="") {
@@ -133,7 +129,7 @@ if (!INCLUDE["FILE"]) {
             exit(1)
         }         
         fileinfo=fields(file(Filename, 1))
-        return (int(fileinfo[4]) == 0 ? true : false)
+        return (int(fileinfo[4]) == 0) ? true : false
     }
     
     function issetuid(Filename="") {
@@ -189,7 +185,7 @@ if (!INCLUDE["FILE"]) {
         FirstModDate=int(FirstStat)    
         SecondModDate=int(SecondStat)
     
-        return (FirstModDate > SecondModDate ? true : false)
+        return (FirstModDate > SecondModDate) ? true : false
     }
     
     function isolder(FirstFile="", SecondFile="") {
@@ -214,11 +210,7 @@ if (!INCLUDE["FILE"]) {
         if (User == "") {
             Uid=int(getuid())
         } else {
-            if (match("[a-z]", User)) {
-                Uid=int(getpwnam(User)["Uid"])
-    	    } else {
-    	        Uid=int(User)
-            }
+            Uid =(match("[a-z]", User)) ? int(getpwnam(User)["Uid"]) : int(User)
         }
     
         if (isexist(Filename)) {
@@ -364,9 +356,9 @@ if (!INCLUDE["FILE"]) {
                 wstring=data
     	    }
         }
-	fh=fopen(Filename, Mode)
-	write(fh, wstring)
-	close(fh)
+        fh=fopen(Filename, Mode)
+        write(fh, wstring)
+        close(fh)
         return true
     }
 }

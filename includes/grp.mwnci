@@ -5,7 +5,6 @@ if (!INCLUDE["GRP"]) {
         GROUP="/etc/group"
         GroupArray=[]
         FileArray=split(trim(cat(GROUP)), "\n")
-
         foreach Line in FileArray {
             GroupHash={}
             Line=trim(Line)
@@ -33,7 +32,6 @@ if (!INCLUDE["GRP"]) {
         return GroupArray
     }
 
-    
     function groups(User="") {
         if (!checkfunctype("groups", "string", User)) {exit(1)}
         if (User == "") {User=whoami()}
@@ -87,7 +85,6 @@ if (!INCLUDE["GRP"]) {
         GroupArray=[]
         PASSWD="/etc/passwd"
         GROUP="/etc/group"
-
         if (Username == "") {
             Username=whoami()
         }
@@ -107,7 +104,6 @@ if (!INCLUDE["GRP"]) {
         }
         return usort(GroupArray)
     }
-
 
     function string.groups() {
         return groups(self)

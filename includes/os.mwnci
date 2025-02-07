@@ -73,16 +73,6 @@ if (!INCLUDE["OS"]) {
         return RelHash
     }
 
-    function env() {
-        EnvHash={}
-        EnvVars=split(system("env"), "\n")
-        foreach Var in EnvVars {
-            SplitVar=cut(Var, "=")
-            EnvHash=EnvHash.set(SplitVar[0], SplitVar[1])
-        }
-        return EnvHash
-    } 
-    
     function df() {
         DiskHash={}
         Mounted=shift(split(system("df"),"\n"))
