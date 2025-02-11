@@ -18,28 +18,19 @@ if (!INCLUDE["NET"]) {
 //
 // LittlEndian stuff again. See Above
 //
+	IP=IP.tolower()
 	A=[]
-	foreach n in range(30,-1,-2) {
+	foreach n in range(0,32,2) {
 	    A=push(A, substr(IP, n, 2))
 	}
-
-	Temp=sprintf("%v%v:%v%v", A[14], A[15], A[13], A[12])
-	First = (Temp == "0000:0000") ? "" : Temp
-	Temp=sprintf("%v%v:%v%v", A[10], A[11], A[8], A[9])
-	Second = (Temp == "0000:0000") ? "" : Temp
-	Temp=sprintf("%v%v:%v%v", A[6], A[7], A[4], A[5])
-	Third = (Temp == "0000:0000") ? "" : Temp
-	Temp=sprintf("%v%v:%v%v", A[2], A[3], A[0], A[1])
-	Fourth = (Temp == "0000:0000") ? "": Temp
-
-	IP=sprintf("%v:%v:%v:%v", First, Second, Third, Fourth)
-//	IP=sprintf("%v%v:%v%v:%v%v:%v%v:%v%v:%v%v:%v%v:%v%v",
-//	A[14], A[15], A[13], A[12],
-//	A[10], A[11], A[8], A[9],
-//	A[6],  A[7], A[4], A[5],
-//	A[2], A[3], A[0], A[1])
-	IP=replace(IP, "::",":",1)
-	return IP
+	AD=sprintf("%s%s:%s%s:%s%s:%s%s:%s%s:%s%s:%s%s:%s%s", A[3], A[2], A[1], A[0], A[7], A[6], A[5], A[4], A[11], A[10], A[9], A[8], A[15], A[14], A[13], A[12])
+	AD=AD.replaceall("0000:0000:0000", "")
+	AD=AD.replaceall("0000:0000", "")
+	AD=AD.replaceall("0000:", "")
+	foreach n in 1..4 {
+	    AD=AD.replaceall(":0", ":")
+	}
+	return AD
     }
 
 function openports() {

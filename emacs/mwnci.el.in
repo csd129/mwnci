@@ -12,7 +12,7 @@
   '(
     "else" "fn" "foreach" "function" "if" "in"
     "let" "return" "while" "switch" "case"
-    "default" "const"
+    "default" "const" "noop"
     ))
 
 
