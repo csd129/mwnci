@@ -181,10 +181,8 @@ if (!INCLUDE["FILE"]) {
         if (!FirstStat || !SecondStat) {
             return false
         }
-    
         FirstModDate=int(FirstStat)    
         SecondModDate=int(SecondStat)
-    
         return (FirstModDate > SecondModDate) ? true : false
     }
     
@@ -206,13 +204,11 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isowner`: ERROR: TypeError: isowner() expected argument #1 to be `STRING` got `NULL`")
     	    exit(1)
         }
-        
         if (User == "") {
             Uid=int(getuid())
         } else {
             Uid =(match("[a-z]", User)) ? int(getpwnam(User)["Uid"]) : int(User)
         }
-    
         if (isexist(Filename)) {
             Owner=int(fields(file(Filename, 1))[7])
     	    if (Owner == Uid) {

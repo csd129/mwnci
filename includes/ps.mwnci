@@ -42,12 +42,12 @@ if (!INCLUDE["PS"]) {
     function getpname(pid=0) {
         if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
         if (pid == 0) {pid=getpid()}
-	ProcFile="/proc/" + string(pid) + "/comm"
+        ProcFile="/proc/" + string(pid) + "/comm"
         if (file(ProcFile)) {
             Data=fields(trim(cat(ProcFile)))
-	    return Data[0]
+            return Data[0]
         }
-      return false
+        return false
     }
     
     function procstat(pid=-1) {
@@ -74,8 +74,8 @@ if (!INCLUDE["PS"]) {
 
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
-	ProcFile="/proc/" + string(pid)
-	return (file(ProcFile)) ? true : false
+        ProcFile="/proc/" + string(pid)
+        return (file(ProcFile)) ? true : false
     }
 
     function integer.getpname() {return getpname(self)}

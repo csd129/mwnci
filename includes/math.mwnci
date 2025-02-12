@@ -1,3 +1,21 @@
+/*
+ Math constants - add more here if needed
+*/
+const PI=     3.141592653589793
+const PI_2=   PI/2
+const PI_4=   PI/4
+const E=      2.718281828459045
+const TAU=    PI*2
+const PHI=    1.618033988749894
+const SQRT2=  sqrt(2)
+const SQRTE=  sqrt(E)
+const SQRTPI= sqrt(PI)
+const SQRTPHI=sqrt(PHI)
+const LN2=    0.693147180559945
+const LOG2E=  1/LN2
+const LN10=   2.302585092994045
+const LOGH10E=1/LN10
+
 if (!INCLUDE["MATH"]) {
     INCLUDE=set(INCLUDE, "MATH", true)
 
@@ -99,7 +117,7 @@ if (!INCLUDE["MATH"]) {
     function lcm(num1, num2) {
         if (!checkfunctype("lcm", "integer", num1, 1)) {exit(1)}
         if (!checkfunctype("lcm", "integer", num2, 2)) {exit(1)}
-	return (num1 * num2) / gcd(num1, num2)
+        return (num1 * num2) / gcd(num1, num2)
     }
 
     function lowest(a, b) {
@@ -113,11 +131,11 @@ if (!INCLUDE["MATH"]) {
         inty=int(num)
         remainder=float(num) - float(inty)
         remainder=float(sprintf("%.15f", remainder))
-	if (remainder == 0) {
-	    return [float(remainder), float(inty)]
-	} else {
+        if (remainder == 0) {
+            return [float(remainder), float(inty)]
+        } else {
             return [float(inty), float(remainder)]
-	}
+        }
     }
     
     function pow(num=1, power=1) {
@@ -139,13 +157,12 @@ if (!INCLUDE["MATH"]) {
     function round(rnum=0, fp=0) {
         if (!checkfunctype("round", "number", rnum, 1)) {exit(1)}
         if (!checkfunctype("round", "integer", fp, 1)) {exit(1)}
-
-	rnum=string(rnum)
-	if (!contains(rnum, ".")) {
-	    rnum=rnum + ".00"
-	}
-	cmd="sprintf(\"%." + string(fp) + "f\", " + rnum + ")"
-	return float(eval(cmd))
+        rnum=string(rnum)
+        if (!contains(rnum, ".")) {
+            rnum=rnum + ".00"
+        }
+        cmd="sprintf(\"%." + string(fp) + "f\", " + rnum + ")"
+        return float(eval(cmd))
     }
 
     function trunc(Float) {
@@ -214,20 +231,4 @@ if (!INCLUDE["MATH"]) {
     }
 }
 
-/*
- Math constants - add more here if needed
-*/
-const PI=     3.141592653589793
-const PI_2=   PI/2
-const PI_4=   PI/4
-const E=      2.718281828459045
-const TAU=    PI*2
-const PHI=    1.618033988749894
-const SQRT2=  sqrt(2)
-const SQRTE=  sqrt(E)
-const SQRTPI= sqrt(PI)
-const SQRTPHI=sqrt(PHI)
-const LN2=    0.693147180559945
-const LOG2E=  1/LN2
-const LN10=   2.302585092994045
-const LOGH10E=1/LN10
+

@@ -35,7 +35,6 @@ if (!INCLUDE["STRING"]) {
             println("Error calling `center`: ERROR: fill character must be exactly one character long")
             exit(1)
         }
-
         if (Length <= len(Text)) {return Text}
         Beginning=int((Length-len(Text))/2)
         End=Length-(len(Text)+Beginning)
@@ -47,36 +46,35 @@ if (!INCLUDE["STRING"]) {
     function title(Text="") {
         if (!checkfunctype("title", "string", Text, 1)) {exit(1)}
         if (len(Text) == 0) {return Text}
-
-	Text=tolower(Text)
-	First=Text[0]
-	First=First.toupper()
-	Text=Text.set(0, First)
-	TLen=len(Text)-1
-	foreach Char in 1..TLen {
-	    if (isalpha(Text[Char])) {
-	        if (isspace(Text[Char-1])) {
-		    Up=toupper(Text[Char])
-		    Text=Text.set(Char, Up)
-		}
-	    }
-	}
-	return Text
+        Text=tolower(Text)
+        First=Text[0]
+        First=First.toupper()
+        Text=Text.set(0, First)
+        TLen=len(Text)-1
+        foreach Char in 1..TLen {
+            if (isalpha(Text[Char])) {
+                if (isspace(Text[Char-1])) {
+                    Up=toupper(Text[Char])
+                    Text=Text.set(Char, Up)
+                }
+            }
+        }
+        return Text
     }
 
     function isalpha(String="") {
         if (!checkfunctype("isalpha", "string", String, 1)) {exit(1)}
-	return match("^[a-zA-Z]*$", String) ? true : false
+        return match("^[a-zA-Z]*$", String) ? true : false
     }
 
     function isalnum(String) {
         if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
-	return match("^[a-zA-Z0-9]*$", String) ? true : false
+        return match("^[a-zA-Z0-9]*$", String) ? true : false
     }
 
     function isnum(String) {
         if (!checkfunctype("isnum", "string", String, 1)) {exit(1)}
-	return match("^[0-9]*$", String) ? true : false
+        return match("^[0-9]*$", String) ? true : false
     }
 
     function isspace(Text) {
@@ -92,7 +90,7 @@ if (!INCLUDE["STRING"]) {
 
     function istitle(Text) {
         if (!checkfunctype("istitle", "string", Text, 1)) {exit(1)}
-	return (title(Text) == Text) ? true : false
+        return (title(Text) == Text) ? true : false
     }
     
     function isupper(Text) {
@@ -104,23 +102,22 @@ if (!INCLUDE["STRING"]) {
         if (!checkfunctype("swapcase", "string", Text, 1)) {exit(1)}
         foreach i, n in Text {
             New = (isupper(n)) ? tolower(n) : toupper(n)
-	    Text=Text.set(i, New)
+            Text=Text.set(i, New)
         }
         return Text
     }
 
     function capitalize(Text) {
         if (!checkfunctype("capitalize", "string", Text, 1)) {exit(1)}
-	if (len(Text) == 0) {return Text}
-	First=Text[0]
-	First=First.toupper()
-	Text=Text.set(0, First)
-	TLen=len(Text)-1
-	foreach Char in 1..TLen {
-	    New=tolower(Text[Char])
-	    Text=Text.set(Char, New)
-	}
-	return Text
+        if (len(Text) == 0) {return Text}
+        First=Text[0].toupper()
+        Text=Text.set(0, First)
+        TLen=len(Text)-1
+        foreach Char in 1..TLen {
+            New=tolower(Text[Char])
+            Text=Text.set(Char, New)
+        }
+        return Text
     }
 
     function partition(Text, Search) {
@@ -141,14 +138,13 @@ if (!INCLUDE["STRING"]) {
 
     function zfill(Text="", Len=0) {
         if (!checkfunctype("zfill", "string", Text, 1)) {exit(1)}
-	if (!checkfunctype("zfill", "integer", Len, 2)) {exit(1)}
-
-	StringLength=len(Text)
-	if (Len > StringLength) {
-	    Zeros=repeat("0", Len-StringLength)
-	    Text=Zeros + Text
-	}
-	return Text
+        if (!checkfunctype("zfill", "integer", Len, 2)) {exit(1)}
+        StringLength=len(Text)
+        if (Len > StringLength) {
+            Zeros=repeat("0", Len-StringLength)
+            Text=Zeros + Text
+        }
+        return Text
     }
 }
 

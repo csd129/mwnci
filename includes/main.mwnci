@@ -344,9 +344,9 @@ if (!INCLUDE["MAIN"]) {
     	}
     	foreach Block in MyArray {
             foreach Index, Entry in Block {
-	        Temp=ZipArray[Index]
-	        Temp=Temp.push(Entry)
-	        ZipArray=ZipArray.set(Index, Temp)
+                Temp=ZipArray[Index]
+                Temp=Temp.push(Entry)
+                ZipArray=ZipArray.set(Index, Temp)
             }
         }
         return ZipArray
@@ -440,13 +440,12 @@ if (!INCLUDE["MAIN"]) {
 
     function enumerate(MyArray=[], Counter=0) {
         if (!checkfunctype("enumerate", "array", MyArray, 1)) {exit(1)}
-	if (!checkfunctype("enumerate", "integer", Counter, 2)) {exit(1)}
-	Length=len(MyArray)
-	if (Length == 0) {return MyArray}
-	Length += Counter
-	CountArray=Counter..Length
-	return zip(CountArray, MyArray)
-	
+        if (!checkfunctype("enumerate", "integer", Counter, 2)) {exit(1)}
+        Length=len(MyArray)
+        if (Length == 0) {return MyArray}
+        Length += Counter
+        CountArray=Counter..Length
+        return zip(CountArray, MyArray)
     }
 
     function fromkeys(MyArray=[], Value=0) {

@@ -7,8 +7,8 @@ if (!INCLUDE["PWD"]) {
         FileArray=regexp(FindUser, "/etc/passwd")
         foreach Entry in FileArray {
             UserHash={}
-	    Entry=trim(Entry)
-	    if (Entry[0] != "#") {
+            Entry=trim(Entry)
+            if (Entry[0] != "#") {
                 UserInfo=split(trim(Entry), ":")
                 Gecos=split(UserInfo[4], ",")
                 UserHash=set(UserHash, "Gecos", Gecos)
@@ -20,16 +20,16 @@ if (!INCLUDE["PWD"]) {
                 UserHash=set(UserHash, "Shell", Shell)
                 PasswdArray=push(PasswdArray, UserHash)
             }
-	}
-	if (User != "") {
+        }
+        if (User != "") {
             foreach Entry in PasswdArray {
                 if (Entry["User"] == FindUser || string(Entry["Uid"]) == FindUser) {
                     return Entry
                 }
             }
             return {}
-	}
-	return PasswdArray
+        }
+	    return PasswdArray
     }
 
     function getpwnam(User="") {
