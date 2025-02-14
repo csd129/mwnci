@@ -29,6 +29,7 @@ func init() {
 	RegisterBuiltin("chown", func(env *object.Environment, args ...object.Object) object.Object { return (Chown(args...)) })
 	RegisterBuiltin("chr", func(env *object.Environment, args ...object.Object) object.Object { return (Chr(args...)) })
 	RegisterBuiltin("close", func(env *object.Environment, args ...object.Object) object.Object { return (Close(args...)) })
+	RegisterBuiltin("cls", func(env *object.Environment, args ...object.Object) object.Object { return (Cls(args...)) })
 	RegisterBuiltin("connect", func(env *object.Environment, args ...object.Object) object.Object { return (Connect(args...)) })
 	RegisterBuiltin("copy", func(env *object.Environment, args ...object.Object) object.Object { return (acopyFun(args...)) })
 	RegisterBuiltin("cos", func(env *object.Environment, args ...object.Object) object.Object { return (mathCos(args...)) })

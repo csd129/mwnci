@@ -101,11 +101,6 @@ if (!INCLUDE["MAIN"]) {
         return Result
     }
 
-    function cls() {
-        print(system("clear"))
-        return true
-    }
-    
     function contains(Line="", Search="") {
         return (index(Line, Search) != -1) ? true : false
     }

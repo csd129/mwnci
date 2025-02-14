@@ -33,7 +33,7 @@ if (!INCLUDE["NET"]) {
         return AD
     }
 
-function openports() {
+    function openports() {
         port_array=[]
         foreach line in netstat() {
             if (line[3] == "LISTEN") {
@@ -89,16 +89,26 @@ function openports() {
     }
 
     function route() {
-        RouteArray=[]
-        Cmd="netstat -nr | egrep -v \"^[A-Z]|^$\""
-        Data=split(trim(system(Cmd)), "\n")
+        Flags=["","U","G","UG","H","UH","GH","UGH"]
+        Route=[]
+        Data=shift(split(trim(cat("/proc/net/route")), "\n"))
         foreach Line in Data {
-            TempHash={}
-            Sline=fields(Line)
-            TempHash={"Destination": Sline[0], "Gateway": Sline[1], "Genmask": Sline[2], "Flags": Sline[3], "MSS": Sline[4], "Window": Sline[5], "irtt": Sline[6], "Iface": Sline[7]}
-            RouteArray=RouteArray.push(TempHash)
+            Sline=fields(Line)	
+            iface=Sline[0]
+            dest=nsip4(Sline[1])
+            gway=nsip4(Sline[2])
+            flags=Flags[int(Sline[3])]
+            refcnt=Sline[4]
+            use=Sline[5]
+            metric=Sline[6]
+            mask=nsip4(Sline[7])
+            mtu=Sline[8]
+            window=Sline[9]
+            irtt=Sline[10]
+            TempHash={"iface": iface, "desination": dest, "gateway": gway, "flags": flags, "refcnt": refcnt, "use": use, "metric": metric, "mask": mask, "mtu": mtu, "window": window, "irtt": irtt}
+            Route=Route.push(TempHash)
         }
-        return RouteArray
+        return Route
     }
 
     function netstat() {
