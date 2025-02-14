@@ -4,7 +4,7 @@ if (!INCLUDE["PS"]) {
     function process() {
         CmdHash={}
         ProcessTable={}
-        Processes=split(trim(system("ps au --ppid 2 -p 2 --deselect | tail +2")), "\n")
+        Processes=split(trim(system("ps aux | tail +2")), "\n")
         foreach process in Processes {
             Cmd=""
             line=fields(process)
