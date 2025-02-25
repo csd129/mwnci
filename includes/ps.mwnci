@@ -53,13 +53,19 @@ if (!INCLUDE["PS"]) {
     function procstat(pid=-1) {
         if (!checkfunctype("procstat", "integer", pid)) {exit(1)}
         Data={}
-        Command="ps -eo pcpu,pmem,pid,user,args --no-headers"
+        Command="ps -eo pcpu,pmem,pid,uid,user,args --no-headers"
         Result=split(trim(system(Command)), "\n")
         foreach Line in Result {
-            SLine=fields(Line)
+	    SLine=fields(Line)
             if (len(SLine) > 0) {
-                if (index(SLine[4], "[") == -1) {
-                    Proc_Hash={"pcpu": SLine[0], "pmem": SLine[1], "user": SLine[3], "cmd": SLine[4]}
+                if (!contains(SLine[5] ,"[")) {
+                    Proc_Hash={
+                        "pcpu": float(SLine[0]),
+                        "pmem": float(SLine[1]),
+                        "uid": int(SLine[3]),
+                        "user": SLine[4],
+                        "cmd": SLine[5]
+                    }
                     Key=SLine[2]
                     Data=set(Data, Key, Proc_Hash)
                 }

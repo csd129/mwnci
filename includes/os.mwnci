@@ -1,6 +1,15 @@
 if (!INCLUDE["OS"]) {
     INCLUDE=set(INCLUDE, "OS", true)
    
+    function uname() {
+        Data=fields(trim(system("uname -n -s -r -m")))
+        DataHash={
+            "nodename": Data[0], "sysname": Data[1],
+            "release": Data[2], "machine": Data[3]
+        }
+        return DataHash
+    }
+
     function vmstat() {
     	DataHash={}
     	Data=shift(split(trim(system("vmstat")), "\n"),2)

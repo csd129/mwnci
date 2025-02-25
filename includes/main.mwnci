@@ -30,14 +30,14 @@ if (!INCLUDE["MAIN"]) {
 //
     function checkfunctype(func, expected, received, argnum=1) {
         ReceivedType=type(received)
-	    if (expected == "number") {
+        if (expected == "number") {
             if (ReceivedType == "integer" || ReceivedType == "float") {
-	        return true
-	    } else {
-	        println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
+                return true
+            } else {
+                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
                 return false
-	        }
-	    }
+            }
+        }
         if (expected == "iterable") {
             if (ReceivedType == "string" || ReceivedType == "array") {
                 return true
@@ -485,4 +485,10 @@ if (!INCLUDE["MAIN"]) {
         MyArray=sort(iptoint(MyArray))
         return inttoip(MyArray)
     }
+
+    function uptime() {
+        Seconds=int(fields(trim(cat("/proc/uptime")))[0])
+	return sec2time(Seconds)
+    }
+
 }
