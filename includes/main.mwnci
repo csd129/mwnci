@@ -491,4 +491,27 @@ if (!INCLUDE["MAIN"]) {
 	return sec2time(Seconds)
     }
 
+    function tr(String="", Search="", Replace="") {
+        if (!checkfunctype("tr", "string", String, 1)) {exit(1)}
+        if (!checkfunctype("tr", "string", Search, 2)) {exit(1)}
+        if (!checkfunctype("tr", "string", Replace, 3)) {exit(1)}
+        if (len(Search) == 0) {
+            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #2 to `STRING` got NULL")
+            exit(1)
+        }
+        if (len(Replace) == 0) {
+            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #3 to `STRING` got NULL")
+            exit(1)
+        }
+        if (len(Replace) == 1) {
+            Replace=repeat(Replace, len(Search))
+        }
+        SearchArray=split(Search, "")
+        ReplaceArray=split(Replace, "")
+        TRArray=zip(SearchArray, ReplaceArray)
+        foreach Swap in TRArray {
+            String=String.replaceall(Swap[0], Swap[1])
+        }
+        return String
+    }
 }
