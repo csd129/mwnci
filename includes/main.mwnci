@@ -491,6 +491,26 @@ if (!INCLUDE["MAIN"]) {
 	return sec2time(Seconds)
     }
 
+    //
+    // Character class definitions for tr()
+    //
+    function cclass(String="") {
+        CharacterClass={
+            "[:alnum:]": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+            "[:alpha:]": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+            "[:blank:]": "\t ",
+            "[:digit:]": "0123456789",
+            "[:lower:]": "abcdefghijklmnopqrstuvwxyz",
+            "[:punct:]": " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~",
+            "[:space:]": "\t\n\v\r ",
+            "[:upper:]": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        }
+        foreach ClassName in keys(CharacterClass) {
+            String=String.replaceall(ClassName, CharacterClass[ClassName])
+        }
+        return String
+    }
+
     function tr(String="", Search="", Replace="") {
         if (!checkfunctype("tr", "string", String, 1)) {exit(1)}
         if (!checkfunctype("tr", "string", Search, 2)) {exit(1)}
@@ -503,11 +523,20 @@ if (!INCLUDE["MAIN"]) {
             println("Error calling `tr`: ERROR: TypeError: tr() expected argument #3 to `STRING` got NULL")
             exit(1)
         }
+        Search=cclass(Search)
+        Replace=cclass(Replace)
         if (len(Replace) == 1) {
             Replace=repeat(Replace, len(Search))
         }
         SearchArray=split(Search, "")
         ReplaceArray=split(Replace, "")
+        if (len(ReplaceArray) < len(SearchArray)) {
+            Adding=len(SearchArray) - len(ReplaceArray)
+            Value=ReplaceArray[len(ReplaceArray)-1]
+            foreach n in 1..Adding {
+                ReplaceArray=ReplaceArray.push(Value)
+            }
+        }
         TRArray=zip(SearchArray, ReplaceArray)
         foreach Swap in TRArray {
             String=String.replaceall(Swap[0], Swap[1])
