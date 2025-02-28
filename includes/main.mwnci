@@ -516,11 +516,11 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("tr", "string", Search, 2)) {exit(1)}
         if (!checkfunctype("tr", "string", Replace, 3)) {exit(1)}
         if (len(Search) == 0) {
-            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #2 to `STRING` got NULL")
+            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #2 to be `STRING` got NULL")
             exit(1)
         }
         if (len(Replace) == 0) {
-            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #3 to `STRING` got NULL")
+            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #3 to be `STRING` got NULL")
             exit(1)
         }
         Search=cclass(Search)
