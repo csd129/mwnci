@@ -495,18 +495,18 @@ if (!INCLUDE["MAIN"]) {
     // Character class definitions for tr()
     //
     function cclass(String="") {
-        CharacterClass={
+        CLASS={
             "[:alnum:]": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-            "[:alpha:]": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-            "[:blank:]": "\t ",
-            "[:digit:]": "0123456789",
-            "[:lower:]": "abcdefghijklmnopqrstuvwxyz",
-            "[:punct:]": " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~",
-            "[:space:]": "\t\n\v\r ",
-            "[:upper:]": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	    "[:alpha:]": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+	    "[:blank:]": "\t ",
+	    "[:digit:]": "0123456789",
+	    "[:lower:]": "abcdefghijklmnopqrstuvwxyz",
+	    "[:punct:]": " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~",
+	    "[:space:]": "\t\n\v\r ",
+	    "[:upper:]": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         }
-        foreach ClassName in keys(CharacterClass) {
-            String=String.replaceall(ClassName, CharacterClass[ClassName])
+        foreach ClassName in keys(CLASS) {
+            String=String.replaceall(ClassName, CLASS[ClassName])
         }
         return String
     }
@@ -516,11 +516,11 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("tr", "string", Search, 2)) {exit(1)}
         if (!checkfunctype("tr", "string", Replace, 3)) {exit(1)}
         if (len(Search) == 0) {
-            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #2 to be `STRING` got NULL")
+            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #2 to `STRING` got NULL")
             exit(1)
         }
         if (len(Replace) == 0) {
-            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #3 to be `STRING` got NULL")
+            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #3 to `STRING` got NULL")
             exit(1)
         }
         Search=cclass(Search)
