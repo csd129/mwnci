@@ -183,9 +183,15 @@ if (!INCLUDE["MAIN"]) {
         InterArray=[]
         array_a=uniq(array_a)
         array_b=uniq(array_b)
-        foreach Value in array_a {
-            found=contains(array_b, Value)
-            if (found) {
+	if (len(array_a) < len(array_b)) {
+	    small=array_a
+	    large=array_b
+	} else {
+	    small=array_b
+	    large=array_a
+	}
+        foreach Value in small {
+            if (index(large, Value) > -1) {
     	        InterArray=push(InterArray, Value)
     	    }
         }
@@ -291,15 +297,6 @@ if (!INCLUDE["MAIN"]) {
         return reverse(sort(arr))
     }
 
-    function sec2time(seconds=0) {
-        if (!checkfunctype("sec2time", "integer", seconds, 1)) {exit(1)}
-        elapse={"Day": seconds/60/60/24,
-                "Hour": (seconds/60/60)%24,
-                "Min": (seconds/60)%60,
-                "Sec": seconds%60}
-        return elapse
-    }
- 
     function tail(data, Lines=0) {
         if (!checkfunctype("tail", "iterable", data, 1)) {exit(1)}
         if (!checkfunctype("tail", "integer", Lines, 2)) {exit(1)}

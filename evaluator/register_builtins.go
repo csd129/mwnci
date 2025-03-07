@@ -115,6 +115,7 @@ func init() {
 	RegisterBuiltin("replaceall", func(env *object.Environment, args ...object.Object) object.Object { return (Replaceall(args...)) })
 	RegisterBuiltin("reverse", func(env *object.Environment, args ...object.Object) object.Object { return (Rev(args...)) })
 	RegisterBuiltin("rtrim", func(env *object.Environment, args ...object.Object) object.Object { return (RTrim(args...)) })
+	RegisterBuiltin("sec2time", func(env *object.Environment, args ...object.Object) object.Object { return (SecToTime(args...)) })
 	RegisterBuiltin("seek", func(env *object.Environment, args ...object.Object) object.Object { return (Seek(args...)) })
 	RegisterBuiltin("set", func(env *object.Environment, args ...object.Object) object.Object { return (setFun(args...)) })
 	RegisterBuiltin("setenv", func(env *object.Environment, args ...object.Object) object.Object { return (setEnvFun(args...)) })
