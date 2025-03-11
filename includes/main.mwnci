@@ -236,7 +236,7 @@ if (!INCLUDE["MAIN"]) {
     function rotl(Array, Amount=0) {
         if (!checkfunctype("rotl", "iterable", Array, 1)) {exit(1)}
         if (!checkfunctype("rotl", "integer", Amount, 2)) {exit(1)}
-	    if (Amount < 1) {Amount=1}
+        if (Amount < 1) {Amount=1}
         VarType=type(Array)
         Valid=false
         isString=false
@@ -413,8 +413,8 @@ if (!INCLUDE["MAIN"]) {
 
     function rsortips(IPArray=[]) {
         if (!checkfunctype("rsortips", "array", IPArray, 1)) {exit(1)}
-	    if (len(IPArray) <= 1) {return IPArray}
-	    return reverse(sortips(IPArray))
+        if (len(IPArray) <= 1) {return IPArray}
+        return reverse(sortips(IPArray))
     }
 
     function oct2bin(o_number) {
@@ -427,7 +427,7 @@ if (!INCLUDE["MAIN"]) {
         foreach i, x in Number {
             Counter += int(x) * (8 ** i)
         }
-	    return Counter
+        return Counter
     }
 
     function enumerate(MyArray=[], Counter=0) {
@@ -452,29 +452,29 @@ if (!INCLUDE["MAIN"]) {
     function rindex(Haystack, Needle) {
         Pos=-1
         switch (type(Haystack)) {
-	        case "array" {
-	            HayLen=len(Haystack)-1
-	            Haystack=reverse(Haystack)
-	            Pos=index(Haystack, Needle)
-	            if (Pos != -1) {
-	                Pos=HayLen-Pos
-	            }
-	        }
-	        case "string" {
-	            HayLen=len(Haystack)
-	            Nsearch=reverse(Needle)
-		        Nstack=reverse(Haystack)
-		        Pos=index(Nstack, Nsearch)
-		        if (Pos != -1) {
-		            Pos=HayLen - len(Nsearch) - Pos
-		        }
-	        }
-	        default {
-	            println("Error calling `rindex`: ERROR: TypeError: rindex() expected argument #1 to be `STRING` or `ARRAY`, got `", toupper(type(Haystack)), "`")
-	            exit(1)
-	        }
-	    }
-	    return Pos
+            case "array" {
+                HayLen=len(Haystack)-1
+                Haystack=reverse(Haystack)
+                Pos=index(Haystack, Needle)
+                if (Pos != -1) {
+                    Pos=HayLen-Pos
+                }
+            }
+            case "string" {
+                HayLen=len(Haystack)
+                Nsearch=reverse(Needle)
+                Nstack=reverse(Haystack)
+                Pos=index(Nstack, Nsearch)
+                if (Pos != -1) {
+                    Pos=HayLen - len(Nsearch) - Pos
+                }
+            }
+            default {
+                println("Error calling `rindex`: ERROR: TypeError: rindex() expected argument #1 to be `STRING` or `ARRAY`, got `", toupper(type(Haystack)), "`")
+                exit(1)
+            }
+        }
+        return Pos
     }
 
     function sortips(MyArray=[]) {

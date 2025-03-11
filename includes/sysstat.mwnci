@@ -22,12 +22,14 @@ if (!INCLUDE["SYSSTAT"]) {
         Iostat=system("iostat -p ALL -o JSON")
         Iostat=replaceall(Iostat, "/", "")
         Json=eval(Iostat)
-        Disk=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
-        foreach n in Disk {
-            key=n["disk_device"]
-            line_data=delete(n, "disk_device")
-            Io_Hash=set(Io_Hash, key, line_data)
-        }
+        Disks=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
+        foreach Disk in Disks {
+            Key=Disk["disk_device"]
+            line_data=delete(Disk, "disk_device")
+             if (!contains(Key, "ram") && !contains(Key, "loop")) {
+                 Io_Hash=set(Io_Hash, Key, line_data)
+            }
+	}
         return Io_Hash
     }
 

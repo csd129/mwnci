@@ -20,11 +20,11 @@ if (!INCLUDE["OS"]) {
     	IOHash={"BlockIn": int(Info[8]), "BlockOut": int(Info[9])}
     	SysHash={"Inter": int(Info[10]), "Contxt": int(Info[11])}
     	CpuHash={"User": int(Info[12]), "Sys": int(Info[13]), "Idle": int(Info[14]), "Wait": int(Info[15]), "Steal": int(Info[16])}
-		if (len(Info) == 18) {
-	    	CpuHash=set(CpuHash, "Guest", int(Info[17]))
-		}
-		DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
-		return DataHash
+        if (len(Info) == 18) {
+            CpuHash=set(CpuHash, "Guest", int(Info[17]))
+        }
+        DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
+        return DataHash
     }
 
     function loadavg() {
@@ -35,29 +35,29 @@ if (!INCLUDE["OS"]) {
     function getcpu(Cpu="") {
         CPUHash={}
         Data=regexp("^cpu", "/proc/stat")
-		foreach Line in Data {
-	    	SLine=fields(Line)
-	    	CPU=(SLine[0] == "cpu") ? "all" : SLine[0]
-	    	SLine=int(shift(SLine))
-	    	Total=float(sum(SLine))
-	    	UserPC=float(sprintf("%.2f",(SLine[0] * 100) / Total))
-	    	NicePC=float(sprintf("%.2f",(SLine[1] * 100) / Total))
-	    	SysPC=float(sprintf("%.2f",(SLine[2] * 100) / Total))
-	    	IdlePC=float(sprintf("%.2f",(SLine[3] * 100) / Total))
-	    	IowaitPC=float(sprintf("%.2f",(SLine[4] * 100) / Total))
-	    	IrqPC=float(sprintf("%.2f",(SLine[5] * 100) / Total))
-	    	SoftirqPC=float(sprintf("%.2f",(SLine[6] * 100) / Total))
-	    	StealPC=float(sprintf("%.2f",(SLine[7] * 100) / Total))
-	    	GuestPC=float(sprintf("%.2f",(SLine[8] * 100) / Total))
-	    	GuestnicePC=float(sprintf("%.2f",(SLine[9] * 100) / Total))
-	    	TempHash={"user": UserPC, "nice": NicePC, "system": SysPC, "idle": IdlePC, "iowait": IowaitPC, "irq": IrqPC, "softirq": SoftirqPC, "steal": StealPC, "guest": GuestPC, "guest_nice": GuestnicePC}
-	    	CPUHash=CPUHash.set(CPU, TempHash)
-		}
-		if (Cpu != "" && len(CPUHash) > 0) {
-	    	CPUHash=CPUHash[Cpu]
-	    	CPUHash=CPUHash.set("CPU", Cpu)
-		}
-		return CPUHash
+        foreach Line in Data {
+            SLine=fields(Line)
+            CPU=(SLine[0] == "cpu") ? "all" : SLine[0]
+            SLine=int(shift(SLine))
+            Total=float(sum(SLine))
+            UserPC=float(sprintf("%.2f",(SLine[0] * 100) / Total))
+            NicePC=float(sprintf("%.2f",(SLine[1] * 100) / Total))
+            SysPC=float(sprintf("%.2f",(SLine[2] * 100) / Total))
+            IdlePC=float(sprintf("%.2f",(SLine[3] * 100) / Total))
+            IowaitPC=float(sprintf("%.2f",(SLine[4] * 100) / Total))
+            IrqPC=float(sprintf("%.2f",(SLine[5] * 100) / Total))
+            SoftirqPC=float(sprintf("%.2f",(SLine[6] * 100) / Total))
+            StealPC=float(sprintf("%.2f",(SLine[7] * 100) / Total))
+            GuestPC=float(sprintf("%.2f",(SLine[8] * 100) / Total))
+            GuestnicePC=float(sprintf("%.2f",(SLine[9] * 100) / Total))
+            TempHash={"user": UserPC, "nice": NicePC, "system": SysPC, "idle": IdlePC, "iowait": IowaitPC, "irq": IrqPC, "softirq": SoftirqPC, "steal": StealPC, "guest": GuestPC, "guest_nice": GuestnicePC}
+            CPUHash=CPUHash.set(CPU, TempHash)
+        }
+        if (Cpu != "" && len(CPUHash) > 0) {
+            CPUHash=CPUHash[Cpu]
+            CPUHash=CPUHash.set("CPU", Cpu)
+        }
+        return CPUHash
     }
 
     function df() {
@@ -66,7 +66,7 @@ if (!INCLUDE["OS"]) {
         foreach Entry in Mounted {
             if (len(Entry) > 0) {
                 SplitLine=fields(Entry)
-	        	if (SplitLine[0].contains("/")) {
+                if (SplitLine[0].contains("/")) {
                     PercentUsed=int(trimsuffix(SplitLine[4], "%"))
                     PercentFree=100 - PercentUsed
                     TempHash={"blocks": int(SplitLine[1]), "used": int(SplitLine[2]), "available": int(SplitLine[3]), "usedperc": PercentUsed, "freeperc": PercentFree, "mount": SplitLine[5]}
@@ -79,30 +79,30 @@ if (!INCLUDE["OS"]) {
 
     function free() {
         MemData=split(trim(cat("/proc/meminfo")), "\n")
-		MemHash={}
-		foreach Line in MemData {
-			Line=replaceall(Line, ":", "")
-			Sline=fields(Line)
-			MemHash=MemHash.set(Sline[0], int(Sline[1]))
-		}
-		total=MemHash["MemTotal"]
-		buffcache=MemHash["Cached"] + MemHash["KReclaimable"] + MemHash["Buffers"]
-		memfree=MemHash["MemFree"]
-		shared=MemHash["Shmem"]
-		available=MemHash["MemAvailable"]
-		used=total - available
-		swaptotal=MemHash["SwapTotal"]
-		swapfree=MemHash["SwapFree"]
-		swapused=swaptotal - swapfree
-		Free={
-			"mem": {
-				"total": total, "used": used, "free": memfree, "shared": shared, "buffcache": buffcache, "available": available
-			},
-			"swap": {
-		       "total": swaptotal, "used": swapused, "free": swapfree
-			}
-		}
-		return Free
+        MemHash={}
+        foreach Line in MemData {
+            Line=replaceall(Line, ":", "")
+            Sline=fields(Line)
+            MemHash=MemHash.set(Sline[0], int(Sline[1]))
+        }
+        total=MemHash["MemTotal"]
+        buffcache=MemHash["Cached"] + MemHash["KReclaimable"] + MemHash["Buffers"]
+        memfree=MemHash["MemFree"]
+        shared=MemHash["Shmem"]
+        available=MemHash["MemAvailable"]
+        used=total - available
+        swaptotal=MemHash["SwapTotal"]
+        swapfree=MemHash["SwapFree"]
+        swapused=swaptotal - swapfree
+        Free={
+            "mem": {
+            "total": total, "used": used, "free": memfree, "shared": shared, "buffcache": buffcache, "available": available
+            },
+            "swap": {
+            "total": swaptotal, "used": swapused, "free": swapfree
+            }
+        }
+        return Free
     }
 
     function datetoepoch(Date="", Format="") {

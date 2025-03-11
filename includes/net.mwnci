@@ -160,14 +160,14 @@ if (!INCLUDE["NET"]) {
         Data=netstat()
         TypeList=[]
         foreach Entry in Data {
-	        Type=Entry[3]
-	        if (len(Type) > 4) {
-	            if (match("^[A-Z]", Type)) {
-	                TypeList=push(TypeList, Type)
-	            }
-	        }
-	    }
-	    return ucount(TypeList)
+            Type=Entry[3]
+            if (len(Type) > 4) {
+                if (match("^[A-Z]", Type)) {
+                    TypeList=push(TypeList, Type)
+                }
+            }
+        }
+        return ucount(TypeList)
     }    
 
     function nettrans(iface="") {
@@ -179,10 +179,9 @@ if (!INCLUDE["NET"]) {
             sline=fields(line)
             if (len(sline) > 0) {
                 device=replace(sline[0], ":", "", 1)
-                iface_data={"RX-OK": sline[2], "RX-ERR": sline[3], "RX-DRP": sline[4],
-                            "TX-OK": sline[10], "TX-ERR": sline[11], "TX-DRP": sline[12]}
-	            iface_hash=set(iface_hash, device, iface_data)
-	        }
+                iface_data={"RX-OK": sline[2], "RX-ERR": sline[3], "RX-DRP": sline[4], "TX-OK": sline[10], "TX-ERR": sline[11], "TX-DRP": sline[12]}
+                iface_hash=set(iface_hash, device, iface_data)
+            }
         }
         if (len(iface) > 0) {
             return iface_hash[iface]
