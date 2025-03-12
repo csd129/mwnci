@@ -44,7 +44,7 @@ func Connect(args ...object.Object) object.Object {
 	}
 
 	if err = syscall.Connect(fd, sa); err != nil {
-		return newError("SocketError: %s", err)
+		return newError("SocketError: host %s, %s", address, err)
 	}
 
 	return NULL

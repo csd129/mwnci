@@ -48,7 +48,7 @@ func Bind(args ...object.Object) object.Object {
 
 	err = syscall.Bind(fd, sockaddr)
 	if err != nil {
-		return newError("SocketError: %s", err)
+		return newError("SocketError: host %s %s", address, err)
 	}
 
 	return NULL

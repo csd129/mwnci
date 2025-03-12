@@ -21,7 +21,7 @@ func parseAddress(address string) (ip net.IP, port int, err error) {
 	ip = net.ParseIP(h)
 	if ip == nil {
 		var addrs []string
-		addrs, err = net.LookupHost(address)
+		addrs, err = net.LookupHost(h)
 		if err != nil {
 			err = fmt.Errorf("error resolving host '%s'", address)
 			return
