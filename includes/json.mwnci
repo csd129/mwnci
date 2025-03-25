@@ -22,7 +22,7 @@ if (!INCLUDE["JSON"]) {
         tempfile="/tmp/markup." + string(getpid())
         writefile(tempfile, data + "\n")
         switch(mu_type) {
-            case "xml", "json", "yaml" {
+            case "xml", "json" {
                 cmd=sprintf("cat %s | yq --output-format %s", tempfile, mu_type)
             }
             default {
@@ -39,11 +39,6 @@ if (!INCLUDE["JSON"]) {
         return tomarkup(tjson(JsonData), "json")
     }
 
-    function toyaml(JsonData) {
-        if (!checkfunctype("toyaml", "collection", JsonData, 1)) {exit(1)}
-        return tomarkup(tjson(JsonData), "yaml")
-    }
-
     function toxml(JsonData) {
         if (!checkfunctype("toxml", "collection", JsonData, 1)) {exit(1)}
         return tomarkup(tjson(JsonData), "xml")
@@ -51,10 +46,6 @@ if (!INCLUDE["JSON"]) {
 
     function object.tojson() {
         return tojson(self)
-    }
-
-    function object.toyaml() {
-        return toyaml(self)
     }
 
     function object.toxml() {

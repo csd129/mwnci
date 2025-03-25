@@ -50,8 +50,7 @@ if (!INCLUDE["OS"]) {
             StealPC=float(sprintf("%.2f",(SLine[7] * 100) / Total))
             GuestPC=float(sprintf("%.2f",(SLine[8] * 100) / Total))
             GuestnicePC=float(sprintf("%.2f",(SLine[9] * 100) / Total))
-	    BusyPc=float(sprintf("%.2f", 100.0 - IdlePC))
-            TempHash={"user": UserPC, "nice": NicePC, "system": SysPC, "idle": IdlePC, "iowait": IowaitPC, "irq": IrqPC, "softirq": SoftirqPC, "steal": StealPC, "guest": GuestPC, "guest_nice": GuestnicePC, "busy": BusyPc}
+            TempHash={"user": UserPC, "nice": NicePC, "system": SysPC, "idle": IdlePC, "iowait": IowaitPC, "irq": IrqPC, "softirq": SoftirqPC, "steal": StealPC, "guest": GuestPC, "guest_nice": GuestnicePC}
             CPUHash=CPUHash.set(CPU, TempHash)
         }
         if (Cpu != "" && len(CPUHash) > 0) {
