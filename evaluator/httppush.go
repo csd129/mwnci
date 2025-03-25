@@ -1,12 +1,11 @@
 package evaluator
 
 import (
+	"bytes"
+	"io"
 	"mwnci/object"
 	"mwnci/typing"
 	"net/http"
-	//	"fmt"
-	"io"
-	"bytes"
 )
 
 func HttpPost(args ...object.Object) object.Object {
@@ -20,7 +19,7 @@ func HttpPost(args ...object.Object) object.Object {
 	url := args[0].(*object.String).Value
 	content := args[1].(*object.String).Value
 	data := args[2].(*object.String).Value
-	
+
 	resp, err := http.Post(url, content, bytes.NewBuffer([]byte(data)))
 
 	if err != nil {
@@ -34,4 +33,3 @@ func HttpPost(args ...object.Object) object.Object {
 
 	return &object.String{Value: string(b)}
 }
-
