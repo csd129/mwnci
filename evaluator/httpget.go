@@ -11,8 +11,8 @@ import (
 func HttpGet(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"httpget", args,
-		typing.RangeOfArgs(1, 2),
-		typing.WithTypes(object.STRING_OBJ, object.HASH_OBJ),
+		typing.RangeOfArgs(1, 3),
+		typing.WithTypes(object.STRING_OBJ, object.HASH_OBJ, object.HASH_OBJ),
 	); err != nil {
 		return newError(err.Error())
 	}
@@ -29,6 +29,15 @@ func HttpGet(args ...object.Object) object.Object {
 			hkey := fmt.Sprintf("%v", ent.Key)
 			hval := fmt.Sprintf("%v", ent.Value)
 			req.Header.Add(hkey, hval)
+		}
+	}
+
+	if len(args) == 3 {
+		hash := args[2].(*object.Hash)
+		for _, ent := range hash.Pairs {
+			hkey := fmt.Sprintf("%v", ent.Key)
+			hval := fmt.Sprintf("%v", ent.Value)
+			req.AddCookie(&http.Cookie{Name: hkey, Value: hval})
 		}
 	}
 
