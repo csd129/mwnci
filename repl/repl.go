@@ -1,14 +1,15 @@
 package repl
 
 import (
+	"fmt"
 	"io"
-	"os"
 	"mwnci/evaluator"
 	"mwnci/lexer"
 	"mwnci/object"
 	"mwnci/parser"
+	"os"
 	"strings"
-	"fmt"
+
 	"github.com/chzyer/readline"
 )
 
@@ -18,7 +19,7 @@ func Start(in io.Reader, out io.Writer) {
 	env := object.NewEnvironment()
 	homedir, _ := os.UserHomeDir()
 	historyfile := fmt.Sprintf("%s/.mwnci_history", homedir)
-	
+
 	line := "INCLUDE={} include(\"main\")"
 	l := lexer.New(line)
 	p := parser.New(l)
@@ -29,8 +30,8 @@ func Start(in io.Reader, out io.Writer) {
 	evaluator.Eval(program, env)
 	line = ""
 	rl, _ := readline.NewEx(&readline.Config{
-		Prompt:            PROMPT,
-		HistoryFile:       historyfile,
+		Prompt:      PROMPT,
+		HistoryFile: historyfile,
 	})
 	defer rl.Close()
 	var cmds []string
@@ -40,7 +41,7 @@ func Start(in io.Reader, out io.Writer) {
 		if len(line) == 0 {
 			continue
 		}
-		cmds=append(cmds, line)
+		cmds = append(cmds, line)
 		if !strings.HasSuffix(line, ":") {
 			continue
 		}
@@ -54,16 +55,16 @@ func Start(in io.Reader, out io.Writer) {
 		program := p.ParseProgram()
 		if len(p.Errors()) != 0 {
 			printParserErrors(out, p.Errors())
-			cmds=cmds[:0]
+			cmds = cmds[:0]
 			continue
 		}
 
 		evaluated := evaluator.Eval(program, env)
-		if evaluated != nil {
+		if evaluated != evaluator.NULL {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")
 		}
-		cmds=cmds[:0]
+		cmds = cmds[:0]
 	}
 }
 

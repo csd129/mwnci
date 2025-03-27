@@ -15,11 +15,10 @@ func ShuffleFun(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	foo := args[0].(*object.Array)
-	length := len(foo.Elements)
-	newa := foo.Copy()
+	arr := args[0].(*object.Array)
+	length := len(arr.Elements)
+	newa := arr.Copy()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	rand.Shuffle(length, func(i, j int) { newa.Swap(i, j) })
 	return newa
 }
-
