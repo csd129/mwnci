@@ -50,7 +50,6 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 						fmt.Printf("ParseError: `%s`: %s\n", import_file,msg)
 					}
 					fmt.Printf("%v\n", p.Errors())
-					//return newError("ParseError: include() failed to parse %s", import_file)
 				}
 			}
 		}
@@ -60,5 +59,5 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 			found = 0
 		}
 	}
-	return nil
+	return NULL
 }

@@ -19,10 +19,9 @@ import (
 
 // pre-defined object including Null, True and False
 var (
-	NULL    = &object.Null{}
-	TRUE    = &object.Boolean{Value: true}
-	FALSE   = &object.Boolean{Value: false}
-	//	PRAGMAS = make(map[string]int)
+	NULL  = &object.Null{}
+	TRUE  = &object.Boolean{Value: true}
+	FALSE = &object.Boolean{Value: false}
 )
 
 // The built-in functions / standard-library methods are stored here.

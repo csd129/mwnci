@@ -20,5 +20,5 @@ func Cls(args ...object.Object) object.Object {
 	// escape codes cos this is mainly written for
 	// linux at the mo.
 	fmt.Print("\033[H\033[2J")
-	return nil
+	return NULL
 }

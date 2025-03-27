@@ -13,6 +13,12 @@ import (
 	"github.com/chzyer/readline"
 )
 
+var (
+	NULL  = &object.Null{}
+	TRUE  = &object.Boolean{Value: true}
+	FALSE = &object.Boolean{Value: false}
+)
+
 const PROMPT = "mwnci> "
 
 func Start(in io.Reader, out io.Writer) {
@@ -60,7 +66,7 @@ func Start(in io.Reader, out io.Writer) {
 		}
 
 		evaluated := evaluator.Eval(program, env)
-		if evaluated != nil {
+		if evaluated != NULL {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")
 		}
