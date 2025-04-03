@@ -29,7 +29,7 @@ if (!INCLUDE["OS"]) {
 
     function loadavg() {
         Data=fields(cat("/proc/loadavg"))
-	return float(Data.slice(0,2))
+        return float(Data.slice(0,2))
     }
 
     function getcpu(Cpu="") {
