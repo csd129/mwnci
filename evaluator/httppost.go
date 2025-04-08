@@ -1,13 +1,14 @@
 package evaluator
 
 import (
-	"os"
 	"bytes"
 	"io"
-	"net/http"
-	"net/url"
 	"mwnci/object"
 	"mwnci/typing"
+	"net/http"
+	"net/url"
+	"os"
+	"time"
 )
 
 func HttpPostNoProxy(args ...object.Object) object.Object {
@@ -34,7 +35,7 @@ func HttpPost(args ...object.Object) object.Object {
 	); err != nil {
 		return newError(err.Error())
 	}
-	PROXY:=os.Getenv("HTTP_PROXY")
+	PROXY := os.Getenv("HTTP_PROXY")
 	if len(PROXY) == 0 {
 		return HttpPostNoProxy(args[0], args[1], args[2])
 	}
@@ -44,7 +45,10 @@ func HttpPost(args ...object.Object) object.Object {
 	data := args[2].(*object.String).Value
 	proxy := http.ProxyURL(proxyURL)
 	transport := &http.Transport{Proxy: proxy}
-	client := &http.Client{Transport: transport}
+	client := &http.Client{
+		Transport: transport,
+		Timeout:   10 * time.Second,
+	}
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer([]byte(data)))
 	req.Header.Add("Content-Type", content)
 	resp, err := client.Do(req)

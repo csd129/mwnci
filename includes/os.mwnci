@@ -126,19 +126,19 @@ if (!INCLUDE["OS"]) {
 
     function osrelease() {
         OsrHash={
-	    "name": "Linux",
+            "name": "Linux",
             "version": null,
             "id": "linux",
             "id_like": [],
             "version_codename": null,
             "version_id": null,
-	    "pretty_name": "Linux",
+            "pretty_name": "Linux",
             "ansi_color": null,
             "cpe_name": null,
             "build_id": null,
             "variant": null,
-	    "variant_id": null,
-	    "logo": null
+            "variant_id": null,
+            "logo": null
         }
 
         UrlHash={
@@ -147,36 +147,36 @@ if (!INCLUDE["OS"]) {
             "support": null,
             "bug_report": null,
             "privacy_policy": null
-	}
-  	DataFile=""
-	if (isexist("/etc/os-release")) {
-	    DataFile="/etc/os-release"
-	} else if (isexist("/usr/lib/os-release")) {
-	    DataFile="/usr/lib/os-release"
+	    }
+  	    DataFile=""
+	    if (isexist("/etc/os-release")) {
+	        DataFile="/etc/os-release"
+	    } else if (isexist("/usr/lib/os-release")) {
+	        DataFile="/usr/lib/os-release"
         }
 
-	if (DataFile == "") {
-	    return OsrHash
-	}
+	    if (DataFile == "") {
+	        return OsrHash
+	    }
 
         Data=split(trim(cat(DataFile)), "\n")
 
         foreach Line in Data {
-	    Sline=split(Line, "=")
-	    Key=tolower(Sline[0])
-	    Value=trim(Sline[1], "\"")
+	        Sline=split(Line, "=")
+	        Key=tolower(Sline[0])
+	        Value=trim(Sline[1], "\"")
 
-	    if (match("_url", Key)) {
+	        if (match("_url", Key)) {
                 Key=trimsuffix(Key, "_url")
-		UrlHash=set(UrlHash, Key, Value)
+		        UrlHash=set(UrlHash, Key, Value)
             } else {
                 if (match("id_like", Key)) {Value=fields(Value)}
                 OsrHash=set(OsrHash, Key, Value)
             }
         }
 
-	OsrHash=set(OsrHash, "urls", UrlHash)
-	return OsrHash
+	    OsrHash=set(OsrHash, "urls", UrlHash)
+	    return OsrHash
     }
 
     function string.datetoepoch() {
