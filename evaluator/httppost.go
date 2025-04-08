@@ -28,10 +28,11 @@ func HttpPostNoProxy(args ...object.Object) object.Object {
 }
 
 func HttpPost(args ...object.Object) object.Object {
+	timeout := 10 // default to 10 second timeout
 	if err := typing.Check(
 		"httppost", args,
-		typing.ExactArgs(3),
-		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ, object.STRING_OBJ),
+		typing.RangeOfArgs(3, 4),
+		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ, object.STRING_OBJ, object.INTEGER_OBJ),
 	); err != nil {
 		return newError(err.Error())
 	}
@@ -44,10 +45,13 @@ func HttpPost(args ...object.Object) object.Object {
 	content := args[1].(*object.String).Value
 	data := args[2].(*object.String).Value
 	proxy := http.ProxyURL(proxyURL)
+	if len(args) == 4 {
+		timeout = int(args[3].(*object.Integer).Value)
+	}
 	transport := &http.Transport{Proxy: proxy}
 	client := &http.Client{
 		Transport: transport,
-		Timeout:   10 * time.Second,
+		Timeout:   time.Duration(timeout) * time.Second,
 	}
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer([]byte(data)))
 	req.Header.Add("Content-Type", content)
