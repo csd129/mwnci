@@ -170,13 +170,9 @@ if (!INCLUDE["OS"]) {
                 Key=trimsuffix(Key, "_url")
 		UrlHash=set(UrlHash, Key, Value)
             } else {
+                if (match("id_like", Key)) {Value=fields(Value)}
                 OsrHash=set(OsrHash, Key, Value)
             }
-
-	    if (match("id_like", Key)) {
-                Value=fields(Value)
-            }
-
         }
 
 	OsrHash=set(OsrHash, "urls", UrlHash)
