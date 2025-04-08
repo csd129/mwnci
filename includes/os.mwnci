@@ -91,8 +91,8 @@ if (!INCLUDE["OS"]) {
 // It appears older kernels don't supply KReclaimable
 //
         if (!MemHash["KReclaimable"]) {
-	    MemHash=MemHash.set("KReclaimable", 0)
-	}
+            MemHash=MemHash.set("KReclaimable", 0)
+        }
         buffcache=MemHash["Cached"] + MemHash["KReclaimable"] + MemHash["Buffers"]
         memfree=MemHash["MemFree"]
         shared=MemHash["Shmem"]
@@ -122,6 +122,65 @@ if (!INCLUDE["OS"]) {
         Result=system(Cmd)
         Secs=int(trim(Result))
         return Secs
+    }
+
+    function osrelease() {
+        OsrHash={
+	    "name": "Linux",
+            "version": null,
+            "id": "linux",
+            "id_like": [],
+            "version_codename": null,
+            "version_id": null,
+	    "pretty_name": "Linux",
+            "ansi_color": null,
+            "cpe_name": null,
+            "build_id": null,
+            "variant": null,
+	    "variant_id": null,
+	    "logo": null
+        }
+
+        UrlHash={
+            "home": null,
+            "documentation": null,
+            "support": null,
+            "bug_report": null,
+            "privacy_policy": null
+	}
+  	DataFile=""
+	if (isexist("/etc/os-release")) {
+	    DataFile="/etc/os-release"
+	} else if (isexist("/usr/lib/os-release")) {
+	    DataFile="/usr/lib/os-release"
+        }
+
+	if (DataFile == "") {
+	    return OsrHash
+	}
+
+        Data=split(trim(cat(DataFile)), "\n")
+
+        foreach Line in Data {
+	    Sline=split(Line, "=")
+	    Key=tolower(Sline[0])
+	    Value=trim(Sline[1], "\"")
+
+	    if (match("_url", Key)) {
+                Key=trimsuffix(Key, "_url")
+		UrlHash=set(UrlHash, Key, Value)
+            } else {
+                OsrHash=set(OsrHash, Key, Value)
+            }
+
+	    if (match("id_like", Key)) {
+                Value=fields(Value)
+            }
+
+        }
+
+	OsrHash=set(OsrHash, "urls", UrlHash)
+	return OsrHash
     }
 
     function string.datetoepoch() {
