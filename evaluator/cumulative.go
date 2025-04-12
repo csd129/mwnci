@@ -25,7 +25,7 @@ func Cumulate(args ...object.Object) object.Object {
 		if err != nil {
 			return newError("Unable to parse \"%v\" at index [%d]", el, counter)
 		}
-		total = total + val
+		total += val
 		count_arr[counter] = &object.Float{Value: total}
 	}
 	return &object.Array{Elements: count_arr}

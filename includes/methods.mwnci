@@ -16,6 +16,7 @@ if (!INCLUDE["METHODS"]) {
     function array.insert(element=-1, value="") {return insert(self, element, value)}
     function array.intersect(data) {return intersect(self, data)}
     function array.isrsorted() {return isrsorted(self)}
+    function array.issubset(data) {return issubset(self, data)}
     function array.issorted() {return issorted(self)}
     function array.join(char) {return join(self, char)}
     function array.last() {return last(self)}

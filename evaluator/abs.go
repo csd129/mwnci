@@ -17,13 +17,13 @@ func Abs(args ...object.Object) object.Object {
 	case *object.Integer:
 		value := args[0].(*object.Integer).Value
 		if value < 0 {
-			value=value * -1
+			value *= -1
 		}
 		return &object.Integer{Value: value}
 	case *object.Float:
 		value := args[0].(*object.Float).Value
 		if value < 0 {
-			value=value * -1
+			value *= -1
 		}
 		return &object.Float{Value: value}
 	default:

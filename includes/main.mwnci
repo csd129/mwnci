@@ -546,4 +546,13 @@ if (!INCLUDE["MAIN"]) {
         }
         return String
     }
+
+    function issubset(Arr1=[], Arr2=[]) {
+        Arr1=uniq(Arr1)
+        Arr2=uniq(Arr2)
+        foreach Value in Arr1 {
+            if (index(Arr2, Value) == -1) {return false}
+        }
+        return true
+    }
 }

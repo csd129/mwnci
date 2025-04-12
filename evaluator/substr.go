@@ -17,7 +17,7 @@ func subStrFun(args ...object.Object) object.Object {
 	text := args[0].(*object.String).Value
 	i := int(args[1].(*object.Integer).Value)
 	if i < 0 {
-		i = len(text) + i
+		i += len(text)
 	}
 	l := 0
 	if len(args) == 3 {
