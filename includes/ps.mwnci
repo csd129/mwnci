@@ -24,7 +24,7 @@ if (!INCLUDE["PS"]) {
             exit(1)
         }
         Processes=process()
-        PIDs=sort(keys(Processes))
+        PIDs=keys(Processes)
         foreach Pid in PIDs {
             CommandLine=Processes[Pid]["COMMAND"]
     	    CmdArray=fields(CommandLine)
@@ -34,7 +34,7 @@ if (!INCLUDE["PS"]) {
     	    }
         }
         if (len(parray) > 0) {
-            return parray
+            return sort(parray)
         }
         return false
     }
