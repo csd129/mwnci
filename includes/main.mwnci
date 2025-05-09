@@ -183,17 +183,17 @@ if (!INCLUDE["MAIN"]) {
         InterArray=[]
         array_a=uniq(array_a)
         array_b=uniq(array_b)
-	if (len(array_a) < len(array_b)) {
-	    small=array_a
-	    large=array_b
-	} else {
-	    small=array_b
-	    large=array_a
-	}
+        if (len(array_a) < len(array_b)) {
+            small=array_a
+            large=array_b
+        } else {
+            small=array_b
+            large=array_a
+        }
         foreach Value in small {
             if (index(large, Value) > -1) {
-    	        InterArray=push(InterArray, Value)
-    	    }
+                InterArray=push(InterArray, Value)
+            }
         }
         return InterArray
     }
