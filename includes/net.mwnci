@@ -192,22 +192,22 @@ if (!INCLUDE["NET"]) {
     function port2pid(Port=0) {
         if (!checkfunctype("port2pid", "integer", Port, 1)) {exit(1)}
         OfHash={}
-	PortArray=[]
-	ListArray=[]
+        PortArray=[]
+        ListArray=[]
         Data=split(trim(system("lsof -P -i | grep LISTEN; exit 0")), "\n")
         if (len(Data) != 0) {
             foreach Line in Data {
                 Line=trimsuffix(Line, " (LISTEN)")
                 Line=fields(replaceall(Line, ":", " "))
                 PortArray=push(PortArray, Line[len(Line)-1])
-		ListArray=push(ListArray, [Line[0], Line[1], Line[len(Line)-1]])
+                ListArray=push(ListArray, [Line[0], Line[1], Line[len(Line)-1]])
             }
         }
         PortArray=PortArray.uniq()
         ListArray=ListArray.uniq()
         foreach Port in PortArray {
             TempArray=[]
-	    Proc=""
+            Proc=""
             foreach Entry in ListArray {
                 if (Port == Entry[2]) {
                     Proc=Entry[0]
@@ -217,7 +217,7 @@ if (!INCLUDE["NET"]) {
             TempHash={"pids": TempArray, "proc": Proc}
             OfHash=set(OfHash, Port, TempHash)
         }
-	if (len(OfHash) == 0) {
+        if (len(OfHash) == 0) {
             return OfHash
         }
         if (Port != 0) {
