@@ -98,13 +98,13 @@ if (!INCLUDE["NET"]) {
             dest=nsip4(Sline[1])
             gway=nsip4(Sline[2])
             flags=Flags[int(Sline[3])]
-            refcnt=Sline[4]
-            use=Sline[5]
-            metric=Sline[6]
+            refcnt=int(Sline[4])
+            use=int(Sline[5])
+            metric=int(Sline[6])
             mask=nsip4(Sline[7])
-            mtu=Sline[8]
-            window=Sline[9]
-            irtt=Sline[10]
+            mtu=int(Sline[8])
+            window=int(Sline[9])
+            irtt=int(Sline[10])
             TempHash={"iface": iface, "desination": dest, "gateway": gway, "flags": flags, "refcnt": refcnt, "use": use, "metric": metric, "mask": mask, "mtu": mtu, "window": window, "irtt": irtt}
             Route=Route.push(TempHash)
         }
