@@ -1,0 +1,6 @@
+#!/bin/sh
+DIR=`dirname $0`
+[ $# -gt 1 ] && shift
+export INCLUDEPATH=${DIR}/includes
+
+${DIR}/mwnci $@

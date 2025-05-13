@@ -1,8 +1,14 @@
-dummy:
+VIM=${HOME}/.vim
 
 install:
-	mkdir -p ${HOME}/.vim/ftdetect
-	mkdir -p ${HOME}/.vim/syntax
-	cp ftdetect/mwnci.vim ${HOME}/.vim/ftdetect
-	cp syntax/mwnci.vim ${HOME}/.vim/syntax
-	cat filetype.vim >> ${HOME}/.vim/filetype.vim
+	install -m 0700 -d ${VIM}/ftdetect -d ${VIM}/syntax
+	install -t ${VIM}/ftdetect ftdetect/mwnci.vim
+	install -t ${VIM}/syntax syntax/mwnci.vim
+	if [ ! "`grep -s ^au.*mwnci ${VIM}/filetype.vim`" ] ; \
+	then \
+	    cat filetype.vim >> ${VIM}/filetype.vim ; \
+	fi
+
+clean:
+	find . -name \#\* -type f -exec rm {} \;
+	find . -name \*~ -type f -exec rm {} \;

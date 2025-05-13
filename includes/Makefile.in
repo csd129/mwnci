@@ -7,10 +7,9 @@ GROUP=@GROUP@
 dummy:
 
 install: ${FILES}
-	mkdir -p ${INCLUDEDIR}
+	${INSTALL} -m 0755 -d  ${INCLUDEDIR}
+	${INSTALL} ${INSTALL_OPTS} -m 0644 ${FILES} ${INCLUDEDIR}
 	cp ${FILES} ${INCLUDEDIR}
-	chmod 755 ${INCLUDEDIR}
-	chmod 644 ${INCLUDEDIR}/*.mwnci
 
 clean:
 	rm -f *~ \#*\#	
