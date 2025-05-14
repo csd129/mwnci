@@ -101,14 +101,14 @@ if (!INCLUDE["SYSSTAT"]) {
                     if (match("[AP]M", SInterface[1])) {SInterface=delete(SInterface, 1)}
                     Iface_Hash=set(Iface_Hash, SInterface[1],
                         {
-                            "rxpcks": SInterface[2],
-                            "txpcks": SInterface[3],
-                            "rxkbs": SInterface[4],
-                            "txkbs": SInterface[5],
-                            "rxcmps": SInterface[6],
-                            "txcmps": SInterface[7],
-                            "rxmcsts": SInterface[8],
-                            "ifutil": SInterface[9]
+                            "rxpcks": float(SInterface[2]),
+                            "txpcks": float(SInterface[3]),
+                            "rxkbs": float(SInterface[4]),
+                            "txkbs": float(SInterface[5]),
+                            "rxcmps": float(SInterface[6]),
+                            "txcmps": float(SInterface[7]),
+                            "rxmcsts": float(SInterface[8]),
+                            "ifutil": float(SInterface[9])
                         }
                     )
                 }
