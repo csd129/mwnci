@@ -132,25 +132,27 @@ if (!INCLUDE["NET"]) {
 
         foreach Prot in PROTS {
             File=PROCNET + "/" + Prot
-            Type=basename(File)
-            IPV6=match("6", Type)
-            Data=split(trim(cat(File)), "\n")
-            Data=shift(Data)
-            foreach line in Data {
-                Sline=fields(line)
-     	        IPPort=split(Sline[1], ":")
-       	        IP=(IPV6 == true) ? nsip6(IPPort[0]) : nsip4(IPPort[0])
-                Port=hex2dec(IPPort[1])
-                if (Port == 0) {Port="*"}
-                Local=IP + ":" + string(Port)
-                IPPort=split(Sline[2], ":")
-                IP=(IPV6 == true) ? nsip6(IPPort[0]) : nsip4(IPPort[0])
-                Port=hex2dec(IPPort[1])
-                if (Port == 0) {Port="*"}
-                Remote=IP + ":" + string(Port)
-                State=(Sline[3] != "07") ? CON_STATE[Sline[3]] : ""
-                TempArray=[Type, Local, Remote, State]
-                NetArray=NetArray.push(TempArray)
+            if (isexist(FILE)) {
+                Type=basename(File)
+                IPV6=match("6", Type)
+                Data=split(trim(cat(File)), "\n")
+                Data=shift(Data)
+                foreach line in Data {
+                    Sline=fields(line)
+     	            IPPort=split(Sline[1], ":")
+                    IP=(IPV6 == true) ? nsip6(IPPort[0]) : nsip4(IPPort[0])
+                    Port=hex2dec(IPPort[1])
+                    if (Port == 0) {Port="*"}
+                    Local=IP + ":" + string(Port)
+                    IPPort=split(Sline[2], ":")
+                    IP=(IPV6 == true) ? nsip6(IPPort[0]) : nsip4(IPPort[0])
+                    Port=hex2dec(IPPort[1])
+                    if (Port == 0) {Port="*"}
+                    Remote=IP + ":" + string(Port)
+                    State=(Sline[3] != "07") ? CON_STATE[Sline[3]] : ""
+                    TempArray=[Type, Local, Remote, State]
+                    NetArray=NetArray.push(TempArray)
+                }
             }
         }
         return NetArray
