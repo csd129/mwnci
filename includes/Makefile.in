@@ -9,7 +9,6 @@ dummy:
 install: ${FILES}
 	${INSTALL} -m 0755 -d  ${INCLUDEDIR}
 	${INSTALL} ${INSTALL_OPTS} -m 0644 ${FILES} ${INCLUDEDIR}
-	cp ${FILES} ${INCLUDEDIR}
 
 clean:
 	rm -f *~ \#*\#	
