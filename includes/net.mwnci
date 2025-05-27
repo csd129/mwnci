@@ -132,7 +132,7 @@ if (!INCLUDE["NET"]) {
 
         foreach Prot in PROTS {
             File=PROCNET + "/" + Prot
-            if (isexist(FILE)) {
+            if (isexist(File)) {
                 Type=basename(File)
                 IPV6=match("6", Type)
                 Data=split(trim(cat(File)), "\n")
