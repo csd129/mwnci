@@ -10,9 +10,9 @@
 
 (defvar mwnci-keywords
   '(
-    "else" "fn" "foreach" "function" "if" "in"
-    "let" "return" "while" "switch" "case"
-    "default" "const" "noop"
+    "case" "const" "default" "else" "false" "fn" "foreach"
+    "function" "if" "in" "let" "noop" "null" "return" "switch"
+    "true" "while"
     ))
 
 
