@@ -13,7 +13,7 @@ syntax case match
 
 syntax keyword xType @VIMCONSTS@ true false null
 
-syntax keyword xKeyword fn if else return while foreach function in let return switch case default const
+syntax keyword xKeyword fn if else return while foreach function in let return switch case default const noop
 
 syntax keyword xFunction @VIMINCLUDES@
 syntax keyword xFunction @VIMFUNCTIONS@
