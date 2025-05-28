@@ -39,17 +39,8 @@ if (!INCLUDE["JSON"]) {
         return tomarkup(tjson(JsonData), "json")
     }
 
-    function toxml(JsonData) {
-        if (!checkfunctype("toxml", "collection", JsonData, 1)) {exit(1)}
-        return tomarkup(tjson(JsonData), "xml")
-    }
-
     function object.tojson() {
         return tojson(self)
-    }
-
-    function object.toxml() {
-        return toxml(self)
     }
 
     function object.tjson() {
