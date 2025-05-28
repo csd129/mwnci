@@ -8,19 +8,19 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func jtoy(args ...object.Object) object.Object {
+func ytoj(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"jsontoyaml", args,
+		"yamltojson", args,
 		typing.ExactArgs(1),
 	); err != nil {
 		return newError(err.Error())
 	}
 
 	Stringy := fmt.Sprintf("%v", &object.String{Value: args[0].String()})
-	Json := []byte(Stringy)
-	Yaml, err := yaml.JSONToYAML(Json)
+	Yaml := []byte(Stringy)
+	Json, err := yaml.YAMLToJSON(Yaml)
 	if err != nil {
 		return newError(err.Error())
 	}
-	return &object.String{Value: string(Yaml)}
+	return &object.String{Value: string(Json)}
 }

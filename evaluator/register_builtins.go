@@ -80,7 +80,7 @@ func init() {
 	RegisterBuiltin("isreadable", func(env *object.Environment, args ...object.Object) object.Object { return (IsReadable(args...)) })
 	RegisterBuiltin("iswriteable", func(env *object.Environment, args ...object.Object) object.Object { return (IsWriteable(args...)) })
 	RegisterBuiltin("issorted", func(env *object.Environment, args ...object.Object) object.Object { return (Issorted(args...)) })
-	RegisterBuiltin("toyaml", func(env *object.Environment, args ...object.Object) object.Object { return (j2yaml(args...)) })
+	RegisterBuiltin("jsontoyaml", func(env *object.Environment, args ...object.Object) object.Object { return (jtoy(args...)) })
 	RegisterBuiltin("join", func(env *object.Environment, args ...object.Object) object.Object { return (Joiner(args...)) })
 	RegisterBuiltin("items", func(env *object.Environment, args ...object.Object) object.Object { return (hashItems(args...)) })
 	RegisterBuiltin("keys", func(env *object.Environment, args ...object.Object) object.Object { return (hashKeys(args...)) })
@@ -159,5 +159,6 @@ func init() {
 	RegisterBuiltin("whoami", func(env *object.Environment, args ...object.Object) object.Object { return (Whoami(args...)) })
 	RegisterBuiltin("write", func(env *object.Environment, args ...object.Object) object.Object { return (Write(args...)) })
 	RegisterBuiltin("writefile", func(env *object.Environment, args ...object.Object) object.Object { return (WriteFile(args...)) })
+	RegisterBuiltin("yamltojson", func(env *object.Environment, args ...object.Object) object.Object { return (ytoj(args...)) })
 	RegisterBuiltin("zip", func(env *object.Environment, args ...object.Object) object.Object { return (zipFun(args...)) })
 }
