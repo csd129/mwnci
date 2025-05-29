@@ -18,6 +18,7 @@ if (!INCLUDE["METHODS"]) {
     function array.isrsorted() {return isrsorted(self)}
     function array.issubset(data) {return issubset(self, data)}
     function array.issorted() {return issorted(self)}
+    function array.jsontoyaml() {return jsontoyaml(self)}
     function array.join(char) {return join(self, char)}
     function array.last() {return last(self)}
     function array.lines() {return lines(self)}
@@ -43,7 +44,8 @@ if (!INCLUDE["METHODS"]) {
     function array.uniq() {return uniq(self)}
     function array.usort() {return usort(self)}
     function float.int() {return (int(self))}
-    function hash.delete(key) {return delete(self, key)}          
+    function hash.delete(key) {return delete(self, key)}
+    function hash.jsontoyaml() {return jsontoyaml(self)}
     function hash.items() {return items(self)}
     function hash.keys() {return keys(self)}
     function hash.set(element="", value="") {return set(self, element, value)}
@@ -80,6 +82,7 @@ if (!INCLUDE["METHODS"]) {
     function string.interpol(data) {return interpol(data, self)}
     function string.ipincidr(cidr) {return ipincidr(cidr, self)}
     function string.iptoint() {return iptoint(self)}
+    function string.jsontoyaml() {return jsontoyaml(self)}
     function string.lines() {return lines(self)}
     function string.listcidrips() {return listcidrips(self)}
     function string.lookupcname() {return lookupcname(self)}
@@ -89,7 +92,7 @@ if (!INCLUDE["METHODS"]) {
     function string.lookupns() {return lookupns(self)}
     function string.lookupptr() {return lookupptr(self)}
     function string.lookuptxt() {return lookuptxt(self)}
-    function string.ltrim(trimmer="") {if (trimmer == "") {return ltrim(self)} return ltrim(self, trimmer)}          
+    function string.ltrim(trimmer="") {if (trimmer == "") {return ltrim(self)} return ltrim(self, trimmer)}
     function string.match(search) {return match(search, self)}
     function string.oct2sym() {return oct2sym(self)}
     function string.ord() {return ord(self)}
@@ -108,4 +111,5 @@ if (!INCLUDE["METHODS"]) {
     function string.trim() {return trim(self)}
     function string.trimprefix(pref) {return trimprefix(self, pref)}
     function string.trimsuffix(suff) {return trimsuffix(self, suff)}
+    function string.yamltojson() {return yamltojson(self)}
 }

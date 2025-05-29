@@ -78,7 +78,7 @@ if (!INCLUDE["MATH"]) {
 
     function gcd(Dividend, Divisor) {
         if (!checkfunctype("gcd", "integer", Dividend, 1)) {exit(1)}
-        if (!checkfunctype("gcd", "integer", Divisor, 2)) {exit(1)}    
+        if (!checkfunctype("gcd", "integer", Divisor, 2)) {exit(1)}
 	    if (Dividend == 0 && Divisor == 0) {return 0}
         Remainder=1
         while (Remainder != 0) {
@@ -230,5 +230,4 @@ if (!INCLUDE["MATH"]) {
         return ceil(self)
     }
 }
-
 

@@ -181,7 +181,7 @@ if (!INCLUDE["FILE"]) {
         if (!FirstStat || !SecondStat) {
             return false
         }
-        FirstModDate=int(FirstStat)    
+        FirstModDate=int(FirstStat)
         SecondModDate=int(SecondStat)
         return (FirstModDate > SecondModDate) ? true : false
     }

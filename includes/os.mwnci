@@ -84,7 +84,7 @@ if (!INCLUDE["OS"]) {
                     PercentFree=100 - PercentUsed
                     TempHash={"blocks": int(SplitLine[1]), "used": int(SplitLine[2]), "available": int(SplitLine[3]), "usedperc": PercentUsed, "freeperc": PercentFree, "mount": SplitLine[5]}
                     DiskHash=set(DiskHash, SplitLine[0], TempHash)
-                }   
+                }
             }
             Count++
         }
@@ -201,5 +201,3 @@ if (!INCLUDE["OS"]) {
         return datetoepoch(self)
     }
 }
-
-
