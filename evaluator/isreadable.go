@@ -17,7 +17,8 @@ func IsReadable(args ...object.Object) object.Object {
 
 	file := args[0].(*object.String).Value
 
-	_, err := os.Open(file)
+	ReadFile, err := os.Open(file)
+        defer ReadFile.Close()
 	if err != nil {
 		return FALSE
 	}
