@@ -171,8 +171,8 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("interpol", "hash", DataHash, 1)) {exit(1)}
         if (!checkfunctype("interpol", "string", Text, 2)) {exit(1)}
         foreach Key in keys(DataHash) {
-            Rstring="${"+Key+"}"
-            Text=replaceall(Text, Rstring, string(DataHash[Key]))
+            TokenString="${"+Key+"}"
+            Text=replaceall(Text, TokenString, string(DataHash[Key]))
         }
         return Text
     }
@@ -180,7 +180,7 @@ if (!INCLUDE["MAIN"]) {
     function intersect(array_a, array_b) {
         if (!checkfunctype("intersect", "array", array_a, 1)) {exit(1)}
         if (!checkfunctype("intersect", "array", array_b, 2)) {exit(1)}
-        InterArray=[]
+        IntersectArray=[]
         array_a=uniq(array_a)
         array_b=uniq(array_b)
         if (len(array_a) < len(array_b)) {
@@ -192,10 +192,10 @@ if (!INCLUDE["MAIN"]) {
         }
         foreach Value in small {
             if (index(large, Value) > -1) {
-                InterArray=push(InterArray, Value)
+                IntersectArray=push(IntersectArray, Value)
             }
         }
-        return InterArray
+        return IntersectArray
     }
 
     function isrsorted(SortedArray) {
@@ -293,8 +293,9 @@ if (!INCLUDE["MAIN"]) {
     }
 
 
-    function rsort(arr) {
-        return reverse(sort(arr))
+    function rsort(Array) {
+        if (!checkfunctype("rsort", "array", Array, 1)) {exit(1)}
+        return reverse(sort(Array))
     }
 
     function tail(data, Lines=0) {
@@ -326,15 +327,26 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function unzip(MyArray=[]) {
-        if (len(MyArray) == 0) {
-            return MyArray
-    	}
-    	ZipArray=[]
-    	DataLen=len(MyArray[0])
-    	foreach Blank in 1..DataLen {
+        if (!checkfunctype("unzip", "array", MyArray, 1)) {exit(1)}
+        if (len(MyArray) == 0) {return MyArray}
+        ZipArray=[]
+        if (type(MyArray[0]) != "array") {
+            println("Error calling `unzip`: ERROR: TypeError : content argument to be `ARRAY`, got ", toupper(type(MyArray[0])),"`")
+            exit(1)
+        }
+        DataLen=len(MyArray[0])
+        foreach Blank in 1..DataLen {
             ZipArray=ZipArray.push([])
-    	}
-    	foreach Block in MyArray {
+        }
+        foreach Block in MyArray {
+            if (DataLen != len(Block)) {
+                println("Error calling `unzip`: ERROR: LenError: expected an array of length ", DataLen, ", got ", len(Block))
+                exit(1)
+            }
+            if (type(Block) != "array") {
+                println("Error calling `unzip`: ERROR: TypeError : expected content to be `ARRAY`, got ", toupper(type(Block)),"`")
+                exit(1)
+            }
             foreach Index, Entry in Block {
                 Temp=ZipArray[Index]
                 Temp=Temp.push(Entry)
