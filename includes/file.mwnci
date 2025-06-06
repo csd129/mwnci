@@ -176,6 +176,9 @@ if (!INCLUDE["FILE"]) {
             println("Error caliing `isnewer`: ERROR: TypeError: isnewer() takes exactly 2 arguments (1 or less given)")
     	    exit(1)
         }
+        if (!isexist(FirstFile) || !isexist(SecondFile)) {
+            return false
+        }
         FirstStat=file(FirstFile)
         SecondStat=file(SecondFile)
         if (!FirstStat || !SecondStat) {
@@ -193,6 +196,9 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isolder`: ERROR: TypeError: isolder() takes exactly 2 arguments (1 or less given)")
     	    exit(1)
         }
+        if (!isexist(FirstFile) || !isexist(SecondFile)) {
+            return false
+        }        
         return (!isnewer(FirstFile, SecondFile))
     }
     

@@ -23,6 +23,10 @@ if (!INCLUDE["CERTS"]) {
         if (len(File) == 0) {
             return false
         }
+        if (!isreadable(File)) {
+            println("Error calling `certexpiredays`: ERROR: OpenError : Can't open file ", File)
+            exit(1)
+        }
         Cert=getfileblock("-BEGIN CERTIFICATE-", "-END CERTIFICATE-", File)
         writetofile(CertFile, "w", Cert)
         Command=sprintf("openssl x509 -in %s -enddate -noout", CertFile)
