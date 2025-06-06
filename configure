@@ -1,8 +1,14 @@
 #!/bin/sh
+CONFIG=config.conf
+if [ $# -gt 0 ]
+then
+    CONFIG=$1
+fi
+
 TEMP=/tmp/config.$$
 trap "rm -f ${TEMP}" 0 1 2 3 5 15
 
-. ./config.conf
+. ./${CONFIG}
 
 INFILE=$(find . -name \*.in)
 emconsts=`find includes -name \*.mwnci -exec  grep -w "const.*=.*;$" {} \; | tr '=' ' ' | awk '{printf("\"%s\"\n", $2)}' | tr '\n' ' '`
