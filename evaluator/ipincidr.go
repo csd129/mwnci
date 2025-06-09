@@ -19,7 +19,10 @@ func Ipincidr(args ...object.Object) object.Object {
 	network := args[0].(*object.String).Value
 	clientip := args[1].(*object.String).Value
 
-	_, subnet, _ := net.ParseCIDR(network)
+	_, subnet, err := net.ParseCIDR(network)
+	if err != nil {
+		return newError(err.Error())
+	}
 	ip := net.ParseIP(clientip)
 	if subnet.Contains(ip) {
 		return &object.String{Value: string(clientip)}

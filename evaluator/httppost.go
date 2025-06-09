@@ -40,7 +40,10 @@ func HttpPost(args ...object.Object) object.Object {
 	if len(PROXY) == 0 {
 		return HttpPostNoProxy(args[0], args[1], args[2])
 	}
-	proxyURL, _ := url.Parse(PROXY)
+	proxyURL, err := url.Parse(PROXY)
+	if err != nil {
+		return newError(err.Error())
+	}
 	url := args[0].(*object.String).Value
 	content := args[1].(*object.String).Value
 	data := args[2].(*object.String).Value

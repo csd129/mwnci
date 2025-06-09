@@ -30,7 +30,7 @@ func Product(args ...object.Object) object.Object {
 		total *= val
 	}
 	// Fix rounding error
-	round := fmt.Sprintf("%.9f", total)
+	round := fmt.Sprintf("%.6f", total)
 	total, _ = strconv.ParseFloat(round, 64)
 	return &object.Float{Value: total}
 }
