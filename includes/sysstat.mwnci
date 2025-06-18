@@ -111,6 +111,12 @@ if (!INCLUDE["SYSSTAT"]) {
                             "ifutil": float(SInterface[9])
                         }
                     )
+//
+// Just in case we are on an older kernel
+//
+                    if (Iface_Hash["ifutil"] == null) {
+                        Iface_Hash=delete(Iface_Hash, "ifutil")
+                    }
                 }
             }
         }
