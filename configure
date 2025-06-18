@@ -1,4 +1,11 @@
 #!/bin/sh
+
+#
+# Now allowing an argument which is a config file
+# The default is config.conf but using a config for
+# separate install/builds can be created and used. 
+#
+
 CONFIG=config.conf
 if [ $# -gt 0 ]
 then
