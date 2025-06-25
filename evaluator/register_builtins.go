@@ -139,6 +139,7 @@ func init() {
 	RegisterBuiltin("swap", func(env *object.Environment, args ...object.Object) object.Object { return (Swapper(args...)) })
 	RegisterBuiltin("syslog", func(env *object.Environment, args ...object.Object) object.Object { return (Syslog(args...)) })
 	RegisterBuiltin("system", func(env *object.Environment, args ...object.Object) object.Object { return (System(args...)) })
+	RegisterBuiltin("tac", func(env *object.Environment, args ...object.Object) object.Object { return (RevCat(args...)) })
 	RegisterBuiltin("tan", func(env *object.Environment, args ...object.Object) object.Object { return (mathTan(args...)) })
 	RegisterBuiltin("tanh", func(env *object.Environment, args ...object.Object) object.Object { return (mathTanh(args...)) })
 	RegisterBuiltin("time", func(env *object.Environment, args ...object.Object) object.Object { return (Time(args...)) })
