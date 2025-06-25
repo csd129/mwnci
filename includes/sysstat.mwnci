@@ -90,34 +90,42 @@ if (!INCLUDE["SYSSTAT"]) {
         if (iface != "") {
             CMD=CMD + " --iface=" + iface
         }
-        Result=split(system(CMD), "\n")
-        Length=len(Result) - 5
-        Result=tail(Result, Length)
-        Iface_Hash={}
+        Result=split(stac(system(CMD)), "\n")
+        Data=[]
         foreach Line in Result {
             if (match("[a-z]", Line)) {
-                if (!match("IFACE", Line) && !match("Average", Line) && !match("LINUX", Line)) {
+                if (!match("IFACE", Line) && !match("Average", Line) && !match("[Ll[Ii][Nn][Uu][Xx]", Line)) {
                     SInterface=fields(Line)
                     if (match("[AP]M", SInterface[1])) {SInterface=delete(SInterface, 1)}
-                    Iface_Hash=set(Iface_Hash, SInterface[1],
-                        {
-                            "rxpcks": float(SInterface[2]),
-                            "txpcks": float(SInterface[3]),
-                            "rxkbs": float(SInterface[4]),
-                            "txkbs": float(SInterface[5]),
-                            "rxcmps": float(SInterface[6]),
-                            "txcmps": float(SInterface[7]),
-                            "rxmcsts": float(SInterface[8]),
-                            "ifutil": float(SInterface[9])
-                        }
-                    )
-//
-// Just in case we are on an older kernel
-//
-                    if (Iface_Hash["ifutil"] == null) {
-                        Iface_Hash=delete(Iface_Hash, "ifutil")
-                    }
+		    Data=push(Data, SInterface)
                 }
+            }
+        }
+        Iface_Hash={}
+        if (len(Data) == 0) {
+            return Iface_Hash
+        }
+        CurrentTime=Data[0][0]
+        foreach Line in Data {
+            if (Line[0] == CurrentTime) {
+                Iface_Hash=set(Iface_Hash, Line[1],
+                {
+                    "rxpcks": float(Line[2]),
+                    "txpcks": float(Line[3]),
+                    "rxkbs": float(Line[4]),
+                    "txkbs": float(Line[5]),
+                    "rxcmps": float(Line[6]),
+                    "txcmps": float(Line[7]),
+                    "rxmcsts": float(Line[8]),
+                    "ifutil": float(Line[9])
+                }
+                )
+// In case we are on older kernels
+                if (Iface_Hash["ifutil"] == null) {
+                    Iface_Hash=delete(Iface_Hash, "ifutil")
+                }
+            } else {
+                return Iface_Hash
             }
         }
         return Iface_Hash
