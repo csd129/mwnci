@@ -9,12 +9,6 @@ install:
 	${INSTALL} ${INSTALL_OPTS} -m 0755 mwnci ${BIN}
 	(cd ./includes; make install)
 
-distclean:
-	go clean
-	make clean
-	rm -f mwnci main Mwnci.mk includes/Makefile \
-              emacs/mwnci.el evaluator/include.go vim/syntax/mwnci.vim
-
 test:
 	go test -v ./...
 
