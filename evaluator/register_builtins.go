@@ -53,6 +53,7 @@ func init() {
 	RegisterBuiltin("first", func(env *object.Environment, args ...object.Object) object.Object { return (First(args...)) })
 	RegisterBuiltin("float", func(env *object.Environment, args ...object.Object) object.Object { return (floatFun(args...)) })
 	RegisterBuiltin("fopen", func(env *object.Environment, args ...object.Object) object.Object { return (FOpen(args...)) })
+	RegisterBuiltin("fromkeys", func(env *object.Environment, args ...object.Object) object.Object { return (FromKeys(args...)) })
 	RegisterBuiltin("getegid", func(env *object.Environment, args ...object.Object) object.Object { return (Getegid(args...)) })
 	RegisterBuiltin("geteuid", func(env *object.Environment, args ...object.Object) object.Object { return (Geteuid(args...)) })
 	RegisterBuiltin("getgid", func(env *object.Environment, args ...object.Object) object.Object { return (Getgid(args...)) })

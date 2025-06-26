@@ -451,15 +451,6 @@ if (!INCLUDE["MAIN"]) {
         CountArray=Counter..Length
         return zip(CountArray, MyArray)
     }
-
-    function fromkeys(MyArray=[], Value=0) {
-        if (!checkfunctype("fromkeys", "array", MyArray, 1)) {exit(1)}
-        MyHash={}
-        foreach Entry in MyArray {
-            MyHash=MyHash.set(Entry, Value)
-        }
-        return MyHash
-    }
     
     function rindex(Haystack, Needle) {
         Pos=-1
@@ -517,7 +508,7 @@ if (!INCLUDE["MAIN"]) {
             "[:punct:]": "!-.:-@:`'?[ _]{|}~",
             "[:space:]": "\t\n\v\r ",
             "[:upper:]": UPPER,
-	    "[:word:]": DIGIT + UPPER + LOWER + "_",
+            "[:word:]": DIGIT + UPPER + LOWER + "_",
             "[:xdigit:]": DIGIT + "ABCDEF" + "abcdef"
         }
         foreach ClassName in keys(CharacterClass) {
