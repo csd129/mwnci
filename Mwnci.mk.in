@@ -1,0 +1,20 @@
+BIN=@BIN@
+OWNER=@OWNER@
+GROUP=@GROUP@
+INSTALL=install
+INSTALL_OPTS=--compare -o ${OWNER} -g ${GROUP}
+
+install:
+	${INSTALL} -m 0755 -d  ${BIN}
+	${INSTALL} ${INSTALL_OPTS} -m 0755 mwnci ${BIN}
+	(cd ./includes; make install)
+
+distclean:
+	go clean
+	make clean
+	rm -f mwnci main Mwnci.mk includes/Makefile \
+              emacs/mwnci.el evaluator/include.go vim/syntax/mwnci.vim
+
+test:
+	go test -v ./...
+
