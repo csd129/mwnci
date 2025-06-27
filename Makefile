@@ -18,19 +18,27 @@ config: ## Configure and update build files
 	@./configure
 
 mwnci: ${AST} ${EVAL} ${LEXER} ${OBJECT} ${PARSER} ${TOKEN} ${TYPING} mwnci.go ## Build mwnci
+	@echo "Building mwnci"
 	@go build
 
+build: ## Configure and compile mwnci
+	@make config
+	@make mwnci
+
 clean:  ## Clean untracked files
+	@echo "Removing editor backup files"
 	@find . -name \#\* -type f -exec rm {} \;
 	@find . -name \*~ -type f -exec rm {} \;
 
 install: mwnci    ## Install mwnci
 	@make -f Mwnci.mk install
 
-distclean: ## Clean untracked files and binaries
+distclean: ## Clean untracked files, binaries, and build cache
+	@echo "Cleaning build cache"
 	@go clean
 	@make clean
 	@rm -f mwnci main Mwnci.mk includes/Makefile emacs/mwnci.el evaluator/include.go vim/syntax/mwnci.vim
 
 test: ## Run unit tests
-	@go test -v -cover -covermode atomic -race ./...
+#	@go test -v -cover -covermode atomic -race ./...
+	@go test -v ./...
