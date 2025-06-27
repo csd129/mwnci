@@ -19,6 +19,6 @@ The wiki can be found [here](https://monkey.ploogie.co.uk).
  ```
  git clone https://github.com/csd129/mwnci.git
  edit config.conf
- ./configure
+ make build
  make install
  ```
