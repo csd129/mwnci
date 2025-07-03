@@ -5,6 +5,7 @@
 # The default is config.conf but using a config for
 # separate install/builds can be created and used. 
 #
+VERSION=$(git describe --tags --abbrev=0)
 
 CONFIG=config.conf
 if [ $# -gt 0 ]
@@ -39,6 +40,7 @@ do
 	-e s:"@VIMFUNCTIONS@":"${vimfunctions}":g \
 	-e s:"@EMINCLUDES@":"${emincludes}":g \
 	-e s:"@VIMINCLUDES@":"${vimincludes}":g \
+	-e s:"@VERSION@":"${VERSION}":g \
 	> ${TEMP}
      [ -s ${TEMP} ] && mv ${TEMP} ${new}
 done

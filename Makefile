@@ -1,5 +1,4 @@
-CGO_ENABLED=0
-VERSION ?= $(shell git describe 2>/dev/null || echo "")
+VERSION=$(shell git describe --tags --abbrev=0 2>/dev/null || echo "")
 AST=$(shell find ast -type f | sed 's/ /\\ /g')
 EVAL=$(shell find evaluator -type f | sed 's/ /\\ /g')
 LEXER=$(shell find lexer -type f | sed 's/ /\\ /g')
@@ -17,13 +16,20 @@ help:
 config: ## Configure and update build files
 	@./configure
 
-mwnci: ${AST} ${EVAL} ${LEXER} ${OBJECT} ${PARSER} ${TOKEN} ${TYPING} mwnci.go ## Build mwnci
+mwnci: ${AST} ${EVAL} ${LEXER} ${OBJECT} ${PARSER} ${TOKEN} ${TYPING} mwnci.go ## Build mwnci for current architecture
 	@echo "Building mwnci"
-	@go build
+	CGO_ENABLED=0 go build -ldflags="-X main.version=${VERSION}"
 
 build: ## Configure and compile mwnci
 	@make config
 	@make mwnci
+
+buildall: ## Build multiple architectures
+	make config
+	GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-X main.version=${VERSION}" -o mwnci_linux_${VERSION}_amd64
+	GOOS=linux CGO_ENABLED=0 GOARCH=386 go build -ldflags="-X main.version=${VERSION}" -o mwnci_linux_${VERSION}_386
+	GOOS=linux CGO_ENABLED=0 GOARCH=arm go build -ldflags="-X main.version=${VERSION}" -o mwnci_linux_${VERSION}_arm
+	GOOS=linux CGO_ENABLED=0 GOARCH=arm64 go build -ldflags="-X main.version=${VERSION}" -o mwnci_linux_${VERSION}_arm64
 
 clean:  ## Clean untracked files
 	@echo "Removing editor backup files"
@@ -37,8 +43,10 @@ distclean: ## Clean untracked files, binaries, and build cache
 	@echo "Cleaning build cache"
 	@go clean
 	@make clean
-	@rm -f mwnci main Mwnci.mk includes/Makefile emacs/mwnci.el evaluator/include.go vim/syntax/mwnci.vim
+	@rm -f mwnci mwnci_linux_${VERSION}_amd64 mwnci_linux_${VERSION}_386 \
+	 mwnci_linux_${VERSION}_arm mwnci_linux_${VERSION}_arm64 \
+	 Mwnci.mk includes/Makefile emacs/mwnci.el\
+	 evaluator/include.go vim/syntax/mwnci.vim
 
-test: ## Run unit tests
-#	@go test -v -cover -covermode atomic -race ./...
+test: mwnci ## Run unit tests
 	@go test -v ./...
