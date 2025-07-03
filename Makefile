@@ -18,7 +18,7 @@ config: ## Configure and update build files
 
 mwnci: ${AST} ${EVAL} ${LEXER} ${OBJECT} ${PARSER} ${TOKEN} ${TYPING} mwnci.go ## Build mwnci for current architecture
 	@echo "Building mwnci"
-	CGO_ENABLED=0 go build -ldflags="-X main.version=${VERSION}"
+	CGO_ENABLED=0 go build -ldflags="-s -X main.version=${VERSION}"
 
 build: ## Configure and compile mwnci
 	@make config
@@ -43,8 +43,8 @@ distclean: ## Clean untracked files, binaries, and build cache
 	@echo "Cleaning build cache"
 	@go clean
 	@make clean
-	@rm -f mwnci mwnci_linux_${VERSION}_amd64 mwnci_linux_${VERSION}_386 \
-	 mwnci_linux_${VERSION}_arm mwnci_linux_${VERSION}_arm64 \
+	@rm -f mwnci mwnci_linux_*_amd64 mwnci_linux_*_386 \
+	 mwnci_linux_*_arm mwnci_linux_*_arm64 \
 	 Mwnci.mk includes/Makefile emacs/mwnci.el\
 	 evaluator/include.go vim/syntax/mwnci.vim
 
