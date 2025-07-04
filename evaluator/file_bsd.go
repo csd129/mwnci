@@ -1,4 +1,4 @@
-//go:build linux
+//go:build (netbsd || freebsd || darwin)
 package evaluator
 
 import (
@@ -26,14 +26,14 @@ func File(args ...object.Object) object.Object {
 		return NULL
 	}
 	fileSys := fileStat.Sys()
-	fileMtime := fileSys.(*syscall.Stat_t).Mtim.Sec
+	fileMtime := fileSys.(*syscall.Stat_t).Mtimespec.Sec
 	if len(args) == 1 {
 		return &object.Integer{Value: int64(fileMtime)}
 	}
 	fileUid := fileSys.(*syscall.Stat_t).Uid
 	fileGid := fileSys.(*syscall.Stat_t).Gid
-	fileCtime := fileSys.(*syscall.Stat_t).Ctim.Sec
-	fileAtime := fileSys.(*syscall.Stat_t).Atim.Sec
+	fileCtime := fileSys.(*syscall.Stat_t).Ctimespec.Sec
+	fileAtime := fileSys.(*syscall.Stat_t).Atimespec.Sec
 	fileMode := fileSys.(*syscall.Stat_t).Mode & 07777
 	fileLinks := fileSys.(*syscall.Stat_t).Nlink
 	fileSize := fileStat.Size()
@@ -61,3 +61,4 @@ func File(args ...object.Object) object.Object {
 	value := fmt.Sprintf("%d %d %d %04o %d %d %s %d %d", fileMtime, fileAtime, fileCtime, fileMode, fileSize, fileLinks, fileType, fileUid, fileGid)
 	return &object.String{Value: value}
 }
+
