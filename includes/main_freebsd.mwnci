@@ -1,0 +1,9 @@
+if (!INCLUDE["MAINBSD"]) {
+    INCLUDE=set(INCLUDE, "MAINBSD", true)
+
+    function uptime() {
+        Boot=system("sysctl kern.boottime")
+        Boot=int(trim(fields(Boot)[4],","))
+        return sec2time(time() - Boot)
+    }
+}

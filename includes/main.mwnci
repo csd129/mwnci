@@ -25,6 +25,9 @@ const STDERR=open("!STDERR!")
 if (!INCLUDE["MAIN"]) {
     INCLUDE=set(INCLUDE, "MAIN", true)
 
+    osinc="main_" + OS
+    include(osinc)
+
 //
 // Argument checker for all functions
 //
@@ -486,11 +489,6 @@ if (!INCLUDE["MAIN"]) {
         return inttoip(MyArray)
     }
 
-    function uptime() {
-        Seconds=int(fields(trim(cat("/proc/uptime")))[0])
-        return sec2time(Seconds)
-    }
-
     //
     // Character class definitions for tr()
     //
@@ -551,11 +549,27 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function issubset(Arr1=[], Arr2=[]) {
+        if (!checkfunctype("issubset", "array", Arr1, 1)) {exit(1)}
+        if (!checkfunctype("issubset", "array", Arr2, 2)) {exit(1)}
         Arr1=uniq(Arr1)
         Arr2=uniq(Arr2)
         foreach Value in Arr1 {
             if (index(Arr2, Value) == -1) {return false}
         }
         return true
+    }
+
+    function difference(Arr1=[], Arr2=[]) {
+        if (!checkfunctype("difference", "array", Arr1, 1)) {exit(1)}
+        if (!checkfunctype("difference", "array", Arr2, 2)) {exit(1)}
+        Result=[]
+        Arr1=uniq(Arr1)
+        Arr2=uniq(Arr2)
+        foreach Val in Arr1 {
+            if (count(Arr2, Val) != 1) {
+                Result=push(Result, Val)
+            }
+        }
+        return Result
     }
 }

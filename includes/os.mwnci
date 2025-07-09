@@ -1,6 +1,12 @@
 if (!INCLUDE["OS"]) {
     INCLUDE=set(INCLUDE, "OS", true)
-   
+
+//
+// The functions in here cater for all distro's (that I have access to)
+// The next 2 lines will also "include"  distro specific functions
+    osinc="os_" + OS
+    include(osinc)
+
     function uname() {
         Data=fields(trim(system("uname -n -s -r -m")))
         DataHash={
@@ -25,39 +31,6 @@ if (!INCLUDE["OS"]) {
         }
         DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
         return DataHash
-    }
-
-    function loadavg() {
-        Data=fields(cat("/proc/loadavg"))
-        return float(Data.slice(0,2))
-    }
-
-    function getcpu(Cpu="") {
-        CPUHash={}
-        Data=regexp("^cpu", "/proc/stat")
-        foreach Line in Data {
-            SLine=fields(Line)
-            CPU=(SLine[0] == "cpu") ? "all" : SLine[0]
-            SLine=int(shift(SLine))
-            Total=float(sum(SLine))
-            UserPC=float(sprintf("%.2f",(SLine[0] * 100) / Total))
-            NicePC=float(sprintf("%.2f",(SLine[1] * 100) / Total))
-            SysPC=float(sprintf("%.2f",(SLine[2] * 100) / Total))
-            IdlePC=float(sprintf("%.2f",(SLine[3] * 100) / Total))
-            IowaitPC=float(sprintf("%.2f",(SLine[4] * 100) / Total))
-            IrqPC=float(sprintf("%.2f",(SLine[5] * 100) / Total))
-            SoftirqPC=float(sprintf("%.2f",(SLine[6] * 100) / Total))
-            StealPC=float(sprintf("%.2f",(SLine[7] * 100) / Total))
-            GuestPC=float(sprintf("%.2f",(SLine[8] * 100) / Total))
-            GuestnicePC=float(sprintf("%.2f",(SLine[9] * 100) / Total))
-            TempHash={"user": UserPC, "nice": NicePC, "system": SysPC, "idle": IdlePC, "iowait": IowaitPC, "irq": IrqPC, "softirq": SoftirqPC, "steal": StealPC, "guest": GuestPC, "guest_nice": GuestnicePC}
-            CPUHash=CPUHash.set(CPU, TempHash)
-        }
-        if (Cpu != "" && len(CPUHash) > 0) {
-            CPUHash=CPUHash[Cpu]
-            CPUHash=CPUHash.set("CPU", Cpu)
-        }
-        return CPUHash
     }
 
     function df() {
@@ -91,66 +64,15 @@ if (!INCLUDE["OS"]) {
         return DiskHash
     }
 
-    function free() {
-        MemData=split(trim(cat("/proc/meminfo")), "\n")
-        MemHash={}
-        foreach Line in MemData {
-            Line=replaceall(Line, ":", "")
-            Sline=fields(Line)
-            MemHash=MemHash.set(Sline[0], int(Sline[1]))
-        }
-        total=MemHash["MemTotal"]
-
-//
-// It appears older kernels don't supply KReclaimable
-//
-        if (!MemHash["KReclaimable"]) {
-            MemHash=MemHash.set("KReclaimable", 0)
-        }
-        buffcache=MemHash["Cached"] + MemHash["KReclaimable"] + MemHash["Buffers"]
-        memfree=MemHash["MemFree"]
-        shared=MemHash["Shmem"]
-        if (MemHash["MemAvailable"]) {
-            available=MemHash["MemAvailable"]
-        } else {
-            available=memfree + MemHash["Cached"]
-        }
-        used=total - available
-        swaptotal=MemHash["SwapTotal"]
-        swapfree=MemHash["SwapFree"]
-        swapused=swaptotal - swapfree
-        Free={
-            "mem": {
-            "total": total, "used": used, "free": memfree, "shared": shared, "buffcache": buffcache, "available": available
-            },
-            "swap": {
-            "total": swaptotal, "used": swapused, "free": swapfree
-            }
-        }
-        return Free
-    }
-
-    function datetoepoch(Date="", Format="") {
-        if (!checkfunctype("datetoepoch", "string", Date)) {exit(1)}
-        if (Date == "") {
-            Cmd="date +%s"
-        } else {
-            Cmd="date +%s -d \"" + Date + "\""
-		}
-        Result=system(Cmd)
-        Secs=int(trim(Result))
-        return Secs
-    }
-
     function osrelease() {
         OsrHash={
-            "name": "Linux",
+            "name": null,
             "version": null,
             "id": "linux",
             "id_like": [],
             "version_codename": null,
             "version_id": null,
-            "pretty_name": "Linux",
+            "pretty_name": null,
             "ansi_color": null,
             "cpe_name": null,
             "build_id": null,
@@ -173,31 +95,33 @@ if (!INCLUDE["OS"]) {
 	        DataFile="/usr/lib/os-release"
         }
 
-	    if (DataFile == "") {
-	        return OsrHash
-	    }
-
+        if (DataFile == "") {
+            return OsrHash
+        }
         Data=split(trim(cat(DataFile)), "\n")
-
         foreach Line in Data {
-	        Sline=split(Line, "=")
-	        Key=tolower(Sline[0])
-	        Value=trim(Sline[1], "\"")
-
-	        if (match("_url", Key)) {
+            Sline=split(Line, "=")
+            Key=tolower(Sline[0])
+            Value=trim(Sline[1], "\"")
+            if (match("_url", Key)) {
                 Key=trimsuffix(Key, "_url")
-		        UrlHash=set(UrlHash, Key, Value)
+                UrlHash=set(UrlHash, Key, Value)
             } else {
                 if (match("id_like", Key)) {Value=fields(Value)}
                 OsrHash=set(OsrHash, Key, Value)
             }
         }
-
-	    OsrHash=set(OsrHash, "urls", UrlHash)
-	    return OsrHash
+        OsrHash=set(OsrHash, "urls", UrlHash)
+        return OsrHash
     }
 
-    function string.datetoepoch() {
-        return datetoepoch(self)
+    function loadavg() {
+        Data=fields(trim(system("uptime")))
+	Last=len(Data)-1
+	fifteen=float(trim(Data[Last],","))
+	five=float(trim(Data[Last-1], ","))
+	one=float(trim(Data[Last-2], ","))
+	return [one, five, fifteen]
     }
 }
+

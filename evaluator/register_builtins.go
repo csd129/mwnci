@@ -40,7 +40,6 @@ func init() {
 	RegisterBuiltin("cut", func(env *object.Environment, args ...object.Object) object.Object { return (FuncCut(args...)) })
 	RegisterBuiltin("date", func(env *object.Environment, args ...object.Object) object.Object { return (Date(args...)) })
 	RegisterBuiltin("delete", func(env *object.Environment, args ...object.Object) object.Object { return (harrayDelete(args...)) })
-	RegisterBuiltin("difference", func(env *object.Environment, args ...object.Object) object.Object { return (ArrDiff(args...)) })
 	RegisterBuiltin("dirpath", func(env *object.Environment, args ...object.Object) object.Object { return (Dirpath(args...)) })
 	RegisterBuiltin("divmod", func(env *object.Environment, args ...object.Object) object.Object { return (Divmod(args...)) })
 	RegisterBuiltin("env", func(env *object.Environment, args ...object.Object) object.Object { return (EnvFun(args...)) })

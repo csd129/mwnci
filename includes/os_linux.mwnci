@@ -1,0 +1,86 @@
+if (!INCLUDE["OSLINUX"]) {
+    INCLUDE=set(INCLUDE, "OSLINUX", true)
+
+    function free() {
+        MemData=split(trim(cat("/proc/meminfo")), "\n")
+        MemHash={}
+        foreach Line in MemData {
+            Line=replaceall(Line, ":", "")
+            Sline=fields(Line)
+            MemHash=MemHash.set(Sline[0], int(Sline[1]))
+        }
+        total=MemHash["MemTotal"]
+
+//
+// It appears older kernels don't supply KReclaimable
+//
+        if (!MemHash["KReclaimable"]) {
+            MemHash=MemHash.set("KReclaimable", 0)
+        }
+        buffcache=MemHash["Cached"] + MemHash["KReclaimable"] + MemHash["Buffers"]
+        memfree=MemHash["MemFree"]
+        shared=MemHash["Shmem"]
+        if (MemHash["MemAvailable"]) {
+            available=MemHash["MemAvailable"]
+        } else {
+            available=memfree + MemHash["Cached"]
+        }
+        used=total - available
+        swaptotal=MemHash["SwapTotal"]
+        swapfree=MemHash["SwapFree"]
+        swapused=swaptotal - swapfree
+        Free={
+            "mem": {
+            "total": total, "used": used, "free": memfree, "shared": shared, "buffcache": buffcache, "available": available
+            },
+            "swap": {
+            "total": swaptotal, "used": swapused, "free": swapfree
+            }
+        }
+        return Free
+    }
+
+    function getcpu(Cpu="") {
+        CPUHash={}
+        Data=regexp("^cpu", "/proc/stat")
+        foreach Line in Data {
+            SLine=fields(Line)
+            CPU=(SLine[0] == "cpu") ? "all" : SLine[0]
+            SLine=int(shift(SLine))
+            Total=float(sum(SLine))
+            UserPC=float(sprintf("%.2f",(SLine[0] * 100) / Total))
+            NicePC=float(sprintf("%.2f",(SLine[1] * 100) / Total))
+            SysPC=float(sprintf("%.2f",(SLine[2] * 100) / Total))
+            IdlePC=float(sprintf("%.2f",(SLine[3] * 100) / Total))
+            IowaitPC=float(sprintf("%.2f",(SLine[4] * 100) / Total))
+            IrqPC=float(sprintf("%.2f",(SLine[5] * 100) / Total))
+            SoftirqPC=float(sprintf("%.2f",(SLine[6] * 100) / Total))
+            StealPC=float(sprintf("%.2f",(SLine[7] * 100) / Total))
+            GuestPC=float(sprintf("%.2f",(SLine[8] * 100) / Total))
+            GuestnicePC=float(sprintf("%.2f",(SLine[9] * 100) / Total))
+            TempHash={"user": UserPC, "nice": NicePC, "system": SysPC, "idle": IdlePC, "iowait": IowaitPC, "irq": IrqPC, "softirq": SoftirqPC, "steal": StealPC, "guest": GuestPC, "guest_nice": GuestnicePC}
+            CPUHash=CPUHash.set(CPU, TempHash)
+        }
+        if (Cpu != "" && len(CPUHash) > 0) {
+            CPUHash=CPUHash[Cpu]
+            CPUHash=CPUHash.set("CPU", Cpu)
+        }
+        return CPUHash
+    }
+
+    function datetoepoch(Date="", Format="") {
+        if (!checkfunctype("datetoepoch", "string", Date)) {exit(1)}
+        if (Date == "") {
+            Cmd="date +%s"
+        } else {
+            Cmd="date +%s -d \"" + Date + "\""
+		}
+        Result=system(Cmd)
+        Secs=int(trim(Result))
+        return Secs
+    }
+
+    function string.datetoepoch() {
+        return datetoepoch(self)
+    }
+}

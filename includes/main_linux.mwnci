@@ -1,0 +1,8 @@
+if (!INCLUDE["MAINLINUX"]) {
+    INCLUDE=set(INCLUDE, "MAINLINUX", true)
+
+    function uptime() {
+        Seconds=int(fields(trim(cat("/proc/uptime")))[0])
+        return sec2time(Seconds)
+    }
+}

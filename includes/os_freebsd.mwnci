@@ -1,0 +1,96 @@
+if (!INCLUDE["OSBSD"]) {
+    INCLUDE=set(INCLUDE, "OSBSD", true)
+   
+    function free() {
+        SysHash={}
+        Sysctl=split(trim(system("/sbin/sysctl -a | egrep \"hw.physmem|hw.pagesize|vm.stats.vm.\"")), "\n")
+        foreach Line in Sysctl {
+            SLine=partition(Line, ": ")
+            if (isnum(SLine[2])) {
+                SysHash=set(SysHash, SLine[0], float(SLine[2]))
+            }
+         }
+         Swap=split(trim(system("swapinfo")), "\n")
+         SwapData=Swap[1]
+         SwapData=fields(SwapData)
+         SwapSize=int(SwapData[1])
+         SwapUsed=int(SwapData[2])
+         SwapFree=int(SwapData[3])
+         ChipSize=float(1)
+         ChipGuess=(SysHash["hw.physmem"]/8)-1
+         while (ChipGuess != 0) {
+             ChipGuess = int(ChipGuess) >> 1
+             ChipSize = int(ChipSize) << 1
+         }
+         MemHW=(int(SysHash["hw.physmem"]/ChipSize) +1) * ChipSize
+         PageSize=SysHash["hw.pagesize"]
+         MemPhys=SysHash["hw.physmem"]
+         MemAll=(SysHash["vm.stats.vm.v_page_count"] * PageSize) / 1024
+         MemWire=(SysHash["vm.stats.vm.v_wire_count"] * PageSize) / 1024
+         MemActive=(SysHash["vm.stats.vm.v_active_count"] * PageSize) / 1024
+         MemInActive=(SysHash["vm.stats.vm.v_inactive_count"] * PageSize) / 1024
+         MemCache=(SysHash["vm.stats.vm.v_cache_count"] * PageSize) / 1024
+         MemFree=(SysHash["vm.stats.vm.v_free_count"] * PageSize) / 1024
+         MemTotal=MemHW / 1024
+         MemAvail=MemInActive + MemCache + MemFree
+         MemUsed=MemTotal - MemAvail
+         MemHash={"mem": {"buffcache": MemCache, "available": MemAvail, "total": MemTotal, "used": MemUsed, "free": MemFree}}
+         SwapHash={"free": SwapFree, "total": SwapSize, "used": SwapUsed}
+         MemHash=set(MemHash, "swap", SwapHash)
+         return MemHash
+    }
+
+    function getcpu() {
+        Data=split(trim(system("top -d1 -P p")), "\n")
+        UserCount=0
+        NiceCount=0
+        SysCount=0
+        IntCount=0
+        IdleCount=0
+        Total=0
+        CPUHash={}
+        foreach Line in Data {
+            if (match("^CPU", Line)) {
+                Total++
+                Sline=fields(Line)
+                Cpu=trim(Sline[1], ":")
+                User=float(trim(Sline[2], "%"))
+                UserCount += User
+                Nice=float(trim(Sline[4], "%"))
+                NiceCount += Nice
+                Sys=float(trim(Sline[6], "%"))
+                SysCount += Sys
+                Int=float(trim(Sline[8], "%"))
+                IntCount += Int
+                Idle=float(trim(Sline[10], "%"))
+                IdleCount += Idle
+                CPU="cpu" + Cpu
+                CPUHash=set(CPUHash, CPU, {"user": User, "nice": Nice, "system": Sys, "interrupt": Int, "idle": Idle})
+            }
+        }
+        User=float(sprintf("%.2f", UserCount / Total))
+        Nice=float(sprintf("%.2f", NiceCount / Total))
+        Sys=float(sprintf("%.2f", SysCount / Total))
+        Int=float(sprintf("%.2f", IntCount / Total))
+        Idle=float(sprintf("%.2f", IdleCount / Total))
+        AllHash={"user": User, "nice": Nice, "system": Sys, "interrupt": Int, "idle": Idle}
+        CPUHash=set(CPUHash, "all", AllHash)
+        return CPUHash
+    }
+
+    function datetoepoch(Date="", Format="") {
+        if (!checkfunctype("datetoepoch", "string", Date)) {exit(1)}
+        if (!checkfunctype("datetoepoch", "string", Format)) {exit(1)}
+        if (Date == "") {
+            Cmd="`date +%s`"
+        } else {
+            Cmd=sprintf("`date -j -f \"%s\" \"%s\" +%%s`", Format, Date)
+        }
+        Result=eval(Cmd)
+        if (len(Result["stderr"]) > 0) {
+            println(Result["stderr"])
+            return NULL
+        }
+        return int(trim(Result["stdout"]))
+    }
+}
