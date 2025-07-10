@@ -80,7 +80,20 @@ if (!INCLUDE["OSLINUX"]) {
         return Secs
     }
 
-    function string.datetoepoch() {
-        return datetoepoch(self)
+    function vmstat() {
+    	DataHash={}
+    	Data=shift(split(trim(system("vmstat")), "\n"),2)
+    	Info=fields(Data[0])
+    	ProcHash={"Run": int(Info[0]), "Block": int(Info[1])}
+    	MemHash={"Swap": int(Info[2]), "Free": int(Info[3]), "Buff": int(Info[4]), "Cache": int(Info[5])}
+    	SwapHash={"SwapIn": int(Info[6]), "SwapTo": int(Info[7])}
+    	IOHash={"BlockIn": int(Info[8]), "BlockOut": int(Info[9])}
+    	SysHash={"Inter": int(Info[10]), "Contxt": int(Info[11])}
+    	CpuHash={"User": int(Info[12]), "Sys": int(Info[13]), "Idle": int(Info[14]), "Wait": int(Info[15]), "Steal": int(Info[16])}
+        if (len(Info) == 18) {
+            CpuHash=set(CpuHash, "Guest", int(Info[17]))
+        }
+        DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
+        return DataHash
     }
 }

@@ -93,4 +93,20 @@ if (!INCLUDE["OSBSD"]) {
         }
         return int(trim(Result["stdout"]))
     }
+
+    function vmstat() {
+        Data=system("vmstat -H")
+        Data=tail(split(trim(Data), "\n"), 1)
+        DataHash={}
+        Info=fields(Data[0])
+	ProcHash={"Run": int(Info[0]), "Block": int(Info[1]), "Swapd": int(Info[2])}
+	MemHash={"Virt": int(Info[3]), "Free": int(Info[4])}
+	PageHash={"Fault": int(Info[5]), "React": int(Info[6]), "PageIn": int(Info[7]), "PageOut": int(Info[8]), "Freed": int(Info[9]), "Scan": int(Info[10])}
+        FaultHash={"In": int(Info[13]), "Sys": int(Info[14]), "Cntxt": int(Info[15])}
+	CPUHash={"User": int(Info[16]), "Sys": int(Info[17]), "Idle": int(Info[18])}
+	DataHash={"Procs": ProcHash, "Memory": MemHash, "Page": PageHash, "Fault": FaultHash, "CPU": CPUHash}
+	return DataHash
+    }
+
+
 }

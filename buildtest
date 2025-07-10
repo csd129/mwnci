@@ -4,7 +4,7 @@
 # directory build of mwnci.
 #
 # I.e it can take a mwnci script or run the repl using
-# only the source directory includes/executables to seeif it's
+# only the source directory includes/executables to see if it's
 # all working as it should be before an install.
 #
 # Just saves me time typing
