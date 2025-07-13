@@ -14,16 +14,16 @@ func ArrayInsert(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 	arr := args[0].(*object.Array)
-	newArray := arr.Copy()
+//	newArray := arr.Copy()
 	elem := int(args[1].(*object.Integer).Value)
 
-	if (elem > len(newArray.Elements)-1) || (elem < 0) {
+	if (elem > len(arr.Elements)-1) || (elem < 0) {
 		return newError("IndexError: array index [%d] out of range ", elem)
 	} else {
 		val := args[2]
-		newArray.Insert(elem, val)
+		arr.Insert(elem, val)
 	}
-	return newArray
+	return arr
 
 }
 

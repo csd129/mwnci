@@ -1,4 +1,3 @@
-
 package evaluator
 
 import (
@@ -19,8 +18,8 @@ func Sorted(args ...object.Object) object.Object {
 	}
 
 	arr := args[0].(*object.Array)
-	newArray := arr.Copy()
-	sort.Sort(newArray)
-	return newArray
+//	newArray := arr.Copy()
+	sort.Sort(arr)
+	return arr
 }
 

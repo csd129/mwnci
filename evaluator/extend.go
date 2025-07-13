@@ -14,21 +14,21 @@ func ArrExtend(args ...object.Object) object.Object {
 		return newError(err.Error())
 	}
 	arr1 := args[0].(*object.Array)
-	newArray := arr1.Copy()
+//	newArray := arr1.Copy()
 	for i := 1; i < len(args); i++ {
 		if args[i].Type() == object.ARRAY_OBJ {
 			for _, v := range args[i].(*object.Array).Elements {
-				newArray.Append(v)
+				arr1.Append(v)
 			}
 		} else if args[i].Type() == object.STRING_OBJ {
 			Line := strings.Split(args[i].(*object.String).Value, "")
 			for _, v := range Line {
-				newArray.Append(&object.String{Value: v})
+				arr1.Append(&object.String{Value: v})
 			}
 		} else {
 			return newError("argument to extend() not supported, expected ARRAY or STRING, got=%s", args[i].Type())
 
 		}
 	}
-	return newArray
+	return arr1
 }
