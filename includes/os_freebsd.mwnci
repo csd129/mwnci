@@ -1,6 +1,9 @@
 if (!INCLUDE["OSBSD"]) {
     INCLUDE=set(INCLUDE, "OSBSD", true)
-   
+    if (!INCLUDE["STRING"]) {
+        include("string")
+    }
+    
     function free() {
         SysHash={}
         Sysctl=split(trim(system("/sbin/sysctl -a | egrep \"hw.physmem|hw.pagesize|vm.stats.vm.\"")), "\n")
