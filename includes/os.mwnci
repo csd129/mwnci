@@ -3,11 +3,18 @@ if (!INCLUDE["OS"]) {
 
 //
 // The functions in here cater for all distro's (that I have access to)
-// The next 2 lines will also "include"  distro specific functions
-    osinc="os_" + OS
-    include(osinc)
+// The next few lines will also "include"  distro specific functions
 
-    function uname() {
+    switch (OS) {
+        case /bsd/ , /darwin/ {
+            include("os_bsd")
+        }
+        case "linux" {
+            include("os_linux")
+        }
+    }
+
+function uname() {
         Data=fields(trim(system("uname -n -s -r -m")))
         DataHash={
             "nodename": Data[0], "sysname": Data[1],

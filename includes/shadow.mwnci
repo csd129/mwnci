@@ -1,1 +1,12 @@
-include("shadow_" + OS)
+if (!INCLUDE["SHADOW"]) {
+    INCLUDE=set(INCLUDE, "SHADOW", true)
+
+    switch (OS) {
+        case /bsd/ , /darwin/ {
+            include("shadow_bsd")
+        }
+        case "linux" {
+            include("shadow_linux")
+        }
+    }
+}
