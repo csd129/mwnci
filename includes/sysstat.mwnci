@@ -1,6 +1,9 @@
+include(
+    "pwd"
+)
+
 if (!INCLUDE["SYSSTAT"]) {
     INCLUDE=set(INCLUDE, "SYSSTAT", true)
-    if (!INCLUDE["PWD"]) {include("pwd")}
 
     function mpstat() {
         Mpstat=system("mpstat -P ALL -o JSON")

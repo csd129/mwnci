@@ -1,9 +1,11 @@
+include(
+    "pwd",
+    "grp"
+)
+
 if (!INCLUDE["FILE"]) {
     INCLUDE=set(INCLUDE, "FILE", true)
 
-    if(!INCLUDE["PWD"]) {include("pwd")}
-    if(!INCLUDE["GRP"]) {include("grp")}
-    
     function getbin(PermBit) {
         if (!checkfunctype("getbin", "integer", PermBit)) {exit(1)}
         Binary=bin(PermBit)

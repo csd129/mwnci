@@ -1,6 +1,7 @@
-if (!INCLUDE["FILE"]) {include("file")}
-if (!INCLUDE["METHODS"]) {include("methods")}
-
+include(
+    "file",
+    "methods"
+)
 
 /*
  Define some handy constants
