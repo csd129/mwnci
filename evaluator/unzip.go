@@ -29,12 +29,12 @@ func Unzip(args ...object.Object) object.Object {
 			if Block.Type() == object.ARRAY_OBJ {
 				NBlock := Block.(*object.Array).Elements
 				TempArray[In] = NBlock[Index]
-				UnMute:=&object.Array{Elements: TempArray}
-				ZipArray[Index]=UnMute.Copy()
 			} else {
 				return newError("argument to unzip() not supported, expected ARRAY[ARRAY], got=ARRAY[%s]", Block.Type())
 			}
 		}
+		UnMute:=&object.Array{Elements: TempArray}
+		ZipArray[Index]=UnMute.Copy()
 	}
 	return &object.Array{Elements: ZipArray}
 }
