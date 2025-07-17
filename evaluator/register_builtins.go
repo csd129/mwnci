@@ -157,6 +157,7 @@ func init() {
 	RegisterBuiltin("uniq", func(env *object.Environment, args ...object.Object) object.Object { return (Uniq(args...)) })
 	RegisterBuiltin("unlink", func(env *object.Environment, args ...object.Object) object.Object { return (unlinkFun(args...)) })
 	RegisterBuiltin("unsetenv", func(env *object.Environment, args ...object.Object) object.Object { return (unsetEnvFun(args...)) })
+	RegisterBuiltin("unzip", func(env *object.Environment, args ...object.Object) object.Object { return (Unzip(args...)) })
 	RegisterBuiltin("values", func(env *object.Environment, args ...object.Object) object.Object { return (hashValues(args...)) })
 	RegisterBuiltin("whoami", func(env *object.Environment, args ...object.Object) object.Object { return (Whoami(args...)) })
 	RegisterBuiltin("write", func(env *object.Environment, args ...object.Object) object.Object { return (Write(args...)) })

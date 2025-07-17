@@ -330,36 +330,6 @@ if (!INCLUDE["MAIN"]) {
         return tdata
     }
 
-    function unzip(MyArray=[]) {
-        if (!checkfunctype("unzip", "array", MyArray, 1)) {exit(1)}
-        if (len(MyArray) == 0) {return MyArray}
-        ZipArray=[]
-        if (type(MyArray[0]) != "array") {
-            println("Error calling `unzip`: ERROR: TypeError : content argument to be `ARRAY`, got ", toupper(type(MyArray[0])),"`")
-            exit(1)
-        }
-        DataLen=len(MyArray[0])
-        foreach Blank in 1..DataLen {
-            ZipArray=ZipArray.push([])
-        }
-        foreach Block in MyArray {
-            if (DataLen != len(Block)) {
-                println("Error calling `unzip`: ERROR: LenError: expected an array of length ", DataLen, ", got ", len(Block))
-                exit(1)
-            }
-            if (type(Block) != "array") {
-                println("Error calling `unzip`: ERROR: TypeError : expected content to be `ARRAY`, got ", toupper(type(Block)),"`")
-                exit(1)
-            }
-            foreach Index, Entry in Block {
-                Temp=ZipArray[Index]
-                Temp=Temp.push(Entry)
-                ZipArray=ZipArray.set(Index, Temp)
-            }
-        }
-        return ZipArray
-    }
-
     function usort(MyArray) {
         return sort(uniq(MyArray))
     }
