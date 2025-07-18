@@ -1,14 +1,15 @@
 package evaluator
 
 import (
-	"net/http"
-	"compress/gzip"
 	"compress/bzip2"
+	"compress/gzip"
+	"net/http"
+
 	//	"archive/zip"
+	"io/ioutil"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
-	"io/ioutil"
 	"strings"
 	//	"fmt"
 )
@@ -31,9 +32,8 @@ func ZConCat(args ...object.Object) object.Object {
 	buff := make([]byte, 512)
 	if _, err = data.Read(buff); err != nil {
 		return newError(err.Error())
-        }
+	}
 	fileType := http.DetectContentType(buff)
-	Content := "TEXT"
 	switch fileType {
 	case "application/x-gzip":
 		return GzCat(args[0])
@@ -46,7 +46,6 @@ func ZConCat(args ...object.Object) object.Object {
 			return ConCat(args[0])
 		}
 	}
-	return &object.String{Value: string(Content)}
 }
 
 func ConCat(args ...object.Object) object.Object {
@@ -93,7 +92,6 @@ func GzCat(args ...object.Object) object.Object {
 	return &object.String{Value: string(content)}
 }
 
-
 func BzCat(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"bzcat", args,
@@ -115,4 +113,4 @@ func BzCat(args ...object.Object) object.Object {
 		return newError("IOError: error reading from file %s: %s", filename, err)
 	}
 	return &object.String{Value: string(content)}
-}	
+}

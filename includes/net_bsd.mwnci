@@ -1,0 +1,32 @@
+if (!INCLUDE["NETBSD"]) {
+    INCLUDE=set(INCLUDE, "NETBSD", true)
+
+    function netstat() {
+        NetArray=[]
+        CMD="netstat -an | egrep \"^tcp|^udp\""
+	data=split(trim(system(CMD)), "\n")
+        foreach Line in data {
+	    SLine=fields(Line)
+            if (SLine[5] == NULL) {SLine=push(SLine,"")}
+            foreach n in [3,4] {
+	        Temp=reverse(SLine[n])
+	        SLine=set(SLine, n, reverse(replace(Temp, ".", ":", 1)))
+		if (match("4", SLine[0])) {
+		    if (contains(SLine[n], "*")) {
+                        Temp=SLine[n]
+		        SLine=set(SLine, n, replace(Temp, "*:", "0.0.0.0:", 1))
+		    }
+		}
+		if (match("6", SLine[0])) {
+		    if (contains(SLine[n], "*")) {
+                        Temp=SLine[n]
+		        SLine=set(SLine, n, replace(Temp, "*:", ":::", 1))
+		    }
+		}
+	    }
+	    TempArray=[SLine[0], SLine[3], SLine[4], SLine[5]]
+	    NetArray=NetArray.push(TempArray)
+	}
+	return NetArray
+    }
+}
