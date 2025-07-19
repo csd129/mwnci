@@ -18,6 +18,7 @@ The wiki can be found [here](https://monkey.ploogie.co.uk).
  ## Quick start
  ```
  git clone https://github.com/csd129/mwnci.git
+ cd mwnci
  edit config.conf
  make build
  make install
