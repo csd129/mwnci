@@ -18,7 +18,7 @@ config: ## Configure and update build files
 
 mwnci: ${AST} ${EVAL} ${LEXER} ${OBJECT} ${PARSER} ${TOKEN} ${TYPING} mwnci.go ## Build mwnci for current architecture
 	@echo "Building mwnci"
-	CGO_ENABLED=0 go build -ldflags="-X main.version=${VERSION}"
+	GO111MODULE=on CGO_ENABLED=0 go build -ldflags="-X main.version=${VERSION}"
 
 build: ## Configure and compile mwnci
 	@make config
