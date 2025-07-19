@@ -41,8 +41,12 @@ func Start(in io.Reader, out io.Writer) {
 	})
 	defer rl.Close()
 	var cmds []string
+	var err error
 	for {
-		line, _ = rl.Readline()
+		line, err = rl.Readline()
+		if err != nil {
+			break
+		}
 		line = strings.TrimSpace(line)
 		if len(line) == 0 {
 			continue
