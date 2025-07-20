@@ -1,6 +1,22 @@
 if (!INCLUDE["PS"]) {
     INCLUDE=set(INCLUDE, "PS", true)
+
+    switch (OS) {
+        case /bsd/ , /darwin/ {
+            include("ps_bsd")
+        }
+        case "linux" {
+            include("ps_linux")
+        }
+    }
+
     
+    function procexists(pid=-1) {
+        if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
+	Proc=string(pid)
+	return contains(keys(process()), Proc)
+    }
+
     function process() {
         CmdHash={}
         ProcessTable={}
@@ -17,56 +33,40 @@ if (!INCLUDE["PS"]) {
     }
     
     function pnametopid(name="") {
-        if (!checkfunctype("pnametopid", "string", name, 1)) {exit(1)}        
-        parray=[]
+        if (!checkfunctype("pnametopid", "string", name, 1)) {exit(1)}
         if (name=="") {
             println("Error calling `pnametopid`: ERROR: TypeError: pnametopid() expected argument #1 to be `STRING` got `NULL`")
             exit(1)
         }
-        Processes=process()
-        PIDs=keys(Processes)
-        foreach Pid in PIDs {
-            CommandLine=Processes[Pid]["COMMAND"]
-    	    CmdArray=fields(CommandLine)
-    	    Command=basename(CmdArray[0])
-            if (Command == name) {
-    	        parray=push(parray, int(Pid))
-    	    }
+        Cmd="pgrep " + name + "; exit 0"
+	IP=split(trim(system(Cmd)), "\n")
+        if (!IP) {
+	    return false
         }
-        if (len(parray) > 0) {
-            return sort(parray)
-        }
-        return false
+	return int(IP)
     }
     
-    function getpname(pid=0) {
-        if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
-        if (pid == 0) {pid=getpid()}
-        ProcFile="/proc/" + string(pid) + "/comm"
-        if (file(ProcFile)) {
-            Data=fields(trim(cat(ProcFile)))
-            return Data[0]
-        }
-        return false
+    function procexists(pid=-1) {
+        if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
+	return contains(keys(process()), string(pid))
     }
     
     function procstat(pid=-1) {
-        if (!checkfunctype("procstat", "integer", pid)) {exit(1)}
         Data={}
-        Command="ps -eo pcpu,pmem,pid,uid,user,args --no-headers"
-        Result=split(trim(system(Command)), "\n")
+        Result=shift(split(trim(system("ps aux")), "\n"))
         foreach Line in Result {
-	    SLine=fields(Line)
+            SLine=fields(Line)
             if (len(SLine) > 0) {
-                if (!contains(SLine[5] ,"[")) {
+                if (!contains(SLine[10] ,"[")) {
+                    Uid=getpwnam(SLine[0])["Uid"]
                     Proc_Hash={
-                        "pcpu": float(SLine[0]),
-                        "pmem": float(SLine[1]),
-                        "uid": int(SLine[3]),
-                        "user": SLine[4],
-                        "cmd": SLine[5]
+                        "pcpu": float(SLine[2]),
+                        "pmem": float(SLine[3]),
+                        "uid": Uid,
+                        "user": SLine[0],
+                        "cmd": SLine[10]
                     }
-                    Key=SLine[2]
+                    Key=SLine[1]
                     Data=set(Data, Key, Proc_Hash)
                 }
             }
@@ -76,12 +76,6 @@ if (!INCLUDE["PS"]) {
         } else {
             return Data
         }
-    }
-
-    function procexists(pid=-1) {
-        if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
-        ProcFile="/proc/" + string(pid)
-        return (file(ProcFile)) ? true : false
     }
 
     function integer.getpname() {return getpname(self)}

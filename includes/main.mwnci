@@ -26,8 +26,14 @@ const STDERR=open("!STDERR!")
 if (!INCLUDE["MAIN"]) {
     INCLUDE=set(INCLUDE, "MAIN", true)
 
-    osinc="main_" + OS
-    include(osinc)
+    switch (OS) {
+        case /bsd/ , /darwin/ {
+            include("main_bsd")
+        }
+        case "linux" {
+            include("main_linux")
+        }
+    }
 
 //
 // Argument checker for all functions

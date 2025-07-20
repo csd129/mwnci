@@ -1,0 +1,18 @@
+if (!INCLUDE["PSBSD"]) {
+    INCLUDE=set(INCLUDE, "PSBSD", true)
+
+    function getpname(pid=-1) {
+        if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
+        if (pid == -1) {pid=getpid()}
+        Data=shift(split(trim(system("procstat -a")), "\n"))
+        foreach Line in Data {
+            Line=trim(Line)
+            SLine=fields(Line)
+	    if (int(SLine[0]) == pid) {
+                return last(SLine)
+            }
+        }
+	return false
+    }
+
+}

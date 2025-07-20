@@ -1,0 +1,15 @@
+if (!INCLUDE["PSLINUX"]) {
+    INCLUDE=set(INCLUDE, "PSLINUX", true)
+
+    function getpname(pid=0) {
+        if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
+        if (pid == 0) {pid=getpid()}
+        ProcFile="/proc/" + string(pid) + "/comm"
+        if (file(ProcFile)) {
+            Data=fields(trim(cat(ProcFile)))
+            return Data[0]
+        }
+        return false
+    }
+
+}
