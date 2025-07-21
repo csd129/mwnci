@@ -1,14 +1,11 @@
 BIN=@BIN@
 OWNER=@OWNER@
 GROUP=@GROUP@
-INSTALL=install
-INSTALL_OPTS=--compare -o ${OWNER} -g ${GROUP}
+INSTALL=./install.sh
+INSTALL_OPTS=-C -o ${OWNER} -g ${GROUP}
 
 install:
 	${INSTALL} -m 0755 -d  ${BIN}
 	${INSTALL} ${INSTALL_OPTS} -m 0755 mwnci ${BIN}
 	(cd ./includes; make install)
-
-test:
-	go test -v ./...
 

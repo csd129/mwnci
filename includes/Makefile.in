@@ -1,6 +1,5 @@
-FILES=$(shell find . -name \*.mwnci | sed 's/ /\\ /g')
 INCLUDEDIR=@INCLUDE@
-INSTALL=install
+INSTALL=../install.sh
 OWNER=@OWNER@
 GROUP=@GROUP@
 
@@ -8,7 +7,7 @@ dummy:
 
 install: ${FILES}
 	${INSTALL} -m 0755 -d  ${INCLUDEDIR}
-	${INSTALL} ${INSTALL_OPTS} -m 0644 ${FILES} ${INCLUDEDIR}
+	${INSTALL} -C -m 0644 -o ${OWNER} -g ${GROUP} *.mwnci ${INCLUDEDIR}
 
 clean:
 	rm -f *~ \#*\#	
