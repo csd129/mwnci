@@ -32,13 +32,13 @@ if (!INCLUDE["OSBSD"]) {
          MemWire=(SysHash["vm.stats.vm.v_wire_count"] * PageSize) / 1024
          MemActive=(SysHash["vm.stats.vm.v_active_count"] * PageSize) / 1024
          MemInActive=(SysHash["vm.stats.vm.v_inactive_count"] * PageSize) / 1024
-         MemCache=(SysHash["vm.stats.vm.v_cache_count"] * PageSize) / 1024
          MemFree=(SysHash["vm.stats.vm.v_free_count"] * PageSize) / 1024
          MemTotal=MemHW / 1024
-         MemAvail=MemInActive + MemCache + MemFree
+         MemAvail=MemInActive + MemFree
          MemUsed=MemTotal - MemAvail
-         MemHash={"mem": {"buffcache": MemCache, "available": MemAvail, "total": MemTotal, "used": MemUsed, "free": MemFree}}
-         SwapHash={"free": SwapFree, "total": SwapSize, "used": SwapUsed}
+         MemCache=MemAvail - MemFree
+         MemHash={"mem": {"buffcache": int(MemCache), "available": int(MemAvail), "total": int(MemTotal), "used": int(MemUsed), "free": int(MemFree)}}
+         SwapHash={"free": int(SwapFree), "total": int(SwapSize), "used": int(SwapUsed)}
          MemHash=set(MemHash, "swap", SwapHash)
          return MemHash
     }
