@@ -96,25 +96,23 @@ if (!INCLUDE["NET"]) {
         PortArray=PortArray.uniq()
         ListArray=ListArray.uniq()
         foreach Port in PortArray {
-            TempArray=[]
-            Proc=""
-            foreach Entry in ListArray {
-                if (Port == Entry[2]) {
-                    Proc=Entry[0]
-                    TempArray=TempArray.push(int(Entry[1]))
+            if (Port != "*") {
+                TempArray=[]
+                Proc=""
+                foreach Entry in ListArray {
+                    if (Port == Entry[2]) {
+                        Proc=Entry[0]
+                        TempArray=TempArray.push(int(Entry[1]))
+                    }
                 }
+                TempHash={"pids": TempArray, "proc": Proc}
+                OfHash=set(OfHash, Port, TempHash)
             }
-            TempHash={"pids": TempArray, "proc": Proc}
-            OfHash=set(OfHash, Port, TempHash)
+        }	    
+        if (Port != 0 && len(OfHash) > 0) {
+            return (len(OfHash[string(Port)]) > 0) ? OfHash[string(Port)] : {}
         }
-        if (len(OfHash) == 0) {
             return OfHash
-        }
-        if (Port != 0) {
-            return OfHash[string(Port)]
-        } else {
-            return OfHash
-        }
     }
     
     function integer.port2pid() {
