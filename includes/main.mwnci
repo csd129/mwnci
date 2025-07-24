@@ -14,8 +14,15 @@ const NULL=null     // for those that like a good solid null
 const PROGNAME = (ARGC > 0) ? basename(ARGV[0]) : ""
 
 /*
- File-objects for STDIN, STDOUT, and STDERR.
+Update PATH to make sure /sbin * /usr/sbin are available for commands users
+can run.
+*/
 
+Path=env()["PATH"]
+Path="/sbin:/usr/sbin:" + Path
+setenv("PATH", Path)
+
+/*
  Rather than opening these by name/path we have magic-strings which
  are recognized by our "open" primitive.
 */
