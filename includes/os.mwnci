@@ -114,8 +114,9 @@ function uname() {
 	return [one, five, fifteen]
     }
 
-    function string.datetoepoch() {
-        return datetoepoch(self)
+    function string.datetoepoch(Format="") {
+        return datetoepoch(self, Format)
+
     }
 }
 
