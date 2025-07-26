@@ -5,16 +5,20 @@ include(
 if (!INCLUDE["CERTS"]) {
     INCLUDE=set(INCLUDE, "CERTS", true)
     
-    function getcert(Domain="") {
+    function getcert(Domain="", TimeOut=5) {
         if (!checkfunctype("getcert", "string", Domain)) {
+            exit(1)
+        }
+        if (!checkfunctype("getcert", "integer", TimeOut, 2)) {
             exit(1)
         }
         if (len(Domain) == 0) {
             println("`getcert` expects a domain name, none given")
     	    return false
         }
-        Command=sprintf("openssl s_client -servername %s -connect %s:443", Domain, Domain)
-        return system(Command)
+        Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 2>&1; exit 0", TimeOut, Domain, Domain)
+	Result=system(Command)
+	return contains(Result, "ERROR") ? NULL : Result
     }
     
     function certexpiredays(File="") {
@@ -52,9 +56,47 @@ if (!INCLUDE["CERTS"]) {
         }
         TEMPF=tmpnam("/tmp")
         CertInfo=getcert(Domain)
+        if (len(CertInfo) == 0) {
+            return 0
+	}
         writefile(TEMPF, CertInfo)
         CertDate=certexpiredays(TEMPF)
         unlink(TEMPF)
         return CertDate
+    }
+
+    function certsans(File="") {
+        if (!checkfunctype("certsans", "string", File)) {exit(1)}
+        if (len(File) == 0) {
+            return false
+        }
+        if (!isreadable(File)) {
+            println("Error calling `certsans`: ERROR: OpenError : Can't open file ", File)
+            exit(1)
+        }
+	TempFile=tmpnam("/tmp")
+	Command=sprintf("openssl x509 -in %s -text -noout -dates 2>&1; exit 0", File)
+	writetofile(TempFile, "w", system(Command))
+        Found=[]
+	Data=regexp("DNS:([^\s,]+)", TempFile)
+        foreach Line in Data {
+            Line=replaceall(Line, "DNS:", "")
+            Line=fields(replaceall(Line, ",", ""))
+            Found=extend(Found, Line)
+        }
+        unlink(TempFile)
+        return sort(uniq(Found))
+    }
+
+    function sitecertsans(Domain="") {
+        if (!checkfunctype("sitecertsans", "string", Domain)) {
+            exit(1)
+        }
+        TempFile=tmpnam("/tmp")
+        CertInfo=getcert(Domain)
+        writefile(TempFile, CertInfo)
+        CertSans=certsans(TempFile)
+        unlink(TempFile)
+        return CertSans
     }
 }
