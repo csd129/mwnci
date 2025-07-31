@@ -118,10 +118,6 @@ if (!INCLUDE["MAIN"]) {
         return Result
     }
 
-    function contains(Line="", Search="") {
-        return (index(Line, Search) != -1) ? true : false
-    }
-
     function getblock(StartBlock, EndBlock, ArrayName) {
         if (!checkfunctype("getblock", "string", StartBlock, 1)) {exit(1)}
         if (!checkfunctype("getblock", "string", EndBlock, 2)) {exit(1)}
@@ -164,7 +160,10 @@ if (!INCLUDE["MAIN"]) {
             Data=split(Data, "\n")
             IsString=true
         }
-        tdata=[]
+        if (Lines < 1) {
+            println("Error calling `head`: ERROR: Length to head() is less than 1 [", Lines, "]")
+            exit(1)
+        }	    
         if (Lines == 0) {Lines = 10}
         Length=len(Data)
         if (Lines >= Length) {
@@ -173,15 +172,12 @@ if (!INCLUDE["MAIN"]) {
             }
             return Data
         }
-        Count=0
-        while (Count < Lines) {
-            tdata=push(tdata, Data[Count])
-            Count++
-        }
+        Lines--
+        HeadData=slice(Data, 0, Lines)
         if (IsString) {
-            return(join(tdata, "\n"))
+            return(join(HeadData, "\n"))
         }
-        return tdata
+        return HeadData
     }
 
     function interpol(DataHash={}, Text="") {
@@ -323,7 +319,10 @@ if (!INCLUDE["MAIN"]) {
             data=split(data, "\n")
     	    IsString=true
         }
-        tdata=[]
+        if (Lines < 1) {
+            println("Error calling `tail`: ERROR: Length to tail() is less than 1 [", Lines, "]")
+            exit(1)
+        }	    
         if (Lines == 0) {Lines = 10}
         l=len(data)
         if (Lines >= l) {
@@ -332,11 +331,9 @@ if (!INCLUDE["MAIN"]) {
             }
             return data
         }
-        Count=l-Lines
-        while (Count < l) {
-            tdata=push(tdata, data[Count])
-            Count++
-        }
+        End=l-1
+        Start=l-Lines
+	tdata=slice(data, Start, End)
         if (IsString) {
             return(join(tdata, "\n"))
         }

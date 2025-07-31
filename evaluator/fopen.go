@@ -49,7 +49,7 @@ func parseMode(mode string) (int, error) {
 // Open ...
 func FOpen(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"open", args,
+		"fopen", args,
 		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
