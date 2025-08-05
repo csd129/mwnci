@@ -8,7 +8,7 @@ import (
 
 func HasPrefix(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"trimsuffix", args,
+		"hasprefix", args,
 		typing.ExactArgs(2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {

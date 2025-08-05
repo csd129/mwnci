@@ -8,7 +8,7 @@ import (
 
 func HasSuff(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"trimsuffix", args,
+		"hassuffix", args,
 		typing.ExactArgs(2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {

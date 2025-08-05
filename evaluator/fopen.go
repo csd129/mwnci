@@ -80,4 +80,3 @@ func FOpen(args ...object.Object) object.Object {
 
 	return &object.Integer{Value: int64(fd)}
 }
-
