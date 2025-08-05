@@ -1,7 +1,7 @@
 package evaluator
 
 import (
-	//	"fmt"
+	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -10,7 +10,6 @@ func ArrayInsert(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"insert", args,
 		typing.ExactArgs(3),
-		//typing.WithTypes(object.ARRAY_OBJ, object.INTEGER_OBJ),
 	); err != nil {
 		return newError(err.Error())
 	}
@@ -31,7 +30,7 @@ func ArrayInsert(args ...object.Object) object.Object {
 	if args[0].Type() == object.STRING_OBJ {
 		text := args[0].(*object.String).Value
 		elem := int(args[1].(*object.Integer).Value)
-		val:=args[2].(*object.String).Value
+		val:=fmt.Sprintf("%v", args[2])
 		if (elem > len(text)-1) || (elem < 0) {
 			return newError("IndexError: string index [%d] out of range ", elem)
 		}
