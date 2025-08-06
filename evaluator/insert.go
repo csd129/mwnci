@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -18,26 +17,22 @@ func ArrayInsert(args ...object.Object) object.Object {
 		arr := args[0].(*object.Array)
 		newArray := arr.Copy()
 		elem := int(args[1].(*object.Integer).Value)
-
 		if (elem > len(newArray.Elements)-1) || (elem < 0) {
 			return newError("IndexError: array index [%d] out of range ", elem)
-		} else {
-			val := args[2]
-			newArray.Insert(elem, val)
 		}
+		newArray.Insert(elem, args[2])
 		return newArray
 	}
 	if args[0].Type() == object.STRING_OBJ {
 		text := args[0].(*object.String).Value
 		elem := int(args[1].(*object.Integer).Value)
-		val:=fmt.Sprintf("%v", args[2])
+		val := args[2].String()
 		if (elem > len(text)-1) || (elem < 0) {
 			return newError("IndexError: string index [%d] out of range ", elem)
 		}
-		Newtext := text[:elem] + val  + text[elem:]
-		return &object.String{Value: Newtext} 
+		Newtext := text[:elem] + val + text[elem:]
+		return &object.String{Value: Newtext}
 	}
 	return newError("argument to insert() not supported, expected HASH, ARRAY or STRING, got=%s", args[0].Type())
 
 }
-

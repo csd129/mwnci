@@ -166,6 +166,5 @@ func init() {
 	RegisterBuiltin("write", func(env *object.Environment, args ...object.Object) object.Object { return (Write(args...)) })
 	RegisterBuiltin("writefile", func(env *object.Environment, args ...object.Object) object.Object { return (WriteFile(args...)) })
 	RegisterBuiltin("yamltojson", func(env *object.Environment, args ...object.Object) object.Object { return (ytoj(args...)) })
-	//	RegisterBuiltin("zcat", func(env *object.Environment, args ...object.Object) object.Object { return (ZConCat(args...)) })
 	RegisterBuiltin("zip", func(env *object.Environment, args ...object.Object) object.Object { return (zipFun(args...)) })
 }
