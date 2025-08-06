@@ -12,7 +12,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
-
+	"runtime"
+	
 	"mwnci/evaluator"
 	"mwnci/lexer"
 	"mwnci/object"
@@ -22,7 +23,7 @@ import (
 
 // The current version
 var version = "0.2.4"
-
+var distro = runtime.GOOS
 var stdlib string
 
 // Implemention of "version()" function.
@@ -106,7 +107,7 @@ func main() {
 	if len(flag.Args()) > 0 {
 		input, err = os.ReadFile(os.Args[1])
 	} else {
-		fmt.Printf("Mwnci %s\n", version)
+		fmt.Printf("Mwnci %s (%s)\n", version, distro)
 		repl.Start(os.Stdin, os.Stdout)
 	}
 
