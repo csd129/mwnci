@@ -24,7 +24,7 @@ func intFun(args ...object.Object) object.Object {
 		// decimal point
 		decimal := strings.Split(input, ".")
 		input = decimal[0]
-		i, err := strconv.Atoi(input)
+		i, err := strconv.ParseInt(input, 10, 64)
 		if err == nil {
 			return &object.Integer{Value: int64(i)}
 		}
@@ -49,7 +49,7 @@ func intFun(args ...object.Object) object.Object {
 			Num:=fmt.Sprintf("%v", v)
 			decimal := strings.Split(Num, ".")
 			Num=decimal[0]
-			foo, err := strconv.Atoi(Num)
+			foo, err := strconv.ParseInt(Num, 10, 64)
 			if err == nil {
 				newArray.Aset(i, &object.Integer{Value: int64(foo)})
 			}
