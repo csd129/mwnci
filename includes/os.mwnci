@@ -14,7 +14,20 @@ if (!INCLUDE["OS"]) {
         }
     }
 
-function uname() {
+    function termsize() {
+        switch (OS) {
+            case /bsd/ , /darwin/ {
+                CMD="stty -f /dev/tty size"
+            }
+	    default {
+                CMD="stty -F /dev/tty size"
+            }
+        }
+        Data=trim(system(CMD))
+        return fields(Data)
+    }
+
+    function uname() {
         Data=fields(trim(system("uname -n -s -r -m")))
         DataHash={
             "nodename": Data[0], "sysname": Data[1],

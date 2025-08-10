@@ -1,19 +1,29 @@
 if (!INCLUDE["STATS"]) {
     INCLUDE=set(INCLUDE, "STATS", true)
 
-    function samcov(X, Y) {
-        if (!checkfunctype("samcov", "array", X, 1)) {exit(1)}
-        if (!checkfunctype("samcov", "array", Y, 2)) {exit(1)}
+    function cov(X, Y, Type="s") {
+        if (!checkfunctype("cov", "array", X, 1)) {exit(1)}
+        if (!checkfunctype("cov", "array", Y, 2)) {exit(1)}
+        if (!checkfunctype("cov", "string", Type, 3)) {exit(1)}
+        Type=tolower(Type)
+        if (len(Type) > 1) {
+            println("Error calling `cov`: ERROR: StringError: cov() takes a single character `s` or `p` for the 2nd argument")
+        }
         LenX=len(X)
         LenY=len(Y)
         if (LenX != LenY) {
-            println("Error: `samcov` requires arrays of equal length.")
+            println("Error: `cov` requires arrays of equal length.")
             exit(1)
         }
         MeanX=mean(X)
         MeanY=mean(Y)
-        Obs=LenX-1
-        Range=Obs
+        if (Type == "p") {
+            Obs=LenX
+            Range=Obs-1
+        } else {
+            Obs=LenX-1
+            Range=Obs
+        }
         Counter=0
         foreach Index in 0..Range {
             Counter += (X[Index]-MeanX) * (Y[Index]-MeanY)
@@ -21,29 +31,17 @@ if (!INCLUDE["STATS"]) {
         return  Counter / Obs
     }
 
-    function popcov(X, Y) {
-        if (!checkfunctype("popcov", "array", X, 1)) {exit(1)}
-        if (!checkfunctype("popcov", "array", Y, 2)) {exit(1)}
-        LenX=len(X)
-        LenY=len(Y)
-        if (LenX != LenY) {
-            println("Error: `popcov` requires arrays of equal length.")
-            exit(1)
-        }
-        MeanX=mean(X)
-        MeanY=mean(Y)
-        Obs=LenX
-        Range=Obs-1
-        Counter=0
-        foreach Index in 0..Range {
-            Counter += (X[Index]-MeanX) * (Y[Index]-MeanY)
-        }
-        return  Counter / Obs
-    }
-
-    function variance(MyArray) {
+    function variance(MyArray, Type="s") {
         if (!checkfunctype("variance", "array", MyArray, 1)) {exit(1)}
-        DivNum=len(MyArray)-1
+        if (!checkfunctype("variance", "string", Type, 2)) {exit(1)}
+        Type=tolower(Type)
+        if (len(Type) > 1) {
+            println("Error calling `variance`: ERROR: StringError: variance() takes a single character `s` or `p` for the 2nd argument")
+            exit(1)
+        }
+        Pop=len(MyArray)
+        Samp=Pop-1
+        DivNum = (tolower(Type) == "s") ? Samp : Pop
         Mean=mean(MyArray)
         VarCount=0
         foreach Num in MyArray {
@@ -53,9 +51,14 @@ if (!INCLUDE["STATS"]) {
         return VarCount / DivNum
     }
 
-    function stdev(MyArray) {
+    function stdev(MyArray, Type="s") {
         if (!checkfunctype("stdev", "array", MyArray, 1)) {exit(1)}
-        return sqrt(variance(MyArray))
+        if (!checkfunctype("stdev", "string", Type, 2)) {exit(1)}
+        if (len(Type) > 1) {
+            println("Error calling `stdev`: ERROR: StringError: stdev() takes a single character `s` or `p` for the 2nd argument")
+            exit(1)
+        }
+        return sqrt(variance(MyArray, Type))
     }
 
     function mode(MyArray) {
@@ -117,14 +120,6 @@ if (!INCLUDE["STATS"]) {
             Counter += (1/float(n))
         }
         return Obs / Counter
-    }
-
-    function array.variance() {
-        return variance(self)
-    }
-
-    function array.stdev() {
-        return stdev(self)
     }
 
     function array.mode() {

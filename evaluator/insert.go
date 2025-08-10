@@ -33,6 +33,6 @@ func ArrayInsert(args ...object.Object) object.Object {
 		Newtext := text[:elem] + val + text[elem:]
 		return &object.String{Value: Newtext}
 	}
-	return newError("argument to insert() not supported, expected HASH, ARRAY or STRING, got=%s", args[0].Type())
+	return newError("argument to insert() not supported, expected ARRAY or STRING, got=%s", args[0].Type())
 
 }
