@@ -22,9 +22,9 @@ INFILE=$(find . -name \*.in)
 emconsts=`find includes -name \*.mwnci -exec  grep -w "const.*=.*;$" {} \; | tr '=' ' ' | awk '{printf("\"%s\"\n", $2)}' | tr '\n' ' '`
 vimconsts=`echo $emconsts | sed -e s/"\""/""/g`
 emincludes=`find includes -name \*.mwnci -exec awk '$1 == "function"' {} \; | tr '(' ' '  | awk '{printf("\"%s\"\n", $2)}' | grep -v "\." | tr '\n' ' '`
-vimincludes=`echo $emincludes | sed -e s/"\""/""/g | sed -e s/"contains"/""/g`
+vimincludes=`echo $emincludes | sed -e s/"\""/""/g | sed -e s/"contains"/"cont\[ains\]"/g`
 emfunctions=`awk '/RegisterBuiltin/ {print $1}' evaluator/register_builtins.go | awk -F\" '/^Reg/ {printf("\"%s\" ", $2)}'`
-vimfunctions=`echo $emfunctions | sed -e s/"\""/""/g`
+vimfunctions=`echo $emfunctions | sed -e s/"\""/""/g | sed -e s/"contains"/"cont[ains\]"/g`
 for n in $INFILE
 do
     new=$(echo $n | sed -e s/"\.in$"/""/g)

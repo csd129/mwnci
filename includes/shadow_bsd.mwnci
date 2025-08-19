@@ -14,7 +14,7 @@ if (!INCLUDE["MASTERPW"]) {
 // Shell     : user's login shell
 
         SpwHash={}
-	SPwEntries=split(trim(cat("/etc/master.passwd")), "\n")
+        SPwEntries=split(trim(cat("/etc/master.passwd")), "\n")
         foreach Line in SPwEntries {
             if (len(Line) > 0) {
                 SplitLine=split(Line,":")

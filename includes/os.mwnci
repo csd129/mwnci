@@ -120,11 +120,11 @@ if (!INCLUDE["OS"]) {
 
     function loadavg() {
         Data=fields(trim(system("uptime")))
-	Last=len(Data)-1
-	fifteen=float(trim(Data[Last],","))
-	five=float(trim(Data[Last-1], ","))
-	one=float(trim(Data[Last-2], ","))
-	return [one, five, fifteen]
+        Last=len(Data)-1
+        fifteen=float(trim(Data[Last],","))
+        five=float(trim(Data[Last-1], ","))
+        one=float(trim(Data[Last-2], ","))
+        return [one, five, fifteen]
     }
 
     function string.datetoepoch(Format="") {

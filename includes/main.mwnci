@@ -553,4 +553,39 @@ if (!INCLUDE["MAIN"]) {
         }
         return Result
     }
+
+    function ucount(Array=[]) {
+        Ucount={}
+        SearchList=uniq(Array)
+        foreach Entry in SearchList {
+            Ucount=set(Ucount, Entry, count(Array, Entry))
+        }
+        return Ucount
+    }
+
+    function bsearch(Array, Search) {
+        Left=0
+        Right=len(Array) - 1
+        while (Left <= Right) {
+            Mid=(Left + Right) / 2
+            if (Array[Mid]  == Search) {return Mid}
+            if (Array[Mid] < Search) {
+                Left = Mid  + 1
+            } else {
+                Right = Mid - 1
+            }
+        }
+        return -1
+    }
+
+    function randwords(Count=0) {
+        ListArray=1..Count
+        File="/usr/share/dict/words"
+        WordList=split(trim(cat(File)), "\n")
+        WordCount=len(WordList)
+        foreach n in 1..Count {
+            ListArray=set(ListArray, n-1, WordList[random(WordCount)])
+        }
+        return ListArray
+    }
 }
