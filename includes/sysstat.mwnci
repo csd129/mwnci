@@ -32,7 +32,7 @@ if (!INCLUDE["SYSSTAT"]) {
              if (!contains(Key, "ram") && !contains(Key, "loop")) {
                  Io_Hash=set(Io_Hash, Key, line_data)
             }
-	}
+        }
         return Io_Hash
     }
 
@@ -83,7 +83,7 @@ if (!INCLUDE["SYSSTAT"]) {
                     mem_hash=set(mem_hash, sline[0], temp_hash)
                 }
             }
-	}
+        }
         return mem_hash
     }
 
@@ -100,7 +100,7 @@ if (!INCLUDE["SYSSTAT"]) {
                 if (!match("IFACE", Line) && !match("Average", Line) && !match("[Ll[Ii][Nn][Uu][Xx]", Line)) {
                     SInterface=fields(Line)
                     if (match("[AP]M", SInterface[1])) {SInterface=delete(SInterface, 1)}
-		    Data=push(Data, SInterface)
+                    Data=push(Data, SInterface)
                 }
             }
         }

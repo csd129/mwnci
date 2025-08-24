@@ -8,11 +8,10 @@ if (!INCLUDE["PSBSD"]) {
         foreach Line in Data {
             Line=trim(Line)
             SLine=fields(Line)
-	    if (int(SLine[0]) == pid) {
+            if (int(SLine[0]) == pid) {
                 return last(SLine)
             }
         }
-	return false
+        return false
     }
-
 }

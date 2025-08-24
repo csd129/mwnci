@@ -17,8 +17,8 @@ if (!INCLUDE["CERTS"]) {
     	    return false
         }
         Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 2>&1; exit 0", TimeOut, Domain, Domain)
-	Result=system(Command)
-	return contains(Result, "ERROR") ? NULL : Result
+        Result=system(Command)
+        return contains(Result, "ERROR") ? NULL : Result
     }
     
     function certexpiredays(File="") {
@@ -58,7 +58,7 @@ if (!INCLUDE["CERTS"]) {
         CertInfo=getcert(Domain)
         if (len(CertInfo) == 0) {
             return 0
-	}
+        }
         writefile(TEMPF, CertInfo)
         CertDate=certexpiredays(TEMPF)
         unlink(TEMPF)
@@ -74,11 +74,11 @@ if (!INCLUDE["CERTS"]) {
             println("Error calling `certsans`: ERROR: OpenError : Can't open file ", File)
             exit(1)
         }
-	TempFile=tmpnam("/tmp")
-	Command=sprintf("openssl x509 -in %s -text -noout -dates 2>&1; exit 0", File)
-	writetofile(TempFile, "w", system(Command))
+        TempFile=tmpnam("/tmp")
+        Command=sprintf("openssl x509 -in %s -text -noout -dates 2>&1; exit 0", File)
+        writetofile(TempFile, "w", system(Command))
         Found=[]
-	Data=regexp("DNS:([^\s,]+)", TempFile)
+        Data=regexp("DNS:([^\s,]+)", TempFile)
         foreach Line in Data {
             Line=replaceall(Line, "DNS:", "")
             Line=fields(replaceall(Line, ",", ""))

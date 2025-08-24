@@ -13,8 +13,8 @@ if (!INCLUDE["PS"]) {
     
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
-	Proc=string(pid)
-	return contains(keys(process()), Proc)
+        Proc=string(pid)
+        return contains(keys(process()), Proc)
     }
 
     function process() {
@@ -39,16 +39,16 @@ if (!INCLUDE["PS"]) {
             exit(1)
         }
         Cmd="pgrep " + name + "; exit 0"
-	IP=split(trim(system(Cmd)), "\n")
+        IP=split(trim(system(Cmd)), "\n")
         if (!IP) {
-	    return false
+            return false
         }
-	return int(IP)
+        return int(IP)
     }
     
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
-	return contains(keys(process()), string(pid))
+        return contains(keys(process()), string(pid))
     }
     
     function procstat(pid=-1) {
