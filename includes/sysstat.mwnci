@@ -1,65 +1,18 @@
 include(
-    "pwd"
+    "pwd",
+    "os"
 )
 
 if (!INCLUDE["SYSSTAT"]) {
     INCLUDE=set(INCLUDE, "SYSSTAT", true)
 
-    function mpstat() {
-        Mpstat=system("mpstat -P ALL -o JSON")
-        Json=eval(Mpstat)
-        Cpu_Hash={}
-        Load=Json["sysstat"]["hosts"][0]["statistics"][0]["cpu-load"]
-        foreach n in Load {
-            busy=sprintf("%.2f", 100.00 - float(n["idle"]))
-            key=n["cpu"]
-            line_data=delete(n,"cpu")
-            line_data=set(line_data, "busy", float(busy))
-            Cpu_Hash=set(Cpu_Hash, key, line_data)
+    switch (OS) {
+        case /bsd/ , /darwin/ {
+            include("sysstat_bsd")
         }
-        return Cpu_Hash
-    }
-
-    function iostat() {
-        Io_Hash={}
-        Iostat=system("iostat -p ALL -o JSON")
-        Iostat=replaceall(Iostat, "/", "")
-        Json=eval(Iostat)
-        Disks=Json["sysstat"]["hosts"][0]["statistics"][0]["disk"]
-        foreach Disk in Disks {
-            Key=Disk["disk_device"]
-            line_data=delete(Disk, "disk_device")
-             if (!contains(Key, "ram") && !contains(Key, "loop")) {
-                 Io_Hash=set(Io_Hash, Key, line_data)
-            }
+        case "linux" {
+            include("sysstat_linux")
         }
-        return Io_Hash
-    }
-
-    function pidstat(opts="") {
-        CMD="pidstat -l"
-        if (len(opts) > 0) {
-            CMD=CMD + " -C " + opts
-        }
-        ProcessLine=trim(system(CMD))
-        ProcessLine=shift(ProcessLine.split("\n"), 3)
-        pid_hash={}
-        foreach line in ProcessLine {
-            sline=fields(line)
-            pid=sline[2]
-            temp_hash={
-                "uid": int(sline[1]),
-                "pc_usr": float(sline[3]),
-                "pc_sys": float(sline[4]),
-                "pc_guest": float(sline[5]),
-                "pc_wait": float(sline[6]),
-                "pc_cpu": float(sline[7]),
-                "cpu": int(sline[8]),
-                "cmd": sline[9]
-            }
-            pid_hash=set(pid_hash, pid, temp_hash)
-        }
-        return pid_hash
     }
 
     function pidmem(ops="") {
@@ -85,53 +38,6 @@ if (!INCLUDE["SYSSTAT"]) {
             }
         }
         return mem_hash
-    }
-
-    function sndev(iface="") {
-        if (!checkfunctype("sndev", "string", iface, 1)) {exit(1)}
-        CMD="sar -n DEV"
-        if (iface != "") {
-            CMD=CMD + " --iface=" + iface
-        }
-        Result=split(stac(system(CMD)), "\n")
-        Data=[]
-        foreach Line in Result {
-            if (match("[a-z]", Line)) {
-                if (!match("IFACE", Line) && !match("Average", Line) && !match("[Ll[Ii][Nn][Uu][Xx]", Line)) {
-                    SInterface=fields(Line)
-                    if (match("[AP]M", SInterface[1])) {SInterface=delete(SInterface, 1)}
-                    Data=push(Data, SInterface)
-                }
-            }
-        }
-        Iface_Hash={}
-        if (len(Data) == 0) {
-            return Iface_Hash
-        }
-        CurrentTime=Data[0][0]
-        foreach Line in Data {
-            if (Line[0] == CurrentTime) {
-                Iface_Hash=set(Iface_Hash, Line[1],
-                {
-                    "rxpcks": float(Line[2]),
-                    "txpcks": float(Line[3]),
-                    "rxkbs": float(Line[4]),
-                    "txkbs": float(Line[5]),
-                    "rxcmps": float(Line[6]),
-                    "txcmps": float(Line[7]),
-                    "rxmcsts": float(Line[8]),
-                    "ifutil": float(Line[9])
-                }
-                )
-// In case we are on older kernels
-                if (Iface_Hash["ifutil"] == null) {
-                    Iface_Hash=delete(Iface_Hash, "ifutil")
-                }
-            } else {
-                return Iface_Hash
-            }
-        }
-        return Iface_Hash
     }
 }
 

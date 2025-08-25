@@ -1,0 +1,27 @@
+if (!INCLUDE["SYSSTATBSD"]) {
+    INCLUDE=set(INCLUDE, "SYSSTATBSD", true)
+
+    function iostat() {
+        IoHash={}
+        DevArray=[]
+        Devices=keys(df())
+        foreach Device in Devices {
+            if (contains(Device, "\/dev\/")) {
+                Device=trimprefix(Device, "/dev")
+                Device=fields(tr(Device, "[:digit:]", " "))[0]
+                DevArray=push(DevArray, Device)
+            }
+            DevCount=string(len(uniq(DevArray)))
+         }
+         Cmd="iostat -x -n" + DevCount
+         Data=split(trim(system(Cmd)), "\n")
+         Data=shift(Data, 2)
+         foreach Line in Data {
+             Stat=fields(Line)
+             Key=Stat[0]
+             HashData={"reads": int(Stat[1]), "writes": int(Stat[2]), "kB_reads": float(Stat[3]), "kB_wrtns": float(Stat[4]), "msr": int(Stat[5]), "msw": int(Stat[6]), "mso": int(Stat[7]), "qlen": int(Stat[8]), "pcout": int(Stat[9])}
+             IoHash=set(IoHash, Key, HashData)
+         }	     
+         return IoHash
+    }
+}
