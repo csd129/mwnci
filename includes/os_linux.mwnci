@@ -40,25 +40,53 @@ if (!INCLUDE["OSLINUX"]) {
         return Free
     }
 
-    function getcpu(Cpu="") {
+    function hashstats(Data) {
         CPUHash={}
-        Data=regexp("^cpu", "/proc/stat")
         foreach Line in Data {
             SLine=fields(Line)
             CPU=(SLine[0] == "cpu") ? "all" : SLine[0]
-            SLine=int(shift(SLine))
-            Total=float(sum(SLine))
-            UserPC=float(sprintf("%.2f",(SLine[0] * 100) / Total))
-            NicePC=float(sprintf("%.2f",(SLine[1] * 100) / Total))
-            SysPC=float(sprintf("%.2f",(SLine[2] * 100) / Total))
-            IdlePC=float(sprintf("%.2f",(SLine[3] * 100) / Total))
-            IowaitPC=float(sprintf("%.2f",(SLine[4] * 100) / Total))
-            IrqPC=float(sprintf("%.2f",(SLine[5] * 100) / Total))
-            SoftirqPC=float(sprintf("%.2f",(SLine[6] * 100) / Total))
-            StealPC=float(sprintf("%.2f",(SLine[7] * 100) / Total))
-            GuestPC=float(sprintf("%.2f",(SLine[8] * 100) / Total))
-            GuestnicePC=float(sprintf("%.2f",(SLine[9] * 100) / Total))
-            TempHash={"user": UserPC, "nice": NicePC, "system": SysPC, "idle": IdlePC, "iowait": IowaitPC, "irq": IrqPC, "softirq": SoftirqPC, "steal": StealPC, "guest": GuestPC, "guest_nice": GuestnicePC}
+            SLine=float(shift(SLine))
+            TempHash={
+                "user": SLine[0], "nice": SLine[1], "system": SLine[2],
+                "idle": SLine[3], "iowait": SLine[4], "irq": SLine[5],
+                "softirq": SLine[6], "steal": SLine[7], "guest": SLine[8],
+                "guest_nice": SLine[9]
+                }
+            CPUHash=set(CPUHash, CPU, TempHash)
+        }
+        return CPUHash
+    }
+
+    function getcpu(Cpu="", Delay=0.75 ) {
+        Data=[]
+        CPUHash={}
+        Delay=float(Delay) * 1000
+        First=hashstats(regexp("^cpu", "/proc/stat"))
+        sleep(int(Delay))
+        Second=hashstats(regexp("^cpu", "/proc/stat"))
+        foreach CPU in keys(First) {
+            User=Second[CPU]["user"] - First[CPU]["user"]
+            Nice=Second[CPU]["nice"] - First[CPU]["nice"]
+            Sys=Second[CPU]["system"] - First[CPU]["system"]
+            Idle=Second[CPU]["idle"] - First[CPU]["idle"]
+            Iowait=Second[CPU]["iowait"] - First[CPU]["iowait"]
+            Irq=Second[CPU]["irq"] - First[CPU]["irq"]
+            Softirq=Second[CPU]["softirq"] - First[CPU]["softirq"]
+            Steal=Second[CPU]["steal"] - First[CPU]["steal"]
+            Guest=Second[CPU]["guest"] - First[CPU]["guest"]
+            Guestnice=Second[CPU]["guest_nice"] - First[CPU]["guest_nice"]
+            Total=float(User + Nice + Sys + Idle + Iowait + Irq + Softirq + Steal + Guest + Guestnice)
+            User=float(sprintf("%.2f",(User * 100) / Total))
+            Nice=float(sprintf("%.2f",(Nice * 100) / Total))
+            Sys=float(sprintf("%.2f",(Sys * 100) / Total))
+            Idle=float(sprintf("%.2f",(Idle * 100) / Total))
+            Iowait=float(sprintf("%.2f",(Iowait * 100) / Total))
+            Irq=float(sprintf("%.2f",(Irq * 100) / Total))
+            Softirq=float(sprintf("%.2f",(Softirq * 100) / Total))
+            Steal=float(sprintf("%.2f",(Steal * 100) / Total))
+            Guest=float(sprintf("%.2f",(Guest * 100) / Total))
+            Guestnice=float(sprintf("%.2f",(Guestnice * 100) / Total))
+            TempHash={"user": User, "nice": Nice, "system": Sys, "idle": Idle, "iowait": Iowait, "irq": Irq, "softirq": Softirq, "steal": Steal, "guest": Guest, "guest_nice": Guestnice}
             CPUHash=CPUHash.set(CPU, TempHash)
         }
         if (Cpu != "" && len(CPUHash) > 0) {
