@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	//	"archive/zip"
-	"io/ioutil"
+	"io"
 	"mwnci/object"
 	"mwnci/typing"
 	"os"
@@ -85,7 +85,7 @@ func GzCat(args ...object.Object) object.Object {
 		return newError("IOError: error reading from file %s: %s", filename, err)
 	}
 	defer gzread.Close()
-	content, err := ioutil.ReadAll(gzread)
+	content, err := io.ReadAll(gzread)
 	if err != nil {
 		return newError("IOError: error reading from file %s: %s", filename, err)
 	}
@@ -108,7 +108,7 @@ func BzCat(args ...object.Object) object.Object {
 	}
 	defer bzfile.Close()
 	bzread := bzip2.NewReader(bzfile)
-	content, err := ioutil.ReadAll(bzread)
+	content, err := io.ReadAll(bzread)
 	if err != nil {
 		return newError("IOError: error reading from file %s: %s", filename, err)
 	}
