@@ -63,20 +63,15 @@ if (!INCLUDE["STATS"]) {
 
     function mode(MyArray) {
         if (!checkfunctype("mode", "array", MyArray, 1)) {exit(1)}
+        ModeArray=[]
         UniqCount=ucount(MyArray)
-        Largest=0
-        Numbers=""
-        foreach Amount in keys(UniqCount) {
-            if (UniqCount[Amount] > Largest) {
-                Numbers=Amount
-                Largest=UniqCount[Amount]
-            } else {
-                if (UniqCount[Amount] == Largest) {
-                    Numbers=Numbers + " " + Amount
-                }
+        Highest=reverse(usort(values(UniqCount)))[0]
+        foreach Key in keys(UniqCount) {
+            if (UniqCount[Key] == Highest) {
+                ModeArray=push(ModeArray, Key)
             }
         }
-        return float(sort(fields(Numbers)))
+        return ModeArray
     }
 
     function average(MyArray) {
