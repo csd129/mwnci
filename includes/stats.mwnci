@@ -1,18 +1,18 @@
 if (!INCLUDE["STATS"]) {
     INCLUDE=set(INCLUDE, "STATS", true)
 
-    function cov(X, Y, Type="s") {
-        if (!checkfunctype("cov", "array", X, 1)) {exit(1)}
-        if (!checkfunctype("cov", "array", Y, 2)) {exit(1)}
-        if (!checkfunctype("cov", "string", Type, 3)) {exit(1)}
+    function covariance(X, Y, Type="s") {
+        if (!checkfunctype("covariance", "array", X, 1)) {exit(1)}
+        if (!checkfunctype("covariance", "array", Y, 2)) {exit(1)}
+        if (!checkfunctype("covariance", "string", Type, 3)) {exit(1)}
         Type=tolower(Type)
         if (len(Type) > 1) {
-            println("Error calling `cov`: ERROR: StringError: cov() takes a single character `s` or `p` for the 2nd argument")
+            println("Error calling `covariance`: ERROR: StringError: covariance() takes a single character `s` or `p` for the 2nd argument")
         }
         LenX=len(X)
         LenY=len(Y)
         if (LenX != LenY) {
-            println("Error: `cov` requires arrays of equal length.")
+            println("Error calling `covariance`: ERROR: StatisticsError: Data sets must be of the same length ")
             exit(1)
         }
         MeanX=mean(X)
@@ -34,6 +34,10 @@ if (!INCLUDE["STATS"]) {
     function variance(MyArray, Type="s") {
         if (!checkfunctype("variance", "array", MyArray, 1)) {exit(1)}
         if (!checkfunctype("variance", "string", Type, 2)) {exit(1)}
+        if (len(MyArray) < 2) {
+            println("Error calling `variance`: ERROR: StatisticsError: Data set has fewer than 2 values")
+            exit(1)
+        }
         Type=tolower(Type)
         if (len(Type) > 1) {
             println("Error calling `variance`: ERROR: StringError: variance() takes a single character `s` or `p` for the 2nd argument")
@@ -54,6 +58,10 @@ if (!INCLUDE["STATS"]) {
     function stdev(MyArray, Type="s") {
         if (!checkfunctype("stdev", "array", MyArray, 1)) {exit(1)}
         if (!checkfunctype("stdev", "string", Type, 2)) {exit(1)}
+        if (len(MyArray) < 2) {
+            println("Error calling `stdev`: ERROR: StatisticsError: Data has fewer than 2 values")
+            exit(1)
+        }
         if (len(Type) > 1) {
             println("Error calling `stdev`: ERROR: StringError: stdev() takes a single character `s` or `p` for the 2nd argument")
             exit(1)
@@ -63,6 +71,10 @@ if (!INCLUDE["STATS"]) {
 
     function mode(MyArray) {
         if (!checkfunctype("mode", "array", MyArray, 1)) {exit(1)}
+        if (len(MyArray) == 0) {
+            println("Error calling `mode`: ERROR: StatisticsError: No data")
+            exit(1)
+        }
         ModeArray=[]
         UniqCount=ucount(MyArray)
         Highest=reverse(usort(values(UniqCount)))[0]
@@ -71,11 +83,15 @@ if (!INCLUDE["STATS"]) {
                 ModeArray=push(ModeArray, Key)
             }
         }
-        return ModeArray
+        return (len(ModeArray) == 1) ? ModeArray[0] : ModeArray
     }
 
     function average(MyArray) {
         if (!checkfunctype("average", "array", MyArray, 1)) {exit(1)}
+        if (len(MyArray) == 0) {
+            println("Error calling `average`: ERROR: StatisticsError: No data")
+            exit(1)
+        }
         return float(sum(MyArray) / float(len(MyArray)))
     }
 
@@ -85,6 +101,11 @@ if (!INCLUDE["STATS"]) {
 
     function mean(ave_array) {
         if (!checkfunctype("mean", "array", ave_array, 1)) {exit(1)}
+        if (len(ave_array) == 0) {
+            println("Error calling `mean`: ERROR: StatisticsError: No data")
+            exit(1)
+        }
+        Type=tolower(Type)
         return average(ave_array)
     }
 
@@ -92,6 +113,10 @@ if (!INCLUDE["STATS"]) {
 
     function median(MedianArray=[]) {
         if (!checkfunctype("median", "array", MedianArray)) {exit(1)}
+        if (len(MedianArray) == 0) {
+            println("Error calling `median`: ERROR: StatisticsError: No data")
+            exit(1)
+        }        
         NewArray=float(MedianArray)
         MedianArray=copy(NewArray)
         MedianArray=sort(MedianArray)
@@ -109,6 +134,10 @@ if (!INCLUDE["STATS"]) {
     
     function harmonicmean(MyArray) {
         if (!checkfunctype("harmonicmean", "array", MyArray)) {exit(1)}
+        if (len(MyArray) == 0) {
+            println("Error calling `harmonicmean`: ERROR: StatisticsError: No data")
+            exit(1)
+        }              
         Obs=len(MyArray)
         Counter=0
         foreach n in MyArray {
