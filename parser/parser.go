@@ -138,7 +138,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.EOF, p.parsingBroken)
 	p.registerPrefix(token.FALSE, p.parseBoolean)
 	p.registerPrefix(token.FLOAT, p.parseFloatLiteral)
-	p.registerPrefix(token.WHILE, p.parseForLoopExpression)
+	p.registerPrefix(token.WHILE, p.parseWhileLoopExpression)
 	p.registerPrefix(token.FOREACH, p.parseForEach)
 	p.registerPrefix(token.FUNCTION, p.parseFunctionLiteral)
 	p.registerPrefix(token.IDENT, p.parseIdentifier)
@@ -691,9 +691,9 @@ func (p *Parser) parseBracketExpression() ast.Expression {
 	return tmp
 }
 
-// parseForLoopExpression parses a for-loop.
-func (p *Parser) parseForLoopExpression() ast.Expression {
-	expression := &ast.ForLoopExpression{Token: p.curToken}
+// parseWhileLoopExpression parses a for-loop.
+func (p *Parser) parseWhileLoopExpression() ast.Expression {
+	expression := &ast.WhileLoopExpression{Token: p.curToken}
 	if !p.expectPeek(token.LPAREN) {
 		return nil
 	}

@@ -464,8 +464,8 @@ func (te *TernaryExpression) String() string {
 	return out.String()
 }
 
-// ForLoopExpression holds a for-loop
-type ForLoopExpression struct {
+// WhileLoopExpression holds a for-loop
+type WhileLoopExpression struct {
 	// Token is the actual token
 	Token token.Token
 
@@ -478,13 +478,13 @@ type ForLoopExpression struct {
 	Consequence *BlockStatement
 }
 
-func (fle *ForLoopExpression) expressionNode() {}
+func (fle *WhileLoopExpression) expressionNode() {}
 
 // TokenLiteral returns the literal token.
-func (fle *ForLoopExpression) TokenLiteral() string { return fle.Token.Literal }
+func (fle *WhileLoopExpression) TokenLiteral() string { return fle.Token.Literal }
 
 // String returns this object as a string.
-func (fle *ForLoopExpression) String() string {
+func (fle *WhileLoopExpression) String() string {
 	var out bytes.Buffer
 	out.WriteString("for (")
 	out.WriteString(fle.Condition.String())

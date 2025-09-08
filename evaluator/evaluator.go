@@ -93,8 +93,8 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 		return evalIfExpression(ctx, node, env)
 	case *ast.TernaryExpression:
 		return evalTernaryExpression(ctx, node, env)
-	case *ast.ForLoopExpression:
-		return evalForLoopExpression(ctx, node, env)
+	case *ast.WhileLoopExpression:
+		return evalWhileLoopExpression(ctx, node, env)
 	case *ast.ForeachStatement:
 		return evalForeachExpression(ctx, node, env)
 	case *ast.ReturnStatement:
@@ -423,7 +423,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 		return &object.Integer{Value: leftVal + rightVal}
 	case "%":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v %% %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Integer{Value: leftVal % rightVal}
@@ -435,7 +435,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 		return &object.Integer{Value: leftVal ^ rightVal}
 	case "%=":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v %%= %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Integer{Value: leftVal % rightVal}
@@ -451,7 +451,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 		return &object.Integer{Value: leftVal * rightVal}
 	case "/":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v / %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Integer{Value: leftVal / rightVal}
@@ -461,7 +461,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 		return &object.Integer{Value: leftVal >> uint64(rightVal)}
 	case "/=":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v /= %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Integer{Value: leftVal / rightVal}
@@ -523,13 +523,13 @@ func evalFloatInfixExpression(operator string, left, right object.Object) object
 		return &object.Float{Value: math.Pow(leftVal, rightVal)}
 	case "/":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v / %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Float{Value: leftVal / rightVal}
 	case "/=":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v /= %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Float{Value: leftVal / rightVal}
@@ -571,13 +571,13 @@ func evalFloatIntegerInfixExpression(operator string, left, right object.Object)
 		return &object.Float{Value: math.Pow(leftVal, rightVal)}
 	case "/":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v / %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Float{Value: leftVal / rightVal}
 	case "/=":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v /= %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Float{Value: leftVal / rightVal}
@@ -619,13 +619,13 @@ func evalIntegerFloatInfixExpression(operator string, left, right object.Object)
 		return &object.Float{Value: math.Pow(leftVal, rightVal)}
 	case "/":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v / %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Float{Value: leftVal / rightVal}
 	case "/=":
 		if rightVal == 0 {
-			fmt.Fprintf(os.Stderr, "panic: runtime error: division by zero\n")
+			fmt.Fprintf(os.Stderr, "Error: RuntimeError: division by zero %v /= %v\n", leftVal, rightVal)
 			os.Exit(1)
 		}
 		return &object.Float{Value: leftVal / rightVal}
@@ -883,7 +883,7 @@ func evalSwitchStatement(ctx context.Context, se *ast.SwitchExpression, env *obj
 	return nil
 }
 
-func evalForLoopExpression(ctx context.Context, fle *ast.ForLoopExpression, env *object.Environment) object.Object {
+func evalWhileLoopExpression(ctx context.Context, fle *ast.WhileLoopExpression, env *object.Environment) object.Object {
 	rt := &object.Boolean{Value: true}
 	for {
 		condition := EvalContext(ctx, fle.Condition, env)

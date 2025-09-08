@@ -528,9 +528,9 @@ func TestWhileLoopExpression(t *testing.T) {
 		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement, got=%T",
 			program.Statements[0])
 	}
-	exp, ok := stmt.Expression.(*ast.ForLoopExpression)
+	exp, ok := stmt.Expression.(*ast.WhileLoopExpression)
 	if !ok {
-		t.Fatalf("stmt.Expression is not ast.ForLoopExpression. got=%T",
+		t.Fatalf("stmt.Expression is not ast.WhileLoopExpression. got=%T",
 			stmt.Expression)
 	}
 	if !testInfixExpression(t, exp.Condition, "x", "<", "y") {
