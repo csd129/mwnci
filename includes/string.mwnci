@@ -129,10 +129,18 @@ if (!INCLUDE["STRING"]) {
         if (Position == -1) {
             return Data
         }
-        First=substr(Text, 0, Position)
-        Start=len(First + Search)
-        Length=len(Text) - Start
-        Second=substr(Text, Start, Length)
+
+        if (Position == 0) {
+            First=""
+	    Start=len(Search)+1
+            Length=len(Text) - Start
+            Second=substr(Text, Start-1, Length)
+        } else {
+            First=substr(Text, 0, Position)
+            Start=len(First + Search)
+            Length=len(Text) - Start
+            Second=substr(Text, Start, Length)
+        }
         Data=[First, Search, Second]
         return Data
     }
