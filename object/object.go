@@ -1,10 +1,10 @@
-
 // Package object contains our core-definitions for objects.
 package object
 
 import (
 	"fmt"
 )
+
 // Type describes the type of an object.
 type Type string
 
@@ -24,11 +24,12 @@ const (
 	FILE_OBJ         = "FILE"
 	REGEXP_OBJ       = "REGEXP"
 )
+
 // Comparable is the interface for comparing two Object and their underlying
 // values. It is the responsibility of the caller (left) to check for types.
-// Returns `true` iif the types and values are identical, `false` otherwise.
+// Returns `true` if the types and values are identical, `false` otherwise.
 type Comparable interface {
-        Compare(other Object) int
+	Compare(other Object) int
 }
 
 // Object is the interface that all of our various object-types must implement.
@@ -87,5 +88,5 @@ type Iterable interface {
 // Object(s) that have a valid size must implement  this interface and the
 // Len() method.
 type Sizeable interface {
-        Len() int
+	Len() int
 }

@@ -343,7 +343,7 @@ func matches(left, right object.Object, env *object.Environment) object.Object {
 	if err != nil {
 		return newError("error compiling regexp '%s': %s", right.Inspect(), err)
 	}
-
+	str = strings.Trim(str, "\"")
 	res := r.FindStringSubmatch(str)
 
 	// Do we have any captures?
@@ -493,7 +493,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 			leftVal += Step
 			i++
 		}
-		return &object.Array{Elements: array} 
+		return &object.Array{Elements: array}
 	default:
 		return newError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())

@@ -1,6 +1,5 @@
 #!/usr/bin/env mwnci
 include("math")
-pragma("strict")
 //
 // This program demonstrates the use of variable-updates without the need
 // for `let`.
