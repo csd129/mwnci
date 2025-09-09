@@ -478,26 +478,22 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
 	case "..":
-		reverseit := 0
-		len := 0
+		Size := float64(rightVal - leftVal)
+		Len := int(math.Abs(Size)) + 1
+		var Step int64
+		Step = 1
 		if rightVal < leftVal {
-			reverseit = 1
-			len = int(leftVal-rightVal) + 1
-		} else {
-			len = int(rightVal-leftVal) + 1
+			Step = -1
 		}
-		array := make([]object.Object, len)
+		array := make([]object.Object, Len)
 		i := 0
-		for i < len {
+
+		for i < Len {
 			array[i] = &object.Integer{Value: leftVal}
-			if reverseit == 1 {
-				leftVal--
-			} else {
-				leftVal++
-			}
+			leftVal += Step
 			i++
 		}
-		return &object.Array{Elements: array}
+		return &object.Array{Elements: array} 
 	default:
 		return newError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
