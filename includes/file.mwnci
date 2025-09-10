@@ -272,11 +272,11 @@ if (!INCLUDE["FILE"]) {
     }
     
     function string.isblock() {
-        return isblock("BLOCK", self, "isblock")
+        return istype("BLOCK", self, "isblock")
     }
     
     function string.isdir() {
-        return isdir("DIR", self, "isdir")
+        return istype("DIR", self, "isdir")
     }
     
     function string.isempty() {
@@ -284,19 +284,19 @@ if (!INCLUDE["FILE"]) {
     }
     
     function string.isfifo() {
-        return isfifo("FIFO", self, "isfifo")
+        return istype("FIFO", self, "isfifo")
     }
     
     function string.isfile() {
-        return isfile("FILE", self, "isfile")
+        return istype("FILE", self, "isfile")
     }
     
     function string.islink() {
-        return islink("LINK", self, "islink")
+        return istype("LINK", self, "islink")
     }
     
     function string.issock() {
-        return issock("SOCKET", self, "issock")
+        return istype("SOCKET", self, "issock")
     }
     
     function string.issetuid() {
