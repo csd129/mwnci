@@ -52,6 +52,7 @@ if (!INCLUDE["METHODS"]) {
     function hash.values() {return values(self)}
     function integer.bin() {return bin(self)}
     function integer.chr() {return chr(self)}
+    function integer.divmod(divid) {return divmod(self, divid)}
     function integer.inttoip() {return inttoip(self)}
     function object.abs() {return abs(self)}
     function object.asctime(format="") {if (len(format) == 0) {return asctime(self)}return asctime(self,format)}

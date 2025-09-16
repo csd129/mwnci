@@ -93,8 +93,8 @@ if (!INCLUDE["NET"]) {
                 ListArray=push(ListArray, [Line[0], Line[1], Line[len(Line)-1]])
             }
         }
-        PortArray=PortArray.uniq()
-        ListArray=ListArray.uniq()
+        PortArray=uniq(PortArray)
+        ListArray=uniq(ListArray)
         foreach Port in PortArray {
             if (Port != "*") {
                 TempArray=[]
@@ -102,7 +102,7 @@ if (!INCLUDE["NET"]) {
                 foreach Entry in ListArray {
                     if (Port == Entry[2]) {
                         Proc=Entry[0]
-                        TempArray=TempArray.push(int(Entry[1]))
+                        TempArray=push(TempArray, int(Entry[1]))
                     }
                 }
                 TempHash={"pids": TempArray, "proc": Proc}

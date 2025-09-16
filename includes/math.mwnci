@@ -190,10 +190,6 @@ if (!INCLUDE["MATH"]) {
         return radians(self)
     }
     
-    function integer.divmod(divid) {
-        return divmod(self, divid)
-    }
-    
     function object.pow(power) {
         return pow(self, power)
     }

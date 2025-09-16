@@ -38,7 +38,7 @@ if (!INCLUDE["GRP"]) {
         GroupHash={}
         Groups=getgroups(User)
         foreach Group in Groups	{
-            GroupHash=GroupHash.set(getgrent(Group)["Group"], Group)
+            GroupHash=set(GroupHash,getgrent(Group)["Group"], Group)
         }
         return GroupHash
     }
@@ -92,14 +92,14 @@ if (!INCLUDE["GRP"]) {
         if (len(PWLine) == 0) {
             return GroupArray
         }
-        GroupArray=GroupArray.push(int(split(PWLine[0],":")[3]))
+        GroupArray=push(GroupArray, int(split(PWLine[0] ,":")[3]))
         GrpData=regexp(Username, GROUP)
         foreach Line in GrpData {
             SLine=split(Line, ":")
             GrGid=SLine[2]
             Users=fields(replaceall(SLine[3],",", " "))
             if (index(Users, Username) > -1) {
-                GroupArray=GroupArray.push(int(GrGid))
+                GroupArray=push(GroupArray, int(GrGid))
             }
         }
         return usort(GroupArray)

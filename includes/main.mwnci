@@ -238,12 +238,12 @@ if (!INCLUDE["MAIN"]) {
     function max(MyArray=[]) {
         if (!checkfunctype("max", "array", MyArray, 1)) {exit(1)}
         ArrayLen=len(MyArray)
-        return (ArrayLen == 0) ? 0 : MyArray.sort()[ArrayLen -1]
+        return (ArrayLen == 0) ? 0 : sort(MyArray)[ArrayLen -1]
     }
 
     function min(MyArray=[]) {
         if (!checkfunctype("min", "array", MyArray, 1)) {exit(1)}
-        return (len(MyArray) == 0) ? 0 : MyArray.sort()[0]
+        return (len(MyArray) == 0) ? 0 : sort(MyArray)[0]
     }
 
     function rotl(Array, Amount=0) {
@@ -491,7 +491,7 @@ if (!INCLUDE["MAIN"]) {
             "[:xdigit:]": DIGIT + "ABCDEF" + "abcdef"
         }
         foreach ClassName in keys(CharacterClass) {
-            String=String.replaceall(ClassName, CharacterClass[ClassName])
+            String=replaceall(String, ClassName, CharacterClass[ClassName])
         }
         return String
     }
@@ -519,12 +519,12 @@ if (!INCLUDE["MAIN"]) {
             Adding=len(SearchArray) - len(ReplaceArray)
             Value=ReplaceArray[len(ReplaceArray)-1]
             foreach n in 1..Adding {
-                ReplaceArray=ReplaceArray.push(Value)
+                ReplaceArray=push(ReplaceArray, Value)
             }
         }
         TRArray=zip(SearchArray, ReplaceArray)
         foreach Swap in TRArray {
-            String=String.replaceall(Swap[0], Swap[1])
+            String=replaceall(String, Swap[0], Swap[1])
         }
         return String
     }

@@ -18,17 +18,17 @@ if (!INCLUDE["NETLINUX"]) {
 //
 // LittlEndian stuff again. See Above
 //
-        IP=IP.tolower()
+        IP=tolower(IP)
         A=[]
         foreach n in range(0,32,2) {
             A=push(A, substr(IP, n, 2))
         }
         AD=sprintf("%s%s:%s%s:%s%s:%s%s:%s%s:%s%s:%s%s:%s%s", A[3], A[2], A[1], A[0], A[7], A[6], A[5], A[4], A[11], A[10], A[9], A[8], A[15], A[14], A[13], A[12])
-        AD=AD.replaceall("0000:0000:0000", "")
-        AD=AD.replaceall("0000:0000", "")
-        AD=AD.replaceall("0000:", "")
+        AD=replaceall(AD, "0000:0000:0000", "")
+        AD=replaceall(AD, "0000:0000", "")
+        AD=replaceall(AD, "0000:", "")
         foreach n in 1..4 {
-            AD=AD.replaceall(":0", ":")
+            AD=replaceall(AD, ":0", ":")
         }
         return AD
     }
@@ -96,7 +96,7 @@ if (!INCLUDE["NETLINUX"]) {
                     Remote=IP + ":" + string(Port)
                     State=(Sline[3] != "07") ? CON_STATE[Sline[3]] : ""
                     TempArray=[Type, Local, Remote, State]
-                    NetArray=NetArray.push(TempArray)
+                    NetArray=push(NetArray, TempArray)
                 }
             }
         }

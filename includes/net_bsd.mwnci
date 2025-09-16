@@ -25,7 +25,7 @@ if (!INCLUDE["NETBSD"]) {
 				}
 			}
 			TempArray=[SLine[0], SLine[3], SLine[4], SLine[5]]
-			NetArray=NetArray.push(TempArray)
+			NetArray=push(NetArray, TempArray)
 		}
 		return NetArray
     }

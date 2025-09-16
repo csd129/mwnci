@@ -19,7 +19,7 @@ if (!INCLUDE["SYSSTAT"]) {
         CMD="ps ax -o pid,user,%cpu,%mem,command | grep -v \"\]$\""
         if (len(ops) == 0) {ops="[a-z]"}
         ProcList=trim(system(CMD))
-        ProcList=rest(ProcList.split("\n"))
+        ProcList=rest(split(ProcList, "\n"))
         mem_hash={}
         foreach line in ProcList {
             temp_hash={}

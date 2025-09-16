@@ -7,7 +7,7 @@ if (!INCLUDE["OSLINUX"]) {
         foreach Line in MemData {
             Line=replaceall(Line, ":", "")
             Sline=fields(Line)
-            MemHash=MemHash.set(Sline[0], int(Sline[1]))
+            MemHash=set(MemHash, Sline[0], int(Sline[1]))
         }
         total=MemHash["MemTotal"]
 
@@ -15,7 +15,7 @@ if (!INCLUDE["OSLINUX"]) {
 // It appears older kernels don't supply KReclaimable
 //
         if (!MemHash["KReclaimable"]) {
-            MemHash=MemHash.set("KReclaimable", 0)
+            MemHash=set(MemHash, "KReclaimable", 0)
         }
         buffcache=MemHash["Cached"] + MemHash["KReclaimable"] + MemHash["Buffers"]
         memfree=MemHash["MemFree"]
@@ -87,11 +87,11 @@ if (!INCLUDE["OSLINUX"]) {
             Guest=float(sprintf("%.2f",(Guest * 100) / Total))
             Guestnice=float(sprintf("%.2f",(Guestnice * 100) / Total))
             TempHash={"user": User, "nice": Nice, "system": Sys, "idle": Idle, "iowait": Iowait, "irq": Irq, "softirq": Softirq, "steal": Steal, "guest": Guest, "guest_nice": Guestnice}
-            CPUHash=CPUHash.set(CPU, TempHash)
+            CPUHash=set(CPUHash, CPU, TempHash)
         }
         if (Cpu != "" && len(CPUHash) > 0) {
             CPUHash=CPUHash[Cpu]
-            CPUHash=CPUHash.set("CPU", Cpu)
+            CPUHash=set(CPUHash, "CPU", Cpu)
         }
         return CPUHash
     }

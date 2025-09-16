@@ -38,7 +38,7 @@ if (!INCLUDE["SYSSTATLINUX"]) {
             CMD=CMD + " -C " + opts
         }
         ProcessLine=trim(system(CMD))
-        ProcessLine=shift(ProcessLine.split("\n"), 3)
+        ProcessLine=shift(split(ProcessLine, "\n"), 3)
         pid_hash={}
         foreach line in ProcessLine {
             sline=fields(line)
@@ -67,11 +67,11 @@ if (!INCLUDE["SYSSTATLINUX"]) {
         Result=split(stac(system(CMD)), "\n")
         Data=[]
         foreach Line in Result {
-            if (match("[a-z]", Line)) {
-                if (!match("IFACE", Line) && !match("Average", Line) && !match("[Ll[Ii][Nn][Uu][Xx]", Line)) {
+            if (Line ~= /^[0-9][0-9]:/ ) {
+                if (!match("IFACE", Line)) {
                     SInterface=fields(Line)
                     if (match("[AP]M", SInterface[1])) {SInterface=delete(SInterface, 1)}
-                    Data=push(Data, SInterface)
+                        Data=push(Data, SInterface)
                 }
             }
         }
@@ -102,6 +102,7 @@ if (!INCLUDE["SYSSTATLINUX"]) {
                 return Iface_Hash
             }
         }
+        // Probably never reached unless something freaky happens
         return Iface_Hash
     }
 }

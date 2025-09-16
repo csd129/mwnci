@@ -37,7 +37,7 @@ if (!INCLUDE["SHADOW"]) {
     function getspnam(User="") {
         if (!checkfunctype("getspnam", "string", User, 1)) {exit(1)}
         Data=hashspw()[User]
-        Data=(len(Data) > 0) ? Data.set("User", User) : {}
+        Data=(len(Data) > 0) ? set(Data, "User", User) : {}
 		return Data
     }
 

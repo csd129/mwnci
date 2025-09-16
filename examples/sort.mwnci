@@ -14,7 +14,7 @@ print( "The sorted array : ", a , "\n" );
 //print(a);
 
 
-// Now sort some ints
+// Now sort some strings
 let a = [ "Zebra", "zebra", "x-ray", "Eccles", "Cake", "Dilbert" ];
 print( "Original Array: " , string(a), "\n" );
 let a = a.sort();

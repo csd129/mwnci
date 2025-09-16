@@ -55,7 +55,7 @@ if (!INCLUDE["OS"]) {
                     Count++
                 }
 
-                if (SplitLine[0].contains("/")) {
+                if (contains(SplitLine[0], "/")) {
                     PercentUsed=int(trimsuffix(SplitLine[4], "%"))
                     PercentFree=100 - PercentUsed
                     TempHash={"blocks": int(SplitLine[1]), "used": int(SplitLine[2]), "available": int(SplitLine[3]), "usedperc": PercentUsed, "freeperc": PercentFree, "mount": SplitLine[5]}

@@ -5,8 +5,8 @@
 //
 // Substring match
 //
-if ( match( "cclE", "Eccles Cake" ) ) {
-   print( "'Eccles Cake' contains the substring 'ccle'\n");
+if ( match( "cle", "Eccles Cake" ) ) {
+   print( "'Eccles Cake' contains the substring 'cle'\n");
 }
 
 //
@@ -26,13 +26,12 @@ if ( match( "^[A-Z]", "Eccles Cake" ) ) {
 //
 // IP-address regexp
 //
-let reg =  "([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$";
-let out = match(reg, "12.23.21.224");
+reg =  "([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$"
+out = match(reg, "12.23.21.224")
 if (out) {
-   print( "We matched an IP address succesfully.\n");
-   print( "Captures: ", out[0], ".", out[1], ".",  out[2], ".", out[3], "\n");
+   print( "We matched an IP address succesfully.\n")
 } else {
-   print( "Not true!\n");
+   print( "Not true!\n")
 }
 
 
@@ -40,11 +39,10 @@ if (out) {
 // The same thing using literal a regular expression
 //
 
-ip = "192.168.1.1";
-
+ip = "192.168.1.1"
+println("ip=", ip)
 if ( ip ~= /([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/  ) {
-   printf( "We matched an IP address succesfully.\n");
-   printf( "Captures: %s.%s.%s.%s\n", $1, $2, $3, $4 );
+   println( "We matched an ~= IP address succesfully.\n")
 }
 
 

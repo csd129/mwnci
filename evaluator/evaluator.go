@@ -363,6 +363,7 @@ func matches(left, right object.Object, env *object.Environment) object.Object {
 
 func notMatches(left, right object.Object) object.Object {
 	str := left.Inspect()
+	str = strings.Trim(str, "\"")
 
 	if right.Type() != object.REGEXP_OBJ {
 		return newError("regexp required for regexp-match, given %s", right.Type())
