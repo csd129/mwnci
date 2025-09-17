@@ -188,6 +188,10 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 // eval block statement
 func evalBlockStatement(ctx context.Context, block *ast.BlockStatement, env *object.Environment) object.Object {
 	var result object.Object
+	if len(block.Statements) == 0 {
+		fmt.Printf("ERROR: RunTime Error: Executable block contains no data\n")
+		os.Exit(1)
+	}
 	for _, statement := range block.Statements {
 		result = EvalContext(ctx, statement, env)
 		if result != nil {

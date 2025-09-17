@@ -486,7 +486,7 @@ func (fle *WhileLoopExpression) TokenLiteral() string { return fle.Token.Literal
 // String returns this object as a string.
 func (fle *WhileLoopExpression) String() string {
 	var out bytes.Buffer
-	out.WriteString("for (")
+	out.WriteString("while (")
 	out.WriteString(fle.Condition.String())
 	out.WriteString(" ) {")
 	out.WriteString(fle.Consequence.String())

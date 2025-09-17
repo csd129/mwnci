@@ -46,13 +46,6 @@ func Execute(input string) int {
 		os.Exit(1)
 	}
 
-	// Register a function called version()
-	// that the script can call.
-	evaluator.RegisterBuiltin("version",
-		func(env *object.Environment, args ...object.Object) object.Object {
-			return (versionFun(args...))
-		})
-
 	//
 	//  Parse and evaluate our standard-library.
 	//
@@ -69,6 +62,13 @@ func Execute(input string) int {
 }
 
 func main() {
+
+	// Register a function called version()
+	// that the script can call.
+	evaluator.RegisterBuiltin("version",
+		func(env *object.Environment, args ...object.Object) object.Object {
+			return (versionFun(args...))
+		})
 
 	//
 	// Setup some flags.

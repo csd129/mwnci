@@ -472,7 +472,7 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 
 		if !p.expectPeek(token.LBRACE) {
 
-			msg := fmt.Sprintf("expected token to be '{', got %s instead", p.curToken.Type)
+			msg := fmt.Sprintf("expected token to be '{', got %s instead around line %d", p.curToken.Type, p.l.GetLine())
 			p.errors = append(p.errors, msg)
 			fmt.Printf("error\n")
 			return nil
@@ -482,7 +482,7 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 		tmp.Block = p.parseBlockStatement()
 
 		if !p.curTokenIs(token.RBRACE) {
-			msg := fmt.Sprintf("Syntax Error: expected token to be '}', got %s instead", p.curToken.Type)
+			msg := fmt.Sprintf("Syntax Error: expected token to be '}', got %s instead around line %d",p.curToken.Type, p.l.GetLine())
 			p.errors = append(p.errors, msg)
 			fmt.Printf("error\n")
 			return nil
@@ -503,7 +503,7 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 		}
 	}
 	if count > 1 {
-		msg := "A switch-statement should only have one default block"
+		msg := fmt.Sprintf("a switch-statement should only have one default block around line %d", p.l.GetLine())
 		p.errors = append(p.errors, msg)
 		return nil
 
@@ -615,7 +615,7 @@ func (p *Parser) parseIfExpression() ast.Expression {
 
 	// Now "{"
 	if !p.expectPeek(token.LBRACE) {
-		msg := fmt.Sprintf("expected '{' but got %s", p.curToken.Literal)
+		msg := fmt.Sprintf("expected '{' but got %s around line %d", p.curToken.Literal, p.l.GetLine())
 		p.errors = append(p.errors, msg)
 		return nil
 	}
@@ -649,7 +649,7 @@ func (p *Parser) parseIfExpression() ast.Expression {
 
 		// else { block }
 		if !p.expectPeek(token.LBRACE) {
-			msg := fmt.Sprintf("expected '{' but got %s", p.curToken.Literal)
+			msg := fmt.Sprintf("expected '{' but got %s around line %d", p.curToken.Literal, p.l.GetLine())
 			p.errors = append(p.errors, msg)
 			return nil
 		}
@@ -669,7 +669,7 @@ func (p *Parser) parseBracketExpression() ast.Expression {
 
 	// look for (
 	if !p.expectPeek(token.LPAREN) {
-		msg := fmt.Sprintf("expected '(' but got %s", p.curToken.Literal)
+		msg := fmt.Sprintf("expected '(' but got %s around line %d", p.curToken.Literal, p.l.GetLine())
 		p.errors = append(p.errors, msg)
 		return nil
 	}
@@ -683,7 +683,7 @@ func (p *Parser) parseBracketExpression() ast.Expression {
 
 	// look for )
 	if !p.expectPeek(token.RPAREN) {
-		msg := fmt.Sprintf("expected ')' but got %s", p.curToken.Literal)
+		msg := fmt.Sprintf("expected ')' but got %s around line %d", p.curToken.Literal, p.l.GetLine())
 		p.errors = append(p.errors, msg)
 		return nil
 	}
@@ -944,7 +944,7 @@ func (p *Parser) parseAssignExpression(name ast.Expression) ast.Expression {
 	if n, ok := name.(*ast.Identifier); ok {
 		stmt.Name = n
 	} else {
-		msg := "expected assign token to be IDENT, got null instead"
+		msg := fmt.Sprintf("expected assign token to be IDENT, got null instead around line %d", p.l.GetLine())
 
 		if name != nil {
 			msg = fmt.Sprintf("expected assign token to be IDENT, got %s instead around line %d", name.TokenLiteral(), p.l.GetLine())
