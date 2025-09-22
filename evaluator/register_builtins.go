@@ -8,6 +8,7 @@ func init() {
 	RegisterBuiltin("abs", func(env *object.Environment, args ...object.Object) object.Object { return (Abs(args...)) })
 	RegisterBuiltin("accept", func(env *object.Environment, args ...object.Object) object.Object { return (Accept(args...)) })
 	RegisterBuiltin("acos", func(env *object.Environment, args ...object.Object) object.Object { return (mathAcos(args...)) })
+	RegisterBuiltin("arch", func(env *object.Environment, args ...object.Object) object.Object { return (Arch(args...)) })
 	RegisterBuiltin("args", func(env *object.Environment, args ...object.Object) object.Object { return (Args(args...)) })
 	RegisterBuiltin("asctime", func(env *object.Environment, args ...object.Object) object.Object { return (AscTime(args...)) })
 	RegisterBuiltin("asin", func(env *object.Environment, args ...object.Object) object.Object { return (mathAsin(args...)) })

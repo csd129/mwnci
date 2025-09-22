@@ -102,7 +102,7 @@ func (e *Environment) Set(name string, val Object) Object {
 	//
 	cur := e.store[name]
 	if cur != nil && e.readonly[name] {
-		fmt.Printf("Read-only variable '%s' is not assignable\n", name)
+		fmt.Printf("Can't assign '%s': Read-only variable\n", name)
 		os.Exit(3)
 	}
 
