@@ -18,6 +18,7 @@ func Range(args ...object.Object) object.Object {
 	End := int64(0)
 	Step := int64(1)
 	Rev := false
+	list := make([]object.Object, 0)
 
 	if len(args) == 1 {
 		End = args[0].(*object.Integer).Value
@@ -32,7 +33,9 @@ func Range(args ...object.Object) object.Object {
 	if Start > End && Step < 0 {
 		Rev = true
 	}
-	list := make([]object.Object, 0)
+	if Start < End && Step < 0 {
+		return &object.Array{Elements: list}
+	}
 
 	if Rev {
 		for i := Start; i > End; i += Step {

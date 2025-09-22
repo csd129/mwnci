@@ -347,7 +347,9 @@ func matches(left, right object.Object, env *object.Environment) object.Object {
 	if err != nil {
 		return newError("error compiling regexp '%s': %s", right.Inspect(), err)
 	}
-	str = strings.Trim(str, "\"")
+
+	str = strings.TrimSuffix(str, "\"")
+	str = strings.TrimPrefix(str, "\"")
 	res := r.FindStringSubmatch(str)
 
 	// Do we have any captures?
@@ -367,7 +369,8 @@ func matches(left, right object.Object, env *object.Environment) object.Object {
 
 func notMatches(left, right object.Object) object.Object {
 	str := left.Inspect()
-	str = strings.Trim(str, "\"")
+	str = strings.TrimSuffix(str, "\"")
+	str = strings.TrimPrefix(str, "\"")
 
 	if right.Type() != object.REGEXP_OBJ {
 		return newError("regexp required for regexp-match, given %s", right.Type())

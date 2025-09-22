@@ -13,7 +13,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	
+
 	"mwnci/evaluator"
 	"mwnci/lexer"
 	"mwnci/object"
@@ -107,7 +107,7 @@ func main() {
 	if len(flag.Args()) > 0 {
 		input, err = os.ReadFile(os.Args[1])
 	} else {
-		fmt.Printf("Mwnci %s (%s)\n", version, distro)
+		fmt.Printf("Mwnci %s (%s %s)\n", version, distro, runtime.GOARCH)
 		repl.Start(os.Stdin, os.Stdout)
 	}
 
