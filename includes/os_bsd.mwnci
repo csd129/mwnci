@@ -44,7 +44,10 @@ if (!INCLUDE["OSBSD"]) {
     }
 
     function getcpu() {
-        Data=split(trim(system("top -d1 -P p")), "\n")
+//
+// Gotta do 2 (-d2) runs to get a more accuraterer view of the cpu's :(
+//
+        Data=split(trim(system("top -d2 -P p")), "\n")
         UserCount=0
         NiceCount=0
         SysCount=0
