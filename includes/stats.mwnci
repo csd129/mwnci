@@ -6,6 +6,7 @@ if (!INCLUDE["STATS"]) {
         if (!checkfunctype("covariance", "array", Y, 2)) {exit(1)}
         if (!checkfunctype("covariance", "string", Type, 3)) {exit(1)}
         Type=tolower(Type)
+	CVType=Type
         if (len(Type) > 1) {
             println("Error calling `covariance`: ERROR: StringError: covariance() takes a single character `s` or `p` for the 2nd argument")
         }
@@ -17,7 +18,7 @@ if (!INCLUDE["STATS"]) {
         }
         MeanX=mean(X)
         MeanY=mean(Y)
-        if (Type == "p") {
+        if (CVType == "p") {
             Obs=LenX
             Range=Obs-1
         } else {
@@ -105,7 +106,6 @@ if (!INCLUDE["STATS"]) {
             println("Error calling `mean`: ERROR: StatisticsError: No data")
             exit(1)
         }
-        Type=tolower(Type)
         return average(ave_array)
     }
 
