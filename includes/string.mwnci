@@ -151,8 +151,13 @@ if (!INCLUDE["STRING"]) {
         StringLength=len(Text)
         if (Len > StringLength) {
             Zeros=repeat("0", Len-StringLength)
-            Text=Zeros + Text
         }
+        First=Text[0]
+        if (First == "+" || First == "-") {
+            Text=trimprefix(Text, First)
+            Zeros=First + Zeros
+        }
+        Text=Zeros + Text
         return Text
     }
 }
