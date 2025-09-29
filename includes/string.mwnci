@@ -152,12 +152,16 @@ if (!INCLUDE["STRING"]) {
         if (Len > StringLength) {
             Zeros=repeat("0", Len-StringLength)
         }
-        First=Text[0]
-        if (First == "+" || First == "-") {
-            Text=trimprefix(Text, First)
-            Zeros=First + Zeros
+        if (len(Text) == 0) {
+	    Text=Zeros
+	} else {
+            First=Text[0]
+            if (First == "+" || First == "-") {
+                Text=trimprefix(Text, First)
+                Zeros=First + Zeros
+            }
+            Text=Zeros + Text
         }
-        Text=Zeros + Text
         return Text
     }
 }
