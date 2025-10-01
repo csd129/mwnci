@@ -108,6 +108,7 @@ func init() {
 	RegisterBuiltin("ord", func(env *object.Environment, args ...object.Object) object.Object { return (Ord(args...)) })
 	RegisterBuiltin("pop", func(env *object.Environment, args ...object.Object) object.Object { return (Pop(args...)) })
 	RegisterBuiltin("print", func(env *object.Environment, args ...object.Object) object.Object { return (putsFun(args...)) })
+	RegisterBuiltin("printat", func(env *object.Environment, args ...object.Object) object.Object { return (Printat(args...)) })
 	RegisterBuiltin("printf", func(env *object.Environment, args ...object.Object) object.Object { return (printfFun(args...)) })
 	RegisterBuiltin("println", func(env *object.Environment, args ...object.Object) object.Object { return (Println(args...)) })
 	RegisterBuiltin("product", func(env *object.Environment, args ...object.Object) object.Object { return (Product(args...)) })

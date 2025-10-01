@@ -153,8 +153,8 @@ if (!INCLUDE["STRING"]) {
             Zeros=repeat("0", Len-StringLength)
         }
         if (len(Text) == 0) {
-	    Text=Zeros
-	} else {
+            Text=Zeros
+        } else {
             First=Text[0]
             if (First == "+" || First == "-") {
                 Text=trimprefix(Text, First)
