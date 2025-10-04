@@ -24,7 +24,7 @@ if (!INCLUDE["OS"]) {
             }
         }
         Data=trim(system(CMD))
-        return fields(Data)
+        return int(fields(Data))
     }
 
     function uname() {

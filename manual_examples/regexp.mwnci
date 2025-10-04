@@ -1,0 +1,42 @@
+#!/usr/bin/env mwnci
+
+search="^root:"
+
+//
+// Using regexp() to search a file. Similar to grep "^root:" /etc/passwd
+// 
+user=regexp(search, "/etc/passwd")
+println("regexp() search, \"", search, "\" in /etc/passwd ", user)
+
+//
+// Read /etc/passwd into an array & search each element (line)
+//
+Data=split(trim(cat("/etc/passwd")), "\n")
+foreach Line in Data {
+   if (Line ~= /^root:/ ) {
+       println("Found \"", Line, "\" with Line ~= /^root:/")
+   }
+}
+
+//
+// Read /etc/passwd line by line and search
+//
+FH=open("/etc/passwd")
+Line="dummy"
+while (len(Line) > 0) {
+    Line=FH.read()
+    Line=trim(Line)
+    if (Line ~= /^root:/ ) {
+        println("Found \"", Line, "\" with Line ~= /^root:/")
+    }
+}
+FH.close()
+
+//
+// Retrieve lines in /etc/hosts that contain an IP address
+//
+Result=regexp("([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)", "/etc/hosts")
+foreach Entry in Result {
+    println(Entry)
+}
+
