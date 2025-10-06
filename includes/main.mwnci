@@ -541,20 +541,6 @@ if (!INCLUDE["MAIN"]) {
         return true
     }
 
-    function difference(Arr1=[], Arr2=[]) {
-        if (!checkfunctype("difference", "array", Arr1, 1)) {exit(1)}
-        if (!checkfunctype("difference", "array", Arr2, 2)) {exit(1)}
-        Result=[]
-        Arr1=uniq(Arr1)
-        Arr2=uniq(Arr2)
-        foreach Val in Arr1 {
-            if (count(Arr2, Val) != 1) {
-                Result=push(Result, Val)
-            }
-        }
-        return Result
-    }
-
     function ucount(Array=[]) {
         Ucount={}
         SearchList=uniq(Array)
@@ -565,15 +551,18 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function bsearch(Array, Search) {
-        Left=0
-        Right=len(Array) - 1
-        while (Left <= Right) {
-            Mid=(Left + Right) / 2
-            if (Array[Mid]  == Search) {return Mid}
-            if (Array[Mid] < Search) {
-                Left = Mid  + 1
-            } else {
-                Right = Mid - 1
+        if (!checkfunctype("bsearch", "array", Array, 1)) {exit(1)}
+        if (issorted(Array)) {
+            Left=0
+            Right=len(Array) - 1
+            while (Left <= Right) {
+                Mid=(Left + Right) / 2
+                if (Array[Mid]  == Search) {return Mid}
+                if (Array[Mid] < Search) {
+                    Left = Mid  + 1
+                } else {
+                    Right = Mid - 1
+                }
             }
         }
         return -1
