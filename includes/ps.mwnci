@@ -9,7 +9,6 @@ if (!INCLUDE["PS"]) {
             include("ps_linux")
         }
     }
-
     
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}

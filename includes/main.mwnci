@@ -306,7 +306,6 @@ if (!INCLUDE["MAIN"]) {
         return Array
     }
 
-
     function rsort(Array) {
         if (!checkfunctype("rsort", "array", Array, 1)) {exit(1)}
         return reverse(sort(Array))
@@ -334,7 +333,7 @@ if (!INCLUDE["MAIN"]) {
         }
         End=l-1
         Start=l-Lines
-	tdata=slice(data, Start, End)
+        tdata=slice(data, Start, End)
         if (IsString) {
             return(join(tdata, "\n"))
         }

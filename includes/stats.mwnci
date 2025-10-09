@@ -1,3 +1,7 @@
+include(
+    "math"
+)
+
 if (!INCLUDE["STATS"]) {
     INCLUDE=set(INCLUDE, "STATS", true)
 
@@ -146,6 +150,16 @@ if (!INCLUDE["STATS"]) {
         return Obs / Counter
     }
 
+    function geomean(Array) {
+        if (!checkfunctype("geomean", "array", Array, 1)) {exit(1)}
+        if (len(Array) == 0) {
+            println("Error calling `geomean`: ERROR: StatisticsError: No data")
+            exit(1)
+        }
+        n=len(a)
+        return pow(product(a), (1.0/n))
+    }
+    
     function array.mode() {
         return mode(self)
     }
@@ -164,6 +178,10 @@ if (!INCLUDE["STATS"]) {
 
     function array.harmonicmean() {
         return harmonicmean(self)
+    }
+
+    function array.geomean() {
+        return geomean(self)
     }
 }
 
