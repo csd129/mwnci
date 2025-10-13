@@ -29,6 +29,6 @@ foreach key in h {
      println( "\t", key);
 }
 println( "Hash: key/value\n")
-foreach val,key in h {
+foreach key, val in h {
      println( "\t", key, "\t=>\t", val);
 }

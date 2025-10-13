@@ -911,7 +911,6 @@ func evalForeachExpression(ctx context.Context, fle *ast.ForeachStatement, env *
 
 	// expression
 	val := EvalContext(ctx, fle.Value, env)
-
 	helper, ok := val.(object.Iterable)
 	if !ok {
 		return newError("%s object doesn't implement the Iterable interface", val.Type())
@@ -923,7 +922,7 @@ func evalForeachExpression(ctx context.Context, fle *ast.ForeachStatement, env *
 	if fle.Index != "" {
 		permit = append(permit, fle.Index)
 	}
-
+	ArgLen := len(permit)
 	// Create a new environment for the block
 	//
 	// This will allow writing EVERYTHING to the parent scope,
@@ -935,6 +934,14 @@ func evalForeachExpression(ctx context.Context, fle *ast.ForeachStatement, env *
 
 	// Get the initial values.
 	ret, idx, ok := helper.Next()
+	// Hashes index & value are backwards, so if
+	// only the index is need then ret is fine.
+	//
+	// If we are using  index, value and it's a hash, then swap the variables.
+	// bad, bad, naughty code..  But works and shoulda been fixed sooner
+	if val.Type() == object.HASH_OBJ && ArgLen == 2 {
+		ret, idx = idx, ret
+	}
 
 	for ok {
 
@@ -957,7 +964,11 @@ func evalForeachExpression(ctx context.Context, fle *ast.ForeachStatement, env *
 		}
 
 		// Loop again
+		// Same hash index, value reasoning as above
 		ret, idx, ok = helper.Next()
+		if val.Type() == object.HASH_OBJ && ArgLen == 2 {
+			ret, idx = idx, ret
+		}
 	}
 
 	return &object.Null{}
