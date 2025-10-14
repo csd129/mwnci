@@ -142,6 +142,7 @@ func init() {
 	RegisterBuiltin("sprintf", func(env *object.Environment, args ...object.Object) object.Object { return (sprintfFun(args...)) })
 	RegisterBuiltin("sqrt", func(env *object.Environment, args ...object.Object) object.Object { return (mathSqrt(args...)) })
 	RegisterBuiltin("stac", func(env *object.Environment, args ...object.Object) object.Object { return (StrRevCat(args...)) })
+	RegisterBuiltin("stat", func(env *object.Environment, args ...object.Object) object.Object { return (Stat(args...)) })
 	RegisterBuiltin("string", func(env *object.Environment, args ...object.Object) object.Object { return (strFun(args...)) })
 	RegisterBuiltin("substr", func(env *object.Environment, args ...object.Object) object.Object { return (subStrFun(args...)) })
 	RegisterBuiltin("sum", func(env *object.Environment, args ...object.Object) object.Object { return (Sum(args...)) })
