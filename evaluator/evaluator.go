@@ -12,10 +12,23 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-
+	
 	"mwnci/ast"
 	"mwnci/object"
 )
+
+func Debugger(Value string) bool {
+	// Output the debug string. If stdout is a terminal then
+	// we'll have it in colour, otherwise don't use ansi ctrl codes
+	Out, _ := os.Stdout.Stat()
+	if (Out.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
+		fmt.Printf("\033[34m+\033[33m %v\033[0m\n", Value)
+	} else {
+		fmt.Printf("+ %v\n", Value)
+	}
+	return true
+}
+	
 
 // pre-defined object including Null, True and False
 var (
@@ -28,14 +41,13 @@ var (
 var builtins = map[string]*object.Builtin{}
 
 // Eval is our core function for evaluating nodes.
-func Eval(node ast.Node, env *object.Environment) object.Object {
-	return EvalContext(context.Background(), node, env)
+func Eval(node ast.Node, env *object.Environment, DEBUG bool) object.Object {
+	return EvalContext(context.Background(), node, env, DEBUG)
 }
 
 // EvalContext is our core function for evaluating nodes.
 // The context.Context provided can be used to cancel a running script instance.
-func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) object.Object {
-
+func EvalContext(ctx context.Context, node ast.Node, env *object.Environment, DEBUG bool) object.Object {
 	//
 	// We test our context at every iteration of our main-loop.
 	//
@@ -47,12 +59,12 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 	}
 
 	switch node := node.(type) {
-
 	//Statements
 	case *ast.Program:
-		return evalProgram(ctx, node, env)
+		return evalProgram(ctx, node, env, DEBUG)
 	case *ast.ExpressionStatement:
-		return EvalContext(ctx, node.Expression, env)
+		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		return EvalContext(ctx, node.Expression, env, DEBUG)
 
 	//Expressions
 	case *ast.IntegerLiteral:
@@ -64,23 +76,26 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 	case *ast.NullLiteral:
 		return NULL
 	case *ast.PrefixExpression:
-		right := EvalContext(ctx, node.Right, env)
+		//		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		right := EvalContext(ctx, node.Right, env, DEBUG)
 		if isError(right) {
 			return right
 		}
 		return evalPrefixExpression(node.Operator, right)
 	case *ast.PostfixExpression:
+		//		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
 		return evalPostfixExpression(env, node.Operator, node)
 	case *ast.InfixExpression:
-		left := EvalContext(ctx, node.Left, env)
+		//		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		left := EvalContext(ctx, node.Left, env, DEBUG)
 		if isError(left) {
 			return left
 		}
-		right := EvalContext(ctx, node.Right, env)
+		right := EvalContext(ctx, node.Right, env, DEBUG)
 		if isError(right) {
 			return right
 		}
-		res := evalInfixExpression(node.Operator, left, right, env)
+		res := evalInfixExpression(node.Operator, left, right, env, DEBUG)
 		if isError(res) {
 			fmt.Printf("Error: %s\n", res.Inspect())
 			os.Exit(1)
@@ -88,30 +103,35 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 		return (res)
 
 	case *ast.BlockStatement:
-		return evalBlockStatement(ctx, node, env)
+		return evalBlockStatement(ctx, node, env, DEBUG)
 	case *ast.IfExpression:
-		return evalIfExpression(ctx, node, env)
+		return evalIfExpression(ctx, node, env, DEBUG)
 	case *ast.TernaryExpression:
-		return evalTernaryExpression(ctx, node, env)
+		//		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		return evalTernaryExpression(ctx, node, env, DEBUG)
 	case *ast.WhileLoopExpression:
-		return evalWhileLoopExpression(ctx, node, env)
+		//		if DEBUG {Debugger(fmt.Sprintf("Eval Context - %v", node))}
+		return evalWhileLoopExpression(ctx, node, env, DEBUG)
 	case *ast.ForeachStatement:
-		return evalForeachExpression(ctx, node, env)
+		//		if DEBUG {Debugger(fmt.Sprintf("Eval Context - %v", node))}
+		return evalForeachExpression(ctx, node, env, DEBUG)
 	case *ast.ReturnStatement:
-		val := EvalContext(ctx, node.ReturnValue, env)
+		val := EvalContext(ctx, node.ReturnValue, env, DEBUG)
 		if isError(val) {
 			return val
 		}
 		return &object.ReturnValue{Value: val}
 	case *ast.LetStatement:
-		val := EvalContext(ctx, node.Value, env)
+		//		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		val := EvalContext(ctx, node.Value, env, DEBUG)
 		if isError(val) {
 			return val
 		}
 		env.Set(node.Name.Value, val)
 		return val
 	case *ast.ConstStatement:
-		val := EvalContext(ctx, node.Value, env)
+		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		val := EvalContext(ctx, node.Value, env, DEBUG)
 		if isError(val) {
 			return val
 		}
@@ -131,22 +151,22 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 		env.Set(node.TokenLiteral(), &object.Function{Parameters: params, Env: env, Body: body, Defaults: defaults})
 		return NULL
 	case *ast.ObjectCallExpression:
-		res := evalObjectCallExpression(ctx, node, env)
+		res := evalObjectCallExpression(ctx, node, env, DEBUG)
 		if isError(res) {
 			fmt.Fprintf(os.Stderr, "Error calling object-method %s\n", res.Inspect())
 			os.Exit(1)
 		}
 		return res
 	case *ast.CallExpression:
-		function := EvalContext(ctx, node.Function, env)
+		function := EvalContext(ctx, node.Function, env, DEBUG)
 		if isError(function) {
 			return function
 		}
-		args := evalExpression(ctx, node.Arguments, env)
+		args := evalExpression(ctx, node.Arguments, env, DEBUG)
 		if len(args) == 1 && isError(args[0]) {
 			return args[0]
 		}
-		res := applyFunction(ctx, env, function, args)
+		res := applyFunction(ctx, env, function, args, DEBUG)
 		if isError(res) {
 			fmt.Fprintf(os.Stderr, "Error calling `%s` : %s\n", node.Function, res.Inspect())
 
@@ -154,7 +174,7 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 		return res
 
 	case *ast.ArrayLiteral:
-		elements := evalExpression(ctx, node.Elements, env)
+		elements := evalExpression(ctx, node.Elements, env, DEBUG)
 		if len(elements) == 1 && isError(elements[0]) {
 			return elements[0]
 		}
@@ -166,34 +186,38 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment) ob
 	case *ast.BacktickLiteral:
 		return backTickOperation(node.Value)
 	case *ast.IndexExpression:
-		left := EvalContext(ctx, node.Left, env)
+		left := EvalContext(ctx, node.Left, env, DEBUG)
 		if isError(left) {
 			return left
 		}
-		index := EvalContext(ctx, node.Index, env)
+		index := EvalContext(ctx, node.Index, env, DEBUG)
 		if isError(index) {
 			return index
 		}
 		return evalIndexExpression(left, index)
 	case *ast.AssignStatement:
-		return evalAssignStatement(ctx, node, env)
+		// 1		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		return evalAssignStatement(ctx, node, env, DEBUG)
 	case *ast.HashLiteral:
-		return evalHashLiteral(ctx, node, env)
+		//		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		return evalHashLiteral(ctx, node, env, DEBUG)
 	case *ast.SwitchExpression:
-		return evalSwitchStatement(ctx, node, env)
+		//		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		return evalSwitchStatement(ctx, node, env, DEBUG)
 	}
 	return nil
 }
 
 // eval block statement
-func evalBlockStatement(ctx context.Context, block *ast.BlockStatement, env *object.Environment) object.Object {
+func evalBlockStatement(ctx context.Context, block *ast.BlockStatement, env *object.Environment, DEBUG bool) object.Object {
 	var result object.Object
 	if len(block.Statements) == 0 {
 		fmt.Printf("ERROR: RunTime Error: Executable block contains no data\n")
 		os.Exit(1)
 	}
+	//	if DEBUG {Debugger(fmt.Sprintf("%v", block.Statements))}
 	for _, statement := range block.Statements {
-		result = EvalContext(ctx, statement, env)
+		result = EvalContext(ctx, statement, env, DEBUG)
 		if result != nil {
 			rt := result.Type()
 			if rt == object.RETURN_VALUE_OBJ || rt == object.ERROR_OBJ {
@@ -287,7 +311,7 @@ func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 	}
 }
 
-func evalInfixExpression(operator string, left, right object.Object, env *object.Environment) object.Object {
+func evalInfixExpression(operator string, left, right object.Object, env *object.Environment, DEBUG bool) object.Object {
 	if left == nil || right == nil {
 		return newError("null operand %v %v", left, right)
 	}
@@ -681,7 +705,7 @@ func evalStringInfixExpression(operator string, left, right object.Object) objec
 // evalIfExpression handles an `if` expression, running the block
 // if the condition matches, and running any optional else block
 // otherwise.
-func evalIfExpression(ctx context.Context, ie *ast.IfExpression, env *object.Environment) object.Object {
+func evalIfExpression(ctx context.Context, ie *ast.IfExpression, env *object.Environment, DEBUG bool) object.Object {
 	//
 	// Create an environment for handling regexps
 	//
@@ -692,14 +716,14 @@ func evalIfExpression(ctx context.Context, ie *ast.IfExpression, env *object.Env
 		i++
 	}
 	nEnv := object.NewTemporaryScope(env, permit)
-	condition := EvalContext(ctx, ie.Condition, nEnv)
+	condition := EvalContext(ctx, ie.Condition, nEnv, DEBUG)
 	if isError(condition) {
 		return condition
 	}
 	if isTruthy(condition) {
-		return EvalContext(ctx, ie.Consequence, nEnv)
+		return EvalContext(ctx, ie.Consequence, nEnv, DEBUG)
 	} else if ie.Alternative != nil {
-		return EvalContext(ctx, ie.Alternative, nEnv)
+		return EvalContext(ctx, ie.Alternative, nEnv, DEBUG)
 	} else {
 		return NULL
 	}
@@ -709,21 +733,21 @@ func evalIfExpression(ctx context.Context, ie *ast.IfExpression, env *object.Env
 // is true we return the contents of evaluating the true-branch, otherwise
 // the false-branch.  (Unlike an `if` statement we know that we always have
 // an alternative/false branch.)
-func evalTernaryExpression(ctx context.Context, te *ast.TernaryExpression, env *object.Environment) object.Object {
+func evalTernaryExpression(ctx context.Context, te *ast.TernaryExpression, env *object.Environment, DEBUG bool) object.Object {
 
-	condition := EvalContext(ctx, te.Condition, env)
+	condition := EvalContext(ctx, te.Condition, env, DEBUG)
 	if isError(condition) {
 		return condition
 	}
 
 	if isTruthy(condition) {
-		return EvalContext(ctx, te.IfTrue, env)
+		return EvalContext(ctx, te.IfTrue, env, DEBUG)
 	}
-	return EvalContext(ctx, te.IfFalse, env)
+	return EvalContext(ctx, te.IfFalse, env, DEBUG)
 }
 
-func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *object.Environment) (val object.Object) {
-	evaluated := EvalContext(ctx, a.Value, env)
+func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *object.Environment, DEBUG bool) (val object.Object) {
+	evaluated := EvalContext(ctx, a.Value, env, DEBUG)
 	if isError(evaluated) {
 		return evaluated
 	}
@@ -747,7 +771,7 @@ func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *objec
 			return newError("%s is unknown", a.Name.String())
 		}
 
-		res := evalInfixExpression("+=", current, evaluated, env)
+		res := evalInfixExpression("+=", current, evaluated, env, DEBUG)
 		if isError(res) {
 			fmt.Printf("Error handling += %s\n", res.Inspect())
 			return res
@@ -764,7 +788,7 @@ func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *objec
 			return newError("%s is unknown", a.Name.String())
 		}
 
-		res := evalInfixExpression("-=", current, evaluated, env)
+		res := evalInfixExpression("-=", current, evaluated, env, DEBUG)
 		if isError(res) {
 			fmt.Printf("Error handling -= %s\n", res.Inspect())
 			return res
@@ -780,7 +804,7 @@ func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *objec
 			return newError("%s is unknown", a.Name.String())
 		}
 
-		res := evalInfixExpression("*=", current, evaluated, env)
+		res := evalInfixExpression("*=", current, evaluated, env, DEBUG)
 		if isError(res) {
 			fmt.Printf("Error handling *= %s\n", res.Inspect())
 			return res
@@ -797,7 +821,7 @@ func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *objec
 			return newError("%s is unknown", a.Name.String())
 		}
 
-		res := evalInfixExpression("/=", current, evaluated, env)
+		res := evalInfixExpression("/=", current, evaluated, env, DEBUG)
 		if isError(res) {
 			fmt.Printf("Error handling /= %s\n", res.Inspect())
 			return res
@@ -814,7 +838,7 @@ func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *objec
 			return newError("%s is unknown", a.Name.String())
 		}
 
-		res := evalInfixExpression("%=", current, evaluated, env)
+		res := evalInfixExpression("%=", current, evaluated, env, DEBUG)
 		if isError(res) {
 			fmt.Printf("Error handling %%= %s\n", res.Inspect())
 			return res
@@ -829,10 +853,10 @@ func evalAssignStatement(ctx context.Context, a *ast.AssignStatement, env *objec
 	return evaluated
 }
 
-func evalSwitchStatement(ctx context.Context, se *ast.SwitchExpression, env *object.Environment) object.Object {
+func evalSwitchStatement(ctx context.Context, se *ast.SwitchExpression, env *object.Environment, DEBUG bool) object.Object {
 
 	// Get the value.
-	obj := EvalContext(ctx, se.Value, env)
+	obj := EvalContext(ctx, se.Value, env, DEBUG)
 
 	// Try all the choices
 	for _, opt := range se.Choices {
@@ -847,14 +871,14 @@ func evalSwitchStatement(ctx context.Context, se *ast.SwitchExpression, env *obj
 		for _, val := range opt.Expr {
 
 			// Get the value of the case
-			out := EvalContext(ctx, val, env)
+			out := EvalContext(ctx, val, env, DEBUG)
 
 			// Is it a literal match?
 			if obj.Type() == out.Type() &&
 				(obj.Inspect() == out.Inspect()) {
 
 				// Evaluate the block and return the value
-				blockOut := evalBlockStatement(ctx, opt.Block, env)
+				blockOut := evalBlockStatement(ctx, opt.Block, env, DEBUG)
 				return blockOut
 			}
 
@@ -865,7 +889,7 @@ func evalSwitchStatement(ctx context.Context, se *ast.SwitchExpression, env *obj
 				if m == TRUE {
 
 					// Evaluate the block and return the value
-					out := evalBlockStatement(ctx, opt.Block, env)
+					out := evalBlockStatement(ctx, opt.Block, env, DEBUG)
 					return out
 
 				}
@@ -879,7 +903,7 @@ func evalSwitchStatement(ctx context.Context, se *ast.SwitchExpression, env *obj
 		// skip default
 		if opt.Default {
 
-			out := evalBlockStatement(ctx, opt.Block, env)
+			out := evalBlockStatement(ctx, opt.Block, env, DEBUG)
 			return out
 		}
 	}
@@ -887,15 +911,15 @@ func evalSwitchStatement(ctx context.Context, se *ast.SwitchExpression, env *obj
 	return nil
 }
 
-func evalWhileLoopExpression(ctx context.Context, fle *ast.WhileLoopExpression, env *object.Environment) object.Object {
+func evalWhileLoopExpression(ctx context.Context, fle *ast.WhileLoopExpression, env *object.Environment, DEBUG bool) object.Object {
 	rt := &object.Boolean{Value: true}
 	for {
-		condition := EvalContext(ctx, fle.Condition, env)
+		condition := EvalContext(ctx, fle.Condition, env, DEBUG)
 		if isError(condition) {
 			return condition
 		}
 		if isTruthy(condition) {
-			rt := EvalContext(ctx, fle.Consequence, env)
+			rt := EvalContext(ctx, fle.Consequence, env, DEBUG)
 			if !isError(rt) && (rt.Type() == object.RETURN_VALUE_OBJ || rt.Type() == object.ERROR_OBJ) {
 				return rt
 			}
@@ -907,10 +931,10 @@ func evalWhileLoopExpression(ctx context.Context, fle *ast.WhileLoopExpression, 
 }
 
 // handle "for x [,y] in .."
-func evalForeachExpression(ctx context.Context, fle *ast.ForeachStatement, env *object.Environment) object.Object {
+func evalForeachExpression(ctx context.Context, fle *ast.ForeachStatement, env *object.Environment, DEBUG bool) object.Object {
 
 	// expression
-	val := EvalContext(ctx, fle.Value, env)
+	val := EvalContext(ctx, fle.Value, env, DEBUG)
 	helper, ok := val.(object.Iterable)
 	if !ok {
 		return newError("%s object doesn't implement the Iterable interface", val.Type())
@@ -954,7 +978,7 @@ func evalForeachExpression(ctx context.Context, fle *ast.ForeachStatement, env *
 		}
 
 		// Eval the block
-		rt := EvalContext(ctx, fle.Body, child)
+		rt := EvalContext(ctx, fle.Body, child, DEBUG)
 
 		//
 		// If we got an error/return then we handle it.
@@ -987,10 +1011,10 @@ func isTruthy(obj object.Object) bool {
 	}
 }
 
-func evalProgram(ctx context.Context, program *ast.Program, env *object.Environment) object.Object {
+func evalProgram(ctx context.Context, program *ast.Program, env *object.Environment, DEBUG bool) object.Object {
 	var result object.Object
 	for _, statement := range program.Statements {
-		result = EvalContext(ctx, statement, env)
+		result = EvalContext(ctx, statement, env, DEBUG)
 		switch result := result.(type) {
 		case *object.ReturnValue:
 			return result.Value
@@ -1025,10 +1049,10 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 	return newError("identifier not found: " + node.Value)
 }
 
-func evalExpression(ctx context.Context, exps []ast.Expression, env *object.Environment) []object.Object {
+func evalExpression(ctx context.Context, exps []ast.Expression, env *object.Environment, DEBUG bool) []object.Object {
 	var result []object.Object
 	for _, e := range exps {
-		evaluated := EvalContext(ctx, e, env)
+		evaluated := EvalContext(ctx, e, env, DEBUG)
 		if isError(evaluated) {
 			return []object.Object{evaluated}
 		}
@@ -1173,10 +1197,10 @@ func evalStringIndexExpression(input, index object.Object) object.Object {
 	return &object.String{Value: string(ret)}
 }
 
-func evalHashLiteral(ctx context.Context, node *ast.HashLiteral, env *object.Environment) object.Object {
+func evalHashLiteral(ctx context.Context, node *ast.HashLiteral, env *object.Environment, DEBUG bool) object.Object {
 	pairs := make(map[object.HashKey]object.HashPair)
 	for keyNode, valueNode := range node.Pairs {
-		key := EvalContext(ctx, keyNode, env)
+		key := EvalContext(ctx, keyNode, env, DEBUG)
 		if isError(key) {
 			return key
 		}
@@ -1184,7 +1208,7 @@ func evalHashLiteral(ctx context.Context, node *ast.HashLiteral, env *object.Env
 		if !ok {
 			return newError("unusable as hash key: %s", key.Type())
 		}
-		value := EvalContext(ctx, valueNode, env)
+		value := EvalContext(ctx, valueNode, env, DEBUG)
 		if isError(value) {
 			return value
 		}
@@ -1196,11 +1220,11 @@ func evalHashLiteral(ctx context.Context, node *ast.HashLiteral, env *object.Env
 
 }
 
-func applyFunction(ctx context.Context, env *object.Environment, fn object.Object, args []object.Object) object.Object {
+func applyFunction(ctx context.Context, env *object.Environment, fn object.Object, args []object.Object, DEBUG bool)  object.Object {
 	switch fn := fn.(type) {
 	case *object.Function:
-		extendEnv := extendFunctionEnv(ctx, fn, args)
-		evaluated := EvalContext(ctx, fn.Body, extendEnv)
+		extendEnv := extendFunctionEnv(ctx, fn, args, DEBUG)
+		evaluated := EvalContext(ctx, fn.Body, extendEnv, DEBUG)
 		return upwrapReturnValue(evaluated)
 	case *object.Builtin:
 		return fn.Fn(env, args...)
@@ -1210,12 +1234,12 @@ func applyFunction(ctx context.Context, env *object.Environment, fn object.Objec
 
 }
 
-func extendFunctionEnv(ctx context.Context, fn *object.Function, args []object.Object) *object.Environment {
+func extendFunctionEnv(ctx context.Context, fn *object.Function, args []object.Object, DEBUG bool) *object.Environment {
 	env := object.NewEnclosedEnvironment(fn.Env)
 
 	// Set the defaults
 	for key, val := range fn.Defaults {
-		env.Set(key, EvalContext(ctx, val, env))
+		env.Set(key, EvalContext(ctx, val, env, DEBUG))
 	}
 	for paramIdx, param := range fn.Parameters {
 		if paramIdx < len(args) {
@@ -1239,9 +1263,9 @@ func RegisterBuiltin(name string, fun object.BuiltinFunction) {
 }
 
 // evalObjectCallExpression invokes methods against objects.
-func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpression, env *object.Environment) object.Object {
+func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpression, env *object.Environment, DEBUG bool) object.Object {
 
-	obj := EvalContext(ctx, call.Object, env)
+	obj := EvalContext(ctx, call.Object, env, DEBUG)
 
 	if obj == nil {
 		return newError("impossible object-call on an empty object")
@@ -1256,7 +1280,7 @@ func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpressio
 		// We do this by forwarding the call to the appropriate
 		// `invokeMethod` interface on the object.
 		//
-		args := evalExpression(ctx, call.Call.(*ast.CallExpression).Arguments, env)
+		args := evalExpression(ctx, call.Call.(*ast.CallExpression).Arguments, env, DEBUG)
 		ret := obj.InvokeMethod(method.Function.String(), *env, args...)
 		if ret != nil {
 			return ret
@@ -1317,7 +1341,7 @@ func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpressio
 				//
 				// Extend our environment with the functional-args.
 				//
-				extendEnv := extendFunctionEnv(ctx, fn.(*object.Function), args)
+				extendEnv := extendFunctionEnv(ctx, fn.(*object.Function), args, DEBUG)
 
 				//
 				// Now set "self" to be the implicit object, against
@@ -1328,7 +1352,7 @@ func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpressio
 				//
 				// Finally invoke & return.
 				//
-				evaluated := EvalContext(ctx, fn.(*object.Function).Body, extendEnv)
+				evaluated := EvalContext(ctx, fn.(*object.Function).Body, extendEnv, DEBUG)
 				obj = upwrapReturnValue(evaluated)
 				return obj
 			}

@@ -20,7 +20,6 @@ var (
 )
 
 const PROMPT = "mwnci> "
-
 func Start(in io.Reader, out io.Writer) {
 	env := object.NewEnvironment()
 	homedir, _ := os.UserHomeDir()
@@ -33,7 +32,7 @@ func Start(in io.Reader, out io.Writer) {
 	if len(p.Errors()) != 0 {
 		printParserErrors(out, p.Errors())
 	}
-	evaluator.Eval(program, env)
+	evaluator.Eval(program, env, false)
 	line = ""
 	rl, _ := readline.NewEx(&readline.Config{
 		Prompt:      PROMPT,
@@ -69,7 +68,7 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		evaluated := evaluator.Eval(program, env)
+		evaluated := evaluator.Eval(program, env, false)
 		if evaluated != NULL {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")

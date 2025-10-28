@@ -33,6 +33,7 @@ if (!INCLUDE["SYSSTATLINUX"]) {
     }
 
     function pidstat(opts="") {
+        if (!checkfunctype("pidstat", "string", opts, 1)) {exit(1)}
         CMD="pidstat -l"
         if (len(opts) > 0) {
             CMD=CMD + " -C " + opts
@@ -53,18 +54,14 @@ if (!INCLUDE["SYSSTATLINUX"]) {
                 "cpu": int(sline[8]),
                 "cmd": sline[9]
             }
-            pid_hash=set(pid_hash, pid, temp_hash)
+            pid_hash=set(pid_hash, int(pid), temp_hash)
         }
         return pid_hash
     }
 
     function sndev(iface="") {
         if (!checkfunctype("sndev", "string", iface, 1)) {exit(1)}
-        CMD="sar -n DEV"
-        if (iface != "") {
-            CMD=CMD + " --iface=" + iface
-        }
-        Result=split(stac(system(CMD)), "\n")
+        Result=split(stac(system("sar -n DEV")), "\n")
         Data=[]
         foreach Line in Result {
             if (Line ~= /^[0-9][0-9]:/ ) {
@@ -82,27 +79,23 @@ if (!INCLUDE["SYSSTATLINUX"]) {
         CurrentTime=Data[0][0]
         foreach Line in Data {
             if (Line[0] == CurrentTime) {
-                Iface_Hash=set(Iface_Hash, Line[1],
-                {
-                    "rxpcks": float(Line[2]),
-                    "txpcks": float(Line[3]),
-                    "rxkbs": float(Line[4]),
-                    "txkbs": float(Line[5]),
-                    "rxcmps": float(Line[6]),
-                    "txcmps": float(Line[7]),
-                    "rxmcsts": float(Line[8]),
-                    "ifutil": float(Line[9])
+                TempHash={
+                    "rxpcks": float(Line[2]), "txpcks": float(Line[3]),
+                    "rxkbs": float(Line[4]), "txkbs": float(Line[5]),
+                    "rxcmps": float(Line[6]),"txcmps": float(Line[7]),
+                    "rxmcsts": float(Line[8])
+                    }
+
+                if (len(Line) == 10) {
+                    TempHash=set(TempHash, "ifutil", float(Line[9]))
                 }
-                )
-// In case we are on older kernels
-                if (Iface_Hash["ifutil"] == null) {
-                    Iface_Hash=delete(Iface_Hash, "ifutil")
-                }
-            } else {
-                return Iface_Hash
+                Iface_Hash=set(Iface_Hash, Line[1], TempHash)
             }
         }
-        // Probably never reached unless something freaky happens
-        return Iface_Hash
+        if (len(iface) == 0) {
+            return Iface_Hash
+        } else {
+            return {iface: Iface_Hash[iface]}
+        }
     }
 }

@@ -32,7 +32,7 @@ func versionFun(args ...object.Object) object.Object {
 }
 
 // Execute the supplied string as a program.
-func Execute(input string) int {
+func Execute(input string, DEBUG bool) int {
 
 	env := object.NewEnvironment()
 	l := lexer.New(input)
@@ -53,11 +53,11 @@ func Execute(input string) int {
 	initL := lexer.New(stdlib)
 	initP := parser.New(initL)
 	initProg := initP.ParseProgram()
-	evaluator.Eval(initProg, env)
+	evaluator.Eval(initProg, env, false)
 
 	// Evaluate the requested program
 	// The library previously loaded will still remain
-	evaluator.Eval(program, env)
+	evaluator.Eval(program, env, DEBUG)
 	return 0
 }
 
@@ -73,28 +73,36 @@ func main() {
 	//
 	// Setup some flags.
 	//
+        
 	eval := flag.String("eval", "", "Code to execute.")
 	vers := flag.Bool("version", false, "Show our version and exit.")
+	debug := flag.Bool("x", false, "Show debug info.")
+
+	flag.Parse()
 
 	//
 	// Parse the flags
 	//
 	flag.Parse()
 
+	DEBUG := false
+	if *debug {
+		DEBUG = true
+	}
 	//
 	// Showing the version?
 	//
 	if *vers {
 		fmt.Printf("mwnci %s\n", version)
-		os.Exit(1)
+		os.Exit(0)
 	}
 
 	//
 	// Executing code?
 	//
 	if *eval != "" {
-		Execute(*eval)
-		os.Exit(1)
+		Execute(*eval, DEBUG)
+		os.Exit(0)
 	}
 
 	//
@@ -105,7 +113,7 @@ func main() {
 	var err error
 
 	if len(flag.Args()) > 0 {
-		input, err = os.ReadFile(os.Args[1])
+		input, err = os.ReadFile(flag.Args()[0])
 	} else {
 		fmt.Printf("Mwnci %s (%s %s)\n", version, distro, runtime.GOARCH)
 		repl.Start(os.Stdin, os.Stdout)
@@ -114,6 +122,5 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error reading: %s\n", err.Error())
 	}
-
-	Execute(string(input))
+	Execute(string(input), DEBUG)
 }

@@ -42,5 +42,5 @@ func evalFun(env *object.Environment, args ...object.Object) object.Object {
 		}
 		os.Exit(1)
 	}
-	return (EvalContext(context.Background(), program, env))
+	return (EvalContext(context.Background(), program, env, false))
 }

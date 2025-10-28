@@ -42,7 +42,7 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 				p := parser.New(l)
 				program := p.ParseProgram()
 				if len(p.Errors()) == 0 {
-					Eval(program, env)
+					Eval(program, env, false)
 					found = 1
 					break
 				} else {

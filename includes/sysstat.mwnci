@@ -16,6 +16,7 @@ if (!INCLUDE["SYSSTAT"]) {
     }
 
     function pidmem(ops="") {
+        if (!checkfunctype("pidmem", "string", ops, 1)) {exit(1)}
         CMD="ps ax -o pid,user,%cpu,%mem,command | grep -v \"\]$\""
         if (len(ops) == 0) {ops="[a-z]"}
         ProcList=trim(system(CMD))
@@ -33,7 +34,7 @@ if (!INCLUDE["SYSSTAT"]) {
                         "pc_mem": float(sline[3]),
                         "command": sline[4]
                     }
-                    mem_hash=set(mem_hash, sline[0], temp_hash)
+                    mem_hash=set(mem_hash, int(sline[0]), temp_hash)
                 }
             }
         }

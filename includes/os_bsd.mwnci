@@ -43,7 +43,8 @@ if (!INCLUDE["OSBSD"]) {
          return MemHash
     }
 
-    function getcpu() {
+    function getcpu(CpuArg="") {
+    if (!checkfunctype("getcpu", "string", CpuArg, 1)) {exit(1)}
 //
 // Gotta do 2 (-d2) runs to get a more accuraterer view of the cpu's :(
 //
@@ -80,7 +81,11 @@ if (!INCLUDE["OSBSD"]) {
         Int=float(sprintf("%.2f", IntCount / Total))
         Idle=float(sprintf("%.2f", IdleCount / Total))
         AllHash={"user": User, "nice": Nice, "system": Sys, "interrupt": Int, "idle": Idle}
-        CPUHash=set(CPUHash, "all", AllHash)
+        CPUHash=set(CPUHash, "all", AllHash) 
+        if (CpuArg != "" && len(CPUHash) > 0 ) {
+            CPUHash=CPUHash[CpuArg]
+	    CPUHash=set(CPUHash, "cpu", CpuArg)
+        }
         return CPUHash
     }
 
