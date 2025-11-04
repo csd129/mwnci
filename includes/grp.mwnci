@@ -66,11 +66,11 @@ if (!INCLUDE["GRP"]) {
     
     function hashgrp() {
         GrpHash={}
-        GrpEntries=split(trim(cat("/etc/group")), "\n")
-    	foreach line in GrpEntries {
-            line=string(split(line, "#")[0])
-            if (len(line) > 0) {
-                SplitLine=split(line,":")
+	FH=open("/etc/group")
+        while (len(Line=FH.read()) != 0) {
+            Line=string(split(Line, "#")[0])
+            if (len(Line) > 0) {
+                SplitLine=split(trim(Line),":")
                 Members=string(SplitLine[3])
                 Members=(len(Members) > 0 ? split(Members,",") : [])
                 NewHash={"Gid": int(SplitLine[2]), "Members": Members}

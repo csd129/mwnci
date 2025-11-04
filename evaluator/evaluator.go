@@ -18,6 +18,7 @@ import (
 )
 
 func Debugger(Value string) bool {
+	Value = strings.ReplaceAll(Value, "\n", "")
 	// Output the debug string. If stdout is a terminal then
 	// we'll have it in colour, otherwise don't use ansi ctrl codes
 	Out, _ := os.Stdout.Stat()

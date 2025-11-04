@@ -6,7 +6,7 @@ if (!INCLUDE["OSBSD"]) {
     
     function free() {
         SysHash={}
-        Sysctl=split(trim(system("sysctl -a | egrep \"hw.physmem|hw.pagesize|vm.stats.vm.\"")), "\n")
+        Sysctl=split(trim(system("sysctl hw.physmem hw.pagesize vm.stats.vm.")), "\n")
         foreach Line in Sysctl {
             SLine=partition(Line, ": ")
             if (isnum(SLine[2])) {

@@ -21,18 +21,17 @@ if (!INCLUDE["FILE"]) {
     function isdoable(Filename="", Bit) {
         if (!checkfunctype("isdoable", "string", Filename)) {exit(1)}
         if (!checkfunctype("isdoable", "integer", Bit, 2)) {exit(1)}
-        Data=fields(file(Filename, 1))
-        Perms=Data[3]
+        Data=stat(Filename)
+        Perms=Data["mode"]
         Owner=getbin(int(Perms[1]))[Bit]
         Group=getbin(int(Perms[2]))[Bit]
         Other=getbin(int(Perms[3]))[Bit]
-        FileUID=Data[7]
-        FileGID=Data[8]
-    
-        if (int(FileUID) == getuid()) {
+        FileUID=Data["uid"]
+        FileGID=Data["gid"]
+        if (FileUID == getuid()) {
             return (int(Owner) == 1) ? true : false
         }
-        if (int(FileGID) == getgid()) {
+        if (FileGID == getgid()) {
             return (int(Group) == 1) ? true : false
         }
         return (int(Other) == 1) ? true : false
@@ -44,7 +43,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `filetype`: ERROR: TypeError: filetype() takes exactly 1 argument (0 given)")
             exit(1)
         }
-        return (isexist(Filename)) ? fields(file(Filename, 1))[6] : null
+        return (isexist(Filename)) ? stat(Filename)["type"] : null
     }
 
     function istype(Type="", Filename="", Caller="istype") {
@@ -98,9 +97,12 @@ if (!INCLUDE["FILE"]) {
         if (len(Filename) == 0) {
             println("Error calling `isempty`: ERROR: TypeError: isempty() takes exactly 1 argument (0 given)")
             exit(1)
-        }         
-        fileinfo=fields(file(Filename, 1))
-        return (int(fileinfo[4]) == 0) ? true : false
+        }
+	if (isexist(Filename)) {
+            return (stat(Filename)["size"] == 0) ? true : false
+	} else {
+	    return true
+        }
     }
     
     function issetuid(Filename="") {
@@ -109,7 +111,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `issetuid`: ERROR: TypeError: issetuid() takes exactly 1 argument (0 given)")
             exit(1)
         }
-        Permissions=fields(file(Filename, 1))[3]
+        Permissions=stat(Filename)["mode"]
         SetUID=oct2sym(Permissions)[2]
         return (match("[sS]", SetUID)) ? true : false
     }
@@ -120,7 +122,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `issetgid`: ERROR: TypeError: issetgid() takes exactly 1 argument (0 given)")
 	        exit(1)
         }
-        Permissions=fields(file(Filename, 1))[3]
+        Permissions=stat(Filename)["mode"]
         SetGID=oct2sym(Permissions)[5]
         return (match("[sS]", SetGID)) ? true : false
     }
@@ -131,7 +133,7 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `issticky`: ERROR: TypeError: issticky() takes exactly 1 argument (0 given)")
             exit(1)
         }
-        Permissions=fields(file(Filename, 1))[3]
+        Permissions=stat(Filename)["mode"]
         Sticky=oct2sym(Permissions)[8]
         return (match("[tT]", Sticky)) ? true : false
     }
@@ -150,14 +152,14 @@ if (!INCLUDE["FILE"]) {
         if (!isexist(FirstFile) || !isexist(SecondFile)) {
             return false
         }
-        FirstStat=file(FirstFile)
-        SecondStat=file(SecondFile)
+        FirstStat=stat(FirstFile)
+        SecondStat=stat(SecondFile)
         if (!FirstStat || !SecondStat) {
             return false
         }
-        FirstModDate=int(FirstStat)
-        SecondModDate=int(SecondStat)
-        return (FirstModDate > SecondModDate) ? true : false
+//        FirstModDate=int(FirstStat)
+//        SecondModDate=int(SecondStat)
+        return (FirstStat["mtime"] > SecondStat["mtime"]) ? true : false
     }
     
     function isolder(FirstFile="", SecondFile="") {
@@ -187,7 +189,7 @@ if (!INCLUDE["FILE"]) {
             Uid =(match("[a-z]", User)) ? int(getpwnam(User)["Uid"]) : int(User)
         }
         if (isexist(Filename)) {
-            Owner=int(fields(file(Filename, 1))[7])
+            Owner=stat(Filename)["uid"]
     	    if (Owner == Uid) {
     	        return true
     	    }
@@ -212,7 +214,7 @@ if (!INCLUDE["FILE"]) {
             }
         }
         if (isexist(Filename)) {
-            FileGid=int(fields(file(Filename, 1))[8])
+            FileGid=stat(Filename)["gid"]
     	    if (FileGid == Gid) {
     	        return true
     	    }

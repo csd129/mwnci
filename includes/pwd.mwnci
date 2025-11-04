@@ -55,22 +55,22 @@ if (!INCLUDE["PWD"]) {
     }
     
     function hashpw() {
-        PwHash={}
-    	PWEntries=split(trim(cat("/etc/passwd")), "\n")
-    	foreach line in PWEntries {
-            line=string(split(line, "#")[0])
-            if (len(line) > 0) {
-                SplitLine=split(line,":")
+        PWHash={}
+	FH=open("/etc/passwd")
+	while (len(Line=FH.read()) != 0) {
+            Line=string(split(Line, "#")[0])
+            if (len(Line) > 0) {
+                SplitLine=split(trim(Line),":")
                 Gecos=string(SplitLine[4])
                 Gecos=(len(Gecos) > 0 ? split(Gecos,",") : [])
                 Shell = (len(SplitLine[6]) == 0) ? "/bin/sh" : SplitLine[6]
                 NewHash={"Uid": int(SplitLine[2]), "Password": SplitLine[1], "Gid": int(SplitLine[3]), "Home": SplitLine[5], "Shell": Shell, "Gecos": Gecos}
-                PwHash=set(PwHash, SplitLine[0], NewHash)
+                PWHash=set(PWHash, SplitLine[0], NewHash)
             }
         }
-        return PwHash
+        return PWHash
     }
-    
+
     function string.getpwent() {return getpwent(self)}
     function string.getpwnam() {return getpwnam(self)}
     function integer.getpwuid() {return getpwuid(self)}
