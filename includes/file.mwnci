@@ -235,6 +235,19 @@ if (!INCLUDE["FILE"]) {
         }
         return false
     }
+
+    function isequal(File1="", File2="") {
+        if (!checkfunctype("isequal", "string", File1, 1)) {exit(1)}
+        if (!checkfunctype("isequal", "string", File2, 2)) {exit(1)}
+        Fstat1=stat(File1)
+        Fstat2=stat(File2)
+        if (Fstat1["inode"] == Fstat2["inode"] &&
+                Fstat1["major"] == Fstat2["major"] &&
+                Fstat1["minor"] == Fstat2["minor"]) {
+            return true
+        }
+        return false
+    }
     
     //
     // Same stuff, but having object methods
