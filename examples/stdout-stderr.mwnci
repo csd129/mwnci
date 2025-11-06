@@ -2,5 +2,5 @@
 //
 // STDIN / STDOUT / STDERR are available by default
 //
-let result = STDOUT.write( "This is a test to STDOUT\n" );
-let result = STDERR.write( "This is a test to STDERR\n" );
+result = STDOUT.write( "This is a test to STDOUT\n" )
+result = STDERR.write( "This is a test to STDERR\n" )

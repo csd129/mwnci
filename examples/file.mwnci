@@ -6,27 +6,27 @@
 //
 
 
-let fh = open( "/etc/passwd" );
+fh = open( "/etc/passwd" )
 
 // Count of lines
-let lines = 0;
+lines = 0
 
 // Read a line
-let r = fh.read();
+r = fh.read()
 
 // Loop while that is non-empty
 while( len(r) > 0 ) {
 
      // Bump the line-count
-     lines++;
+     lines++
 
      // strip newlines / space, and show the output
      r = r.trim()
-     print( "Read: '", r, "'\n");
+     print( "Read: '", r, "'\n")
 
      // loop
-     r = fh.read();
-};
-fh.close();
+     r = fh.read()
+}
+fh.close()
 
-print( "Read:" , lines, " lines.\n" );
+print( "Read:" , lines, " lines.\n" )

@@ -6,7 +6,7 @@
 // Substring match
 //
 if ( match( "cle", "Eccles Cake" ) ) {
-   print( "'Eccles Cake' contains the substring 'cle'\n");
+   print( "'Eccles Cake' contains the substring 'cle'\n")
 }
 
 //

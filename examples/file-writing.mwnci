@@ -10,20 +10,20 @@
 // However you can open a file for writing by using "w" as the
 // second argument:
 //
-let name = "/tmp/moi";
-let fh   = open(name, "w");
+name = "/tmp/moi"
+fh   = open(name, "w")
 
 //
 // Now we have a handle we can write (strings) to it:
-fh.write( "This is a test\n", "wibble" );
-fh.write( string({ "Eccles": "Cake", "Age": 128}) + "\n" );
+fh.write( "This is a test\n", "wibble" )
+fh.write( string({ "Eccles": "Cake", "Age": 128}) + "\n" )
 
 //
 // And close it.
 //
-fh.close();
+fh.close()
 
 //
 // Show what we did.
 //
-print( "We wrote to ", name , "\n");
+print( "We wrote to ", name , "\n")

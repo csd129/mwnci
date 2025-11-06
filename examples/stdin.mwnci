@@ -2,12 +2,12 @@
 // This example shows reading from STDIN.
 //
 
-print( "Please enter your name: " );
-let name = STDIN.read();
-name = name.trim();
-print( "Hello, ", name, "!\n" );
+print( "Please enter your name: " )
+name = STDIN.read()
+name = trim(name)
+print( "Hello, ", name, "!\n" )
 
 print( "How old are you? " );
-let age = STDIN.read();
-age = age.trim();
-print( "You are ", age, " years old.\n" );
+age = STDIN.read()
+age = age.trim()
+print( "You are ", age, " years old.\n" )

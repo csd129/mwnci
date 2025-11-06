@@ -185,7 +185,10 @@ func (f *File) InvokeMethod(method string, env Environment, args ...Object) Obje
 		}
 
 		// Write the text - coorcing to a string first.
-		txt := args[0].Inspect()
+		txt := args[0].String()
+		//		txt = strings.TrimPrefix(txt, "\"")
+		//		txt = strings.TrimSuffix(txt, "\"")
+		//	Text := []byte(txt)
 		_, err := f.Writer.Write([]byte(txt))
 		if err == nil {
 			f.Writer.Flush()

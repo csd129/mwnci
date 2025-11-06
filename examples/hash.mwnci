@@ -3,17 +3,17 @@
 // Dump the hash specified
 //
 function dump( hash ) {
-    let k = keys(hash);
-    print("\tHash has ", len( k) , " keys.\n" );
+    k = keys(hash)
+    print("\tHash has ", len( k) , " keys.\n" )
 
-    let i = 0;
+    i = 0
     while ( i < len(k )) {
 
        // Show the name / type / value
-       print( "\tEntry has key:" , k[i] ,
+       println( "\tEntry has key:" , k[i] ,
              " (type:", type(k[i]), ")",
-             " with value:", h[k[i]], "\n");
-       i++;
+             " with value:", h[k[i]])
+       i++
     }
 }
 
@@ -26,33 +26,33 @@ let h = { "Eccles": "Cake" , "Moi": 7, 3.14:"pi?"};
 //
 // Show it.
 //
-print( "The original hash:\n" );
-dump( h );
+print( "The original hash:\n" )
+dump( h )
 
 //
 // Add a new key
 //
-let h = set(h, "Updated", "Value" );
+h = set(h, "Updated", "Value" )
 
 //
 // Show it
 //
-print( "After adding a new key:\n" );
-dump( h );
+print( "After adding a new key:\n" )
+dump( h )
 
 //
 // Delete two keys
 //
-let h = delete(h, "Moi" );
-let h = delete(h, 3.14 );
-print( "After deleting two keys:\n" );
-dump( h );
+h = delete(h, "Moi" )
+h = delete(h, 3.14 );
+print( "After deleting two keys:\n" )
+dump( h )
 
 
-print( "Running command: /bin/ls\n");
+print( "Running command: /bin/ls\n")
 let h = `/bin/ls / /fdsf`;
-dump( h);
+dump( h)
 
 print( "Running via bash:\n");
 let h = `/bin/sh -c "/bin/ls /etc"`;
-dump( h);
+dump( h)

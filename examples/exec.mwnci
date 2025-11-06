@@ -3,11 +3,11 @@
 //
 // Run a simple command
 //
-let uptime = `/usr/bin/uptime`;
+Uptime = `/usr/bin/uptime`
 
-if ( uptime ) {
-   print( "STDOUT: ", uptime["stdout"].trim() , "\n");
-   print( "STDERR: ", uptime["stderr"].trim() , "\n");
+if ( Uptime ) {
+   print( "STDOUT: ", Uptime["stdout"].trim() , "\n");
+   print( "STDERR: ", Uptime["stderr"].trim() , "\n");
 } else {
    print( "Failed to run command\n");
 }
@@ -15,7 +15,7 @@ if ( uptime ) {
 //
 // Now something more complex
 //
-let ls = `/bin/sh -c "/bin/ls /etc /missing-path"`;
+ls = `/bin/sh -c "/bin/ls /etc /missing-path"`;
 if ( ls ) {
    print( "STDOUT: ", trim(ls["stdout"]) , "\n");
    print( "STDERR: ", trim(ls["stderr"]) , "\n");
