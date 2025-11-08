@@ -102,7 +102,7 @@ if (!INCLUDE["OSLINUX"]) {
             Cmd="date +%s"
         } else {
             Cmd="date +%s -d \"" + Date + "\""
-		}
+        }
         Result=system(Cmd)
         Secs=int(trim(Result))
         return Secs
