@@ -1,0 +1,31 @@
+.TH MWNCI 1 
+.SH NAME
+mwnci \- an interactive, interpreted language
+.SH SYNOPSIS
+.B mwnci [ 
+.B \-version ] | [
+.B \-eval
+.I string
+.B ] | [[ \-x ] [
+.I script
+.B ]]
+.SH DESCRIPTION
+Mwnci is an interpreted, interactive language that reads mwnci commands from a file and evaluates them. If invoked with no arguments then it run interactively, reading mwnci commands from standard input  and printing command results and error messages to standard  output. It runs  until  the exit command is invoked or until it reaches end-of-file.
+.SH COMMAND LINE OPTIONS
+.TP
+.B \-version
+Display the version of mwnci
+.TP
+.BI "\-eval " command
+Specify the command to execute (evaluate)
+.TP
+.B -x
+Print commands and their arguments as they are executed.
+.TP
+.B script
+Execute the mwnci commands in the given filename
+.SH ENVIRONMENT VARIABLES
+.IP INCLUDEPATH
+A colon separated list of directories in which to look for files that be included in a main mwnci script. The directories defined in INCLUDEPATH are read before the builtins.
+.SH AUTHOR
+The Mwnci Scripting Language was written by csd129 <afry@ploogie.co.uk>
