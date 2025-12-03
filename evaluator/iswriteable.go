@@ -16,11 +16,10 @@ func IsWriteable(args ...object.Object) object.Object {
 	}
 
 	file := args[0].(*object.String).Value
-
 	f, err := os.OpenFile(file, os.O_RDWR, 0666)
+	defer f.Close()
 	if err != nil {
 		return FALSE
 	}
-	f.Close()
 	return TRUE
 }
