@@ -1,8 +1,3 @@
-include(
-    "file",
-    "methods"
-)
-
 /*
  Define some handy constants
 */
@@ -13,6 +8,12 @@ const ARGC=len(ARGV)
 const PID=getpid()
 const NULL=null     // for those that like a good solid null
 const PROGNAME = (ARGC > 0) ? basename(ARGV[0]) : ""
+
+include(
+    "file",
+    "ps",
+    "methods"
+)
 
 /*
 Update PATH to make sure /sbin * /usr/sbin are available for commands users
@@ -576,5 +577,30 @@ if (!INCLUDE["MAIN"]) {
             ListArray=set(ListArray, n-1, WordList[random(WordCount)])
         }
         return ListArray
+    }
+
+    function tty() {
+        Tty=process()[getpid()]["TTY"]
+        if (match("\\?|-", Tty)) {
+            return "Not a tty"
+        }
+        TermDev=""
+        switch (OS) {
+            case /bsd/ , /darwin/ {
+                if (Tty[0] == "v") {
+		    TermDev="/dev/tty" + Tty
+		} else {
+                    TermDev"/dev/pts/" + Tty
+		}
+            }
+            default {
+                TermDev="/dev/" + Tty
+            }
+        }
+	if (len(TermDev) > 0) {
+            return TermDev
+        } else {
+            return "not a tty"
+        }
     }
 }
