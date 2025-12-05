@@ -6,7 +6,7 @@ OBJECT=$(shell find object -type f | sed 's/ /\\ /g')
 PARSER=$(shell find parser -type f | sed 's/ /\\ /g')
 TOKEN=$(shell find token -type f | sed 's/ /\\ /g')
 TYPING=$(shell find typing -type f | sed 's/ /\\ /g')
-
+REPL=$(shell find repl -type f | sed 's/ /\\ /g')
 all: help
 
 help:	

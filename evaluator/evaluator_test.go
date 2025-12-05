@@ -55,7 +55,7 @@ func testEval(input string) object.Object {
 	p := parser.New(l)
 	program := p.ParseProgram()
 	env := object.NewEnvironment()
-	return Eval(program, env)
+	return Eval(program, env, false)
 }
 
 func testDecimalObject(t *testing.T, obj object.Object, expected interface{}) bool {
@@ -640,7 +640,7 @@ while ( true ) {
 	program := p.ParseProgram()
 	env := object.NewEnvironment()
 
-	evaluated := EvalContext(ctx, program, env)
+	evaluated := EvalContext(ctx, program, env, false)
 
 	errObj, ok := evaluated.(*object.Error)
 	if !ok {

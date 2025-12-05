@@ -56,8 +56,8 @@ if (!INCLUDE["PWD"]) {
     
     function hashpw() {
         PWHash={}
-	FH=open("/etc/passwd")
-	while (len(Line=FH.read()) != 0) {
+        FH=open("/etc/passwd")
+        while (len(Line=FH.read()) != 0) {
             Line=string(split(Line, "#")[0])
             if (len(Line) > 0) {
                 SplitLine=split(trim(Line),":")

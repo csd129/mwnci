@@ -10,6 +10,35 @@ if (!INCLUDE["NET"]) {
         }
     }
 
+    function myip() {
+        IPArray=[]
+	if (!isreadable("/proc/net/fib_trie")) {
+            IPArray=usort(split(trim(system("awk '/32 host/ {print f} {f=$2}' /proc/net/fib_trie")), "\n"))
+	    return IPArray
+        }
+	CMD=""
+        if (isexist("/sbin/ifconfig")) {
+            CMD="/sbin/ifconfig -a; exit 0"
+        } else {
+            if (isexist("/sbin/ip")) {  
+                CMD="/sbin/ip a; exit 0"
+            }
+        }
+        if (CMD != "") {
+            Config=split(trim(system(CMD)), "\n")
+            foreach Line in Config {
+                Line=fields(trim(Line))
+                if (Line[0] == "inet") {
+                    IPArray=IPArray.push(split(Line[1], "/")[0])
+                }
+            }
+	}
+	if (len(IPArray) == 0) {
+	    IPArray=["127.0.0.1"]
+	}
+        return IPArray
+    }
+    
     function openports() {
         port_array=[]
         foreach line in netstat() {

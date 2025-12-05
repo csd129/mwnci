@@ -98,10 +98,10 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isempty`: ERROR: TypeError: isempty() takes exactly 1 argument (0 given)")
             exit(1)
         }
-	if (isexist(Filename)) {
+        if (isexist(Filename)) {
             return (stat(Filename)["size"] == 0) ? true : false
-	} else {
-	    return true
+        } else {
+            return true
         }
     }
     
@@ -157,8 +157,6 @@ if (!INCLUDE["FILE"]) {
         if (!FirstStat || !SecondStat) {
             return false
         }
-//        FirstModDate=int(FirstStat)
-//        SecondModDate=int(SecondStat)
         return (FirstStat["mtime"] > SecondStat["mtime"]) ? true : false
     }
     

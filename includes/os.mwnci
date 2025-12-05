@@ -37,8 +37,17 @@ if (!INCLUDE["OS"]) {
     }
 
     function df() {
+        if (!checkfunctype("df", "string", Fs, 1)) {exit(1)}
         DiskHash={}
-        Mounted=shift(split(system("df"),"\n"))
+        Cmd="df"
+	if (len(Fs) != 0) {
+            if (isexist(Fs)) {
+                Cmd=Cmd + " " + Fs
+            } else {
+	        return DiskHash
+            }
+        }
+        Mounted=shift(split(system(Cmd),"\n"))
         Length=len(Mounted)-1
         Count=0
         while (Count <= Length) {

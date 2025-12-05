@@ -57,21 +57,23 @@ func Start(in io.Reader, out io.Writer) {
 		cmd := strings.Join(cmds, " ")
 		cmd = strings.TrimSpace(cmd)
 		cmd = strings.TrimSuffix(cmd, ":")
-		rl.SaveHistory(cmd)
-		l := lexer.New(cmd)
-		p := parser.New(l)
+		if len(cmd) > 0 {
+			rl.SaveHistory(cmd)
+			l := lexer.New(cmd)
+			p := parser.New(l)
 
-		program := p.ParseProgram()
-		if len(p.Errors()) != 0 {
-			printParserErrors(out, p.Errors())
-			cmds = cmds[:0]
-			continue
-		}
+			program := p.ParseProgram()
+			if len(p.Errors()) != 0 {
+				printParserErrors(out, p.Errors())
+				cmds = cmds[:0]
+				continue
+			}
 
-		evaluated := evaluator.Eval(program, env, false)
-		if evaluated != NULL {
-			io.WriteString(out, evaluated.Inspect())
-			io.WriteString(out, "\n")
+			evaluated := evaluator.Eval(program, env, false)
+			if evaluated != NULL {
+				io.WriteString(out, evaluated.Inspect())
+				io.WriteString(out, "\n")
+			}
 		}
 		cmds = cmds[:0]
 	}
