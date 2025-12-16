@@ -14,14 +14,14 @@ func HttpGet(args ...object.Object) object.Object {
 		typing.RangeOfArgs(1, 3),
 		typing.WithTypes(object.STRING_OBJ, object.HASH_OBJ, object.HASH_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	url := args[0].(*object.String)
 	geturl := fmt.Sprintf("%v", url)
 	client := http.Client{}
 	req, err := http.NewRequest("GET", geturl, nil)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	if len(args) == 2 {
 		hash := args[1].(*object.Hash)
@@ -43,12 +43,12 @@ func HttpGet(args ...object.Object) object.Object {
 
 	res, err := client.Do(req)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.String{Value: string(body)}
 }

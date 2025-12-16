@@ -11,7 +11,7 @@ func GetOs(args ...object.Object) object.Object {
 		"getos", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.String{Value: runtime.GOOS}
 }

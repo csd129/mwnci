@@ -11,7 +11,7 @@ func Swapper(args ...object.Object) object.Object {
 		typing.ExactArgs(3),
 		typing.WithTypes(object.ARRAY_OBJ, object.INTEGER_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	Array := args[0].(*object.Array)
 	NewArray := Array.Copy()

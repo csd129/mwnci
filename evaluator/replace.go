@@ -12,7 +12,7 @@ func Replace(args ...object.Object) object.Object {
 		typing.ExactArgs(4),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ, object.STRING_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	line := args[0].(*object.String).Value
 	search := args[1].(*object.String).Value

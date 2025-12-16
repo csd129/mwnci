@@ -12,7 +12,7 @@ func Chown(args ...object.Object) object.Object {
 		typing.ExactArgs(3),
 		typing.WithTypes(object.STRING_OBJ, object.INTEGER_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	path := args[0].String()
@@ -21,7 +21,7 @@ func Chown(args ...object.Object) object.Object {
 
 	err := os.Chown(path, owner, group)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return TRUE
 }

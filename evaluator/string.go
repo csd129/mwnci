@@ -10,7 +10,7 @@ func strFun(args ...object.Object) object.Object {
 		"string", args,
 		typing.ExactArgs(1),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	return &object.String{Value: args[0].String()}

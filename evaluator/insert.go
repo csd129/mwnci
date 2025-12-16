@@ -10,7 +10,7 @@ func ArrayInsert(args ...object.Object) object.Object {
 		"insert", args,
 		typing.ExactArgs(3),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	if args[0].Type() == object.ARRAY_OBJ {

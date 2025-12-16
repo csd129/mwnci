@@ -14,7 +14,7 @@ func intFun(args ...object.Object) object.Object {
 		"int", args,
 		typing.ExactArgs(1),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	switch args[0].(type) {
 	case *object.String:

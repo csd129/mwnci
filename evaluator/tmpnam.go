@@ -13,7 +13,7 @@ func Tmpnam(args ...object.Object) object.Object {
 		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	dir := args[0].(*object.String).Value
 	prefix := ""
@@ -22,7 +22,7 @@ func Tmpnam(args ...object.Object) object.Object {
 	}
 	file, err := os.CreateTemp(dir, prefix)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	return &object.String{Value: file.Name()}

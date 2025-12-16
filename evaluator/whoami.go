@@ -12,7 +12,7 @@ func Whoami(args ...object.Object) object.Object {
 		"whoami", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	UserName := ""
 	currentuser, err := user.Current()

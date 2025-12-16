@@ -15,7 +15,7 @@ func Readpw(args ...object.Object) object.Object {
 		typing.RangeOfArgs(0, 1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	prompt := ""
 	if len(args) == 1 {
@@ -26,7 +26,7 @@ func Readpw(args ...object.Object) object.Object {
 	fmt.Print(prompt)
 	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.String{Value: string(bytePassword)}
 }

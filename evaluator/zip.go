@@ -10,7 +10,7 @@ func zipFun(args ...object.Object) object.Object {
 		"zip", args,
 		typing.MinimumArgs(2),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	shortest := len(args[0].(*object.Array).Elements)

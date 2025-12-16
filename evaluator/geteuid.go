@@ -13,7 +13,7 @@ func Geteuid(args ...object.Object) object.Object {
 		"geteuid", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.Integer{Value: int64(os.Geteuid())}
 }

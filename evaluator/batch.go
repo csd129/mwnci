@@ -11,7 +11,7 @@ func Batch(args ...object.Object) object.Object {
 		typing.ExactArgs(2),
 		typing.WithTypes(object.ARRAY_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	NewArray := args[0].(*object.Array).Elements

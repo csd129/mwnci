@@ -13,7 +13,7 @@ func Ipincidr(args ...object.Object) object.Object {
 		typing.ExactArgs(2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	network := args[0].(*object.String).Value
@@ -21,7 +21,7 @@ func Ipincidr(args ...object.Object) object.Object {
 
 	_, subnet, err := net.ParseCIDR(network)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	ip := net.ParseIP(clientip)
 	if subnet.Contains(ip) {

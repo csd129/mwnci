@@ -13,7 +13,7 @@ func Md5sum(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	data := []byte(args[0].(*object.String).Value)
 	sum := fmt.Sprintf("%x", md5.Sum(data))

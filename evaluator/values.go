@@ -12,7 +12,7 @@ func hashValues(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.HASH_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	// The object we're working with

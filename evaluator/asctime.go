@@ -15,7 +15,7 @@ func AscTime(args ...object.Object) object.Object {
 		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.INTEGER_OBJ, object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	format := ""
 	if len(args) == 1 {
@@ -27,4 +27,3 @@ func AscTime(args ...object.Object) object.Object {
 	return &object.String{Value: strftime.Format(format, timer)}
 
 }
-

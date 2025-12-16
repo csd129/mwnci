@@ -12,11 +12,11 @@ func Getwd(args ...object.Object) object.Object {
 		"getwd", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	wd, err := os.Getwd()
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.String{Value: wd}
 }

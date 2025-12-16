@@ -12,7 +12,7 @@ func Ucount(env *object.Environment, args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.ARRAY_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	newHash := make(map[object.HashKey]object.HashPair)
 	arr := args[0].(*object.Array)

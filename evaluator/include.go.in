@@ -16,7 +16,7 @@ func Include(env *object.Environment, args ...object.Object) object.Object {
 		typing.MinimumArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	includes := ""
 	userincludes := os.Getenv("INCLUDEPATH")

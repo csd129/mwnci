@@ -11,7 +11,7 @@ func Count(args ...object.Object) object.Object {
 		"count", args,
 		typing.ExactArgs(2),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	counter := 0

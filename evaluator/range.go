@@ -11,7 +11,7 @@ func Range(args ...object.Object) object.Object {
 		typing.RangeOfArgs(1, 3),
 		typing.WithTypes(object.INTEGER_OBJ, object.INTEGER_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	Start := int64(0)

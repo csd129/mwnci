@@ -197,7 +197,6 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment, DE
 		}
 		return evalIndexExpression(left, index)
 	case *ast.AssignStatement:
-		// 1		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
 		return evalAssignStatement(ctx, node, env, DEBUG)
 	case *ast.HashLiteral:
 		//		if DEBUG {Debugger(fmt.Sprintf("%v", node))}

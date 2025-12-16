@@ -1,6 +1,8 @@
+
 package evaluator
 
 import (
+	"maps"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -11,7 +13,7 @@ func setFun(args ...object.Object) object.Object {
 		"set", args,
 		typing.ExactArgs(3),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	if args[0].Type() == object.HASH_OBJ {
 		key, ok := args[1].(object.Hashable)
@@ -21,9 +23,7 @@ func setFun(args ...object.Object) object.Object {
 		}
 		newHash := make(map[object.HashKey]object.HashPair)
 		hash := args[0].(*object.Hash)
-		for k, v := range hash.Pairs {
-			newHash[k] = v
-		}
+		maps.Copy(newHash, hash.Pairs)
 		newHashKey := key.HashKey()
 		newHashPair := object.HashPair{Key: args[1], Value: args[2]}
 		newHash[newHashKey] = newHashPair
@@ -42,9 +42,14 @@ func setFun(args ...object.Object) object.Object {
 		return newArray
 	}
 	if args[0].Type() == object.STRING_OBJ {
+		var val string
 		text := args[0].(*object.String).Value
 		texty := make([]byte, len(text))
-		val := args[2].(*object.String).Value
+		if args[2].Type() != object.STRING_OBJ {
+			return newError("StringError: Argument to insert must be of type STRING")
+		} else {
+			val = args[2].(*object.String).Value
+		}
 		if len(val) != 1 {
 			return newError("StringError: Inserted string must be one character")
 		}
@@ -57,7 +62,9 @@ func setFun(args ...object.Object) object.Object {
 			}
 		}
 		texty[elem] = val[0]
-		return &object.String{Value: string(texty[:])}
+		text = string(texty[:])
+		return &object.String{Value: string(text[:])}
 	}
+
 	return newError("argument to set() not supported, expected HASH, ARRAY or STRING, got=%s", args[0].Type())
 }

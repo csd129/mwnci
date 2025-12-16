@@ -11,7 +11,7 @@ func mathCos(args ...object.Object) object.Object {
 		"cos", args,
 		typing.ExactArgs(1),
 	); err != nil {
-		return newError( err.Error())
+		return newError("%s", err.Error())
 	}
 
 	switch arg := args[0].(type) {

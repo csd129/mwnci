@@ -11,7 +11,7 @@ func harrayDelete(args ...object.Object) object.Object {
 		"delete", args,
 		typing.ExactArgs(2),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	} 
 
 	if args[0].Type() == object.HASH_OBJ {

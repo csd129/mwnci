@@ -12,7 +12,7 @@ func Base64Enc(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	data := []byte(args[0].(*object.String).String())
 	return &object.String{Value: base64.StdEncoding.EncodeToString(data)}

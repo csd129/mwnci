@@ -13,7 +13,7 @@ func FCp(args ...object.Object) object.Object {
 		typing.ExactArgs(2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	orig := args[0].String()
@@ -21,18 +21,18 @@ func FCp(args ...object.Object) object.Object {
 
 	source, err := os.Open(orig)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	defer source.Close()
 
 	destination, err := os.Create(dest)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	defer destination.Close()
 	nBytes, err := io.Copy(destination, source)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.Integer{Value: nBytes}
 }

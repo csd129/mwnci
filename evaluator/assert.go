@@ -11,10 +11,10 @@ import (
 func Assert(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"assert", args,
-		typing.RangeOfArgs(2,3),
+		typing.RangeOfArgs(2, 3),
 		typing.WithTypes(object.BOOLEAN_OBJ, object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	if !args[0].(*object.Boolean).Value {

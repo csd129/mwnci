@@ -14,7 +14,7 @@ func exitFun(args ...object.Object) object.Object {
 		typing.RangeOfArgs(0, 1),
 		typing.WithTypes(object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	code := 0

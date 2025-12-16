@@ -15,7 +15,7 @@ func Syslog(args ...object.Object) object.Object {
 		typing.ExactArgs(3),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	var (
 		logwriter *syslog.Writer

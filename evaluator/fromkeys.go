@@ -12,7 +12,7 @@ func FromKeys(args ...object.Object) object.Object {
 		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.ARRAY_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	Value := int64(0)

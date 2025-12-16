@@ -11,7 +11,7 @@ func Cls(args ...object.Object) object.Object {
 		"cls", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	//

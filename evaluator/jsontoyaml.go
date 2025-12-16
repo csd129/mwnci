@@ -13,14 +13,14 @@ func jtoy(args ...object.Object) object.Object {
 		"jsontoyaml", args,
 		typing.ExactArgs(1),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	Stringy := fmt.Sprintf("%v", &object.String{Value: args[0].String()})
 	Json := []byte(Stringy)
 	Yaml, err := yaml.JSONToYAML(Json)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.String{Value: string(Yaml)}
 }

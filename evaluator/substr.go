@@ -11,7 +11,7 @@ func subStrFun(args ...object.Object) object.Object {
 		typing.RangeOfArgs(2, 3),
 		typing.WithTypes(object.STRING_OBJ, object.INTEGER_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	text := args[0].(*object.String).Value

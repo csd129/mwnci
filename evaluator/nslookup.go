@@ -13,7 +13,7 @@ func NSLookup(args ...object.Object) object.Object {
 		typing.RangeOfArgs(0, 2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	domain := args[0].(*object.String).Value

@@ -53,7 +53,7 @@ func FOpen(args ...object.Object) object.Object {
 		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	var (
@@ -70,7 +70,7 @@ func FOpen(args ...object.Object) object.Object {
 
 	flag, err := parseMode(mode)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	fd, err := syscall.Open(filename, flag, perm)

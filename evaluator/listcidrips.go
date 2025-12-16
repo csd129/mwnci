@@ -13,14 +13,14 @@ func Listcidrips(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	network := args[0].(*object.String).Value
 	ip, ipnet, err := net.ParseCIDR(network)
 	ip_array := make([]object.Object, 0)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	for ip := ip.Mask(ipnet.Mask); ipnet.Contains(ip); IncIP(ip) {
 		ip_array = append(ip_array, &object.String{Value: fmt.Sprint(ip)})

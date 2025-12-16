@@ -12,7 +12,7 @@ func Cargs(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	s := args[0].(*object.String).Value

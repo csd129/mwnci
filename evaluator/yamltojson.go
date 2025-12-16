@@ -13,14 +13,14 @@ func ytoj(args ...object.Object) object.Object {
 		"yamltojson", args,
 		typing.ExactArgs(1),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	Stringy := fmt.Sprintf("%v", &object.String{Value: args[0].String()})
 	Yaml := []byte(Stringy)
 	Json, err := yaml.YAMLToJSON(Yaml)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.String{Value: string(Json)}
 }

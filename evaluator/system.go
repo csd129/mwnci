@@ -13,7 +13,7 @@ func System(args ...object.Object) object.Object {
 		typing.RangeOfArgs(1, 2),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	full_command := args[0].(*object.String).Value

@@ -12,7 +12,7 @@ func Getegid(args ...object.Object) object.Object {
 		"getegid", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.Integer{Value: int64(os.Getegid())}
 }

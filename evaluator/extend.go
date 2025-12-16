@@ -11,7 +11,7 @@ func ArrExtend(args ...object.Object) object.Object {
 		"extend", args,
 		typing.MinimumArgs(2),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	arr1 := args[0].(*object.Array)
 	newArray := arr1.Copy()

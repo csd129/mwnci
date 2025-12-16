@@ -11,7 +11,7 @@ func Unzip(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.ARRAY_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	Array := args[0].(*object.Array).Elements

@@ -11,7 +11,7 @@ func FunLen(args ...object.Object) object.Object {
 		"len", args,
 		typing.ExactArgs(1),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	if _, ok := args[0].(*object.Null); ok {
 		return &object.Integer{Value: 0}

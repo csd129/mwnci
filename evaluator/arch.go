@@ -11,8 +11,7 @@ func Arch(args ...object.Object) object.Object {
 		"arch", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.String{Value: runtime.GOARCH}
 }
-

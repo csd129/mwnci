@@ -11,7 +11,7 @@ func Args(args ...object.Object) object.Object {
 		"args", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	X := false
 	l := len(os.Args[1:])
@@ -24,7 +24,7 @@ func Args(args ...object.Object) object.Object {
 	for i, txt := range os.Args[1:] {
 		result[i] = &object.String{Value: txt}
 	}
-	if X == true && l > 1{
+	if X == true && l > 1 {
 		newresult := Shift(&object.Array{Elements: result})
 		return newresult
 	}

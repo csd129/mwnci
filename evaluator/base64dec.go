@@ -1,11 +1,11 @@
 package evaluator
 
 import (
-	"os"
+	"encoding/base64"
 	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
-	"encoding/base64"
+	"os"
 )
 
 func Base64Dec(args ...object.Object) object.Object {
@@ -14,7 +14,7 @@ func Base64Dec(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	data := args[0].(*object.String).String()
 	decoded, err := base64.StdEncoding.DecodeString(data)
@@ -24,4 +24,3 @@ func Base64Dec(args ...object.Object) object.Object {
 	}
 	return &object.String{Value: string(decoded)}
 }
-

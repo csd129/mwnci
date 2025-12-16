@@ -12,7 +12,7 @@ func Date(args ...object.Object) object.Object {
 		"date", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	current_time := time.Now()

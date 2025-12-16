@@ -12,7 +12,7 @@ func EnvFun(args ...object.Object) object.Object {
 		"env", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	newHash := make(map[object.HashKey]object.HashPair)
 	for _, value := range os.Environ() {

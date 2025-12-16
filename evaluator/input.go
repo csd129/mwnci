@@ -13,7 +13,7 @@ func Input(args ...object.Object) object.Object {
 		typing.RangeOfArgs(0, 1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	prompt := "> "
 	if len(args) == 1 {

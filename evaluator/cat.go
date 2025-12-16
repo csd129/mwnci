@@ -20,18 +20,18 @@ func ZConCat(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	filename := args[0].(*object.String).Value
 	data, err := os.Open(filename)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	defer data.Close()
 	buff := make([]byte, 512)
 	if _, err = data.Read(buff); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	fileType := http.DetectContentType(buff)
 	switch fileType {
@@ -54,7 +54,7 @@ func ConCat(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	filename := args[0].(*object.String).Value
@@ -71,7 +71,7 @@ func GzCat(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	filename := args[0].(*object.String).Value
@@ -98,7 +98,7 @@ func BzCat(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	filename := args[0].(*object.String).Value

@@ -10,7 +10,7 @@ func ArrUnion(args ...object.Object) object.Object {
 		"union", args,
 		typing.MinimumArgs(2),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	newArray := args[0].(*object.Array).Copy()
 	for i := 1; i < len(args); i++ {

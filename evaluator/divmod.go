@@ -11,7 +11,7 @@ func Divmod(args ...object.Object) object.Object {
 		typing.ExactArgs(2),
 		typing.WithTypes(object.INTEGER_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	a := args[0].(*object.Integer)

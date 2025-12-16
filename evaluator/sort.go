@@ -9,18 +9,17 @@ import (
 )
 
 // Sorted ...
-func Sorted(args ...object.Object) object.Object {
+func Sortit(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"sort", args,
 		typing.ExactArgs(1),
 		typing.WithTypes(object.ARRAY_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	arr := args[0].(*object.Array)
-	newArray := arr.Copy()
-	sort.Sort(newArray)
-	return newArray
+	sort.Sort(arr)
+	return arr
 }
 

@@ -17,12 +17,12 @@ func HttpPostNoProxy(args ...object.Object) object.Object {
 	data := args[2].(*object.String).Value
 	resp, err := http.Post(url, content, bytes.NewBuffer([]byte(data)))
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	defer resp.Body.Close()
 	b, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.String{Value: string(b)}
 }
@@ -34,7 +34,7 @@ func HttpPost(args ...object.Object) object.Object {
 		typing.RangeOfArgs(3, 4),
 		typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ, object.STRING_OBJ, object.INTEGER_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	PROXY := os.Getenv("HTTP_PROXY")
 	if len(PROXY) == 0 {
@@ -42,7 +42,7 @@ func HttpPost(args ...object.Object) object.Object {
 	}
 	proxyURL, err := url.Parse(PROXY)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	url := args[0].(*object.String).Value
 	content := args[1].(*object.String).Value
@@ -60,11 +60,11 @@ func HttpPost(args ...object.Object) object.Object {
 	req.Header.Add("Content-Type", content)
 	resp, err := client.Do(req)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	b, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	return &object.String{Value: string(b)}

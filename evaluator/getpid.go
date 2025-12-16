@@ -11,7 +11,7 @@ func getPidFun(args ...object.Object) object.Object {
 		"getpid", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	return &object.Integer{Value: int64(os.Getpid())}
 }

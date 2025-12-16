@@ -14,7 +14,7 @@ func Cd(args ...object.Object) object.Object {
 		typing.RangeOfArgs(0, 1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	if len(args) == 1 {
 		dir = args[0].(*object.String).Value

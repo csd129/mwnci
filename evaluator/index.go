@@ -14,7 +14,7 @@ func Index(args ...object.Object) object.Object {
 		"index", args,
 		typing.ExactArgs(2),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	// index("foobar", "bo")
@@ -23,7 +23,7 @@ func Index(args ...object.Object) object.Object {
 			"index", args,
 			typing.WithTypes(object.STRING_OBJ, object.STRING_OBJ),
 		); err != nil {
-			return newError(err.Error())
+			return newError("%s", err.Error())
 		}
 
 		needle := args[1].(*object.String)
@@ -53,7 +53,7 @@ func Contains(args ...object.Object) object.Object {
 		"contains", args,
 		typing.ExactArgs(2),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	if args[0].Type() != object.STRING_OBJ && args[0].Type() != object.ARRAY_OBJ {

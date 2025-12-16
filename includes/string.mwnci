@@ -146,6 +146,7 @@ if (!INCLUDE["STRING"]) {
     }
 
     function zfill(Text="", Len=0) {
+        Zeros=""
         if (!checkfunctype("zfill", "string", Text, 1)) {exit(1)}
         if (!checkfunctype("zfill", "integer", Len, 2)) {exit(1)}
         StringLength=len(Text)

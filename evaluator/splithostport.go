@@ -12,13 +12,13 @@ func SplitHP(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	Data := args[0].(*object.String).String()
 
 	host, port, err := net.SplitHostPort(Data)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	elements := make([]object.Object, 2)
 	elements[0] = &object.String{Value: host}

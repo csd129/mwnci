@@ -15,17 +15,17 @@ func RevCat(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	filename := args[0].(*object.String).Value
 	file, err := os.Open(filename)
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	fileStatus, err := file.Stat()
 	if err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	defer file.Close()
 	scanner := NewScan(file, int(fileStatus.Size()))
@@ -36,7 +36,7 @@ func RevCat(args ...object.Object) object.Object {
 			break
 		}
 		if err != nil  {
-			return newError(err.Error())
+			return newError("%s", err.Error())
 		}
 		StringBuffer.WriteString(string(line) + "\n")
 	}

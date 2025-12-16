@@ -12,7 +12,7 @@ func Hostname(args ...object.Object) object.Object {
 		"hostname", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 	hostname, err := os.Hostname()
 	if err != nil {
