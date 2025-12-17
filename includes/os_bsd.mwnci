@@ -5,42 +5,16 @@ if (!INCLUDE["OSBSD"]) {
     }
     
     function free() {
-        SysHash={}
-        Sysctl=split(trim(system("sysctl hw.physmem hw.pagesize vm.stats.vm.")), "\n")
-        foreach Line in Sysctl {
-            SLine=partition(Line, ": ")
-            if (isnum(SLine[2])) {
-                SysHash=set(SysHash, SLine[0], float(SLine[2]))
-            }
-         }
-         Swap=split(trim(system("swapinfo")), "\n")
-         SwapData=Swap[1]
-         SwapData=fields(SwapData)
-         SwapSize=int(SwapData[1])
-         SwapUsed=int(SwapData[2])
-         SwapFree=int(SwapData[3])
-         ChipSize=float(1)
-         ChipGuess=(SysHash["hw.physmem"]/8)-1
-         while (ChipGuess != 0) {
-             ChipGuess = int(ChipGuess) >> 1
-             ChipSize = int(ChipSize) << 1
-         }
-         MemHW=(int(SysHash["hw.physmem"]/ChipSize) +1) * ChipSize
-         PageSize=SysHash["hw.pagesize"]
-         MemPhys=SysHash["hw.physmem"]
-         MemAll=(SysHash["vm.stats.vm.v_page_count"] * PageSize) / 1024
-         MemWire=(SysHash["vm.stats.vm.v_wire_count"] * PageSize) / 1024
-         MemActive=(SysHash["vm.stats.vm.v_active_count"] * PageSize) / 1024
-         MemInActive=(SysHash["vm.stats.vm.v_inactive_count"] * PageSize) / 1024
-         MemFree=(SysHash["vm.stats.vm.v_free_count"] * PageSize) / 1024
-         MemTotal=MemHW / 1024
-         MemAvail=MemInActive + MemFree
-         MemUsed=MemTotal - MemAvail
-         MemCache=MemAvail - MemFree
-         MemHash={"mem": {"buffcache": int(MemCache), "available": int(MemAvail), "total": int(MemTotal), "used": int(MemUsed), "free": int(MemFree)}}
-         SwapHash={"free": int(SwapFree), "total": int(SwapSize), "used": int(SwapUsed)}
-         MemHash=set(MemHash, "swap", SwapHash)
-         return MemHash
+        Swap=split(trim(system("swapinfo")), "\n")
+        SwapData=fields(Swap[1])
+        SwapSize=int(SwapData[1])
+        SwapUsed=int(SwapData[2])
+        SwapFree=int(SwapData[3])
+        Mem=memstat()
+        MemHash={"mem": {"buffcache": Mem["buffers"] / 1024, "available": Mem["available"] / 1024, "total": Mem["total"] / 1024, "used": Mem["used"] / 1024, "free": Mem["free"] / 1024}}
+        SwapHash={"free": int(SwapFree), "total": int(SwapSize), "used": int(SwapUsed)}
+        MemHash=set(MemHash, "swap", SwapHash)
+        return MemHash
     }
 
     function getcpu(CpuArg="") {
