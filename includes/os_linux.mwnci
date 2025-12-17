@@ -2,42 +2,11 @@ if (!INCLUDE["OSLINUX"]) {
     INCLUDE=set(INCLUDE, "OSLINUX", true)
 
     function free() {
-        MemData=split(trim(cat("/proc/meminfo")), "\n")
-        MemHash={}
-        foreach Line in MemData {
-            Line=replaceall(Line, ":", "")
-            Sline=fields(Line)
-            MemHash=set(MemHash, Sline[0], int(Sline[1]))
-        }
-        total=MemHash["MemTotal"]
-
-//
-// It appears older kernels don't supply KReclaimable
-//
-        if (!MemHash["KReclaimable"]) {
-            MemHash=set(MemHash, "KReclaimable", 0)
-        }
-        buffcache=MemHash["Cached"] + MemHash["KReclaimable"] + MemHash["Buffers"]
-        memfree=MemHash["MemFree"]
-        shared=MemHash["Shmem"]
-        if (MemHash["MemAvailable"]) {
-            available=MemHash["MemAvailable"]
-        } else {
-            available=memfree + MemHash["Cached"]
-        }
-        used=total - available
-        swaptotal=MemHash["SwapTotal"]
-        swapfree=MemHash["SwapFree"]
-        swapused=swaptotal - swapfree
-        Free={
-            "mem": {
-            "total": total, "used": used, "free": memfree, "shared": shared, "buffcache": buffcache, "available": available
-            },
-            "swap": {
-            "total": swaptotal, "used": swapused, "free": swapfree
-            }
-        }
-        return Free
+        Mem=memstat()
+        MemHash={"mem": {"buffcache": Mem["buffers"] / 1024, "available": Mem["available"] / 1024, "total": Mem["total"] / 1024, "used": Mem["used"] / 1024, "free": Mem["free"] / 1024}}
+        SwapHash={"free": Mem["swapfree"] / 1024, "total": Mem["swaptotal"] / 1024, "used": (Mem["swaptotal"] - Mem["swapfree"]) / 1024}
+        MemHash=set(MemHash, "swap", SwapHash)
+        return MemHash
     }
 
     function hashstats(Data) {
