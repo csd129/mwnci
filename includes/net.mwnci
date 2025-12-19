@@ -16,7 +16,7 @@ if (!INCLUDE["NET"]) {
             IPArray=usort(split(trim(system("awk '/32 host/ {print f} {f=$2}' /proc/net/fib_trie")), "\n"))
 	    return IPArray
         }
-	CMD=""
+        CMD=""
         if (isexist("/sbin/ifconfig")) {
             CMD="/sbin/ifconfig -a; exit 0"
         } else {
@@ -32,10 +32,10 @@ if (!INCLUDE["NET"]) {
                     IPArray=IPArray.push(split(Line[1], "/")[0])
                 }
             }
-	}
-	if (len(IPArray) == 0) {
-	    IPArray=["127.0.0.1"]
-	}
+        }
+        if (len(IPArray) == 0) {
+            IPArray=["127.0.0.1"]
+        }
         return IPArray
     }
     
@@ -141,7 +141,7 @@ if (!INCLUDE["NET"]) {
         if (Port != 0 && len(OfHash) > 0) {
             return (len(OfHash[string(Port)]) > 0) ? OfHash[string(Port)] : {}
         }
-            return OfHash
+        return OfHash
     }
     
     function integer.port2pid() {

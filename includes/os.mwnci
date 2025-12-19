@@ -37,10 +37,10 @@ if (!INCLUDE["OS"]) {
     }
 
     function df() {
-        if (!checkfunctype("df", "string", Fs, 1)) {exit(1)}
+        if (!checkfunctype("df", "string", Fs="", 1)) {exit(1)}
         DiskHash={}
         Cmd="df"
-	if (len(Fs) != 0) {
+        if (len(Fs) != 0) {
             if (isexist(Fs)) {
                 Cmd=Cmd + " " + Fs
             } else {
@@ -130,10 +130,7 @@ if (!INCLUDE["OS"]) {
     function loadavg() {
         Data=fields(trim(system("uptime")))
         Last=len(Data)-1
-        fifteen=float(trim(Data[Last],","))
-        five=float(trim(Data[Last-1], ","))
-        one=float(trim(Data[Last-2], ","))
-        return [one, five, fifteen]
+        return [float(trim(Data[Last-2], ",")), float(trim(Data[Last-1], ",")), float(trim(Data[Last],","))]
     }
 
     function string.datetoepoch(Format="") {

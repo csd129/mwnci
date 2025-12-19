@@ -3,6 +3,7 @@ package evaluator
 import (
 	"mwnci/object"
 	"mwnci/typing"
+
 	"github.com/shirou/gopsutil/v4/mem"
 )
 
@@ -11,7 +12,7 @@ func Memstat(args ...object.Object) object.Object {
 		"memstat", args,
 		typing.ExactArgs(0),
 	); err != nil {
-		return newError(err.Error())
+		return newError("%s", err.Error())
 	}
 
 	newHash := make(map[object.HashKey]object.HashPair)
