@@ -23,3 +23,5 @@ The wiki can be found [here](https://monkey.ploogie.co.uk).
  make build
  make install
  ```
+## Contributing
+If you feel the urge, there's nothing stopping you making a pull request to add/fix/replace & just generally doing stuff. There's much room for improvement.
