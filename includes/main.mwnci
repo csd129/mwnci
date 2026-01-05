@@ -588,19 +588,46 @@ if (!INCLUDE["MAIN"]) {
         switch (OS) {
             case /bsd/ , /darwin/ {
                 if (Tty[0] == "v") {
-		    TermDev="/dev/tty" + Tty
-		} else {
-                    TermDev"/dev/pts/" + Tty
-		}
+                    TermDev="/dev/tty" + Tty
+                } else {
+                    TermDev="/dev/pts/" + Tty
+                }
             }
             default {
                 TermDev="/dev/" + Tty
             }
         }
-	if (len(TermDev) > 0) {
+        if (len(TermDev) > 0) {
             return TermDev
         } else {
             return "not a tty"
         }
     }
+
+    function first(MyArray=[]) {
+        if (!checkfunctype("first", "array", MyArray)) {exit(1)}
+        if (len(MyArray) > 0) {
+            return MyArray[0]
+        }
+	return NULL
+    }
+
+    function last(MyArray=[]) {
+        if (!checkfunctype("last", "array", MyArray)) {exit(1)}
+        Length=len(MyArray)
+	if (Length > 0) {
+            return MyArray[Length-1]
+        }
+        return NULL
+    }
+
+    function divmod(a=0, b=0) {
+        if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
+        if (!checkfunctype("divmod", "integer", b, 2)) {exit(1)}
+        Array=[]
+        Array=push(Array, a / b)
+        Array=push(Array, a % b)
+        return Array
+    }
 }
+

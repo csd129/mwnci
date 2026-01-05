@@ -6,6 +6,7 @@ type BuiltinFunction func(env *Environment, args ...Object) Object
 // Builtin wraps func and implements Object interface.
 type Builtin struct {
 	// Value holds the function we wrap.
+	Name string
 	Fn BuiltinFunction
 }
 

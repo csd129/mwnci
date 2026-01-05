@@ -19,7 +19,7 @@ trap "rm -f ${TEMP}" 0 1 2 3 5 15
 . ./${CONFIG}
 
 INFILE=$(find . -name \*.in)
-emconsts=`find includes -name \*.mwnci -exec  grep -w "const.*=.*;$" {} \; | tr '=' ' ' | awk '{printf("\"%s\"\n", $2)}' | tr '\n' ' '`
+emconsts=`find includes -name \*.mwnci -exec  grep -w "const.*=.*" {} \; | tr '=' ' ' | awk '{printf("\"%s\"\n", $2)}' | tr '\n' ' '`
 vimconsts=`echo $emconsts | sed -e s/"\""/""/g`
 emincludes=`find includes -name \*.mwnci -exec awk '$1 == "function"' {} \; | tr '(' ' '  | awk '{printf("\"%s\"\n", $2)}' | grep -v "\." | tr '\n' ' '`
 vimincludes=`echo $emincludes | sed -e s/"\""/""/g | sed -e s/"contains"/"cont\[ains\]"/g`
@@ -32,16 +32,16 @@ do
     cat $n |\
     sed -e s:"@BIN@":"${BIN}":g \
         -e s:"@INCLUDE@":"${INCLUDE}":g \
-	-e s:"@OWNER@":"${OWNER}":g \
-	-e s:"@GROUP@":"${GROUP}":g \
-	-e s:"@CONSTS@":"${emconsts}":g \
-	-e s:"@VIMCONSTS@":"${vimconsts}":g \
-	-e s:"@EMFUNCTIONS@":"${emfunctions}":g \
-	-e s:"@VIMFUNCTIONS@":"${vimfunctions}":g \
-	-e s:"@EMINCLUDES@":"${emincludes}":g \
-	-e s:"@VIMINCLUDES@":"${vimincludes}":g \
-	-e s:"@VERSION@":"${VERSION}":g \
-	> ${TEMP}
+        -e s:"@OWNER@":"${OWNER}":g \
+        -e s:"@GROUP@":"${GROUP}":g \
+        -e s:"@CONSTS@":"${emconsts}":g \
+        -e s:"@VIMCONSTS@":"${vimconsts}":g \
+        -e s:"@EMFUNCTIONS@":"${emfunctions}":g \
+        -e s:"@VIMFUNCTIONS@":"${vimfunctions}":g \
+        -e s:"@EMINCLUDES@":"${emincludes}":g \
+        -e s:"@VIMINCLUDES@":"${vimincludes}":g \
+        -e s:"@VERSION@":"${VERSION}":g \
+        > ${TEMP}
      [ -s ${TEMP} ] && mv ${TEMP} ${new}
 done
 rm -f ${TEMP}

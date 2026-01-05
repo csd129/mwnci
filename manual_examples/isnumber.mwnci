@@ -1,10 +1,6 @@
 #!/usr/bin/env mwnci
 include("string")
-list = ["0not",34.2,"16.two",37,94,0.3,-2.8,"+77"];
+list = ["0not", "34.2", "16.two","37", "94", "0.3" ,"-2.8" ,"+77"];
 foreach X in list {
-    if (isnum(X)) {
-        print(X," is a number.\n");
-    } else {
-        print("Sorry, ",X," is not a number.\n");
-    }
+ println(isnum(X))
 }
