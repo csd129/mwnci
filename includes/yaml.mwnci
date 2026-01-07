@@ -2,7 +2,7 @@ if (!INCLUDE["JSON"]) {
     INCLUDE=set(INCLUDE, "JSON", true)
 
     function loadyaml(Filename="") {
-        if (!checkfunctype("loadjson", "string", Filename, 1)) {exit(1)}
+        if (!checkfunctype("loadyaml", "string", Filename, 1)) {exit(1)}
         if (isreadable(Filename)) {
             Yaml=trim(cat(Filename))
             Json=yamltojson(Yaml)
