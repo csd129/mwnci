@@ -10,6 +10,7 @@ func ArrExtend(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"extend", args,
 		typing.MinimumArgs(2),
+		typing.WithTypes(object.ARRAY_OBJ),
 	); err != nil {
 		return newError("%s", err.Error())
 	}
