@@ -1,0 +1,22 @@
+if (!INCLUDE["JSON"]) {
+    INCLUDE=set(INCLUDE, "JSON", true)
+
+    function tojson(JsonData) {
+        Yaml=jsontoyaml(JsonData)
+        Json=eval(yamltojson(Yaml))
+        return Json
+    }
+
+    function loadjson(Filename="") {
+        if (!checkfunctype("loadjson", "string", Filename, 1)) {exit(1)}
+        if (isreadable(Filename)) {
+            Json=trim(cat(Filename))
+	    return (isjson(Json)) ? eval(Json) : null
+        }
+    }
+
+    function savejson(Filename="", Json=[]) {
+        if (!checkfunctype("savejson", "string", Filename, 1)) {exit(1)}
+        writetofile(Filename, "w", pjson(tojson(Json)))
+    }
+}

@@ -5,7 +5,7 @@ GROUP=@GROUP@
 
 dummy:
 
-install: ${FILES}
+install: 
 	${INSTALL} -m 0755 -d  ${INCLUDEDIR}
 	${INSTALL} -C -m 0644 -o ${OWNER} -g ${GROUP} *.mwnci ${INCLUDEDIR}
 

@@ -609,13 +609,13 @@ if (!INCLUDE["MAIN"]) {
         if (len(MyArray) > 0) {
             return MyArray[0]
         }
-	return NULL
+        return NULL
     }
 
     function last(MyArray=[]) {
         if (!checkfunctype("last", "array", MyArray)) {exit(1)}
         Length=len(MyArray)
-	if (Length > 0) {
+        if (Length > 0) {
             return MyArray[Length-1]
         }
         return NULL
