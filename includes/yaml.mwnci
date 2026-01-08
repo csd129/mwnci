@@ -1,5 +1,5 @@
-if (!INCLUDE["JSON"]) {
-    INCLUDE=set(INCLUDE, "JSON", true)
+if (!INCLUDE["YAML"]) {
+    INCLUDE=set(INCLUDE, "YAML", true)
 
     function loadyaml(Filename="") {
         if (!checkfunctype("loadyaml", "string", Filename, 1)) {exit(1)}
