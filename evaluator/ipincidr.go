@@ -25,8 +25,7 @@ func Ipincidr(args ...object.Object) object.Object {
 	}
 	ip := net.ParseIP(clientip)
 	if subnet.Contains(ip) {
-		return &object.String{Value: string(clientip)}
+		return TRUE
 	}
 	return FALSE
 }
-

@@ -1,10 +1,10 @@
 package evaluator
 
 import (
-	"net"
 	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
+	"net"
 )
 
 func CheckIP(args ...object.Object) object.Object {
@@ -19,10 +19,9 @@ func CheckIP(args ...object.Object) object.Object {
 	clientip := args[0].(*object.String).Value
 
 	ip := fmt.Sprintf("%v", net.ParseIP(clientip))
-	
+
 	if ip != clientip {
 		return FALSE
 	}
-	return &object.String{Value: clientip}
+	return TRUE
 }
-
