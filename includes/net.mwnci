@@ -12,7 +12,7 @@ if (!INCLUDE["NET"]) {
 
     function myip() {
         IPArray=[]
-	if (!isreadable("/proc/net/fib_trie")) {
+	if (isreadable("/proc/net/fib_trie")) {
             IPArray=usort(split(trim(system("awk '/32 host/ {print f} {f=$2}' /proc/net/fib_trie")), "\n"))
 	    return IPArray
         }
