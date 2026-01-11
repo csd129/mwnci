@@ -29,4 +29,20 @@ if (!INCLUDE["NETBSD"]) {
 		}
 		return NetArray
     }
+
+	function route() {
+        RouteArray=[]
+        Data=split(trim(system("netstat -nr")), "\n")
+		foreach Line in Data {
+			if (Line !~ /^$|^[A-Z]/ ) {
+				SLine=fields(Line)
+				if (SLine[0] == "default") {
+					SLine=set(SLine, 0, "0.0.0.0")
+				}
+				TempHash={"destination": SLine[0], "gateway": SLine[1], "flags": SLine[2], "iface": SLine[len(SLine)-1]}
+				RouteArray=push(RouteArray, TempHash)
+			}
+		}
+		return RouteArray
+    }
 }
