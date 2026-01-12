@@ -50,7 +50,7 @@ if (!INCLUDE["NETLINUX"]) {
             mtu=int(Sline[8])
             window=int(Sline[9])
             irtt=int(Sline[10])
-            TempHash={"iface": iface, "desination": dest, "gateway": gway, "flags": flags, "refcnt": refcnt, "use": use, "metric": metric, "mask": mask, "mtu": mtu, "window": window, "irtt": irtt}
+            TempHash={"iface": iface, "destination": dest, "gateway": gway, "flags": flags, "refcnt": refcnt, "use": use, "metric": metric, "mask": mask, "mtu": mtu, "window": window, "irtt": irtt}
             Route=Route.push(TempHash)
         }
         return Route
