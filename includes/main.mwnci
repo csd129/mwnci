@@ -93,7 +93,11 @@ if (!INCLUDE["MAIN"]) {
         Hex=reverse(trimprefix(Hex, "0X"))
         Sum=0
         foreach I, V in Hex {
-            Sum += HDict[V] * (16 ** I)
+            if (!HDict[V]) {
+	        return false
+            } else {
+                Sum += HDict[V] * (16 ** I)
+            }
         }
         return Sum
     }
@@ -622,12 +626,12 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function divmod(a=0, b=0) {
-        if (!checkfunctype("divmod", "integer", a, 1)) {exit(1)}
-        if (!checkfunctype("divmod", "integer", b, 2)) {exit(1)}
-        Array=[]
-        Array=push(Array, a / b)
-        Array=push(Array, a % b)
-        return Array
+        if (!checkfunctype("divmod", "number", a, 1)) {exit(1)}
+        if (!checkfunctype("divmod", "number", b, 2)) {exit(1)}
+	Num=float(a) / float(b)
+	Quotient=float(int(Num))
+        Remainder=float(b) * (Num-Quotient)
+        return [Quotient, Remainder]
     }
 }
 
