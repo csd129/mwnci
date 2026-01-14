@@ -73,7 +73,7 @@ if (!INCLUDE["FILE"]) {
     
     function isfifo(Filename="") {
         return (istype("FIFO", Filename, "isfifo"))
-   }
+    }
     
     function islink(Filename="") {
         return (istype("LINK", Filename, "islink"))
@@ -240,8 +240,8 @@ if (!INCLUDE["FILE"]) {
         Fstat1=stat(File1)
         Fstat2=stat(File2)
         if (Fstat1["inode"] == Fstat2["inode"] &&
-                Fstat1["major"] == Fstat2["major"] &&
-                Fstat1["minor"] == Fstat2["minor"]) {
+            Fstat1["major"] == Fstat2["major"] &&
+            Fstat1["minor"] == Fstat2["minor"]) {
             return true
         }
         return false

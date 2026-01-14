@@ -1,7 +1,7 @@
 if (!INCLUDE["STRING"]) {
     INCLUDE=set(INCLUDE, "STRING", true)
 
-    function ljust(Text="", Length, Spacer=" ") {
+    function ljust(Text="", Length=0, Spacer=" ") {
         if (!checkfunctype("ljust", "string", Text, 1)) {exit(1)}
         if (!checkfunctype("ljust", "integer", Length, 2)) {exit(1)}
         if (!checkfunctype("ljust", "string", Spacer, 3)) {exit(1)}
@@ -14,7 +14,7 @@ if (!INCLUDE["STRING"]) {
         return Text + Repeat
     }
 
-    function rjust(Text="", Length, Spacer=" ") {
+    function rjust(Text="", Length=0, Spacer=" ") {
         if (!checkfunctype("rjust", "string", Text, 1)) {exit(1)}
         if (!checkfunctype("rjust", "integer", Length, 2)) {exit(1)}
         if (!checkfunctype("rjust", "string", Spacer, 3)) {exit(1)}
@@ -27,7 +27,7 @@ if (!INCLUDE["STRING"]) {
         return Repeat + Text
     }
 
-    function center(Text="", Length, Spacer=" ") {
+    function center(Text="", Length=0, Spacer=" ") {
         if (!checkfunctype("center", "string", Text, 1)) {exit(1)}
         if (!checkfunctype("center", "integer", Length, 1)) {exit(1)}
         if (!checkfunctype("center", "string", Spacer, 3)) {exit(1)}
@@ -67,39 +67,39 @@ if (!INCLUDE["STRING"]) {
         return match("^[a-zA-Z]*$", String) ? true : false
     }
 
-    function isalnum(String) {
+    function isalnum(String="") {
         if (!checkfunctype("isalnum", "string", String, 1)) {exit(1)}
         return match("^[a-zA-Z0-9]*$", String) ? true : false
     }
 
-    function isnum(String) {
+    function isnum(String="") {
         if (!checkfunctype("isnum", "string", String, 1)) {exit(1)}
         if (len(String) == 0) {return false}
         return match("^[0-9]*$", String) ? true : false
     }
 
-    function isspace(Text) {
+    function isspace(Text="") {
         if (!checkfunctype("isspace", "string", Text, 1)) {exit(1)}
         if (len(Text) == 0) {return false}
         return (len(trim(Text)) == 0) ? true : false
     }
 
-    function islower(Text) {
+    function islower(Text="") {
         if (!checkfunctype("islower", "string", Text, 1)) {exit(1)}
         return (tolower(Text) == Text) ? true : false
     }
 
-    function istitle(Text) {
+    function istitle(Text="") {
         if (!checkfunctype("istitle", "string", Text, 1)) {exit(1)}
         return (title(Text) == Text) ? true : false
     }
     
-    function isupper(Text) {
+    function isupper(Text="") {
         if (!checkfunctype("isupper", "string", Text, 1)) {exit(1)}
         return (toupper(Text) == Text) ? true : false
     }
 
-    function swapcase(Text) {
+    function swapcase(Text="") {
         if (!checkfunctype("swapcase", "string", Text, 1)) {exit(1)}
         foreach i, n in Text {
             New = (isupper(n)) ? tolower(n) : toupper(n)
@@ -108,7 +108,7 @@ if (!INCLUDE["STRING"]) {
         return Text
     }
 
-    function capitalize(Text) {
+    function capitalize(Text="") {
         if (!checkfunctype("capitalize", "string", Text, 1)) {exit(1)}
         if (len(Text) == 0) {return Text}
         First=toupper(Text[0])
@@ -121,7 +121,7 @@ if (!INCLUDE["STRING"]) {
         return Text
     }
 
-    function partition(Text, Search) {
+    function partition(Text="", Search="") {
         if (!checkfunctype("partition", "string", Text, 1)) {exit(1)}
         if (!checkfunctype("partition", "string", Search, 2)) {exit(1)}
         Data=[Text, "", ""]

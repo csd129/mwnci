@@ -10,7 +10,7 @@ if (!INCLUDE["STATS"]) {
         if (!checkfunctype("covariance", "array", Y, 2)) {exit(1)}
         if (!checkfunctype("covariance", "string", Type, 3)) {exit(1)}
         Type=tolower(Type)
-	CVType=Type
+        CVType=Type
         if (len(Type) > 1) {
             println("Error calling `covariance`: ERROR: StringError: covariance() takes a single character `s` or `p` for the 2nd argument")
         }
@@ -91,7 +91,7 @@ if (!INCLUDE["STATS"]) {
         return (len(ModeArray) == 1) ? ModeArray[0] : ModeArray
     }
 
-    function average(MyArray) {
+    function average(MyArray=[]) {
         if (!checkfunctype("average", "array", MyArray, 1)) {exit(1)}
         if (len(MyArray) == 0) {
             println("Error calling `average`: ERROR: StatisticsError: No data")
@@ -104,7 +104,7 @@ if (!INCLUDE["STATS"]) {
     // For the mathematical pedants ;)
     //
 
-    function mean(ave_array) {
+    function mean(ave_array=[]) {
         if (!checkfunctype("mean", "array", ave_array, 1)) {exit(1)}
         if (len(ave_array) == 0) {
             println("Error calling `mean`: ERROR: StatisticsError: No data")
@@ -136,7 +136,7 @@ if (!INCLUDE["STATS"]) {
         return Median
     }
     
-    function harmonicmean(MyArray) {
+    function harmonicmean(MyArray=[]) {
         if (!checkfunctype("harmonicmean", "array", MyArray)) {exit(1)}
         if (len(MyArray) == 0) {
             println("Error calling `harmonicmean`: ERROR: StatisticsError: No data")
@@ -150,14 +150,14 @@ if (!INCLUDE["STATS"]) {
         return Obs / Counter
     }
 
-    function geomean(Array) {
+    function geomean(Array=[]) {
         if (!checkfunctype("geomean", "array", Array, 1)) {exit(1)}
-        if (len(Array) == 0) {
+        N=len(Array)
+        if (N == 0) {
             println("Error calling `geomean`: ERROR: StatisticsError: No data")
             exit(1)
         }
-        n=len(a)
-        return pow(product(a), (1.0/n))
+        return pow(product(Array), (1.0/N))
     }
     
     function array.mode() {

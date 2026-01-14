@@ -3,10 +3,10 @@ num=123
 float_num=123.456
 
 println("abs of ", num, ": ", abs(num))
-println("abs of ", float_num, ": ", abs(float(float_num)))
+println("abs of ", float_num, ": ", abs(float_num))
 
 num = num * -1
 float_num = float_num * -1
 
 println("abs of ", num, ": ", abs(num))
-println("abs of ", float_num, ": ", abs(float(float_num)))
+println("abs of ", float_num, ": ", abs(float_num))
