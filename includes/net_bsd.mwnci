@@ -45,4 +45,34 @@ if (!INCLUDE["NETBSD"]) {
         }
         return RouteArray
     }
+
+    function nettrans(Nic="") {
+        TransHash={}
+        Data=split(trim(system("netstat -idb")), "\n")
+        foreach Line in Data {
+            SLine=fields(Line)
+            if (SLine[2] ~= /Link/ ) {
+                if (SLine[0] !~ /^re/ ) {
+                    Iface=SLine[0]
+                    Rxok=SLine[4]
+                    Rxerr=SLine[5]
+                    Rxdrp=SLine[6]
+                    Txok=SLine[8]
+                    Txerr=SLine[9]
+                    Txdrp=SLine[12]
+                    DataHash={"RX-OK": Rxok, "RX-ERR": Rxerr, "RX-DRP": Rxdrp, "TX-OK": Txok, "TX-ERR": Txerr, "TX-DRP": Txdrp}
+                    TransHash=set(TransHash, Iface, DataHash)
+                }
+            }
+        }
+        if (Nic != "") {
+            Output=TransHash[Nic]
+            if (Output) {
+                Output=set(Output, "Iface", Nic)
+                return Output
+            }
+        } else {
+            return TransHash
+        }
+    }
 }
