@@ -166,11 +166,7 @@ if (!INCLUDE["MAIN"]) {
             Data=split(Data, "\n")
             IsString=true
         }
-        if (Lines < 1) {
-            println("Error calling `head`: ERROR: Length to head() is less than 1 [", Lines, "]")
-            exit(1)
-        }	    
-        if (Lines == 0) {Lines = 10}
+        if (Lines < 1) {Lines = 10}
         Length=len(Data)
         if (Lines >= Length) {
             if (IsString) {
@@ -321,14 +317,11 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("tail", "integer", Lines, 2)) {exit(1)}
         IsString=false
         if (type(data) == "string") {
+            data=trimsuffix(data, "\n")
             data=split(data, "\n")
     	    IsString=true
         }
-        if (Lines < 1) {
-            println("Error calling `tail`: ERROR: Length to tail() is less than 1 [", Lines, "]")
-            exit(1)
-        }	    
-        if (Lines == 0) {Lines = 10}
+        if (Lines < 1) {Lines = 10}
         l=len(data)
         if (Lines >= l) {
             if (IsString) {

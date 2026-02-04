@@ -65,7 +65,6 @@ func init() {
 	RegisterBuiltin("getwd", func(env *object.Environment, args ...object.Object) object.Object { return (Getwd(args...)) })
 	RegisterBuiltin("glob", func(env *object.Environment, args ...object.Object) object.Object { return (Glob(args...)) })
 	RegisterBuiltin("graph", func(env *object.Environment, args ...object.Object) object.Object { return (Graph(args...)) })
-//	RegisterBuiltin("pgraph", func(env *object.Environment, args ...object.Object) object.Object { return (PGraph(args...)) })
 	RegisterBuiltin("gzcat", func(env *object.Environment, args ...object.Object) object.Object { return (GzCat(args...)) })
 	RegisterBuiltin("hasprefix", func(env *object.Environment, args ...object.Object) object.Object { return (HasPrefix(args...)) })
 	RegisterBuiltin("hassuffix", func(env *object.Environment, args ...object.Object) object.Object { return (HasSuff(args...)) })

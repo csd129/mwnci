@@ -1,102 +1,241 @@
 include(
     "os"
 )
-    
+
 if (!INCLUDE["CERTS"]) {
     INCLUDE=set(INCLUDE, "CERTS", true)
-    
-    function getcert(Domain="", TimeOut=5) {
-        if (!checkfunctype("getcert", "string", Domain)) {
-            exit(1)
-        }
-        if (!checkfunctype("getcert", "integer", TimeOut, 2)) {
-            exit(1)
-        }
-        if (len(Domain) == 0) {
-            println("`getcert` expects a domain name, none given")
-    	    return false
-        }
-        Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 2>&1; exit 0", TimeOut, Domain, Domain)
-        Result=system(Command)
-        return contains(Result, "ERROR") ? NULL : Result
-    }
-    
-    function certexpiredays(File="") {
-        if (!checkfunctype("certexpiredays", "string", File)) {
-            exit(1)
-        }
-        CertFile=tmpnam("/tmp")
-        if (len(File) == 0) {
+
+    function extractcert(CertString="") {
+        if (!checkfunctype("extractcert", "string", CertString, 1)) {exit(1)}
+        if (len(CertString) == 0) {
+            println("`extractcert` expects a certificate string, none  given")
             return false
         }
-        if (!isreadable(File)) {
-            println("Error calling `certexpiredays`: ERROR: OpenError : Can't open file ", File)
-            exit(1)
-        }
-        Cert=getfileblock("-BEGIN CERTIFICATE-", "-END CERTIFICATE-", File)
-        writetofile(CertFile, "w", Cert)
-        Command=sprintf("openssl x509 -in %s -enddate -noout", CertFile)
-        CertDate=system(Command)
-        CertDate=trim(split(CertDate, "=")[1])
-        switch (OS) {
-            case /bsd/ , /darwin/ {
-                CertEpoch=datetoepoch(CertDate, "%b %e %T %Y %Z")
+        CertArray=[]
+	Certs=split(trim(CertString), "\n")
+        Certs=getblock("-----BEGIN CERTIFICATE-----", "-----END CERTIFICATE-----", Certs)
+        foreach Line in Certs {
+            if (Line == "-----BEGIN CERTIFICATE-----") {
+                 CertData=[]
             }
-            case "linux" {
-                CertEpoch=datetoepoch(CertDate)
+            CertData=push(CertData, Line)
+            if (Line == "-----END CERTIFICATE-----") {
+                CertData=join(CertData, "\n")
+                CertArray=push(CertArray, CertData + "\n")
             }
         }
-        unlink(CertFile)
-        return (CertEpoch - time()) / 86400
+        return CertArray
     }
-    
-    function sitecertexp(Domain="") {
-        if (!checkfunctype("sitecertexp", "string", Domain)) {
-            exit(1)
+   
+    function readsitecert(Domain="", TimeOut=5) {
+        if (!checkfunctype("readsitecert", "string", Domain, 1)) {exit(1)}
+        if (!checkfunctype("readsitecert", "integer", TimeOut, 2)) {exit(1)}
+
+        if (len(Domain) == 0) {
+            println("`readsitecert` expects a domain name, none given.")
+            return false
         }
-        TEMPF=tmpnam("/tmp")
-        CertInfo=getcert(Domain)
-        if (len(CertInfo) == 0) {
-            return 0
+
+        if (len(nslookup(Domain)) == 0) {
+            println("`readsitecert` error with domain lookup for ", Domain)
+            return false
         }
-        writefile(TEMPF, CertInfo)
-        CertDate=certexpiredays(TEMPF)
-        unlink(TEMPF)
-        return CertDate
+
+        Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 2>&1; exit 0", TimeOut, Domain, Domain)
+        Result=system(Command)
+	return contains(Result, "ERROR") ? NULL : extractcert(Result)
+    }
+
+    function readsitechain(Domain="", TimeOut=5) {
+        if (!checkfunctype("readsitechain", "string", Domain, 1)) {exit(1)}
+        if (!checkfunctype("readsitechain", "integer", TimeOut, 2)) {exit(1)}
+
+        if (len(Domain) == 0) {
+            println("`readsitechain` expects a domain name, none given.")
+            return false
+        }
+
+        if (len(nslookup(Domain)) == 0) {
+            println("`readsitechain` error with domain lookup for ", Domain)
+            return false
+        }
+
+        Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 -showcerts 2>&1; exit 0", TimeOut, Domain, Domain)
+        Result=system(Command)
+	return contains(Result, "ERROR") ? NULL : extractcert(Result)
     }
 
     function certsans(File="") {
         if (!checkfunctype("certsans", "string", File)) {exit(1)}
-        if (len(File) == 0) {
-            return false
+	if (isreadable(File)) {
+	    Data=trim(cat(File))
+            Data=certtojson(Data)
+	    return Data[0]["certificate"]["alternate_names"]
         }
-        if (!isreadable(File)) {
-            println("Error calling `certsans`: ERROR: OpenError : Can't open file ", File)
-            exit(1)
-        }
-        TempFile=tmpnam("/tmp")
-        Command=sprintf("openssl x509 -in %s -text -noout -dates 2>&1; exit 0", File)
-        writetofile(TempFile, "w", system(Command))
-        Found=[]
-        Data=regexp("DNS:([^\s,]+)", TempFile)
-        foreach Line in Data {
-            Line=replaceall(Line, "DNS:", "")
-            Line=fields(replaceall(Line, ",", ""))
-            Found=extend(Found, Line)
-        }
-        unlink(TempFile)
-        return sort(uniq(Found))
+        return false
     }
 
     function sitecertsans(Domain="") {
-        if (!checkfunctype("sitecertsans", "string", Domain)) {
-            exit(1)
+        if (!checkfunctype("sitecertsans", "string", Domain, 1)) {exit(1)}
+        if (len(Domain) == 0) {
+            println("`sitecertsans` expects a domain name, none given.")
+            return false
         }
-        TempFile=tmpnam("/tmp")
-        CertInfo=getcert(Domain)
-        writefile(TempFile, CertInfo)
-        CertSans=certsans(TempFile)
-        unlink(TempFile)
-        return CertSans
+        if (len(nslookup(Domain)) == 0) {
+            println("`sitecertsans` error with domain lookup for ", Domain)
+            return false
+        }
+        Data=certtojson(readsitecert(Domain)[0])
+	return Data[0]["certificate"]["alternate_names"]
+    }
+
+    function sitecertexp(Domain="") {
+        if (!checkfunctype("sitecertexp", "string", Domain, 1)) {exit(1)}
+        if (len(Domain) == 0) {
+            println("`sitecertexp` expects a domain name, none given.")
+            return false
+        }
+        if (len(nslookup(Domain)) == 0) {
+            println("`sitecertexp` error with domain lookup for ", Domain)
+            return false
+        }
+        Data=certtojson(readsitecert(Domain)[0])
+	End=Data[0]["certificate"]["validity"]["not_after"]
+	Duration=End - time()
+	return sec2time(Duration)["Day"]
+    }
+
+    function certexpiredays(File="") {
+        if (!checkfunctype("certexpiredays", "string", File, 1)) {exit(1)}
+        if (isreadable(File)) {
+            Data=trim(cat(File))
+            Data=certtojson(Data)
+            End=Data[0]["certificate"]["validity"]["not_after"]
+            Duration=End - time()
+            return sec2time(Duration)["Day"]
+        }
+        return false
+    }
+
+    function certtojson(CRTPEM, Type="x509") {
+        Data=split(trim(CRTPEM), "\n")
+        TEMP="/tmp/" + PROGNAME + "." + string(getpid())
+        CertArray=[]
+        Certs=getblock("-----BEGIN CERTIFICATE-----", "-----END CERTIFICATE-----", Data)
+        foreach Line in Certs {
+            if (Line == "-----BEGIN CERTIFICATE-----") {
+                 CertData=[]
+            }
+            CertData=push(CertData, Line)
+            if (Line == "-----END CERTIFICATE-----") {
+                CertArray=push(CertArray, CertData)
+            }
+        }
+        foreach Cert in CertArray {
+            SignatureAlgo={}
+            CSignatureAlgo={}
+            JsonArray=[]
+            Cert=join(Cert, "\n")
+            writetofile(TEMP, "w", Cert + "\n")
+            Command=sprintf("openssl %s -in %s -text -noout", Type, TEMP)
+            CertInfo=shift(split(trim(system(Command)), "\n"), 2)
+            Line="Dummy"    
+            Count=0
+            while (Count < len(CertInfo)) {
+                Line=trim(CertInfo[Count])
+                SLine=fields(Line)
+                switch (Line) {
+                    case /^Version:/ {
+                        CertVersion="v" + SLine[1]
+                    }
+                    case /^Serial Number:/ {
+                        Count++
+                        Serial=trim(CertInfo[Count])
+                    }
+                    case /^Signature Algorithm:/ {
+                        Algo=SLine[2]
+                        Algo=replace(Algo,"With"," ",1)
+                        Algo=trim(replace(Algo,"Encryption"," ",1))
+                        if (!SignatureAlgo["algorithm"]) {
+                            SignatureAlgo={"algorithm": Algo}
+                        } else {
+                            CSignatureAlgo={"algorithm": Algo}
+                        }
+                    }
+                    case /^Issuer:/ {
+                        IssueHash={}
+                        Issuers=split(trimprefix(Line, "Issuer: "), ",")
+                        foreach Issue in Issuers {
+                            Issue=split(trim(Issue), "=")
+                            Name=trim(Issue[0])
+                            Value=trim(Issue[1])
+                            if (Name == "C") {IssueHash=set(IssueHash, "country_name", Value)}
+                            if (Name == "O") {IssueHash=set(IssueHash, "organization_name", Value)}
+                            if (Name == "CN") {IssueHash=set(IssueHash, "common_name", Value)}
+                            if (Name == "OU") {IssueHash=set(IssueHash, "organizational_unit", Value)}
+                        }
+                    }
+                    case /^Validity/ {
+                        Count++
+                        NBefore=trim(CertInfo[Count])
+                        NBefore=trimprefix(NBefore, "Not Before: ")
+                        Count++
+                        NAfter=trim(CertInfo[Count])
+                        NAfter=trimprefix(NAfter, "Not After : ")
+                        if (OS == "linux") {
+                            EBefore= datetoepoch(NBefore)
+                            EAfter=datetoepoch(NAfter)
+                        }
+                        if (match("bsd", OS) || match("darwin", OS)) {
+                            EBefore= datetoepoch(NBefore, "%b %e %T %Y %Z")
+                            EAfter=datetoepoch(NAfter, "%b %e %T %Y %Z")
+                        }
+                        ValHash={"not_before_iso": NBefore, "not_after_iso": NAfter, "not_before": EBefore, "not_after": EAfter}
+                    }              
+                    case /^Subject: / {
+                        SubjectHash={}
+                        Subjects=split(trimprefix(Line, "Subject: "), ",")
+                        foreach Subject in Subjects {
+                            Subject=split(trim(Subject), "=")
+                            Name=trim(Subject[0])
+                            Value=trim(Subject[1])
+                            if (Name == "jurisdictionC") {SubjectHash=set(SubjectHash,"incorporation_country", Value)}
+                            if (Name == "businessCategory") {SubjectHash=set(SubjectHash,"business_category", Value)}
+                            if (Name == "serialNumber") {SubjectHash=set(SubjectHash,"serial_number_str", Value)}
+                            if (Name == "C") {SubjectHash=set(SubjectHash,"country_name", Value)}
+                            if (Name == "L") {SubjectHash=set(SubjectHash,"locality_name", Value)}
+                            if (Name == "O") {SubjectHash=set(SubjectHash,"organization_name", Value)}
+                            if (Name == "CN") {SubjectHash=set(SubjectHash,"common_name", Value)}
+                        }
+                    }
+                    case /^DNS:/ {
+                        AltArray=[]
+                        DLine=split(trim(CertInfo[Count]), ",")
+                        foreach DNSEntry in DLine {
+                            DNSEntry=trim(DNSEntry)
+                            DNSEntry=trimprefix(DNSEntry, "DNS:")
+                            AltArray=push(AltArray, DNSEntry)
+                        }
+                    }
+                    default { noop } 
+                }
+                Count++
+            }
+            CertHash={
+                "certificate": {
+                    "version": CertVersion,
+                    "serial_number": Serial,
+                    "signature": SignatureAlgo,
+                    "issuer": IssueHash,
+                    "validity": ValHash,
+                    "subject": SubjectHash,
+                    "signature_algorithm": CSignatureAlgo,
+                    "alternate_names": AltArray
+                }
+            }
+	    JsonArray=push(JsonArray, CertHash)
+	    unlink(TEMP)
+        }
+	return JsonArray
     }
 }

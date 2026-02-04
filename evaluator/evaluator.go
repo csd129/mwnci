@@ -12,7 +12,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-	
+
 	"mwnci/ast"
 	"mwnci/object"
 )
@@ -29,7 +29,6 @@ func Debugger(Value string) bool {
 	}
 	return true
 }
-	
 
 // pre-defined object including Null, True and False
 var (
@@ -64,7 +63,9 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment, DE
 	case *ast.Program:
 		return evalProgram(ctx, node, env, DEBUG)
 	case *ast.ExpressionStatement:
-		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		if DEBUG {
+			Debugger(fmt.Sprintf("%v", node))
+		}
 		return EvalContext(ctx, node.Expression, env, DEBUG)
 
 	//Expressions
@@ -131,7 +132,9 @@ func EvalContext(ctx context.Context, node ast.Node, env *object.Environment, DE
 		env.Set(node.Name.Value, val)
 		return val
 	case *ast.ConstStatement:
-		if DEBUG {Debugger(fmt.Sprintf("%v", node))}
+		if DEBUG {
+			Debugger(fmt.Sprintf("%v", node))
+		}
 		val := EvalContext(ctx, node.Value, env, DEBUG)
 		if isError(val) {
 			return val
@@ -1043,10 +1046,7 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 	if builtin, ok := builtins[node.Value]; ok {
 		return builtin
 	}
-	fmt.Fprintf(os.Stderr, "identifier not found: %s\n", node.Value)
-	os.Exit(1)
-
-	return newError("identifier not found: " + node.Value)
+	return newError("%s", "identifier not found: "+node.Value)
 }
 
 func evalExpression(ctx context.Context, exps []ast.Expression, env *object.Environment, DEBUG bool) []object.Object {
@@ -1220,7 +1220,7 @@ func evalHashLiteral(ctx context.Context, node *ast.HashLiteral, env *object.Env
 
 }
 
-func applyFunction(ctx context.Context, env *object.Environment, fn object.Object, args []object.Object, DEBUG bool)  object.Object {
+func applyFunction(ctx context.Context, env *object.Environment, fn object.Object, args []object.Object, DEBUG bool) object.Object {
 	switch fn := fn.(type) {
 	case *object.Function:
 		extendEnv := extendFunctionEnv(ctx, fn, args, DEBUG)
