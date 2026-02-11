@@ -36,8 +36,8 @@ distclean: ## Clean untracked files, binaries, and build cache
 	@echo "Cleaning build cache"
 	@go clean
 	@make clean
-	@rm -f mwnci  Mwnci.mk includes/Makefile emacs/mwnci.el\
-	 evaluator/include.go vim/syntax/mwnci.vim
+	@rm -f mwnci  Mwnci.mk includes/Makefile editors/emacs/mwnci.el\
+	 evaluator/include.go editors/vim/syntax/mwnci.vim
 
 test: mwnci ## Run unit tests
 	@go test -v ./...
