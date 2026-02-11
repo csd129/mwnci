@@ -1,0 +1,583 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "monkeylang",
+  "scopeName": "source.mwnci",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#constant"
+    },
+    {
+      "include": "#entity"
+    },
+    {
+      "include": "#invalid"
+    },
+    {
+      "include": "#keyword"
+    },
+    {
+      "include": "#operator"
+    },
+    {
+      "include": "#punctuation"
+    },
+    {
+      "include": "#string"
+    },
+    {
+      "include": "#support"
+    },
+    {
+      "include": "#variable"
+    }
+  ],
+  "repository": {
+    "string_escaped_char": {
+      "patterns": [
+        {
+          "match": "\\\\([0-7]{3}|[abfnrtv\\\\'\"]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})",
+          "name": "constant.character.escape.monkey"
+        },
+        {
+          "match": "\\\\[^0-7xuUabfnrtv\\'\"]",
+          "name": "invalid.illegal.unknown-escape.monkey"
+        }
+      ]
+    },
+    "string_placeholder": {
+      "patterns": [
+        {
+          "match": "%(\\[\\d+\\])?([\\+#\\-0\\x20]{,2}((\\d+|\\*)?(\\.?(\\d+|\\*|(\\[\\d+\\])\\*?)?(\\[\\d+\\])?)?))?[vT%tbcdoqxXUbeEfFgGsp]",
+          "name": "constant.other.placeholder.monkey"
+        }
+      ]
+    },
+    "comment": {
+      "patterns": [
+        {
+          "begin": "/\\*",
+          "end": "\\*/",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.monkey"
+            }
+          },
+          "name": "comment.block.monkey"
+        },
+        {
+          "begin": "//",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.monkey"
+            }
+          },
+          "end": "$",
+          "name": "comment.line.double-slash.monkey"
+        }
+      ]
+    },
+    "constant": {
+      "patterns": [
+        {
+          "comment": "Floating-point literals",
+          "match": "(\\.\\d+([Ee][-+]\\d+)?i?)\\b|\\b\\d+\\.\\d*(([Ee][-+]\\d+)?i?\\b)?",
+          "name": "constant.numeric.floating-point.monkey"
+        },
+        {
+          "comment": "Integers",
+          "match": "\\b((0x[0-9a-fA-F]+)|(0[0-7]+i?)|(\\d+([Ee]\\d+)?i?)|(\\d+[Ee][-+]\\d+i?))\\b",
+          "name": "constant.numeric.integer.monkey"
+        },
+        {
+          "comment": "Language constants",
+          "match": "\\b(true|false|null)\\b",
+          "name": "constant.language.monkey"
+        }
+      ]
+    },
+    "entity": {
+      "patterns": [
+        {
+          "match": "^(\\bfunc\\b)\\s(\\w+)?\\(([a-z]+)\\s(\\*)?([a-zA-Z]+)\\)",
+          "captures": {
+            "1": {
+              "name": "keyword.function.monkey"
+            },
+            "2": {
+              "name": "entity.name.function.monkey"
+            },
+            "3": {
+              "name": "variable.other.receiver.monkey"
+            }
+          }
+        },
+        {
+          "match": "(\\*)\\w+(\\.)(\\w+)",
+          "captures": {
+            "1": {
+              "name": "punctuation.other.period.monkey"
+            }
+          }
+        },
+        {
+          "comment": "Function Definitions",
+          "begin": "^(\\bfunc\\b)\\s(\\w+)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.function.monkey"
+            },
+            "2": {
+              "name": "entity.name.function.monkey"
+            }
+          },
+          "end": "\\{",
+          "patterns": [
+            {
+              "match": "(\\*)\\w+(\\.)(\\w+)",
+              "captures": {
+                "1": {
+                  "name": "punctuation.other.period.monkey"
+                }
+              }
+            },
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "comment": "Function declarations",
+          "match": "^(\\bfunc\\b)(?:\\s+(\\([^\\)]+\\)\\s+)?(\\w+)(?=\\())?",
+          "captures": {
+            "1": {
+              "name": "keyword.function.monkey"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#brackets"
+                },
+                {
+                  "include": "#operators"
+                },
+                {
+                  "include": "#variable"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "match": "\\d\\w*",
+                  "name": "invalid.illegal.identifier.monkey"
+                },
+                {
+                  "match": "\\w+",
+                  "name": "entity.name.function.monkey"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Functions",
+          "match": "(\\bfunc\\b)|(\\w+)(?=\\()",
+          "captures": {
+            "1": {
+              "name": "keyword.function.monkey"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "match": "\\d\\w*",
+                  "name": "invalid.illegal.identifier.monkey"
+                },
+                {
+                  "match": "\\w+",
+                  "name": "support.function.monkey"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "begin": "\\b(package)\\s+",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.package.monkey"
+            }
+          },
+          "end": "(?!\\G)",
+          "patterns": [
+            {
+              "match": "\\d\\w*",
+              "name": "invalid.illegal.identifier.monkey"
+            },
+            {
+              "match": "\\w+",
+              "name": "entity.name.package.monkey"
+            }
+          ]
+        }
+      ]
+    },
+    "invalid": {
+      "patterns": []
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "comment": "Flow control keywords",
+          "match": "\\b(break|case|continue|default|else|for|if|return|select|switch)\\b",
+          "name": "keyword.control.monkey"
+        },
+        {
+          "match": "\\bconst\\b",
+          "name": "keyword.const.monkey"
+        },
+        {
+          "match": "\\blet\\b",
+          "name": "keyword.let.monkey"
+        },
+        {
+          "match": "\\bfunc\\b",
+          "name": "keyword.function.monkey"
+        }
+      ]
+    },
+    "operator": {
+      "comment": "Note that the order here is very important!",
+      "patterns": [
+        {
+          "match": "\\-\\-",
+          "name": "keyword.operator.decrement.monkey"
+        },
+        {
+          "match": "\\+\\+",
+          "name": "keyword.operator.increment.monkey"
+        },
+        {
+          "match": "(==|!=|<=|>=|<(?!<)|>(?!>))",
+          "name": "keyword.operator.comparison.monkey"
+        },
+        {
+          "match": "(&&|\\|\\||!)",
+          "name": "keyword.operator.logical.monkey"
+        },
+        {
+          "match": "(=|\\+=|\\-=|\\|=|\\^=|\\*=|/=|:=|%=|<<=|>>=|&\\^=|&=)",
+          "name": "keyword.operator.assignment.monkey"
+        },
+        {
+          "match": "(\\+|\\-|\\*|/|%)",
+          "name": "keyword.operator.arithmetic.monkey"
+        },
+        {
+          "match": "(\\||\\^|&\\^|<<|>>)",
+          "name": "keyword.operator.arithmetic.bitwise.monkey"
+        },
+        {
+          "match": "\\.\\.\\.",
+          "name": "keyword.operator.ellipsis.monkey"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "match": ";",
+          "name": "punctuation.terminator.monkey"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.other.comma.monkey"
+        },
+        {
+          "match": "\\.(?!\\.\\.)",
+          "name": "punctuation.other.period.monkey"
+        },
+        {
+          "match": ":(?!=)",
+          "name": "punctuation.other.colon.monkey"
+        },
+        {
+          "begin": "{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.begin.bracket.curly.monkey"
+            }
+          },
+          "end": "}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.end.bracket.curly.monkey"
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    },
+    "string": {
+      "patterns": [
+        {
+          "comment": "Interpreted string literals",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.monkey"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.monkey"
+            }
+          },
+          "name": "string.quoted.double.monkey",
+          "patterns": [
+            {
+              "include": "#string_escaped_char"
+            },
+            {
+              "include": "#string_placeholder"
+            },
+            {
+              "include": "source.monkeytemplate"
+            }
+          ]
+        },
+        {
+          "comment": "Raw string literals",
+          "begin": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.monkey"
+            }
+          },
+          "end": "`",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.monkey"
+            }
+          },
+          "name": "string.quoted.raw.monkey",
+          "patterns": [
+            {
+              "include": "#string_placeholder"
+            },
+            {
+              "include": "source.monkeytemplate"
+            }
+          ]
+        },
+        {
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.monkey"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.monkey"
+            }
+          }
+        }
+      ]
+    },
+    "support": {
+      "patterns": [
+        {
+          "comment": "Built-in functions",
+          "match": "\\b(len|print|first|last|rest|push)\\b(?=\\()",
+          "name": "support.function.builtin.monkey"
+        }
+      ]
+    },
+    "variable": {
+      "patterns": [
+        {
+          "match": "\\b(var)\\s+(\\w+)\\s+(?:\\[\\])?(?:\\w+(\\.))+?(\\w+)",
+          "captures": {
+            "1": {
+              "name": "keyword.var.monkey"
+            },
+            "2": {
+              "name": "variable.other.declaration.monkey"
+            },
+            "3": {
+              "name": "punctuation.other.period.monkey"
+            }
+          }
+        },
+        {
+          "match": "\\b(var)\\s+(\\w+)\\s+(?:\\[\\])?(?!map)(\\w+)",
+          "captures": {
+            "1": {
+              "name": "keyword.var.monkey"
+            },
+            "2": {
+              "name": "variable.other.declaration.monkey"
+            }
+          }
+        },
+        {
+          "match": "\\b(var)\\s+(\\w+)\\s+(\\=)",
+          "captures": {
+            "1": {
+              "name": "keyword.var.monkey"
+            },
+            "2": {
+              "name": "variable.other.declaration.monkey"
+            },
+            "3": {
+              "name": "keyword.operator.assignment.monkey"
+            }
+          }
+        },
+        {
+          "match": "\\b(?>[a-zA-Z](?:\\w+)?)\\b(?=\\[)",
+          "name": "variable.other.accessor.monkey"
+        },
+        {
+          "match": "\\b(var)\\b",
+          "name": "keyword.var.monkey"
+        },
+        {
+          "match": "_",
+          "name": "variable.other.blank.monkey"
+        },
+        {
+          "match": "\\w+(?=\\s\\:\\=)",
+          "name": "variable.other.assignment.monkey"
+        },
+        {
+          "comment": "increment",
+          "match": "(?>\\w+)(?=\\+\\+)",
+          "name": "variable.other.monkey"
+        },
+        {
+          "comment": "decrement",
+          "match": "(?>\\w+)(?=\\-\\-)",
+          "name": "variable.other.monkey"
+        },
+        {
+          "match": "(\\w+)(,)\\s(\\w+)\\s(\\:\\=)",
+          "captures": {
+            "1": {
+              "name": "variable.other.assignment.monkey"
+            },
+            "2": {
+              "name": "punctuation.other.comma.monkey"
+            },
+            "3": {
+              "name": "variable.other.assignment.monkey"
+            },
+            "4": {
+              "name": "keyword.operator.assignment.monkey"
+            }
+          }
+        },
+        {
+          "begin": "(?<=\\w)\\(",
+          "end": "\\)|$",
+          "patterns": [
+            {
+              "include": "$self"
+            },
+            {
+              "match": "(?<!\\[)\\b(?>[a-zA-Z](?:\\w+)?)\\b(?!\\]|\\.)",
+              "name": "variable.other.arg.monkey"
+            }
+          ]
+        },
+        {
+          "match": "(?<!var)\\s*(\\w+(?:\\.\\w+)*(?>,\\s*\\w+(?:\\.\\w+)*)*)(?=\\s*=(?!=))",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "match": "\\d\\w*",
+                  "name": "invalid.illegal.identifier.monkey"
+                },
+                {
+                  "match": "_",
+                  "name": "variable.other.blank.monkey"
+                },
+                {
+                  "match": "\\w+(?:\\.\\w+)*",
+                  "name": "variable.other.assignment.monkey",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#punctuation"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": "(\\w+(?:,\\s*\\w+)*)(\\s+(\\[(\\d*|\\.\\.\\.)\\])*\\*?(<-)?\\w+(?:\\.\\w+)?\\s*[^=].*)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "match": "\\d\\w*",
+                  "name": "invalid.illegal.identifier.monkey"
+                },
+                {
+                  "match": "(?<=\\.)(\\w+)",
+                  "name": "entity.name.type.monkey"
+                },
+                {
+                  "match": "\\w+",
+                  "name": "variable.other.declaration.monkey"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "$self"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "begin": "\\b(var)\\s+",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.var.monkey"
+            }
+          },
+          "end": "(?!\\G)",
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

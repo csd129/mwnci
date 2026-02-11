@@ -1,0 +1,38 @@
+{
+	"name": "mwnci",
+	"displayName": "Mwnci Scripting Language",
+	"description": "Syntax highlighting for the mwnci scripting language",
+	"version": "0.0.2",
+	"engines": {
+		"vscode": "^1.37.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "mwnci",
+				"aliases": [
+				    "Monkey",
+				    "monkey",
+				    "mwnci"
+				],
+				"extensions": [
+					".mwnci"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "mwnci",
+				"scopeName": "source.mwnci",
+				"path": "./syntaxes/mwnci.Language.json"
+			}
+		]
+	},
+	"__metadata": {
+		"size": 35786
+	}
+}
