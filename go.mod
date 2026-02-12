@@ -6,7 +6,6 @@ toolchain go1.24.4
 
 require (
 	github.com/chzyer/readline v1.5.1
-	github.com/guptarohit/asciigraph v0.7.3
 	github.com/ncruces/go-strftime v1.0.0
 	github.com/peterh/liner v1.2.2
 	github.com/shirou/gopsutil/v4 v4.26.1
