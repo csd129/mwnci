@@ -185,8 +185,7 @@ if (!INCLUDE["CERTS"]) {
                         if (OS == "linux") {
                             EBefore= datetoepoch(NBefore)
                             EAfter=datetoepoch(NAfter)
-                        }
-                        if (match("bsd", OS) || match("darwin", OS)) {
+                        } else {
                             EBefore= datetoepoch(NBefore, "%b %e %T %Y %Z")
                             EAfter=datetoepoch(NAfter, "%b %e %T %Y %Z")
                         }
