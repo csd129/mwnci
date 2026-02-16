@@ -12,7 +12,7 @@ if (!INCLUDE["CERTS"]) {
             return false
         }
         CertArray=[]
-	Certs=split(trim(CertString), "\n")
+        Certs=split(trim(CertString), "\n")
         Certs=getblock("-----BEGIN CERTIFICATE-----", "-----END CERTIFICATE-----", Certs)
         foreach Line in Certs {
             if (Line == "-----BEGIN CERTIFICATE-----") {
@@ -43,7 +43,7 @@ if (!INCLUDE["CERTS"]) {
 
         Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 2>&1; exit 0", TimeOut, Domain, Domain)
         Result=system(Command)
-	return contains(Result, "ERROR") ? NULL : extractcert(Result)
+        return contains(Result, "ERROR") ? NULL : extractcert(Result)
     }
 
     function readsitechain(Domain="", TimeOut=5) {
@@ -62,15 +62,15 @@ if (!INCLUDE["CERTS"]) {
 
         Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 -showcerts 2>&1; exit 0", TimeOut, Domain, Domain)
         Result=system(Command)
-	return contains(Result, "ERROR") ? NULL : extractcert(Result)
+        return contains(Result, "ERROR") ? NULL : extractcert(Result)
     }
 
     function certsans(File="") {
         if (!checkfunctype("certsans", "string", File)) {exit(1)}
-	if (isreadable(File)) {
-	    Data=trim(cat(File))
+        if (isreadable(File)) {
+            Data=trim(cat(File))
             Data=certtojson(Data)
-	    return Data[0]["certificate"]["alternate_names"]
+            return Data[0]["certificate"]["alternate_names"]
         }
         return false
     }
@@ -86,7 +86,7 @@ if (!INCLUDE["CERTS"]) {
             return false
         }
         Data=certtojson(readsitecert(Domain)[0])
-	return Data[0]["certificate"]["alternate_names"]
+        return Data[0]["certificate"]["alternate_names"]
     }
 
     function sitecertexp(Domain="") {
@@ -100,9 +100,9 @@ if (!INCLUDE["CERTS"]) {
             return false
         }
         Data=certtojson(readsitecert(Domain)[0])
-	End=Data[0]["certificate"]["validity"]["not_after"]
-	Duration=End - time()
-	return sec2time(Duration)["Day"]
+        End=Data[0]["certificate"]["validity"]["not_after"]
+        Duration=End - time()
+        return sec2time(Duration)["Day"]
     }
 
     function certexpiredays(File="") {
@@ -232,9 +232,9 @@ if (!INCLUDE["CERTS"]) {
                     "alternate_names": AltArray
                 }
             }
-	    JsonArray=push(JsonArray, CertHash)
-	    unlink(TEMP)
+            JsonArray=push(JsonArray, CertHash)
+            unlink(TEMP)
         }
-	return JsonArray
+        return JsonArray
     }
 }

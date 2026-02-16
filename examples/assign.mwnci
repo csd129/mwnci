@@ -7,7 +7,7 @@ include("math")
 
 // The let is optional - and goes back to the days of having to use
 // it to initialise a variable
-let i = 3
+i = 3
 i = 2 * PI
 print("2xPI ", i, "\n")
 
@@ -15,5 +15,5 @@ x = 3
 println("X:", x)
 
 
-yfds = 33.312;
+yfds = 33.312
 println("X:", yfds)
