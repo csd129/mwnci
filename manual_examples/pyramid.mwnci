@@ -6,7 +6,7 @@ foreach i in 1..rows {
     print(repeat("  ", rows - i))
     while ( k != 2 * i -1 ) {
         print("* ")
-	k++
+        k++
     }
     println()
 }

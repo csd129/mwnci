@@ -25,6 +25,9 @@ emincludes=`find includes -name \*.mwnci -exec awk '$1 == "function"' {} \; | tr
 vimincludes=`echo $emincludes | sed -e s/"\""/""/g | sed -e s/"contains"/"cont\[ains\]"/g`
 emfunctions=`awk '/RegisterBuiltin/ {print $1}' evaluator/register_builtins.go | awk -F\" '/^Reg/ {printf("\"%s\" ", $2)}'`
 vimfunctions=`echo $emfunctions | sed -e s/"\""/""/g | sed -e s/"contains"/"cont[ains\]"/g`
+nanofunctions=`echo $emfunctions | sed -e s/"\""/""/g | sed -e s/" "/"|"/g`
+nanoconsts=`echo $emconsts | sed -e s/"\""/""/g | sed -e s/" "/"|"/g`
+nanoincs=`echo $emincludes | sed -e s/"\""/""/g | sed -e s/" "/"|"/g`
 for n in $INFILE
 do
     new=$(echo $n | sed -e s/"\.in$"/""/g)
@@ -41,6 +44,9 @@ do
         -e s:"@EMINCLUDES@":"${emincludes}":g \
         -e s:"@VIMINCLUDES@":"${vimincludes}":g \
         -e s:"@VERSION@":"${VERSION}":g \
+	-e s:"@NANOBUILTINS@":"${nanofunctions}":g \
+	-e s:"@NANOCONST@":"${nanoconsts}":g \
+	-e s:"@NANOINCLUDES@":"${nanoincs}":g \
         > ${TEMP}
      [ -s ${TEMP} ] && mv ${TEMP} ${new}
 done

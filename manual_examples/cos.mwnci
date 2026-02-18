@@ -12,41 +12,41 @@ while (i <= 3.2) {
     plot=int(10 * cosine) + 10
     if (plot < 10) {
         before=""
-	j=1
-	while (j <= plot) {
-	    before= before + " "
-	    j++
-	}
-	after=""
-	j = plot
-	while (j < 9) {
-	    after=after + " "
-	    j++
-	}
-	print(before, AF_YELLOW, "*", AF_RESET,after, AF_RED,"|",AF_RESET)
-	printf("              cosine = %+8.6f\n", cosine)
+		j=1
+		while (j <= plot) {
+	    	before= before + " "
+	    	j++
+		}
+		after=""
+		j = plot
+		while (j < 9) {
+	    	after=after + " "
+	    	j++
+		}
+		print(before, AF_YELLOW, "*", AF_RESET,after, AF_RED,"|",AF_RESET)
+		printf("              cosine = %+8.6f\n", cosine)
     } else {
         if (plot == 10) {
-	    print(AF_YELLOW,"          *", AF_RESET)
-	    printf("              cosine = %+8.6f\n", cosine)
-	} else {
-	        print(AF_RED, "          |", AF_RESET)
-		before=""
-		j=11
-		while (j < plot) {
-		    before=before + " "
-		    j++
+			print(AF_YELLOW,"          *", AF_RESET)
+			printf("              cosine = %+8.6f\n", cosine)
+		} else {
+			print(AF_RED, "          |", AF_RESET)
+			before=""
+			j=11
+			while (j < plot) {
+				before=before + " "
+				j++
+			}
+			print(before, AF_YELLOW, "*", AF_RESET)
+			after=""
+			j=plot+1
+			while (j <= 24) {
+				after=after + " "
+				j++
+			}
+			print(after)
+			printf("cosine = %+8.6f\n", cosine)
 		}
-		print(before, AF_YELLOW, "*", AF_RESET)
-		after=""
-		j=plot+1
-		while (j <= 24) {
-		    after=after + " "
-		    j++
-		}
-		print(after)
-		printf("cosine = %+8.6f\n", cosine)
-        }
     }
     i += 0.1
 }

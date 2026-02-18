@@ -1,0 +1,48 @@
+## Syntax highlighting for Mwnci
+
+syntax mwnci "\.mwnci$"
+header "^#!.*mwnci"
+magic "Mwnci script"
+comment "#"
+
+# Alternative linter: pylint --exit-zero
+#linter pyflakes
+
+# Function definitions.
+color brightblue "function [[:alnum:]_]+"
+# Keywords.
+color brightcyan "\<(case|const|default|else|fn|foreach|function|if|in|let|noop|return|switch||while)\>"
+
+#color brightcyan "\<(pass|raise|return|try|while|with|yield)\>"
+# Builtins
+color blue "\<(@NANOBUILTINS@)\>"
+color yellow "\<(@NANOINCLUDES@)\>"
+# These two are keywords in Python 2, but functions in Python 3,
+# so only color them when they are followed by whitespace, assuming
+# that print(x) is a function invocation and print (x) is a statement.
+color brightcyan "\<(exec|print)([[:blank:]]|$)"
+
+# Special values.
+color brightmagenta "\<(@NANOCONST@|true|false|null)\>"
+
+# Decorators.
+color cyan "@[[:alpha:]_][[:alnum:]_.]*"
+
+# Mono-quoted strings.
+color brightgreen "'([^'\]|\\.)*'|"([^"\]|\\.)*"|'''|""""
+color normal "'''|""""
+# Comments.
+color brightred "(^|[[:blank:]])#.*"
+# Triple-quoted strings.
+color brightgreen start="'''([^'),]|$)" end="(^|[^(\])'''"
+color brightgreen start=""""([^"),]|$)" end="(^|[^(\])""""
+
+# Backslash escapes.
+color lime "\\($|[\'"abfnrtv]|[0-3]?[0-7]?[0-7]|x[[:xdigit:]]{2})"
+color lime "\\(N\{[[:alpha:]]+\}|u[[:xdigit:]]{4}|U[[:xdigit:]]{8})"
+
+# Reminders.
+color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
+
+# Trailing whitespace.
+color ,green "[[:space:]]+$"
