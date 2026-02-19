@@ -5,8 +5,6 @@ header "^#!.*mwnci"
 magic "Mwnci script"
 comment "//"
 
-# Function definitions.
-color brightblue "function [[:alnum:]_]+"
 # Keywords.
 color brightcyan "\<(case|const|default|else|fn|foreach|function|if|in|let|noop|return|switch||while)\>"
 
