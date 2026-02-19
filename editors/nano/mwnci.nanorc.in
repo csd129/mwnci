@@ -14,13 +14,14 @@ color yellow "\<(@NANOINCLUDES@)\>"
 
 # Special values.
 color brightmagenta "\<(@NANOCONST@|true|false|null)\>"
+color orange "==|=|/=|&&|\|\||<|>|<=|>=|<<|>>|!="
 
 # Mono-quoted strings.
 color brightgreen "'([^'\]|\\.)*'|"([^"\]|\\.)*"|'''|""""
 color normal "'''|""""
 # Comments.
-color brightred "(^|[[:blank:]])\/\/.*"
-color brightred start="/\*" end="\*/"
+color lightred "(^|[[:blank:]])\/\/.*"
+color lightred start="/\*" end="\*/"
 
 # Triple-quoted strings.
 color brightgreen start="'''([^'),]|$)" end="(^|[^(\])'''"
