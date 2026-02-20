@@ -42,19 +42,19 @@ if (!INCLUDE["GRP"]) {
         }
         return GroupHash
     }
-    
+
     // getgrgid() and getgrnam() are available for backward compatibility
     // scripts coded with older versions of mwnci
-    
+
     function getgrgid(Gid=-1) {
         if (!checkfunctype("getgrgid", "integer", Gid, 1)) {exit(1)}
         if (Gid == -1) {
             println("Error calling `getgrgid`: ERROR: TypeError: getgrgid() takes exactly 1 argument (0 given)")
-            exit(1)  
+            exit(1)
         }
         return getgrent(Gid)
     }
-    
+
     function getgrnam(Gname="") {
         if (!checkfunctype("getgrnam", "string", Gname, 1)) {exit(1)}
         if (Gname == "") {
@@ -63,7 +63,7 @@ if (!INCLUDE["GRP"]) {
         }
     	return getgrent(Gname)
     }
-    
+
     function hashgrp() {
         GrpHash={}
 	FH=open("/etc/group")
@@ -108,14 +108,14 @@ if (!INCLUDE["GRP"]) {
     function string.groups() {
         return groups(self)
     }
-    
+
     function string.getgroups() {
         return getgroups(self)
     }
     function integer.getgrgid() {
         return getgrgid(self)
     }
-    
+
     function string.getgrnam() {
         return getgrnam(self)
     }

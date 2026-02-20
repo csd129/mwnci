@@ -1,6 +1,6 @@
 if (!INCLUDE["HTTP"]) {
     INCLUDE=set(INCLUDE, "HTTTP", true)
-        
+
     function httpcontent(url="", expr="") {
         if (!checkfunctype("httpcontent", "string", url, 1)) {exit(1)}
         if (!checkfunctype("httpcontent", "string", expr, 2)) {exit(1)}
@@ -10,7 +10,7 @@ if (!INCLUDE["HTTP"]) {
         if (match (expr, httpget(url))) {return true}
         return false
     }
-    
+
     function httpsave(url="", filename="") {
         if (url == "" || filename == "") {
             println("`httpsave` expects 2 arguments")
@@ -28,16 +28,16 @@ if (!INCLUDE["HTTP"]) {
         fh.close()
         return true
     }
-    
+
     function getweb(url="", header={}){
         if (url == "") {
             println("`getweb` expects a URL, none given")
             return false
         }
-    
+
         if (!checkfunctype("getweb", "string", url, 1)) {exit(1)}
         if (!checkfunctype("getweb", "hash", header, 2)) {exit(1)}
-        
+
         AUTH=""
         HEADER=""
         COOKIE=""
@@ -45,7 +45,7 @@ if (!INCLUDE["HTTP"]) {
     //
     // Check we have any auth, headers etc.
     //
-    
+
         k=keys(header)
         if (len(k) > 0) {
             foreach hkey in k {
@@ -70,7 +70,7 @@ if (!INCLUDE["HTTP"]) {
     		            }
     		        }
                 }
-    
+
     //
     // If we need cookies "NAME1=VALUE1; NAME2=VALUE2"
     //
@@ -96,8 +96,8 @@ if (!INCLUDE["HTTP"]) {
         }
         command=sprintf("`curl %s %s %s %s \"%s\"`", OPTIONS, COOKIE, HEADER, AUTH, url)
         return eval(command)
-    } 
-    
+    }
+
     function httpstat(url="") {
         if (len(url) == 0) {
             println("httpstat: URL using bad/illegal format or missing URL")

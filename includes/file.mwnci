@@ -36,7 +36,7 @@ if (!INCLUDE["FILE"]) {
         }
         return (int(Other) == 1) ? true : false
     }
-        
+
     function filetype(Filename="") {
         if (!checkfunctype("filetype", "string", Filename)) {exit(1)}
         if (len(Filename) == 0) {
@@ -54,31 +54,31 @@ if (!INCLUDE["FILE"]) {
         }
         return (filetype(Filename) == Type) ? true : false
     }
-    
+
     function isfile(Filename="") {
         return (istype("FILE", Filename, "isfile"))
     }
-    
+
     function isblock(Filename="") {
         return (istype("BLOCK", Filename, "isblock"))
     }
-    
+
     function isdir(Filename="") {
         return (istype("DIR", Filename, "isdir"))
     }
-    
+
     function ischr(Filename="") {
         return (istype("CHR", Filename, "ischr"))
     }
-    
+
     function isfifo(Filename="") {
         return (istype("FIFO", Filename, "isfifo"))
     }
-    
+
     function islink(Filename="") {
         return (istype("LINK", Filename, "islink"))
     }
-    
+
     function issock(Filename="") {
         return (istype("SOCKET", Filename, "issock"))
     }
@@ -88,9 +88,9 @@ if (!INCLUDE["FILE"]) {
         if (len(Filename) == 0) {
             println("Error calling `isexist`: ERROR: TypeError: isexist() takes exactly 1 argument (0 given)")
             exit(1)
-        }        
+        }
         return (len(glob(Filename)) > 0) ? true : false
-    }   
+    }
 
     function isempty(Filename="") {
         if (!checkfunctype("isempty", "string", Filename)) {exit(1)}
@@ -104,7 +104,7 @@ if (!INCLUDE["FILE"]) {
             return true
         }
     }
-    
+
     function issetuid(Filename="") {
         if (!checkfunctype("issetuid", "string", Filename)) {exit(1)}
         if (len(Filename) == 0) {
@@ -137,11 +137,11 @@ if (!INCLUDE["FILE"]) {
         Sticky=oct2sym(Permissions)[8]
         return (match("[tT]", Sticky)) ? true : false
     }
-    
+
     /*
     ** This section is for file comparisons and content
     */
-    
+
     function isnewer(FirstFile="", SecondFile="") {
         if (!checkfunctype("isnewer", "string", FirstFile, 1)) {exit(1)}
         if (!checkfunctype("isnewer", "string", SecondFile, 2)) {exit(1)}
@@ -159,7 +159,7 @@ if (!INCLUDE["FILE"]) {
         }
         return (FirstStat["mtime"] > SecondStat["mtime"]) ? true : false
     }
-    
+
     function isolder(FirstFile="", SecondFile="") {
         if (!checkfunctype("isolder", "string", FirstFile, 1)) {exit(1)}
         if (!checkfunctype("isolder", "string", SecondFile, 2)) {exit(1)}
@@ -169,14 +169,14 @@ if (!INCLUDE["FILE"]) {
         }
         if (!isexist(FirstFile) || !isexist(SecondFile)) {
             return false
-        }        
+        }
         return (!isnewer(FirstFile, SecondFile))
     }
-    
+
     function isowner(Filename="", User="") {
         if (!checkfunctype("isowner", "string", Filename, 1)) {exit(1)}
         if (!checkfunctype("isowner", "string", User, 2)) {exit(1)}
-    
+
         if (Filename == "") {
             println("Error calling `isowner`: ERROR: TypeError: isowner() expected argument #1 to be `STRING` got `NULL`")
     	    exit(1)
@@ -194,7 +194,7 @@ if (!INCLUDE["FILE"]) {
         }
         return false
     }
-    
+
     function isgroup(Filename="", Group="") {
         if (!checkfunctype("isgroup", "string", Filename, 1)) {exit(1)}
         if (!checkfunctype("isgroup", "string", Group, 2)) {exit(1)}
@@ -219,13 +219,13 @@ if (!INCLUDE["FILE"]) {
         }
         return false
     }
-    
+
     function isexec(Filename="") {
         if (!checkfunctype("isexec", "string", Filename, 1)) {exit(1)}
         if (Filename == "") {
             println("Error calling `isexec`: ERROR: TypeError: isexec() expected argument #1 to be `STRING` got `NULL`")
             exit(1)
-        }    
+        }
         if (isreadable(Filename)) {
             if(isdoable(Filename, 2)) {
     	        return true
@@ -245,37 +245,37 @@ if (!INCLUDE["FILE"]) {
             return true
         }
         return false
-    }    
+    }
 
     //
     // Same stuff, but having object methods
     // some users may prefer them
     //
-    
+
     function string.iswritable() {
         return iswritable(self)
     }
-    
+
     function string.isreadable() {
         return isreadable(self)
     }
-    
+
     function string.isexec() {
         return isexec(self)
     }
-    
+
     function string.isnewer(SecondFile="") {
         return isnewer(self, SecondFile)
     }
-    
+
     function string.isolder(SecondFile="") {
         return isolder(self, SecondFile)
     }
-    
+
     function string.isgroup(grp="") {
         return isgroup(self, grp)
     }
-    
+
     function string.isowner(owner="") {
         return isowner(self, owner)
     }
@@ -283,35 +283,35 @@ if (!INCLUDE["FILE"]) {
     function string.isexist() {
         return isexist(self)
     }
-    
+
     function string.isblock() {
         return isblock("BLOCK", self, "isblock")
     }
-    
+
     function string.isdir() {
         return isdir("DIR", self, "isdir")
     }
-    
+
     function string.isempty() {
         return isempty(self)
     }
-    
+
     function string.isfifo() {
         return isfifo("FIFO", self, "isfifo")
     }
-    
+
     function string.isfile() {
         return isfile("FILE", self, "isfile")
     }
-    
+
     function string.islink() {
         return islink("LINK", self, "islink")
     }
-    
+
     function string.issock() {
         return issock("SOCKET", self, "issock")
     }
-    
+
     function string.issetuid() {
         return issetuid(self)
     }

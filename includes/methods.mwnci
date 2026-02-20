@@ -76,7 +76,7 @@ if (!INCLUDE["METHODS"]) {
     function string.dirpath() {return dirpath(self)}
     function string.fields() {return fields(self)}
     function string.file(dummy) {return file(self, dummy)}
-    function string.getenv() {return getenv(self)}          
+    function string.getenv() {return getenv(self)}
     function string.hasprefix(data) {return hasprefix(self, data)}
     function string.hassuffix(data) {return hassuffix(self, data)}
     function string.index(item) {return index(self, item)}

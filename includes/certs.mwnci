@@ -26,7 +26,7 @@ if (!INCLUDE["CERTS"]) {
         }
         return CertArray
     }
-   
+
     function readsitecert(Domain="", TimeOut=5) {
         if (!checkfunctype("readsitecert", "string", Domain, 1)) {exit(1)}
         if (!checkfunctype("readsitecert", "integer", TimeOut, 2)) {exit(1)}
@@ -139,7 +139,7 @@ if (!INCLUDE["CERTS"]) {
             writetofile(TEMP, "w", Cert + "\n")
             Command=sprintf("openssl %s -in %s -text -noout", Type, TEMP)
             CertInfo=shift(split(trim(system(Command)), "\n"), 2)
-            Line="Dummy"    
+            Line="Dummy"
             Count=0
             while (Count < len(CertInfo)) {
                 Line=trim(CertInfo[Count])
@@ -190,7 +190,7 @@ if (!INCLUDE["CERTS"]) {
                             EAfter=datetoepoch(NAfter, "%b %e %T %Y %Z")
                         }
                         ValHash={"not_before_iso": NBefore, "not_after_iso": NAfter, "not_before": EBefore, "not_after": EAfter}
-                    }              
+                    }
                     case /^Subject: / {
                         SubjectHash={}
                         Subjects=split(trimprefix(Line, "Subject: "), ",")
@@ -216,7 +216,7 @@ if (!INCLUDE["CERTS"]) {
                             AltArray=push(AltArray, DNSEntry)
                         }
                     }
-                    default { noop } 
+                    default { noop }
                 }
                 Count++
             }

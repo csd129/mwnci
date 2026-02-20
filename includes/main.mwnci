@@ -83,8 +83,8 @@ if (!INCLUDE["MAIN"]) {
 
     function getenv(EnvVar="") {
         return env()[EnvVar]
-    } 
-    
+    }
+
     function hex2dec(Hex="") {
         if (!checkfunctype("hex2dec", "string", Hex, 1)) {exit(1)}
         HDict={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7,
@@ -107,7 +107,7 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("rest", "array", Array, 1)) {exit(1)}
         return shift(Array)
     }
-    
+
 // Binary to Decimal
     function bin2dec(BinaryNumber=NULL) {
         if (BinaryNumber == NULL) {return false}
@@ -349,7 +349,7 @@ if (!INCLUDE["MAIN"]) {
     function lookupptr(Search="") {return nslookup(Search, "ptr")}
     function lookupns(Search="") {return nslookup(Search, "ns")}
     function lookupmx(Search="") {return nslookup(Search, "mx")}
-    
+
     function permsym(BPerms="") {
         DefPerms=["-", "-", "-"]
         if (BPerms[0] == "1") {DefPerms=set(DefPerms, 0, "r")}
@@ -433,7 +433,7 @@ if (!INCLUDE["MAIN"]) {
         CountArray=Counter..Length
         return zip(CountArray, MyArray)
     }
-    
+
     function rindex(Haystack, Needle) {
         Pos=-1
         switch (type(Haystack)) {
@@ -627,4 +627,3 @@ if (!INCLUDE["MAIN"]) {
         return [Quotient, Remainder]
     }
 }
-

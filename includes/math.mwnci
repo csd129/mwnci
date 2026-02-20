@@ -63,7 +63,7 @@ if (!INCLUDE["MATH"]) {
         Fact =  (Number == 0) ? 1 : product(1..Number) 
         return Fact
     }
-    
+
     function floor(Value) {
         if (!checkfunctype("floor", "number", Value, 1)) {exit(1)}
         if  (Value < 0) {
@@ -71,7 +71,7 @@ if (!INCLUDE["MATH"]) {
         }
         return int(Value)
     }
-    
+
     function fmod(n=0,d=0) {
         if (!checkfunctype("fmod", "number", n, 1)) {exit(1)}
         if (!checkfunctype("fmod", "number", d, 2)) {exit(1)}
@@ -120,7 +120,7 @@ if (!INCLUDE["MATH"]) {
         }
         return true
     }
-    
+
     function lcm(num1, num2) {
         if (!checkfunctype("lcm", "integer", num1, 1)) {exit(1)}
         if (!checkfunctype("lcm", "integer", num2, 2)) {exit(1)}
@@ -132,7 +132,7 @@ if (!INCLUDE["MATH"]) {
         if (!checkfunctype("lowest", "number", b, 2)) {exit(1)}
         return a < b ? a : b
     }
-    
+
     function modf(num=0) {
         if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
         inty=int(num)
@@ -144,13 +144,13 @@ if (!INCLUDE["MATH"]) {
             return [float(inty), float(remainder)]
         }
     }
-    
+
     function pow(num=1, power=1) {
         if (!checkfunctype("pow", "number", num, 1)) {exit(1)}
         if (!checkfunctype("pow", "number", power, 1)) {exit(1)}
         return float(num ** power)
     }
-    
+
     function pow10(x=0) {
         if (!checkfunctype("pow10", "integer", x, 1)) {exit(1)}
         return float(10**x)
@@ -160,7 +160,7 @@ if (!INCLUDE["MATH"]) {
         if (!checkfunctype("radians", "number", Degrees, 1)) {exit(1)}
         return Degrees * (PI / 180)
     }
-       
+
     function round(rnum=0, fp=0) {
         if (!checkfunctype("round", "number", rnum, 1)) {exit(1)}
         if (!checkfunctype("round", "integer", fp, 1)) {exit(1)}
@@ -184,19 +184,19 @@ if (!INCLUDE["MATH"]) {
     function integer.isprime() {
         return isprime(self)
     }
-    
+
     function integer.factorial() {
         return factorial(self)
     }
-    
+
     function object.degrees() {
         return degrees(self)
     }
-    
+
     function object.radians() {
         return radians(self)
     }
-    
+
     function object.pow(power) {
         return pow(self, power)
     }
