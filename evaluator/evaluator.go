@@ -1046,7 +1046,8 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 	if builtin, ok := builtins[node.Value]; ok {
 		return builtin
 	}
-	return newError("%s", "identifier not found: "+node.Value)
+	fmt.Fprintf(os.Stderr, "identifier not found: %s\n", node.Value)
+	exit(1)
 }
 
 func evalExpression(ctx context.Context, exps []ast.Expression, env *object.Environment, DEBUG bool) []object.Object {
