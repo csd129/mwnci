@@ -1,5 +1,5 @@
 if (!INCLUDE["GRP"]) {
-    INCLUDE=set(INCLUDE, "GRP", true)
+    set(INCLUDE, "GRP", true)
 
     function getgrent(Group="") {
         GROUP="/etc/group"
@@ -17,7 +17,7 @@ if (!INCLUDE["GRP"]) {
                         Members=[]
                     }
                     GroupHash={"Group": GroupInfo[0], "Password": GroupInfo[1], "Gid": int(GroupInfo[2]), "Members": Members}
-                    GroupArray=push(GroupArray, GroupHash)
+                    GroupArray.push(GroupHash)
                 }
             }
         }
@@ -38,7 +38,7 @@ if (!INCLUDE["GRP"]) {
         GroupHash={}
         Groups=getgroups(User)
         foreach Group in Groups	{
-            GroupHash=set(GroupHash,getgrent(Group)["Group"], Group)
+            set(GroupHash,getgrent(Group)["Group"], Group)
         }
         return GroupHash
     }
@@ -66,7 +66,7 @@ if (!INCLUDE["GRP"]) {
 
     function hashgrp() {
         GrpHash={}
-	FH=open("/etc/group")
+        FH=open("/etc/group")
         while (len(Line=FH.read()) != 0) {
             Line=string(split(Line, "#")[0])
             if (len(Line) > 0) {
@@ -74,7 +74,7 @@ if (!INCLUDE["GRP"]) {
                 Members=string(SplitLine[3])
                 Members=(len(Members) > 0 ? split(Members,",") : [])
                 NewHash={"Gid": int(SplitLine[2]), "Members": Members}
-                GrpHash=set(GrpHash, SplitLine[0], NewHash)
+                set(GrpHash, SplitLine[0], NewHash)
             }
         }
         return GrpHash
@@ -92,14 +92,14 @@ if (!INCLUDE["GRP"]) {
         if (len(PWLine) == 0) {
             return GroupArray
         }
-        GroupArray=push(GroupArray, int(split(PWLine[0] ,":")[3]))
+        push(GroupArray, int(split(PWLine[0] ,":")[3]))
         GrpData=regexp(Username, GROUP)
         foreach Line in GrpData {
             SLine=split(Line, ":")
             GrGid=SLine[2]
             Users=fields(replaceall(SLine[3],",", " "))
             if (index(Users, Username) > -1) {
-                GroupArray=push(GroupArray, int(GrGid))
+                push(GroupArray, int(GrGid))
             }
         }
         return usort(GroupArray)

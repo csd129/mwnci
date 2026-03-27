@@ -1,8 +1,6 @@
-
 package evaluator
 
 import (
-	"maps"
 	"mwnci/object"
 	"mwnci/typing"
 )
@@ -21,25 +19,21 @@ func setFun(args ...object.Object) object.Object {
 			return newError("key `set` into HASH must be Hashable, got=%s",
 				args[1].Type())
 		}
-		newHash := make(map[object.HashKey]object.HashPair)
 		hash := args[0].(*object.Hash)
-		maps.Copy(newHash, hash.Pairs)
-		newHashKey := key.HashKey()
-		newHashPair := object.HashPair{Key: args[1], Value: args[2]}
-		newHash[newHashKey] = newHashPair
-		return &object.Hash{Pairs: newHash}
+		hashed := key.HashKey()
+		hash.Pairs[hashed] = object.HashPair{Key: args[1], Value: args[2]}
+		return hash
 	}
 	if args[0].Type() == object.ARRAY_OBJ {
 		arr := args[0].(*object.Array)
-		newArray := arr.Copy()
 		elem := int(args[1].(*object.Integer).Value)
 		if (elem > len(arr.Elements)-1) || (elem < 0) {
 			return newError("IndexError: array index [%d] out of range ", elem)
 		} else {
 			val := args[2]
-			newArray.Aset(elem, val)
+			arr.Aset(elem, val)
 		}
-		return newArray
+		return arr
 	}
 	if args[0].Type() == object.STRING_OBJ {
 		var val string
@@ -63,7 +57,7 @@ func setFun(args ...object.Object) object.Object {
 		}
 		texty[elem] = val[0]
 		text = string(texty[:])
-		return &object.String{Value: string(text[:])}
+		return &object.String{Value: text}
 	}
 
 	return newError("argument to set() not supported, expected HASH, ARRAY or STRING, got=%s", args[0].Type())

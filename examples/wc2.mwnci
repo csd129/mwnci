@@ -11,6 +11,6 @@
 //
 
 // Open the file
-let fh = open( "./wc2.mwnci", "r" );
+fh = open( "./wc2.mwnci", "r" )
 lines = fh.lines();
-print( "Read ", len(lines), " lines\n" );
+print( "Read ", len(lines), " lines\n" )

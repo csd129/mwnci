@@ -1,5 +1,5 @@
 if (!INCLUDE["MASTERPW"]) {
-    INCLUDE=set(INCLUDE, "MASTERPW", true)
+    set(INCLUDE, "MASTERPW", true)
 
     function hashspw(User="") {
 //
@@ -28,7 +28,7 @@ if (!INCLUDE["MASTERPW"]) {
                 Home=SplitLine[8]
                 Shell=SplitLine[9]
                 TempHash={"Passwd": Passwd, "Uid": Uid, "Gid": Gid, "Class": Class, "Change": Change, "Expire": Expire, "Gecos": Gecos, "Home": Home, "Shell": Shell}
-                SpwHash=set(SpwHash, SplitLine[0], TempHash)
+                set(SpwHash, SplitLine[0], TempHash)
             }
         }
         return SpwHash

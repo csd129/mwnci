@@ -142,3 +142,11 @@ func (h *Hash) ToInterface() interface{} {
 func (h *Hash) Len() int {
 	return len(h.Pairs)
 }
+
+func (h *Hash) Copy() *Hash {
+	newHash := make(map[HashKey]HashPair)
+	for k, v := range h.Pairs {
+		newHash[k] = v
+	}
+	return &Hash{Pairs: newHash}
+}

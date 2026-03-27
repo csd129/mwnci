@@ -1,5 +1,5 @@
 if (!INCLUDE["PS"]) {
-    INCLUDE=set(INCLUDE, "PS", true)
+    set(INCLUDE, "PS", true)
 
     switch (OS) {
         case /bsd/ , /darwin/ {
@@ -22,10 +22,10 @@ if (!INCLUDE["PS"]) {
         foreach Process in Processes {
             Cmd=""
             line=fields(Process)
-            b=shift(line, 10)
+            b=shift(line.copy(), 10)
             Cmd=trim(join(b, " "))
     	    CmdHash={"USER": line[0], "CPU": float(line[2]), "MEM": float(line[3]), "VSZ": int(line[4]), "RSS": int(line[5]), "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
-    	    ProcessTable=set(ProcessTable, int(line[1]), CmdHash)
+    	    set(ProcessTable, int(line[1]), CmdHash)
         }
         return ProcessTable
     }
@@ -60,7 +60,7 @@ if (!INCLUDE["PS"]) {
                         "cmd": SLine[10]
                     }
                     Key=SLine[1]
-                    Data=set(Data, Key, Proc_Hash)
+                    set(Data, Key, Proc_Hash)
                 }
             }
         }

@@ -4,12 +4,11 @@ include(
 )
 
 if (!INCLUDE["FILE"]) {
-    INCLUDE=set(INCLUDE, "FILE", true)
+    set(INCLUDE, "FILE", true)
 
     function getbin(PermBit) {
         if (!checkfunctype("getbin", "integer", PermBit)) {exit(1)}
-        Binary=bin(PermBit)
-        Binary=trimprefix(Binary, "0b")
+        Binary=trimprefix(bin(PermBit), "0b")
         Sizeb=3-len(Binary)
         if (Sizeb > 0) {
             Prefix=repeat("0", Sizeb)

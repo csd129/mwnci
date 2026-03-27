@@ -17,13 +17,13 @@ const LN10=   2.302585092994045
 const LOGH10E=1/LN10
 
 if (!INCLUDE["MATH"]) {
-    INCLUDE=set(INCLUDE, "MATH", true)
+    set(INCLUDE, "MATH", true)
 
     function fma(x=1, y=1, z=1) {
         if (!checkfunctype("fma", "number", x, 1)) {exit(1)}
-	if (!checkfunctype("fma", "number", y, 2)) {exit(1)}
-	if (!checkfunctype("fma", "number", z, 3)) {exit(1)}
-	return (x * y) + z
+        if (!checkfunctype("fma", "number", y, 2)) {exit(1)}
+        if (!checkfunctype("fma", "number", z, 3)) {exit(1)}
+        return (x * y) + z
     }
 
     function ceil(Value) {
@@ -105,7 +105,7 @@ if (!INCLUDE["MATH"]) {
     function hypot(p, q) {
         if (!checkfunctype("hypot", "number", p, 1)) {exit(1)}
         if (!checkfunctype("hypot", "number", q, 2)) {exit(1)}
-	return sqrt(p ** 2 + q ** 2)
+        return sqrt(p ** 2 + q ** 2)
     }
 
     function isprime(n=0) {

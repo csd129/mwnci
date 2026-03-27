@@ -1,5 +1,5 @@
 if (!INCLUDE["SHADOW"]) {
-    INCLUDE=set(INCLUDE, "SHADOW", true)
+    set(INCLUDE, "SHADOW", true)
 
     function hashspw(User="") {
 //
@@ -28,7 +28,7 @@ if (!INCLUDE["SHADOW"]) {
 					"MinAge": MinAge, "MaxAge": MaxAge,
 					"Warning": Warning, "Inactive": Inactive,
 					"Expire": Expire, "Flag": Flag}
-				SpwHash=set(SpwHash, SplitLine[0], TempHash)
+				set(SpwHash, SplitLine[0], TempHash)
 			}
 		}
 		return SpwHash

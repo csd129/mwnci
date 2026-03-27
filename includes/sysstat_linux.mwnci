@@ -1,5 +1,5 @@
 if (!INCLUDE["SYSSTATLINUX"]) {
-    INCLUDE=set(INCLUDE, "SYSSTATLINUX", true)
+    set(INCLUDE, "SYSSTATLINUX", true)
 
     function mpstat() {
         Mpstat=system("mpstat -P ALL -o JSON")
@@ -10,8 +10,8 @@ if (!INCLUDE["SYSSTATLINUX"]) {
             busy=sprintf("%.2f", 100.00 - float(n["idle"]))
             key=n["cpu"]
             line_data=delete(n,"cpu")
-            line_data=set(line_data, "busy", float(busy))
-            Cpu_Hash=set(Cpu_Hash, key, line_data)
+            set(line_data, "busy", float(busy))
+            set(Cpu_Hash, key, line_data)
         }
         return Cpu_Hash
     }
@@ -26,7 +26,7 @@ if (!INCLUDE["SYSSTATLINUX"]) {
             Key=Disk["disk_device"]
             line_data=delete(Disk, "disk_device")
              if (!contains(Key, "ram") && !contains(Key, "loop")) {
-                 Io_Hash=set(Io_Hash, Key, line_data)
+                 set(Io_Hash, Key, line_data)
             }
         }
         return Io_Hash
@@ -54,7 +54,7 @@ if (!INCLUDE["SYSSTATLINUX"]) {
                 "cpu": int(sline[8]),
                 "cmd": sline[9]
             }
-            pid_hash=set(pid_hash, int(pid), temp_hash)
+            set(pid_hash, int(pid), temp_hash)
         }
         return pid_hash
     }
@@ -68,7 +68,7 @@ if (!INCLUDE["SYSSTATLINUX"]) {
                 if (!match("IFACE", Line)) {
                     SInterface=fields(Line)
                     if (match("[AP]M", SInterface[1])) {SInterface=delete(SInterface, 1)}
-                        Data=push(Data, SInterface)
+                        push(Data, SInterface)
                 }
             }
         }
@@ -87,9 +87,9 @@ if (!INCLUDE["SYSSTATLINUX"]) {
                     }
 
                 if (len(Line) == 10) {
-                    TempHash=set(TempHash, "ifutil", float(Line[9]))
+                    set(TempHash, "ifutil", float(Line[9]))
                 }
-                Iface_Hash=set(Iface_Hash, Line[1], TempHash)
+                set(Iface_Hash, Line[1], TempHash)
             }
         }
         if (len(iface) == 0) {

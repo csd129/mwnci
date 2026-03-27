@@ -1048,7 +1048,7 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 	}
 	fmt.Fprintf(os.Stderr, "ERROR: identifier not found: %s\n", node.Value)
 	os.Exit(1)
-	return newError("identifier not found: " + node.Value)
+	return newError("%s", "identifier not found: "+node.Value)
 }
 
 func evalExpression(ctx context.Context, exps []ast.Expression, env *object.Environment, DEBUG bool) []object.Object {

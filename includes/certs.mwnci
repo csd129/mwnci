@@ -3,7 +3,7 @@ include(
 )
 
 if (!INCLUDE["CERTS"]) {
-    INCLUDE=set(INCLUDE, "CERTS", true)
+    set(INCLUDE, "CERTS", true)
 
     function extractcert(CertString="") {
         if (!checkfunctype("extractcert", "string", CertString, 1)) {exit(1)}
@@ -18,10 +18,10 @@ if (!INCLUDE["CERTS"]) {
             if (Line == "-----BEGIN CERTIFICATE-----") {
                  CertData=[]
             }
-            CertData=push(CertData, Line)
+            CertData.push(Line)
             if (Line == "-----END CERTIFICATE-----") {
                 CertData=join(CertData, "\n")
-                CertArray=push(CertArray, CertData + "\n")
+                CertArray.push(CertData + "\n")
             }
         }
         return CertArray
@@ -126,9 +126,9 @@ if (!INCLUDE["CERTS"]) {
             if (Line == "-----BEGIN CERTIFICATE-----") {
                  CertData=[]
             }
-            CertData=push(CertData, Line)
+            CertData.push(Line)
             if (Line == "-----END CERTIFICATE-----") {
-                CertArray=push(CertArray, CertData)
+                CertArray.push(CertData)
             }
         }
         foreach Cert in CertArray {
@@ -169,10 +169,10 @@ if (!INCLUDE["CERTS"]) {
                             Issue=split(trim(Issue), "=")
                             Name=trim(Issue[0])
                             Value=trim(Issue[1])
-                            if (Name == "C") {IssueHash=set(IssueHash, "country_name", Value)}
-                            if (Name == "O") {IssueHash=set(IssueHash, "organization_name", Value)}
-                            if (Name == "CN") {IssueHash=set(IssueHash, "common_name", Value)}
-                            if (Name == "OU") {IssueHash=set(IssueHash, "organizational_unit", Value)}
+                            if (Name == "C") {set(IssueHash, "country_name", Value)}
+                            if (Name == "O") {set(IssueHash, "organization_name", Value)}
+                            if (Name == "CN") {set(IssueHash, "common_name", Value)}
+                            if (Name == "OU") {set(IssueHash, "organizational_unit", Value)}
                         }
                     }
                     case /^Validity/ {
@@ -183,10 +183,10 @@ if (!INCLUDE["CERTS"]) {
                         NAfter=trim(CertInfo[Count])
                         NAfter=trimprefix(NAfter, "Not After : ")
                         if (OS == "linux") {
-                            EBefore= datetoepoch(NBefore)
+                            EBefore=datetoepoch(NBefore)
                             EAfter=datetoepoch(NAfter)
                         } else {
-                            EBefore= datetoepoch(NBefore, "%b %e %T %Y %Z")
+                            EBefore=datetoepoch(NBefore, "%b %e %T %Y %Z")
                             EAfter=datetoepoch(NAfter, "%b %e %T %Y %Z")
                         }
                         ValHash={"not_before_iso": NBefore, "not_after_iso": NAfter, "not_before": EBefore, "not_after": EAfter}
@@ -198,13 +198,13 @@ if (!INCLUDE["CERTS"]) {
                             Subject=split(trim(Subject), "=")
                             Name=trim(Subject[0])
                             Value=trim(Subject[1])
-                            if (Name == "jurisdictionC") {SubjectHash=set(SubjectHash,"incorporation_country", Value)}
-                            if (Name == "businessCategory") {SubjectHash=set(SubjectHash,"business_category", Value)}
-                            if (Name == "serialNumber") {SubjectHash=set(SubjectHash,"serial_number_str", Value)}
-                            if (Name == "C") {SubjectHash=set(SubjectHash,"country_name", Value)}
-                            if (Name == "L") {SubjectHash=set(SubjectHash,"locality_name", Value)}
-                            if (Name == "O") {SubjectHash=set(SubjectHash,"organization_name", Value)}
-                            if (Name == "CN") {SubjectHash=set(SubjectHash,"common_name", Value)}
+                            if (Name == "jurisdictionC") {set(SubjectHash,"incorporation_country", Value)}
+                            if (Name == "businessCategory") {set(SubjectHash,"business_category", Value)}
+                            if (Name == "serialNumber") {set(SubjectHash,"serial_number_str", Value)}
+                            if (Name == "C") {set(SubjectHash,"country_name", Value)}
+                            if (Name == "L") {set(SubjectHash,"locality_name", Value)}
+                            if (Name == "O") {set(SubjectHash,"organization_name", Value)}
+                            if (Name == "CN") {set(SubjectHash,"common_name", Value)}
                         }
                     }
                     case /^DNS:/ {
@@ -213,7 +213,7 @@ if (!INCLUDE["CERTS"]) {
                         foreach DNSEntry in DLine {
                             DNSEntry=trim(DNSEntry)
                             DNSEntry=trimprefix(DNSEntry, "DNS:")
-                            AltArray=push(AltArray, DNSEntry)
+                            push(AltArray, DNSEntry)
                         }
                     }
                     default { noop }
@@ -232,7 +232,7 @@ if (!INCLUDE["CERTS"]) {
                     "alternate_names": AltArray
                 }
             }
-            JsonArray=push(JsonArray, CertHash)
+            push(JsonArray, CertHash)
             unlink(TEMP)
         }
         return JsonArray

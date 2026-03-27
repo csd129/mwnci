@@ -1,5 +1,5 @@
 if (!INCLUDE["OSBSD"]) {
-    INCLUDE=set(INCLUDE, "OSBSD", true)
+    set(INCLUDE, "OSBSD", true)
     if (!INCLUDE["STRING"]) {
         include("string")
     }
@@ -13,7 +13,7 @@ if (!INCLUDE["OSBSD"]) {
         Mem=memstat()
         MemHash={"mem": {"buffcache": Mem["buffers"] / 1024, "available": Mem["available"] / 1024, "total": Mem["total"] / 1024, "used": Mem["used"] / 1024, "free": Mem["free"] / 1024}}
         SwapHash={"free": int(SwapFree), "total": int(SwapSize), "used": int(SwapUsed)}
-        MemHash=set(MemHash, "swap", SwapHash)
+        set(MemHash, "swap", SwapHash)
         return MemHash
     }
 
@@ -46,7 +46,7 @@ if (!INCLUDE["OSBSD"]) {
                 Idle=float(trim(Sline[10], "%"))
                 IdleCount += Idle
                 CPU="cpu" + Cpu
-                CPUHash=set(CPUHash, CPU, {"user": User, "nice": Nice, "system": Sys, "interrupt": Int, "idle": Idle})
+                set(CPUHash, CPU, {"user": User, "nice": Nice, "system": Sys, "interrupt": Int, "idle": Idle})
             }
         }
         User=float(sprintf("%.2f", UserCount / Total))
@@ -55,10 +55,10 @@ if (!INCLUDE["OSBSD"]) {
         Int=float(sprintf("%.2f", IntCount / Total))
         Idle=float(sprintf("%.2f", IdleCount / Total))
         AllHash={"user": User, "nice": Nice, "system": Sys, "interrupt": Int, "idle": Idle}
-        CPUHash=set(CPUHash, "all", AllHash) 
+        set(CPUHash, "all", AllHash) 
         if (CpuArg != "" && len(CPUHash) > 0 ) {
             CPUHash=CPUHash[CpuArg]
-	    CPUHash=set(CPUHash, "cpu", CpuArg)
+	    set(CPUHash, "cpu", CpuArg)
         }
         return CPUHash
     }

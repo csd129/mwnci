@@ -3,21 +3,21 @@
 //
 
 
-let input = "  Eccles Cake  ";
+Input = "  Eccles Cake  ";
 
-print( "Input: '", input, "'\n" );
+print( "Input: '", Input, "'\n" );
 
 // Case-conversion
-print( "Upper: '", input.toupper(), "'\n");
-print( "Lower: '", input.tolower(), "'\n");
+print( "Upper: '", Input.toupper(), "'\n");
+print( "Lower: '", Input.tolower(), "'\n");
 
 // Removing whitespace
-print( "ltrim: '", input.ltrim(), "'\n");
-print( "rtrim: '", input.rtrim(), "'\n");
-print( "trim: '",  input.trim(), "'\n");
+print( "ltrim: '", Input.ltrim(), "'\n");
+print( "rtrim: '", Input.rtrim(), "'\n");
+print( "trim: '",  Input.trim(), "'\n");
 
 // Reversing
-let str = "The quick brown 狐 jumped over the lazy 犬";
+str = "The quick brown 狐 jumped over the lazy 犬";
 print( "String  : '" + str + "'\n" );
 print( "Reversed: '" + str.reverse() + "'\n" );
 

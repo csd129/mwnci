@@ -6,13 +6,13 @@
 //
 
 
-let data = { "Name":"Eccles", "Contact":"+358449...",  "Age": 128 };
-let str  = "My name is ${Name}, I am ${Age}\n";
-let out  = str.interpol( data );
-print(out);
+data = { "Name":"Eccles", "Contact":"+358449...",  "Age": 128 }
+str  = "My name is ${Name}, I am ${Age}\n"
+out  = str.interpol( data )
+print(out)
 
-let out = "My ${Key} is ${null} missing!\n\tContact me at .. ${Contact}".interpol( data );
-print(out, "\n");
+out = "My ${Key} is ${null} missing!\n\tContact me at .. ${Contact}".interpol( data )
+print(out, "\n")
 
 
-print( "Forename: Eccles  Surname:${surname}".interpol( { "surname": "Cake" } ) , "\n");
+print( "Forename: Eccles  Surname:${surname}".interpol( { "surname": "Cake" } ) , "\n")

@@ -12,8 +12,15 @@ func acopyFun(args ...object.Object) object.Object {
 	); err != nil {
 		return newError("%s", err.Error())
 	}
-
-	arr := args[0].(*object.Array)
-	newArray := arr.Copy()
-	return newArray
+	if args[0].Type() == object.ARRAY_OBJ {
+		Var := args[0].(*object.Array)
+		newVar := Var.Copy()
+		return newVar
+	}
+	if args[0].Type() == object.HASH_OBJ {
+		Var := args[0].(*object.Hash)
+		newVar := Var.Copy()
+		return newVar
+	}
+	return newError("argument to copy() not supported, expected HASH or ARRAY, got=%s", args[0].Type())
 }

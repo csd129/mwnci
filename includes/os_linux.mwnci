@@ -1,11 +1,11 @@
 if (!INCLUDE["OSLINUX"]) {
-    INCLUDE=set(INCLUDE, "OSLINUX", true)
+    set(INCLUDE, "OSLINUX", true)
 
     function free() {
         Mem=memstat()
         MemHash={"mem": {"buffcache": Mem["buffers"] / 1024, "available": Mem["available"] / 1024, "total": Mem["total"] / 1024, "used": Mem["used"] / 1024, "free": Mem["free"] / 1024}}
         SwapHash={"free": Mem["swapfree"] / 1024, "total": Mem["swaptotal"] / 1024, "used": (Mem["swaptotal"] - Mem["swapfree"]) / 1024}
-        MemHash=set(MemHash, "swap", SwapHash)
+        set(MemHash, "swap", SwapHash)
         return MemHash
     }
 
@@ -21,7 +21,7 @@ if (!INCLUDE["OSLINUX"]) {
                 "softirq": SLine[6], "steal": SLine[7], "guest": SLine[8],
                 "guest_nice": SLine[9]
                 }
-            CPUHash=set(CPUHash, CPU, TempHash)
+            set(CPUHash, CPU, TempHash)
         }
         return CPUHash
     }
@@ -56,11 +56,11 @@ if (!INCLUDE["OSLINUX"]) {
             Guest=float(sprintf("%.2f",(Guest * 100) / Total))
             Guestnice=float(sprintf("%.2f",(Guestnice * 100) / Total))
             TempHash={"user": User, "nice": Nice, "system": Sys, "idle": Idle, "iowait": Iowait, "irq": Irq, "softirq": Softirq, "steal": Steal, "guest": Guest, "guest_nice": Guestnice}
-            CPUHash=set(CPUHash, CPU, TempHash)
+            set(CPUHash, CPU, TempHash)
         }
         if (Cpu != "" && len(CPUHash) > 0) {
             CPUHash=CPUHash[Cpu]
-            CPUHash=set(CPUHash, "CPU", Cpu)
+            set(CPUHash, "CPU", Cpu)
         }
         return CPUHash
     }
@@ -88,7 +88,7 @@ if (!INCLUDE["OSLINUX"]) {
     	SysHash={"Inter": int(Info[10]), "Contxt": int(Info[11])}
     	CpuHash={"User": int(Info[12]), "Sys": int(Info[13]), "Idle": int(Info[14]), "Wait": int(Info[15]), "Steal": int(Info[16])}
         if (len(Info) == 18) {
-            CpuHash=set(CpuHash, "Guest", int(Info[17]))
+            set(CpuHash, "Guest", int(Info[17]))
         }
         DataHash={"Procs": ProcHash, "Memory": MemHash, "Swap": SwapHash, "IO": IOHash, "System": SysHash, "CPU": CpuHash}
         return DataHash

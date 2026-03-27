@@ -2,7 +2,7 @@
 // and builtin commands. It is autoloaded within main.mwnci
 
 if (!INCLUDE["METHODS"]) {
-    INCLUDE=set(INCLUDE, "METHODS", true)
+    set(INCLUDE, "METHODS", true)
 
     function array.batch(size=1) {return batch(self, size)}
     function array.copy() {return copy(self)}
@@ -25,6 +25,7 @@ if (!INCLUDE["METHODS"]) {
     function array.map(fnc) {return map(self, fnc)}
     function array.max() {return max(self)}
     function array.min() {return min(self)}
+    function array.pop() {return pop(self)}
     function array.push(item) {return push(self, item)}
     function array.remove(element=-1) {return remove(self, element)}
     function array.rest() {return rest(self)}
@@ -36,6 +37,7 @@ if (!INCLUDE["METHODS"]) {
     function array.shuffle() {return shuffle(self)}
     function array.slice(Start, End) {return slice(self, Start, End)}
     function array.sort() {return sort(self)}
+    function array.sorted() {return sorted(self)}
     function array.sortips() {return sortips(self)}
     function array.sum() {return sum(self)}
     function array.swap( a, b ) {return swap(self, a, b)}
@@ -44,6 +46,7 @@ if (!INCLUDE["METHODS"]) {
     function array.uniq() {return uniq(self)}
     function array.usort() {return usort(self)}
     function float.int() {return (int(self))}
+    function hash.copy() {return copy(self)}
     function hash.delete(key) {return delete(self, key)}
     function hash.jsontoyaml() {return jsontoyaml(self)}
     function hash.items() {return items(self)}

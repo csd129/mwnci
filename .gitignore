@@ -4,5 +4,6 @@ Mwnci.mk
 .idea/
 editors/emacs/mwnci.el
 editors/vim/syntax/mwnci.vim
+editors/nano/mwnci.nanorc
 evaluator/include.go
 includes/Makefile

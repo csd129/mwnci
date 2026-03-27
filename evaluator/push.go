@@ -6,7 +6,7 @@ import (
 )
 
 // push something onto an array
-func fpushFun(args ...object.Object) object.Object {
+func pushFun(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"push", args,
 		typing.ExactArgs(2),
@@ -16,7 +16,6 @@ func fpushFun(args ...object.Object) object.Object {
 	}
 
 	arr := args[0].(*object.Array)
-	newArray := arr.Copy()
-	newArray.Append(args[1])
-	return newArray
+	arr.Append(args[1])
+	return arr
 }

@@ -21,7 +21,7 @@ function dump( hash ) {
 //
 // Here is a sample hash
 //
-let h = { "Eccles": "Cake" , "Moi": 7, 3.14:"pi?"};
+h = { "Eccles": "Cake" , "Moi": 7, 3.14:"pi?"}
 
 //
 // Show it.
@@ -32,7 +32,7 @@ dump( h )
 //
 // Add a new key
 //
-h = set(h, "Updated", "Value" )
+set(h, "Updated", "Value" )
 
 //
 // Show it
@@ -43,16 +43,16 @@ dump( h )
 //
 // Delete two keys
 //
-h = delete(h, "Moi" )
-h = delete(h, 3.14 );
+delete(h, "Moi" )
+delete(h, 3.14 );
 print( "After deleting two keys:\n" )
 dump( h )
 
 
 print( "Running command: /bin/ls\n")
-let h = `/bin/ls / /fdsf`;
+h = `/bin/ls / /fdsf`
 dump( h)
 
 print( "Running via bash:\n");
-let h = `/bin/sh -c "/bin/ls /etc"`;
+h = `/bin/sh -c "/bin/ls /etc"`
 dump( h)

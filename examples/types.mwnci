@@ -4,17 +4,17 @@
 // The `type` function returns the type of an item.
 //
 
-function show( input ) {
-   print( "Type of input was ", type( input ), "\n" );
-   print( "\tAfter converting to string we found: ", string( input ), "\n" );
+function show( Input ) {
+   print( "Type of input was ", type( Input ), "\n" )
+   print( "\tAfter converting to string we found: ", string( Input ), "\n" )
 }
 
 
-show( "String input" );
-show( 3.14 );
-show( 3 );
-show( [ 0, 1, 2,3,4,5,6,7,8,9,10] );
-show( { "Name": "Steve", "Email": "example@example.com" } );
+show( "String input" )
+show( 3.14 )
+show( 3 )
+show( [ 0, 1, 2,3,4,5,6,7,8,9,10] )
+show( { "Name": "Steve", "Email": "example@example.com" } )
 
-let g = fn() { return "Hello, world!" ; };
-show( g );
+let g = fn() { return "Hello, world!" }
+show( g )

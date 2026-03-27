@@ -1,5 +1,5 @@
 if (!INCLUDE["PWD"]) {
-    INCLUDE=set(INCLUDE, "PWD", true)
+    set(INCLUDE, "PWD", true)
     
     function getpwent(User="") {
         FindUser=string(User)
@@ -11,14 +11,14 @@ if (!INCLUDE["PWD"]) {
             if (Entry[0] != "#") {
                 UserInfo=split(trim(Entry), ":")
                 Gecos=split(UserInfo[4], ",")
-                UserHash=set(UserHash, "Gecos", Gecos)
-                UserHash=set(UserHash, "User", UserInfo[0])
-                UserHash=set(UserHash, "Uid", int(UserInfo[2]))
-                UserHash=set(UserHash, "Gid", int(UserInfo[3]))
-                UserHash=set(UserHash, "Home", UserInfo[5])
+                set(UserHash, "Gecos", Gecos)
+                set(UserHash, "User", UserInfo[0])
+                set(UserHash, "Uid", int(UserInfo[2]))
+                set(UserHash, "Gid", int(UserInfo[3]))
+                set(UserHash, "Home", UserInfo[5])
                 Shell=(len(UserInfo[6]) == 0) ? "/bin/sh" : UserInfo[6]
-                UserHash=set(UserHash, "Shell", Shell)
-                PasswdArray=push(PasswdArray, UserHash)
+                set(UserHash, "Shell", Shell)
+                push(PasswdArray, UserHash)
             }
         }
         if (User != "") {

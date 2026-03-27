@@ -20,9 +20,7 @@ func ArrUnion(args ...object.Object) object.Object {
 			}
 		} else {
 			return newError("argument to union() not supported, expected ARRAY, got=%s", args[i].Type())
-
 		}
 	}
 	return Uniq(newArray)
 }
-

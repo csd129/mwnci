@@ -15,13 +15,12 @@ func ArrayInsert(args ...object.Object) object.Object {
 
 	if args[0].Type() == object.ARRAY_OBJ {
 		arr := args[0].(*object.Array)
-		newArray := arr.Copy()
 		elem := int(args[1].(*object.Integer).Value)
-		if (elem > len(newArray.Elements)-1) || (elem < 0) {
+		if (elem > len(arr.Elements)-1) || (elem < 0) {
 			return newError("IndexError: array index [%d] out of range ", elem)
 		}
-		newArray.Insert(elem, args[2])
-		return newArray
+		arr.Insert(elem, args[2])
+		return arr
 	}
 	if args[0].Type() == object.STRING_OBJ {
 		text := args[0].(*object.String).Value

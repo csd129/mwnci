@@ -13,7 +13,8 @@ func (e *Error) Type() Type {
 
 // Inspect returns a string-representation of the given object.
 func (e *Error) Inspect() string {
-	return "ERROR: " + e.Message
+	return e.Message
+	// return "ERROR: " + e.Message
 }
 
 // InvokeMethod invokes a method against the object.
@@ -37,5 +38,5 @@ func (e *Error) ToInterface() interface{} {
 }
 
 func (e *Error) String() string {
-        return e.Message
+	return e.Message
 }

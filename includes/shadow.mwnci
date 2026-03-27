@@ -1,5 +1,5 @@
 if (!INCLUDE["SHADOW"]) {
-    INCLUDE=set(INCLUDE, "SHADOW", true)
+    set(INCLUDE, "SHADOW", true)
 
     switch (OS) {
         case /bsd/ , /darwin/ {

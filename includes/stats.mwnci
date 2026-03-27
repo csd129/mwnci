@@ -3,7 +3,7 @@ include(
 )
 
 if (!INCLUDE["STATS"]) {
-    INCLUDE=set(INCLUDE, "STATS", true)
+    set(INCLUDE, "STATS", true)
 
     function covariance(X, Y, Type="s") {
         if (!checkfunctype("covariance", "array", X, 1)) {exit(1)}
@@ -85,7 +85,7 @@ if (!INCLUDE["STATS"]) {
         Highest=reverse(usort(values(UniqCount)))[0]
         foreach Key in keys(UniqCount) {
             if (UniqCount[Key] == Highest) {
-                ModeArray=push(ModeArray, Key)
+                ModeArray.push(Key)
             }
         }
         return (len(ModeArray) == 1) ? ModeArray[0] : ModeArray
