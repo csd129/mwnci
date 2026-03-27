@@ -213,9 +213,9 @@ if (!INCLUDE["MAIN"]) {
         return IntersectArray
     }
 
-    function isrsorted(SortedArray) {
+    function isrsorted(SortedArray=[]) {
         if (!checkfunctype("isrsorted", "array", SortedArray, 1)) {exit(1)}
-        return issorted(reverse(SortedArray))
+        return issorted(reverse(copy(SortedArray)))
     }
 
     function lines(data) {
