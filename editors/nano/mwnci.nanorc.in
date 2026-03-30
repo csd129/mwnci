@@ -6,15 +6,15 @@ magic "Mwnci script"
 comment "//"
 
 # Keywords.
-color brightcyan "\<(case|const|default|else|fn|foreach|function|if|in|let|noop|return|switch||while)\>"
-
+color brightcyan "\<(case|const|default|else|fn|foreach|function|if|in|let|noop|return|switch|while)\>"
+color brightcyan "\?|:"
 # Builtins
 color cyan "\<(@NANOBUILTINS@)\>"
 color yellow "\<(@NANOINCLUDES@)\>"
 
 # Special values.
 color brightmagenta "\<(@NANOCONST@|true|false|null)\>"
-color orange "==|=|/=|&&|\|\||<|>|<=|>=|<<|>>|!="
+color orange "==|=|/=|&&|\|\||<|>|<=|>=|<<|>>|!=|\+=|\*=|\-=|\/=|\+|\-|\\|\*|\*\*"
 
 # Mono-quoted strings.
 color brightgreen "'([^'\]|\\.)*'|"([^"\]|\\.)*"|'''|""""

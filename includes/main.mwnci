@@ -123,7 +123,6 @@ if (!INCLUDE["MAIN"]) {
         }
         return Result
     }
-
     function getblock(StartBlock, EndBlock, ArrayName) {
         if (!checkfunctype("getblock", "string", StartBlock, 1)) {exit(1)}
         if (!checkfunctype("getblock", "string", EndBlock, 2)) {exit(1)}
@@ -213,7 +212,7 @@ if (!INCLUDE["MAIN"]) {
         return IntersectArray
     }
 
-    function isrsorted(SortedArray=[]) {
+    function isrsorted(SortedArray) {
         if (!checkfunctype("isrsorted", "array", SortedArray, 1)) {exit(1)}
         return issorted(reverse(copy(SortedArray)))
     }
