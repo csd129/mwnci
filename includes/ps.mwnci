@@ -37,11 +37,11 @@ if (!INCLUDE["PS"]) {
             exit(1)
         }
         Cmd="pgrep " + name + "; exit 0"
-        IP=split(trim(system(Cmd)), "\n")
-        if (!IP) {
+        PID=split(trim(system(Cmd)), "\n")
+        if (!PID) {
             return false
         }
-        return int(IP)
+        return int(PID)
     }
     
     function procstat(pid=-1) {

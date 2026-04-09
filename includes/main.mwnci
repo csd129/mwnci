@@ -471,6 +471,7 @@ if (!INCLUDE["MAIN"]) {
     // Character class definitions for tr()
     //
     function cclass(String="") {
+        if (!checkfunctype("cclass", "string", String, 1)) {exit(1)}
         UPPER="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         LOWER=tolower(UPPER)
         DIGIT="01234567890"
@@ -538,6 +539,7 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function ucount(Array=[]) {
+        if (!checkfunctype("ucount", "array", Array, 1)) {exit(1)}
         CountHash={}
         foreach Entry in Array {
             if (!CountHash[Entry]) {
@@ -568,6 +570,7 @@ if (!INCLUDE["MAIN"]) {
     }
 
     function randwords(Count=0) {
+        if (!checkfunctype("randwords", "integer", Count, 1)) {exit(1)}
         ListArray=1..Count
         File="/usr/share/dict/words"
         WordList=split(trim(cat(File)), "\n")

@@ -65,7 +65,7 @@ if (!INCLUDE["PWD"]) {
                 Gecos=(len(Gecos) > 0 ? split(Gecos,",") : [])
                 Shell = (len(SplitLine[6]) == 0) ? "/bin/sh" : SplitLine[6]
                 NewHash={"Uid": int(SplitLine[2]), "Password": SplitLine[1], "Gid": int(SplitLine[3]), "Home": SplitLine[5], "Shell": Shell, "Gecos": Gecos}
-                PWHash=set(PWHash, SplitLine[0], NewHash)
+                set(PWHash, SplitLine[0], NewHash)
             }
         }
         return PWHash
