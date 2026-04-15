@@ -11,7 +11,6 @@ import (
 	"mwnci/typing"
 	"os"
 	"strings"
-	//	"fmt"
 )
 
 func ZConCat(args ...object.Object) object.Object {
@@ -30,7 +29,11 @@ func ZConCat(args ...object.Object) object.Object {
 	}
 	defer data.Close()
 	buff := make([]byte, 512)
-	if _, err = data.Read(buff); err != nil {
+	_, err = data.Read(buff)
+	if err == io.EOF {
+		return &object.String{Value: string("")}
+	}
+	if err != nil {
 		return newError("%s", err.Error())
 	}
 	fileType := http.DetectContentType(buff)
@@ -58,7 +61,9 @@ func ConCat(args ...object.Object) object.Object {
 	}
 
 	filename := args[0].(*object.String).Value
+
 	data, err := os.ReadFile(args[0].(*object.String).Value)
+
 	if err != nil {
 		return newError("IOError: error reading from file %s: %s", filename, err)
 	}

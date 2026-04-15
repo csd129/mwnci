@@ -81,7 +81,7 @@ func init() {
 	RegisterBuiltin("iptoint", func(env *object.Environment, args ...object.Object) object.Object { return (IP2I(args...)) })
 	RegisterBuiltin("isreadable", func(env *object.Environment, args ...object.Object) object.Object { return (IsReadable(args...)) })
 	RegisterBuiltin("isjson", func(env *object.Environment, args ...object.Object) object.Object { return (Isjson(args...)) })
-	RegisterBuiltin("iswriteable", func(env *object.Environment, args ...object.Object) object.Object { return (IsWriteable(args...)) })
+	RegisterBuiltin("iswritable", func(env *object.Environment, args ...object.Object) object.Object { return (IsWritable(args...)) })
 	RegisterBuiltin("issorted", func(env *object.Environment, args ...object.Object) object.Object { return (Issorted(args...)) })
 	RegisterBuiltin("jsontoyaml", func(env *object.Environment, args ...object.Object) object.Object { return (jtoy(args...)) })
 	RegisterBuiltin("join", func(env *object.Environment, args ...object.Object) object.Object { return (Joiner(args...)) })

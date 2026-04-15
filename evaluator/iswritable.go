@@ -6,9 +6,9 @@ import (
 	"os"
 )
 
-func IsWriteable(args ...object.Object) object.Object {
+func IsWritable(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"iswriteable", args,
+		"iswritable", args,
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
