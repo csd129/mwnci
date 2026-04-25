@@ -26,7 +26,7 @@ if (!INCLUDE["MASTERPW"]) {
                 Expire=int(SplitLine[6])
                 Gecos=split(SplitLine[7], ",")
                 Home=SplitLine[8]
-                Shell=SplitLine[9]
+                Shell=(len(SplitLine[9]) == 0) ? "/bin/sh" : SplitLine[9]
                 TempHash={"Passwd": Passwd, "Uid": Uid, "Gid": Gid, "Class": Class, "Change": Change, "Expire": Expire, "Gecos": Gecos, "Home": Home, "Shell": Shell}
                 set(SpwHash, SplitLine[0], TempHash)
             }

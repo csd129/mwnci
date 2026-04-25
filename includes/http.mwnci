@@ -1,5 +1,6 @@
 if (!INCLUDE["HTTP"]) {
     set(INCLUDE, "HTTTP", true)
+    include("string")
 
     function httpcontent(url="", expr="") {
         if (!checkfunctype("httpcontent", "string", url, 1)) {exit(1)}
@@ -113,6 +114,10 @@ if (!INCLUDE["HTTP"]) {
         if (result == "000" || len(result) == 0) {
             return false
         }
-        return result
+        if (isdigit(result)) {
+            return int(result)
+        } else {
+            return result
+        }
     }
 }

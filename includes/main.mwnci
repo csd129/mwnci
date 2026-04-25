@@ -482,7 +482,7 @@ if (!INCLUDE["MAIN"]) {
             "[:digit:]": DIGIT,
             "[:graph:]": UPPER + LOWER + DIGIT + "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~",
             "[:lower:]": LOWER,
-            "[:punct:]": "!-.:-@:`'?[ _]{|}~",
+            "[:punct:]": "!-.:-@:`'?\"[ _]{|}~",
             "[:space:]": "\t\n\v\r ",
             "[:upper:]": UPPER,
             "[:word:]": DIGIT + UPPER + LOWER + "_",
@@ -666,8 +666,20 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("fromkeys", "array", Array, 1)) {exit(1)}
         Hash={}
         foreach Entry in Array {
-            Hash.set(Entry, Value)
+            set(Hash, Entry, Value)
         }
         return Hash
+    }
+
+    function hash(AofArray=[]) {
+        NewHash={}
+        foreach Index, Entry in AofArray {
+            if (len(Entry) != 2) {
+                println("Error calling `hash`: ERROR IndexError: only 1 entry found, ", Entry)
+                return {}
+            }
+            set(NewHash, Entry[0], Entry[1])
+        }
+        return NewHash
     }
 }

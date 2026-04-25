@@ -72,10 +72,34 @@ if (!INCLUDE["STRING"]) {
         return match("^[a-zA-Z0-9]*$", String) ? true : false
     }
 
-    function isnum(String="") {
-        if (!checkfunctype("isnum", "string", String, 1)) {exit(1)}
-        if (len(String) == 0) {return false}
-        return match("^[0-9]*$", String) ? true : false
+    function isnum(Number="") {
+        if (type(Number) == "integer" || type(Number) == "float") {return true}
+        Number=string(Number)
+        if (match("^[0-9]*$", Number)) {return true}
+        if ( Number ~= /^[+-]?(\d*[.])?\d+([eE][+-]?\d+)?$/ ) {return true}
+        return false
+    }
+
+    function isdigit(Number) {
+        if (type(Number) == "integer") {return true}
+        Number=string(Number)
+        if (match("^[0-9]*$", Number)) {return true}
+        return false
+    }
+
+    function ishexdigit(String) {
+        if (!checkfunctype("ishexdigit", "string", String, 1)) {exit(1)}
+        return match("^[0-9A-Fa-f]*$", String) ? true : false
+    }
+
+    function isoctdigit(String) {
+        if (!checkfunctype("isoctdigit", "string", String, 1)) {exit(1)}
+        return match("^[0-7]*$", String) ? true : false
+    }
+
+    function ispunct(String="") {
+        if (!checkfunctype("ispunct", "string", String, 1)) {exit(1)}
+        return match("^\"!\"\#\$\%\&\'\(\)\\*\\+\,\-\.\/\:\;\<\=\>\?\@\\[\\]\^\_`\{\|\}~*$", String) ? true : false
     }
 
     function isspace(Text="") {
@@ -129,7 +153,6 @@ if (!INCLUDE["STRING"]) {
         if (Position == -1) {
             return Data
         }
-
         if (Position == 0) {
             First=""
 	    Start=len(Search)+1
@@ -180,6 +203,10 @@ function string.partition(search) {return partition(self, search)}
 function string.isalpha() {return isalpha(self)}
 function string.isalnum() {return isalnum(self)}
 function string.isnum() {return isnum(self)}
+function string.isdigit() {return isdigit(self)}
+function string.ishexdigit() {return ishexdigit(self)}
+function string.isoctdigit() {return isoctdigit(self)}
+function string.ispunct() {return ispunct(self) }
 function string.capitalize() {return capitalize(self)}
 function string.istitle() {return istitle(self)}
 function string.zfill(Len) {return zfill(self, Len)}
