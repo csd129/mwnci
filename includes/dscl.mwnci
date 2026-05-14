@@ -55,6 +55,7 @@ if (!INCLUDE["DSCL"]) {
         Data=hashdscl()
         foreach User in keys(Data) {
             if (len(User) > 0) {
+                UserInfo=Data[User]
                 NewHash={
                     "Uid": UserInfo["UniqueID"],
                     "Gid": UserInfo["PrimaryGroupID"],
