@@ -17,52 +17,6 @@ if (!INCLUDE["OSBSD"]) {
         return MemHash
     }
 
-    function getcpu(CpuArg="") {
-    if (!checkfunctype("getcpu", "string", CpuArg, 1)) {exit(1)}
-//
-// Gotta do 2 (-d2) runs to get a more accuraterer view of the cpu's :(
-//
-        Data=split(trim(system("top -d2 -P p")), "\n")
-        UserCount=0
-        NiceCount=0
-        SysCount=0
-        IntCount=0
-        IdleCount=0
-        Total=0
-        CPUHash={}
-        foreach Line in Data {
-            if (match("^CPU", Line)) {
-                Total++
-                Sline=fields(Line)
-                Cpu=trim(Sline[1], ":")
-                User=float(trim(Sline[2], "%"))
-                UserCount += User
-                Nice=float(trim(Sline[4], "%"))
-                NiceCount += Nice
-                Sys=float(trim(Sline[6], "%"))
-                SysCount += Sys
-                Int=float(trim(Sline[8], "%"))
-                IntCount += Int
-                Idle=float(trim(Sline[10], "%"))
-                IdleCount += Idle
-                CPU="cpu" + Cpu
-                set(CPUHash, CPU, {"user": User, "nice": Nice, "system": Sys, "interrupt": Int, "idle": Idle})
-            }
-        }
-        User=float(sprintf("%.2f", UserCount / Total))
-        Nice=float(sprintf("%.2f", NiceCount / Total))
-        Sys=float(sprintf("%.2f", SysCount / Total))
-        Int=float(sprintf("%.2f", IntCount / Total))
-        Idle=float(sprintf("%.2f", IdleCount / Total))
-        AllHash={"user": User, "nice": Nice, "system": Sys, "interrupt": Int, "idle": Idle}
-        set(CPUHash, "all", AllHash) 
-        if (CpuArg != "" && len(CPUHash) > 0 ) {
-            CPUHash=CPUHash[CpuArg]
-	    set(CPUHash, "cpu", CpuArg)
-        }
-        return CPUHash
-    }
-
     function datetoepoch(Date="", Format="") {
         if (!checkfunctype("datetoepoch", "string", Date)) {exit(1)}
         if (!checkfunctype("datetoepoch", "string", Format)) {exit(1)}

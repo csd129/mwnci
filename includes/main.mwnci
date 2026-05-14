@@ -589,7 +589,7 @@ if (!INCLUDE["MAIN"]) {
         TermDev=""
         switch (OS) {
             case /bsd/ , /darwin/ {
-                if (Tty[0] == "v") {
+                if (Tty[0] == "v" || Tty[0] == "s") {
                     TermDev="/dev/tty" + Tty
                 } else {
                     TermDev="/dev/pts/" + Tty
@@ -675,7 +675,7 @@ if (!INCLUDE["MAIN"]) {
         NewHash={}
         foreach Index, Entry in AofArray {
             if (len(Entry) != 2) {
-                println("Error calling `hash`: ERROR IndexError: only 1 entry found, ", Entry)
+                println("Error calling `hash`: ERROR IndexError: array must contain 2 elements, ", Entry)
                 return {}
             }
             set(NewHash, Entry[0], Entry[1])

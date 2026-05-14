@@ -17,7 +17,7 @@ if (!INCLUDE["SYSSTAT"]) {
 
     function pidmem(ops="") {
         if (!checkfunctype("pidmem", "string", ops, 1)) {exit(1)}
-        CMD="ps ax -o pid,user,%cpu,%mem,command | grep -v \"\]$\""
+        CMD="ps ax -o pid,uid,%cpu,%mem,command | grep -v \"\]$\""
         if (len(ops) == 0) {ops="[a-z]"}
         ProcList=trim(system(CMD))
         ProcList=rest(split(ProcList, "\n"))
@@ -27,9 +27,10 @@ if (!INCLUDE["SYSSTAT"]) {
             sline=fields(line)
             if (len(ops) > 1) {
                 if (match(ops, sline[4])) {
-                    uid=getpwnam(sline[1])["Uid"]
+                    uid=int(sline[1])
                     temp_hash={
-                        "uid": int(uid),
+                        "user": getpwuid(uid)["User"],
+                        "uid": uid,
                         "pc_cpu": float(sline[2]),
                         "pc_mem": float(sline[3]),
                         "command": sline[4]
@@ -39,6 +40,7 @@ if (!INCLUDE["SYSSTAT"]) {
             }
         }
         return mem_hash
+
     }
 }
 

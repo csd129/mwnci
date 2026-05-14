@@ -39,6 +39,7 @@ func init() {
 	RegisterBuiltin("cosh", func(env *object.Environment, args ...object.Object) object.Object { return (mathCosh(args...)) })
 	RegisterBuiltin("count", func(env *object.Environment, args ...object.Object) object.Object { return (Count(args...)) })
 	RegisterBuiltin("cp", func(env *object.Environment, args ...object.Object) object.Object { return (FCp(args...)) })
+	RegisterBuiltin("cpustat", func(env *object.Environment, args ...object.Object) object.Object { return (Cpustat(args...)) })
 	RegisterBuiltin("cumulative", func(env *object.Environment, args ...object.Object) object.Object { return (Cumulate(args...)) })
 	RegisterBuiltin("cut", func(env *object.Environment, args ...object.Object) object.Object { return (FuncCut(args...)) })
 	RegisterBuiltin("date", func(env *object.Environment, args ...object.Object) object.Object { return (Date(args...)) })

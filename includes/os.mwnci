@@ -133,9 +133,39 @@ if (!INCLUDE["OS"]) {
         return [float(trim(Data[Last-2], ",")), float(trim(Data[Last-1], ",")), float(trim(Data[Last],","))]
     }
 
+    function getcpu(Search="") {
+        if (!checkfunctype("getcpu", "string", Search, 1)) {exit(1)}
+        CpuHash={}
+        Data=cpustat()
+        foreach Cpu in Data {
+            Key=Cpu["cpu"]
+            TempHash=delete(Cpu, "cpu")
+            set(CpuHash, Key, TempHash)
+        }
+        AllHash={}
+        CpuKeys=keys(CpuHash)
+        Len=len(CpuKeys)
+        foreach Cpu in CpuKeys {
+            foreach Entry in CpuHash[Cpu] {
+                if (!AllHash[Entry]) {
+                    set(AllHash, Entry, 0)
+                } else {
+                    set(AllHash, Entry, AllHash[Entry] + CpuHash[Cpu][Entry])
+                }
+            }
+        }
+        foreach Entry in keys(AllHash) {
+            Value=float(sprintf("%.2f", AllHash[Entry] / Len))
+            set(AllHash, Entry, Value)
+        }
+        set(CpuHash, "all", AllHash)
+        if (len(Search) > 0) {
+            return CpuHash[Search]
+        }
+        return CpuHash
+    }
     function string.datetoepoch(Format="") {
         return datetoepoch(self, Format)
-
     }
 }
 

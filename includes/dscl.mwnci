@@ -1,0 +1,71 @@
+if (!INCLUDE["DSCL"]) {
+    set(INCLUDE, "DSCL", true)
+
+    function hashdscl() {
+        CMD="dscl . readall /Users GeneratedUID NFSHomeDirectory PrimaryGroupID RealName RecordName RecordType SMBRID SMBSID UniqueID UserShell 2>/dev/null"
+        Data=split(trim(system(CMD)), "\n")
+        foreach Index, Value in Data {
+            if (Value == "-") {
+                set(Data, Index, "----")
+            }
+        }
+        Data=join(Data, "\n")
+        Data=split(Data,"----\n")
+        UserHash={}
+        foreach User in Data {
+            UserName=""
+            User=trim(User)
+            User=replaceall(User, "\n ", " ")
+            User=replaceall(User, ":\n", " ")
+            UserData=split(User, "\n")
+            TempHash={}
+            foreach Line in UserData {
+                SLine=split(trim(Line), ":")
+                Key=SLine[0]
+                Value=trim(SLine[1])
+                switch(Key) {
+                    case "NFSHomeDirectory" {
+                        Value=fields(Value)
+                    }
+                    case "PrimaryGroupID" {
+                        Value=int(Value)
+                    }
+                    case "UniqueID" {
+                        Value=int(Value)
+                    }
+                    case "RecordName" {
+                        SVal=fields(Value)
+                        First=SVal[0]
+                        UserName=First
+                        if (len(SVal) > 1) {
+                            Extra=trim(trimprefix(Value, First))
+                            Value=[First, Extra]
+                        }
+                    }
+                }
+                set(TempHash, Key, Value)
+            }
+            set(UserHash, UserName, TempHash)
+        }
+        return UserHash
+    }
+
+    function dscl2pwd() {
+        PWHash={}
+        Data=hashdscl()
+        foreach User in keys(Data) {
+            if (len(User) > 0) {
+                NewHash={
+                    "Uid": UserInfo["UniqueID"],
+                    "Gid": UserInfo["PrimaryGroupID"],
+                    "Home": UserInfo["NFSHomeDirectory"][0],
+                    "Shell": UserInfo["UserShell"],
+                    "Gecos": UserInfo["RealName"]
+                }
+                set(PWHash, User, NewHash)
+            }
+        }
+        return(PWHash)
+    }
+}
+

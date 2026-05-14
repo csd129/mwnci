@@ -26,45 +26,6 @@ if (!INCLUDE["OSLINUX"]) {
         return CPUHash
     }
 
-    function getcpu(Cpu="", Delay=0.75 ) {
-        Data=[]
-        CPUHash={}
-        Delay=float(Delay) * 1000
-        First=hashstats(regexp("^cpu", "/proc/stat"))
-        sleep(int(Delay))
-        Second=hashstats(regexp("^cpu", "/proc/stat"))
-        foreach CPU in keys(First) {
-            User=Second[CPU]["user"] - First[CPU]["user"]
-            Nice=Second[CPU]["nice"] - First[CPU]["nice"]
-            Sys=Second[CPU]["system"] - First[CPU]["system"]
-            Idle=Second[CPU]["idle"] - First[CPU]["idle"]
-            Iowait=Second[CPU]["iowait"] - First[CPU]["iowait"]
-            Irq=Second[CPU]["irq"] - First[CPU]["irq"]
-            Softirq=Second[CPU]["softirq"] - First[CPU]["softirq"]
-            Steal=Second[CPU]["steal"] - First[CPU]["steal"]
-            Guest=Second[CPU]["guest"] - First[CPU]["guest"]
-            Guestnice=Second[CPU]["guest_nice"] - First[CPU]["guest_nice"]
-            Total=float(User + Nice + Sys + Idle + Iowait + Irq + Softirq + Steal + Guest + Guestnice)
-            User=float(sprintf("%.2f",(User * 100) / Total))
-            Nice=float(sprintf("%.2f",(Nice * 100) / Total))
-            Sys=float(sprintf("%.2f",(Sys * 100) / Total))
-            Idle=float(sprintf("%.2f",(Idle * 100) / Total))
-            Iowait=float(sprintf("%.2f",(Iowait * 100) / Total))
-            Irq=float(sprintf("%.2f",(Irq * 100) / Total))
-            Softirq=float(sprintf("%.2f",(Softirq * 100) / Total))
-            Steal=float(sprintf("%.2f",(Steal * 100) / Total))
-            Guest=float(sprintf("%.2f",(Guest * 100) / Total))
-            Guestnice=float(sprintf("%.2f",(Guestnice * 100) / Total))
-            TempHash={"user": User, "nice": Nice, "system": Sys, "idle": Idle, "iowait": Iowait, "irq": Irq, "softirq": Softirq, "steal": Steal, "guest": Guest, "guest_nice": Guestnice}
-            set(CPUHash, CPU, TempHash)
-        }
-        if (Cpu != "" && len(CPUHash) > 0) {
-            CPUHash=CPUHash[Cpu]
-            set(CPUHash, "CPU", Cpu)
-        }
-        return CPUHash
-    }
-
     function datetoepoch(Date="", Format="") {
         if (!checkfunctype("datetoepoch", "string", Date)) {exit(1)}
         if (Date == "") {
