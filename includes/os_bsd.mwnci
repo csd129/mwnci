@@ -4,6 +4,13 @@ if (!INCLUDE["OSBSD"]) {
         include("string")
     }
     
+    function loadavg() {
+        Data=fields(trim(system("sysctl -n vm.loadavg")))
+        delete(Data, 0)
+        delete(Data, len(Data)-1)
+        return float(Data)
+    }
+
     function free() {
         Swap=split(trim(system("swapinfo")), "\n")
         SwapData=fields(Swap[1])

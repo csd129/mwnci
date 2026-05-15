@@ -127,12 +127,6 @@ if (!INCLUDE["OS"]) {
         return OsrHash
     }
 
-    function loadavg() {
-        Data=fields(trim(system("uptime")))
-        Last=len(Data)-1
-        return [float(trim(Data[Last-2], ",")), float(trim(Data[Last-1], ",")), float(trim(Data[Last],","))]
-    }
-
     function getcpu(Search="") {
         if (!checkfunctype("getcpu", "string", Search, 1)) {exit(1)}
         CpuHash={}

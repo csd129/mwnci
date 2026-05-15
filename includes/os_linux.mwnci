@@ -26,10 +26,16 @@ if (!INCLUDE["OSLINUX"]) {
         return CPUHash
     }
 
+    function loadavg() {
+        Data=fields(regexp("[0-9]", "/proc/loadavg")[0])
+        return [float(Data[0]), float(Data[1]), float(Data[2])]
+    }
+
+
     function datetoepoch(Date="", Format="") {
         if (!checkfunctype("datetoepoch", "string", Date)) {exit(1)}
         if (Date == "") {
-            Cmd="date +%s"
+            return time()
         } else {
             Cmd="date +%s -d \"" + Date + "\""
         }
