@@ -4,11 +4,11 @@ if (!INCLUDE["PSBSD"]) {
     function getpname(pid=-1) {
         if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
         if (pid == -1) {pid=getpid()}
-        Data=shift(split(trim(system("procstat -a")), "\n"))
+        Data=shift(split(trim(system("ps auxc")), "\n"))
         foreach Line in Data {
             Line=trim(Line)
             SLine=fields(Line)
-            if (int(SLine[0]) == pid) {
+            if (int(SLine[1]) == pid) {
                 return last(SLine)
             }
         }
