@@ -9,23 +9,6 @@ if (!INCLUDE["OSLINUX"]) {
         return MemHash
     }
 
-    function hashstats(Data) {
-        CPUHash={}
-        foreach Line in Data {
-            SLine=fields(Line)
-            CPU=(SLine[0] == "cpu") ? "all" : SLine[0]
-            SLine=float(shift(SLine))
-            TempHash={
-                "user": SLine[0], "nice": SLine[1], "system": SLine[2],
-                "idle": SLine[3], "iowait": SLine[4], "irq": SLine[5],
-                "softirq": SLine[6], "steal": SLine[7], "guest": SLine[8],
-                "guest_nice": SLine[9]
-                }
-            set(CPUHash, CPU, TempHash)
-        }
-        return CPUHash
-    }
-
     function loadavg() {
         Data=fields(regexp("[0-9]", "/proc/loadavg")[0])
         return [float(Data[0]), float(Data[1]), float(Data[2])]
