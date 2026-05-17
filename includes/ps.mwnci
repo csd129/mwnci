@@ -1,15 +1,20 @@
 if (!INCLUDE["PS"]) {
     set(INCLUDE, "PS", true)
 
-    switch (OS) {
-        case /bsd/ , /darwin/ {
-            include("ps_bsd")
+    function getpname(pid=-1) {
+        if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
+        if (pid == -1) {pid=getpid()}
+        Data=shift(split(trim(system("ps auxc")), "\n"))
+        foreach Line in Data {
+            Line=trim(Line)
+            SLine=fields(Line)
+            if (int(SLine[1]) == pid) {
+                return last(SLine)
+            }
         }
-        case "linux" {
-            include("ps_linux")
-        }
+        return false
     }
-    
+
     function procexists(pid=-1) {
         if (!checkfunctype("procexists", "integer", pid, 1)) {exit(1)}
         return contains(keys(process()), pid)
