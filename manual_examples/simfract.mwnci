@@ -15,11 +15,12 @@ function simfract(Fraction="") {
     }
     if (new1 > new2) {
         divvy=divmod(new1, new2)
-	newfract=sprintf("%d/%d", divvy[1], new2)
-	return sprintf("%d %s", divvy[0], newfract);
+        newfract=sprintf("%.0v/%.0v", divvy[1], new2)
+        return sprintf("%v %s", divvy[0], newfract);
     }
-    return sprintf("%d/%d", new1, new2);
+    return sprintf("%.0v/%.0v", new1, new2);
 }
 
 
-println(simfract("75/10"))
+println(simfract("31/75"))
+println(simfract("46/10"))

@@ -1,0 +1,46 @@
+#!/usr/bin/env mwnci
+
+if (ARGC < 2) {
+    println("Usage: ", PROGNAME, " <Domain|IP>")
+    exit(1)
+}
+
+function getcnames(DN) {
+    CN=lookupcname(DN)
+    if (CN != DN) {
+        push(Cnames, [DN, CN])
+        getcnames(CN)
+    }
+    return true
+}
+
+Domains=rest(ARGV)
+foreach Domain in Domains {
+    Data=""
+    Cnames=[]
+    if (checkip(Domain)) {
+        Data=lookupptr(Domain)
+        println("Name:   ", Data[0])
+        println("Address: ", Domain)
+    } else {
+        Domain=trim(Domain, ".") + "."
+        Data=lookuphost(Domain)
+        getcnames(Domain)
+        if (len(Cnames) == 0) {
+            foreach IP in Data {
+                println("Name:   ", trim(Domain, "."))
+                println("Address: ", IP)
+            }
+        } else {
+            foreach Cn in Cnames {
+                println(trim(Cn[0], "."), " canonical name = ", Cn[1])
+            }
+        }
+        Final=last(Cnames)[1]
+        foreach IP in Data {
+            println("Name:   ", trim(Final, "."))
+            println("Address: ", IP)
+        }
+    }
+    println()
+}
