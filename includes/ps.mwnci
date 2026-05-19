@@ -3,16 +3,10 @@ if (!INCLUDE["PS"]) {
 
     function getpname(pid=-1) {
         if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
-        if (pid == -1) {pid=getpid()}
-        Data=shift(split(trim(system("ps auxc")), "\n"))
-        foreach Line in Data {
-            Line=trim(Line)
-            SLine=fields(Line)
-            if (int(SLine[1]) == pid) {
-                return last(SLine)
-            }
-        }
-        return false
+        if (pid == -1) {pid=getpid()}                                           
+        Procs=process()                                                         
+        if (!Procs[pid]) {return false}                                         
+        return trim(Procs[pid]["COMMAND"], "[]")
     }
 
     function procexists(pid=-1) {
@@ -23,7 +17,7 @@ if (!INCLUDE["PS"]) {
     function process() {
         CmdHash={}
         ProcessTable={}
-        Processes=split(trim(system("ps aux | tail -n +2")), "\n")
+        Processes=shift(split(trim(system("ps aux")), "\n"))
         foreach Process in Processes {
             Cmd=""
             line=fields(Process)

@@ -135,14 +135,10 @@ if (!INCLUDE["MATH"]) {
 
     function modf(num=0) {
         if (!checkfunctype("modf", "number", num, 1)) {exit(1)}
-        inty=int(num)
-        remainder=float(num) - float(inty)
+        inty=float(int(num))
+        remainder=float(num) - inty
         remainder=float(sprintf("%.15f", remainder))
-        if (remainder == 0) {
-            return [float(remainder), float(inty)]
-        } else {
-            return [float(inty), float(remainder)]
-        }
+        return [inty, remainder]
     }
 
     function pow(num=1, power=1) {
