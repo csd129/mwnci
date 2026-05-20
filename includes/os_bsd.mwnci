@@ -12,11 +12,20 @@ if (!INCLUDE["OSBSD"]) {
     }
 
     function free() {
-        Swap=split(trim(system("swapinfo")), "\n")
-        SwapData=fields(Swap[1])
-        SwapSize=int(SwapData[1])
-        SwapUsed=int(SwapData[2])
-        SwapFree=int(SwapData[3])
+        switch (OS) {
+	case /bsd/ {
+            Swap=split(trim(system("swapinfo")), "\n")
+            SwapData=fields(Swap[1])
+            SwapSize=int(SwapData[1])
+            SwapUsed=int(SwapData[2])
+            SwapFree=int(SwapData[3])
+        }
+	case "darwin" {
+            Swap=fields(trim(system("sysctl -n vm.swapusage")))
+            SwapSize=float(trim(Swap[2], "M")) * 1024 * 1024
+	    SwapUsed=float(trim(Swap[5], "M")) * 1024 * 1024
+	    SwapFree=float(trim(Swap[8], "M")) * 1024 * 1024
+        }
         Mem=memstat()
         MemHash={"mem": {"buffcache": Mem["buffers"] / 1024, "available": Mem["available"] / 1024, "total": Mem["total"] / 1024, "used": Mem["used"] / 1024, "free": Mem["free"] / 1024}}
         SwapHash={"free": int(SwapFree), "total": int(SwapSize), "used": int(SwapUsed)}
