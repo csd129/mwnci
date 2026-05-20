@@ -26,6 +26,7 @@ if (!INCLUDE["OSBSD"]) {
 	    SwapUsed=float(trim(Swap[5], "M")) * 1024 * 1024
 	    SwapFree=float(trim(Swap[8], "M")) * 1024 * 1024
         }
+	}
         Mem=memstat()
         MemHash={"mem": {"buffcache": Mem["buffers"] / 1024, "available": Mem["available"] / 1024, "total": Mem["total"] / 1024, "used": Mem["used"] / 1024, "free": Mem["free"] / 1024}}
         SwapHash={"free": int(SwapFree), "total": int(SwapSize), "used": int(SwapUsed)}
