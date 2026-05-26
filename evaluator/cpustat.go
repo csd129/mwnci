@@ -25,7 +25,7 @@ func Cpustat(args ...object.Object) object.Object {
 	}
 
 	Cpuinfo1, _ := cpu.Times(true)
-	time.Sleep(time.Duration(1000) * time.Millisecond)
+	time.Sleep(time.Duration(1500) * time.Millisecond)
 	Cpuinfo2, _ := cpu.Times(true)
 	elements := make([]object.Object, 0)
 	for Index := range Cpuinfo1 {

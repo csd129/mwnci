@@ -121,19 +121,15 @@ if (!INCLUDE["STATS"]) {
             println("Error calling `median`: ERROR: StatisticsError: No data")
             exit(1)
         }        
-        NewArray=float(MedianArray)
-        MedianArray=copy(NewArray)
-        MedianArray=sort(MedianArray)
-        Len=len(MedianArray)
-        Calc=divmod(Len, 2)
-        Pos=Calc[0]
-        Remainder=Calc[1]
-        if (Remainder == 1) {
-            Median=MedianArray[Pos]
+        NewArray=sort(float(copy(MedianArray)))
+        Len=len(NewArray)
+        if (Len == 0) {return 0}
+        if (Len % 2 == 0) {
+            Median=(NewArray[Len/2-1] + NewArray[Len/2]) / 2
         } else {
-            Median=(float(MedianArray[Pos]) + float(MedianArray[Pos-1]))/2.0
+            Median=NewArray[Len/2]
         }
-        return Median
+	return Median
     }
     
     function harmonicmean(MyArray=[]) {

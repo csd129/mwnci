@@ -1,9 +1,3 @@
-include(
-    "file",
-    "ps",
-    "methods"
-)
-
 /*
  Define some handy constants
 */
@@ -15,6 +9,21 @@ const PID=getpid()
 const NULL=null     // for those that like a good solid null
 const PROGNAME = (ARGC > 0) ? basename(ARGV[0]) : ""
 
+include(
+    "file",
+    "ps",
+    "methods"
+)
+
+/*
+Update PATH to make sure /sbin * /usr/sbin are available for commands users
+can run.
+*/
+
+Path=env()["PATH"]
+Path="/sbin:/usr/sbin:" + Path
+setenv("PATH", Path)
+
 /*
  Rather than opening these by name/path we have magic-strings which
  are recognized by our "open" primitive.
@@ -23,64 +32,53 @@ const STDIN= open("!STDIN!")
 const STDOUT=open("!STDOUT!")
 const STDERR=open("!STDERR!")
 
-/*
-Update PATH to make sure /sbin * /usr/sbin are available for commands users
-can run.
-*/
-Path=env()["PATH"]
-Path="/sbin:/usr/sbin:" + Path
-setenv("PATH", Path)
-
 if (!INCLUDE["MAIN"]) {
     set(INCLUDE, "MAIN", true)
+
+    switch (OS) {
+        case /bsd/ , /darwin/ {
+            include("main_bsd")
+        }
+        case "linux" {
+            include("main_linux")
+        }
+    }
 
 //
 // Argument checker for all functions
 //
-    function checkfunctype(Func, Expected, Received, Argnum=1) {
-        ReceivedType=type(Received)
-
-        switch (Expected) {
-            case "number" {
-                if (ReceivedType != "integer" && ReceivedType != "float") {
-                    println("Error calling `",Func,"`: ERROR: TypeError: ", Func, "() expected argument #", Argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
-                    return false
-                }
+    function checkfunctype(func, expected, received, argnum=1) {
+        ReceivedType=type(received)
+        if (expected == "number") {
+            if (ReceivedType == "integer" || ReceivedType == "float") {
+                return true
+            } else {
+                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
+                return false
             }
-            case "iterable" {
-                if (ReceivedType != "string" && ReceivedType != "array") {
-                    println("Error calling `",Func,"`: ERROR: TypeError: ", Func, "() expected argument #", Argnum, " to be `STRING` or `ARRAY`, got `", toupper(ReceivedType), "`")
-                    return false
-                }
+        }
+        if (expected == "iterable") {
+            if (ReceivedType == "string" || ReceivedType == "array") {
+                return true
+            } else {
+                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `STRING` or `ARRAY`, got `", toupper(ReceivedType), "`")
+                return false
             }
-            case "collection" {
-                if (ReceivedType != "hash" && ReceivedType != "array") {
-                    println("Error calling `",Func,"`: ERROR: TypeError: ", Func, "() expected argument #", Argnum, " to be `HASH` or `ARRAY`, got `", toupper(ReceivedType), "`")
-                    return false
-                }
+        }
+        if (expected == "collection") {
+            if (ReceivedType == "hash" || ReceivedType == "array") {
+                return true
+            } else {
+                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `HASH` or `ARRAY`, got `", toupper(ReceivedType), "`")
+                return false
             }
-            default {
-                if (ReceivedType != Expected) {
-                    println("Error calling `",Func,"`: ERROR: TypeError: ", Func, "() expected argument #", Argnum, " to be `", toupper(Expected), "` got `", toupper(ReceivedType), "`")
-                    return false
-                }
-            }
+        }
+        if (ReceivedType != expected) {
+            println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `",
+            toupper(expected), "` got `", toupper(ReceivedType), "`")
+            return false
         }
         return true
-    }
-
-    function uptime() {
-        switch (OS) {
-            case /bsd/ , /darwin/ {
-                Boot=system("sysctl kern.boottime")
-                Boot=int(trim(fields(Boot)[4],","))
-                Seconds=time() - Boot
-            }
-            case "linux" {
-                Seconds=int(fields(trim(cat("/proc/uptime")))[0])
-            }
-        }
-        return sec2time(Seconds)
     }
 
     function getenv(EnvVar="") {
@@ -125,7 +123,6 @@ if (!INCLUDE["MAIN"]) {
         }
         return Result
     }
-
     function getblock(StartBlock, EndBlock, ArrayName) {
         if (!checkfunctype("getblock", "string", StartBlock, 1)) {exit(1)}
         if (!checkfunctype("getblock", "string", EndBlock, 2)) {exit(1)}

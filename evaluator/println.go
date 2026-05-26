@@ -6,7 +6,9 @@ import (
 )
 
 func Println(args ...object.Object) object.Object {
-	putsFun(args...)
+	for _, arg := range args {
+		fmt.Print(arg)
+	}
 	fmt.Print("\n")
 	return NULL
 }

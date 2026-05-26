@@ -113,9 +113,7 @@ if (!INCLUDE["MATH"]) {
         i=2
         if (n < 2) {return false}
         while (i <= n/2) {
-            if (n % i == 0) {
-	            return false
-	        }
+            if (n % i == 0) {return false}
             i++
         }
         return true
@@ -161,9 +159,7 @@ if (!INCLUDE["MATH"]) {
         if (!checkfunctype("round", "number", rnum, 1)) {exit(1)}
         if (!checkfunctype("round", "integer", fp, 1)) {exit(1)}
         rnum=string(rnum)
-        if (!contains(rnum, ".")) {
-            rnum=rnum + ".00"
-        }
+        if (!contains(rnum, ".")) {rnum=rnum + ".0"}
         cmd="sprintf(\"%." + string(fp) + "f\", " + rnum + ")"
         return float(eval(cmd))
     }
@@ -173,7 +169,7 @@ if (!INCLUDE["MATH"]) {
         return float(int(Float))
     }
 
-    function float.round() {
+    function object.round() {
         return round(self)
     }
 

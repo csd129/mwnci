@@ -225,7 +225,6 @@ if (!INCLUDE["FILE"]) {
             println("Error calling `isexec`: ERROR: TypeError: isexec() expected argument #1 to be `STRING` got `NULL`")
             exit(1)
         }
-        if (!isfile(Filename)) {return false}
         if (isreadable(Filename)) {
             if(isdoable(Filename, 2)) {
     	        return true
