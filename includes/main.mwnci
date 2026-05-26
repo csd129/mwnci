@@ -35,50 +35,53 @@ const STDERR=open("!STDERR!")
 if (!INCLUDE["MAIN"]) {
     set(INCLUDE, "MAIN", true)
 
-    switch (OS) {
-        case /bsd/ , /darwin/ {
-            include("main_bsd")
-        }
-        case "linux" {
-            include("main_linux")
-        }
-    }
-
 //
 // Argument checker for all functions
 //
-    function checkfunctype(func, expected, received, argnum=1) {
-        ReceivedType=type(received)
-        if (expected == "number") {
-            if (ReceivedType == "integer" || ReceivedType == "float") {
-                return true
-            } else {
-                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
-                return false
+    function checkfunctype(Func, Expected, Received, Argnum=1) {
+        ReceivedType=type(Received)
+
+        switch (Expected) {
+            case "number" {
+                if (ReceivedType != "integer" && ReceivedType != "float") {
+                    println("Error calling `",Func,"`: ERROR: TypeError: ", Func, "() expected argument #", Argnum, " to be `INTEGER` or `FLOAT`, got `", toupper(ReceivedType), "`")
+                    return false
+                }
             }
-        }
-        if (expected == "iterable") {
-            if (ReceivedType == "string" || ReceivedType == "array") {
-                return true
-            } else {
-                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `STRING` or `ARRAY`, got `", toupper(ReceivedType), "`")
-                return false
+            case "iterable" {
+                if (ReceivedType != "string" && ReceivedType != "array") {
+                    println("Error calling `",Func,"`: ERROR: TypeError: ", Func, "() expected argument #", Argnum, " to be `STRING` or `ARRAY`, got `", toupper(ReceivedType), "`")
+                    return false
+                }
             }
-        }
-        if (expected == "collection") {
-            if (ReceivedType == "hash" || ReceivedType == "array") {
-                return true
-            } else {
-                println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `HASH` or `ARRAY`, got `", toupper(ReceivedType), "`")
-                return false
+            case "collection" {
+                if (ReceivedType != "hash" && ReceivedType != "array") {
+                    println("Error calling `",Func,"`: ERROR: TypeError: ", Func, "() expected argument #", Argnum, " to be `HASH` or `ARRAY`, got `", toupper(ReceivedType), "`")
+                    return false
+                }
             }
-        }
-        if (ReceivedType != expected) {
-            println("Error calling `",func,"`: ERROR: TypeError: ", func, "() expected argument #", argnum, " to be `",
-            toupper(expected), "` got `", toupper(ReceivedType), "`")
-            return false
+            default {
+                if (ReceivedType != Expected) {
+                    println("Error calling `",Func,"`: ERROR: TypeError: ", Func, "() expected argument #", Argnum, " to be `", toupper(Expected), "` got `", toupper(ReceivedType), "`")
+                    return false
+                }
+            }
         }
         return true
+    }
+
+    function uptime() {
+        switch (OS) {
+            case /bsd/ , /darwin/ {
+                Boot=system("sysctl kern.boottime")
+                Boot=int(trim(fields(Boot)[4],","))
+                Seconds=time() - Boot
+            }
+            case "linux" {
+                Seconds=int(fields(trim(cat("/proc/uptime")))[0])
+            }
+        }
+        return sec2time(Seconds)
     }
 
     function getenv(EnvVar="") {
