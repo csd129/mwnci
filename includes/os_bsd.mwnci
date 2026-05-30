@@ -5,7 +5,7 @@ if (!INCLUDE["OSBSD"]) {
     }
     
     function loadavg() {
-        Data=fields(trim(system("sysctl -n vm.loadavg")))
+        Data=fields(sysctl("vm.loadavg")["vm.loadavg"])
         delete(Data, 0)
         delete(Data, len(Data)-1)
         return float(Data)

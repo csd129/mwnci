@@ -1,3 +1,10 @@
+include(
+    "file",
+    "ps",
+    "string",
+    "methods"
+)
+
 /*
  Define some handy constants
 */
@@ -9,21 +16,6 @@ const PID=getpid()
 const NULL=null     // for those that like a good solid null
 const PROGNAME = (ARGC > 0) ? basename(ARGV[0]) : ""
 
-include(
-    "file",
-    "ps",
-    "methods"
-)
-
-/*
-Update PATH to make sure /sbin * /usr/sbin are available for commands users
-can run.
-*/
-
-Path=env()["PATH"]
-Path="/sbin:/usr/sbin:" + Path
-setenv("PATH", Path)
-
 /*
  Rather than opening these by name/path we have magic-strings which
  are recognized by our "open" primitive.
@@ -31,6 +23,14 @@ setenv("PATH", Path)
 const STDIN= open("!STDIN!")
 const STDOUT=open("!STDOUT!")
 const STDERR=open("!STDERR!")
+
+/*
+Update PATH to make sure /sbin * /usr/sbin are available for commands users
+can run.
+*/
+Path=env()["PATH"]
+Path="/sbin:/usr/sbin:" + Path
+setenv("PATH", Path)
 
 if (!INCLUDE["MAIN"]) {
     set(INCLUDE, "MAIN", true)
@@ -73,8 +73,8 @@ if (!INCLUDE["MAIN"]) {
     function uptime() {
         switch (OS) {
             case /bsd/ , /darwin/ {
-                Boot=system("sysctl kern.boottime")
-                Boot=int(trim(fields(Boot)[4],","))
+                Sysctl=sysctl("kern.boottime")
+                Boot=int(trim(fields(Sysctl["kern.boottime"])[3],","))
                 Seconds=time() - Boot
             }
             case "linux" {
@@ -126,6 +126,7 @@ if (!INCLUDE["MAIN"]) {
         }
         return Result
     }
+
     function getblock(StartBlock, EndBlock, ArrayName) {
         if (!checkfunctype("getblock", "string", StartBlock, 1)) {exit(1)}
         if (!checkfunctype("getblock", "string", EndBlock, 2)) {exit(1)}
@@ -684,5 +685,42 @@ if (!INCLUDE["MAIN"]) {
             set(NewHash, Entry[0], Entry[1])
         }
         return NewHash
+    }
+
+    function sysctl(Options="") {
+        SctlHash={}
+        if (len(Options) > 0) {
+            Data=system("sysctl -e " + Options + " 2>/dev/null; exit 0")
+        } else {
+            Data=system("sysctl -ea 2>/dev/null; exit 0")
+        }
+        if (len(Data) > 0) {
+            Data=split(trim(Data), "\n")
+            foreach Entry in Data {
+                Entry=trim(Entry)
+                if (len(Entry) > 0) {
+                    if (match("^[a-z]*.\\.[a-z].*=", Entry)) {                                         Line=replace(Entry, "=",":=:",1)
+			Split=split(Line, ":=:")
+			Key=trim(Split[0])
+                        Value=Split[1]
+                        if (len(Value) > 0) {
+                            Value=trim(Value)
+                            if (len(Value) < 20) {
+                                if (isnum(Value)) {
+                                    Value=int(Value)
+                                }
+                            }
+                        }
+                    }
+		    if (type(Value) == "string") {
+                        if (contains(Value, "\t")) {
+                            Value=int(fields(Value))
+                        }
+                    }
+                    set(SctlHash, Key, Value)
+                }
+            }
+        }
+        return SctlHash
     }
 }
