@@ -28,14 +28,14 @@ if (!INCLUDE["OS"]) {
     }
 
     function uname() {
-        if (OS == "linux") {
-            U=sysctl("kernel.osrelease kernel.arch kernel.ostype kernel.hostname")
-            return {"release": U["kernel.osrelease"], "machine": U["kernel.arch"], "nodename": U["kernel.ostype"], "sysname": U["kernel.hostname"]}
-	} else  {
-            U=sysctl("kern.osrelease hw.machine_arch kern.ostype kern.hostname")
-            return {"release": U["kern.osrelease"], "machine": U["hw.machine_arch"], "nodename": U["kern.ostype"], "sysname": U["kern.hostname"]}
+        Data=fields(trim(system("uname -n -s -r -m")))
+        DataHash={
+            "nodename": Data[0], "sysname": Data[1],
+            "release": Data[2], "machine": Data[3]
         }
+        return DataHash
     }
+
 
     function df() {
         if (!checkfunctype("df", "string", Fs="", 1)) {exit(1)}
