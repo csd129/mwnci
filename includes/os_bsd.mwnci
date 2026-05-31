@@ -21,7 +21,7 @@ if (!INCLUDE["OSBSD"]) {
                 SwapFree=int(SwapData[3])
             }
             case "darwin" {
-                Swap=fields(trim(system("sysctl -n vm.swapusage")))
+                Swap=fields(sysctl("vm.swapusage")["vm.swapusage"])
                 SwapSize=float(trim(Swap[2], "M")) * 1024
                 SwapUsed=float(trim(Swap[5], "M")) * 1024
                 SwapFree=float(trim(Swap[8], "M")) * 1024
