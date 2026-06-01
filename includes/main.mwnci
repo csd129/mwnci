@@ -699,9 +699,10 @@ if (!INCLUDE["MAIN"]) {
             foreach Entry in Data {
                 Entry=trim(Entry)
                 if (len(Entry) > 0) {
-                    if (match("^[a-z]*.\\.[a-z].*=", Entry)) {                                         Line=replace(Entry, "=",":=:",1)
-			Split=split(Line, ":=:")
-			Key=trim(Split[0])
+                    if (match("^[a-z]*.\\.[a-z].*=", Entry)) {
+                        Line=replace(Entry, "=",":=:",1)
+                        Split=split(Line, ":=:")
+                        Key=trim(Split[0])
                         Value=Split[1]
                         if (len(Value) > 0) {
                             Value=trim(Value)
@@ -712,7 +713,7 @@ if (!INCLUDE["MAIN"]) {
                             }
                         }
                     }
-		    if (type(Value) == "string") {
+                    if (type(Value) == "string") {
                         if (contains(Value, "\t")) {
                             Value=int(fields(Value))
                         }
