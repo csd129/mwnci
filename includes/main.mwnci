@@ -195,21 +195,24 @@ if (!INCLUDE["MAIN"]) {
         return Text
     }
 
-    function intersect(array_a, array_b) {
-        if (!checkfunctype("intersect", "array", array_a, 1)) {exit(1)}
-        if (!checkfunctype("intersect", "array", array_b, 2)) {exit(1)}
+    function intersect(AA, AB) {
+        if (!checkfunctype("intersect", "array", AA, 1)) {exit(1)}
+        if (!checkfunctype("intersect", "array", AB, 2)) {exit(1)}
         IntersectArray=[]
-        array_a=uniq(array_a)
-        array_b=uniq(array_b)
-        if (len(array_a) < len(array_b)) {
-            small=array_a
-            large=array_b
+        AA=uniq(AA)
+        AB=uniq(AB)
+        if (len(AA) < len(AB)) {
+            Small=AA
+            Large=AB
         } else {
-            small=array_b
-            large=array_a
+            Small=AB
+            Large=AA
         }
-        foreach Value in small {
-            if (index(large, Value) > -1) {
+        CountHash=fromkeys(Large)
+        AB = AA=[]
+        Large=[]
+        foreach Value in Small {
+            if (CountHash[Value]) {
                 push(IntersectArray, Value)
             }
         }
