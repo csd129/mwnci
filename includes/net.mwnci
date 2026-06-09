@@ -25,12 +25,13 @@ if (!INCLUDE["NET"]) {
             foreach Line in Config {
                 Line=fields(trim(Line))
                 if (Line[0] == "inet") {
-                    IPArray.push(split(Line[1], "/")[0])
+                    IP=split(Line[1], "/")[0]
+		    if (IP != "127.0.0.1") {
+                        IPArray.push(IP)
+                    }
                 }
             }
-        }
-        if (len(IPArray) == 0) {
-            IPArray=["127.0.0.1"]
+            IPArray.push("127.0.0.1")
         }
         return IPArray
     }
