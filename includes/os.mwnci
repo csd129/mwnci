@@ -1,6 +1,6 @@
 if (!INCLUDE["OS"]) {
     set(INCLUDE, "OS", true)
-    include("string")
+
 //
 // The functions in here cater for all distro's (that I have access to)
 // The next few lines will also "include"  distro specific functions
@@ -35,7 +35,6 @@ if (!INCLUDE["OS"]) {
         }
         return DataHash
     }
-
 
     function df() {
         if (!checkfunctype("df", "string", Fs="", 1)) {exit(1)}
@@ -131,29 +130,26 @@ if (!INCLUDE["OS"]) {
     function getcpu(Search="") {
         if (!checkfunctype("getcpu", "string", Search, 1)) {exit(1)}
         CpuHash={}
+        CpuNameHash={}
         Data=cpustat()
         foreach Cpu in Data {
             Key=Cpu["cpu"]
+            set(CpuNameHash, Key, true)
             TempHash=delete(Cpu, "cpu")
             set(CpuHash, Key, TempHash)
         }
-        AllHash={}
-        CpuKeys=keys(CpuHash)
-        Len=len(CpuKeys)
-        foreach Cpu in CpuKeys {
-            foreach Entry in CpuHash[Cpu] {
-                if (!AllHash[Entry]) {
-                    set(AllHash, Entry, 0)
-                } else {
-                    set(AllHash, Entry, AllHash[Entry] + CpuHash[Cpu][Entry])
-                }
+        All={}
+        AllCpus=keys(CpuNameHash)
+        First=AllCpus[0]
+        CpuItems=keys(CpuHash[First])
+        foreach Item in CpuItems {
+            Count=0
+            foreach Cpu in AllCpus {
+                Count += CpuHash[Cpu][Item]
             }
+            set(All, Item, float(sprintf("%.2f", Count / len(AllCpus))))
         }
-        foreach Entry in keys(AllHash) {
-            Value=float(sprintf("%.2f", AllHash[Entry] / Len))
-            set(AllHash, Entry, Value)
-        }
-        set(CpuHash, "all", AllHash)
+        set (CpuHash, "all", All)
         if (len(Search) > 0) {
             return CpuHash[Search]
         }
