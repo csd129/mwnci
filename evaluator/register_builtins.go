@@ -21,6 +21,7 @@ func init() {
 	RegisterBuiltin("bin", func(env *object.Environment, args ...object.Object) object.Object { return (Bin(args...)) })
 	RegisterBuiltin("bind", func(env *object.Environment, args ...object.Object) object.Object { return (Bind(args...)) })
 	RegisterBuiltin("bool", func(env *object.Environment, args ...object.Object) object.Object { return (Bool(args...)) })
+	RegisterBuiltin("bsearch", func(env *object.Environment, args ...object.Object) object.Object { return (Bsearch(args...)) })
 	RegisterBuiltin("bzcat", func(env *object.Environment, args ...object.Object) object.Object { return (BzCat(args...)) })
 	RegisterBuiltin("cargs", func(env *object.Environment, args ...object.Object) object.Object { return (Cargs(args...)) })
 	RegisterBuiltin("cat", func(env *object.Environment, args ...object.Object) object.Object { return (ZConCat(args...)) })

@@ -199,8 +199,8 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("intersect", "array", AA, 1)) {exit(1)}
         if (!checkfunctype("intersect", "array", AB, 2)) {exit(1)}
         IntersectArray=[]
-        AA=uniq(AA)
-        AB=uniq(AB)
+        AA=sorted(uniq(AA))
+        AB=sorted(uniq(AB))
         if (len(AA) < len(AB)) {
             Small=AA
             Large=AB
@@ -208,15 +208,12 @@ if (!INCLUDE["MAIN"]) {
             Small=AB
             Large=AA
         }
-        CountHash=fromkeys(Large)
-        AB = AA=[]
-        Large=[]
         foreach Value in Small {
-            if (CountHash[Value]) {
+            if (bsearch(Large, Value) > -1) {
                 push(IntersectArray, Value)
             }
         }
-        return IntersectArray
+        return(IntersectArray)
     }
 
     function isrsorted(SortedArray) {
@@ -556,24 +553,6 @@ if (!INCLUDE["MAIN"]) {
             }
         }
         return CountHash
-    }
-
-    function bsearch(Array, Search) {
-        if (!checkfunctype("bsearch", "array", Array, 1)) {exit(1)}
-        if (issorted(Array)) {
-            Left=0
-            Right=len(Array) - 1
-            while (Left <= Right) {
-                Mid=(Left + Right) / 2
-                if (Array[Mid]  == Search) {return Mid}
-                if (Array[Mid] < Search) {
-                    Left = Mid  + 1
-                } else {
-                    Right = Mid - 1
-                }
-            }
-        }
-        return -1
     }
 
     function randwords(Count=0) {
