@@ -33,6 +33,6 @@ func Bsearch(args ...object.Object) object.Object {
 	}
 
 	return newError(
-		"TypeError: index() expected argument #1 to be `array` got `%s`", args[0].Type(),
+		"TypeError: bsearch() expected argument #1 to be `array` got `%s`", args[0].Type(),
 	)
 }
