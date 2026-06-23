@@ -537,7 +537,7 @@ if (!INCLUDE["MAIN"]) {
         Arr1=uniq(Arr1)
         Arr2=uniq(Arr2)
         foreach Value in Arr1 {
-            if (index(Arr2, Value) == -1) {return false}
+            if (bsearch(Arr2, Value) == -1) {return false}
         }
         return true
     }
