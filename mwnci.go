@@ -32,7 +32,7 @@ func versionFun(args ...object.Object) object.Object {
 }
 
 // Execute the supplied string as a program.
-func Execute(input string, DEBUG bool) int {
+func Execute(input string, DEBUG bool, NOMETHODS bool,) int {
 
 	env := object.NewEnvironment()
 	l := lexer.New(input)
@@ -49,7 +49,12 @@ func Execute(input string, DEBUG bool) int {
 	//
 	//  Parse and evaluate our standard-library.
 	//
-	stdlib := "INCLUDE={} include(\"main\")"
+	stdlib:=""
+        if NOMETHODS == true {
+		stdlib = "INCLUDE={\"USEMETHODS\": false} include(\"main\")"
+        } else {
+		stdlib = "INCLUDE={\"USEMETHODS\": true} include(\"main\")"
+	}
 	initL := lexer.New(stdlib)
 	initP := parser.New(initL)
 	initProg := initP.ParseProgram()
@@ -77,7 +82,7 @@ func main() {
 	eval := flag.String("eval", "", "Code to execute.")
 	vers := flag.Bool("version", false, "Show our version and exit.")
 	debug := flag.Bool("x", false, "Show debug info.")
-
+	nomethods := flag.Bool("nm", false, "Don't include methods.")
 	flag.Parse()
 
 	//
@@ -85,9 +90,20 @@ func main() {
 	//
 	flag.Parse()
 
+	//
+	// Turn on debugging
+	//
 	DEBUG := false
 	if *debug {
 		DEBUG = true
+	}
+
+	// 
+	// Don't include methods  E.g a.string()
+	//
+	NOMETHODS := false
+	if *nomethods {
+		NOMETHODS = true
 	}
 	//
 	// Showing the version?
@@ -101,7 +117,7 @@ func main() {
 	// Executing code?
 	//
 	if *eval != "" {
-		Execute(*eval, DEBUG)
+		Execute(*eval, DEBUG, NOMETHODS)
 		os.Exit(0)
 	}
 
@@ -122,5 +138,5 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error reading: %s\n", err.Error())
 	}
-	Execute(string(input), DEBUG)
+	Execute(string(input), DEBUG, NOMETHODS)
 }

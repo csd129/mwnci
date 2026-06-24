@@ -246,83 +246,6 @@ if (!INCLUDE["FILE"]) {
         return false
     }
 
-    //
-    // Same stuff, but having object methods
-    // some users may prefer them
-    //
-
-    function string.iswritable() {
-        return iswritable(self)
-    }
-
-    function string.isreadable() {
-        return isreadable(self)
-    }
-
-    function string.isexec() {
-        return isexec(self)
-    }
-
-    function string.isnewer(SecondFile="") {
-        return isnewer(self, SecondFile)
-    }
-
-    function string.isolder(SecondFile="") {
-        return isolder(self, SecondFile)
-    }
-
-    function string.isgroup(grp="") {
-        return isgroup(self, grp)
-    }
-
-    function string.isowner(owner="") {
-        return isowner(self, owner)
-    }
-
-    function string.isexist() {
-        return isexist(self)
-    }
-
-    function string.isblock() {
-        return isblock("BLOCK", self, "isblock")
-    }
-
-    function string.isdir() {
-        return isdir("DIR", self, "isdir")
-    }
-
-    function string.isempty() {
-        return isempty(self)
-    }
-
-    function string.isfifo() {
-        return isfifo("FIFO", self, "isfifo")
-    }
-
-    function string.isfile() {
-        return isfile("FILE", self, "isfile")
-    }
-
-    function string.islink() {
-        return islink("LINK", self, "islink")
-    }
-
-    function string.issock() {
-        return issock("SOCKET", self, "issock")
-    }
-
-    function string.issetuid() {
-        return issetuid(self)
-    }
-
-    function string.issetgid() {
-        return issetgid(self)
-    }
-
-    function string.issticky() {
-        return issticky(self)
-    }
-
     function writetofile(Filename="", Mode="w", data) {
         if (!checkfunctype("writetofile", "string", Filename, 1)) {exit(1)}
         if (!checkfunctype("writetofile", "string", Mode, 2)) {exit(1)}
@@ -345,5 +268,84 @@ if (!INCLUDE["FILE"]) {
         write(fh, wstring)
         close(fh)
         return true
+    }
+
+    //
+    // Same stuff, but having object methods
+    // some users may prefer them
+    //
+
+    if (INCLUDE["USEMETHODS"]) {
+        function string.iswritable() {
+            return iswritable(self)
+        }
+    
+        function string.isreadable() {
+            return isreadable(self)
+        }
+    
+        function string.isexec() {
+            return isexec(self)
+        }
+    
+        function string.isnewer(SecondFile="") {
+            return isnewer(self, SecondFile)
+        }
+    
+        function string.isolder(SecondFile="") {
+            return isolder(self, SecondFile)
+        }
+    
+        function string.isgroup(grp="") {
+            return isgroup(self, grp)
+        }
+    
+        function string.isowner(owner="") {
+            return isowner(self, owner)
+        }
+    
+        function string.isexist() {
+            return isexist(self)
+        }
+    
+        function string.isblock() {
+            return isblock("BLOCK", self, "isblock")
+        }
+    
+        function string.isdir() {
+            return isdir("DIR", self, "isdir")
+        }
+    
+        function string.isempty() {
+            return isempty(self)
+        }
+    
+        function string.isfifo() {
+            return isfifo("FIFO", self, "isfifo")
+        }
+    
+        function string.isfile() {
+            return isfile("FILE", self, "isfile")
+        }
+    
+        function string.islink() {
+            return islink("LINK", self, "islink")
+        }
+    
+        function string.issock() {
+            return issock("SOCKET", self, "issock")
+        }
+    
+        function string.issetuid() {
+            return issetuid(self)
+        }
+    
+        function string.issetgid() {
+            return issetgid(self)
+        }
+    
+        function string.issticky() {
+            return issticky(self)
+        }
     }
 }

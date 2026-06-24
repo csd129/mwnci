@@ -17,7 +17,7 @@ if (!INCLUDE["GRP"]) {
                         Members=[]
                     }
                     GroupHash={"Group": GroupInfo[0], "Password": GroupInfo[1], "Gid": int(GroupInfo[2]), "Members": Members}
-                    GroupArray.push(GroupHash)
+                    push(GroupArray, GroupHash)
                 }
             }
         }
@@ -105,18 +105,21 @@ if (!INCLUDE["GRP"]) {
         return usort(GroupArray)
     }
 
-    function string.groups() {
-        return groups(self)
-    }
+    if (INCLUDE["USEMETHODS"]) {
+        function string.groups() {
+            return groups(self)
+        }
 
-    function string.getgroups() {
-        return getgroups(self)
-    }
-    function integer.getgrgid() {
-        return getgrgid(self)
-    }
+        function string.getgroups() {
+            return getgroups(self)
+        }
 
-    function string.getgrnam() {
-        return getgrnam(self)
+        function integer.getgrgid() {
+            return getgrgid(self)
+        }
+
+        function string.getgrnam() {
+            return getgrnam(self)
+        }
     }
 }

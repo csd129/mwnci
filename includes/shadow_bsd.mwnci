@@ -41,7 +41,9 @@ if (!INCLUDE["MASTERPW"]) {
         return Data
     }
 
-    function string.getspnam() {
-        return getspnam(self)
+    if (INCLUDE["USEMETHODS"]) {
+        function string.getspnam() {
+            return getspnam(self)
+        }
     }
 }

@@ -18,10 +18,10 @@ if (!INCLUDE["CERTS"]) {
             if (Line == "-----BEGIN CERTIFICATE-----") {
                  CertData=[]
             }
-            CertData.push(Line)
+            push(CertData, Line)
             if (Line == "-----END CERTIFICATE-----") {
                 CertData=join(CertData, "\n")
-                CertArray.push(CertData + "\n")
+                push(CertArray, CertData + "\n")
             }
         }
         return CertArray
@@ -126,9 +126,9 @@ if (!INCLUDE["CERTS"]) {
             if (Line == "-----BEGIN CERTIFICATE-----") {
                  CertData=[]
             }
-            CertData.push(Line)
+            push(CertData, Line)
             if (Line == "-----END CERTIFICATE-----") {
-                CertArray.push(CertData)
+                push(CertArray, CertData)
             }
         }
         foreach Cert in CertArray {

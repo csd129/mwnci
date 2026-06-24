@@ -63,6 +63,4 @@ if (!INCLUDE["OSBSD"]) {
         DataHash={"Procs": ProcHash, "Memory": MemHash, "Page": PageHash, "Fault": FaultHash, "CPU": CPUHash}
         return DataHash
     }
-
-
 }

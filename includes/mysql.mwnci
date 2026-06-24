@@ -59,7 +59,7 @@ if (!INCLUDE["SQL"]) {
             output=split(output, "\n")
             foreach line in output {
                 Sline=split(line, "\t")
-                TableArray.push(Sline)
+                push(TableArray, Sline)
             }
         } else {
             output=[]

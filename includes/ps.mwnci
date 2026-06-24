@@ -21,7 +21,7 @@ if (!INCLUDE["PS"]) {
         foreach Process in Processes {
             Cmd=""
             line=fields(Process)
-            b=shift(line.copy(), 10)
+            b=shift(copy(line), 10)
             Cmd=trim(join(b, " "))
     	    CmdHash={"USER": line[0], "CPU": float(line[2]), "MEM": float(line[3]), "VSZ": int(line[4]), "RSS": int(line[5]), "TTY": line[6], "STAT": line[7], "START": line[8], "TIME": line[9], "COMMAND": Cmd}
     	    set(ProcessTable, int(line[1]), CmdHash)
@@ -70,8 +70,10 @@ if (!INCLUDE["PS"]) {
         }
     }
 
-    function integer.getpname() {return getpname(self)}
-    function string.pnametopid() {return pnametopid(self)}
-    function integer.procstat() {return procstat(self)}
-    function integer.procexists() {return procexists(self)}
+    if (INCLUDE["USEMETHODS"]) {
+        function integer.getpname() {return getpname(self)}
+        function string.pnametopid() {return pnametopid(self)}
+        function integer.procstat() {return procstat(self)}
+        function integer.procexists() {return procexists(self)}
+    }
 }

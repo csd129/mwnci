@@ -27,11 +27,11 @@ if (!INCLUDE["NET"]) {
                 if (Line[0] == "inet") {
                     IP=split(Line[1], "/")[0]
 		    if (IP != "127.0.0.1") {
-                        IPArray.push(IP)
+                        push(IPArray, IP)
                     }
                 }
             }
-            IPArray.push("127.0.0.1")
+            push(IPArray, "127.0.0.1")
         }
         return IPArray
     }
@@ -41,7 +41,7 @@ if (!INCLUDE["NET"]) {
         foreach line in netstat() {
             if (line[3] == "LISTEN") {
                 port=split(line[1], ":")
-                port_array.push(int(port[len(port)-1]))
+                push(port_array, int(port[len(port)-1]))
             }
         }
         port_array=usort(port_array)
@@ -98,7 +98,7 @@ if (!INCLUDE["NET"]) {
             Type=Entry[3]
             if (len(Type) > 4) {
                 if (match("^[A-Z]", Type)) {
-                    TypeList.push(Type)
+                    push(TypeList, Type)
                 }
             }
         }
@@ -115,8 +115,8 @@ if (!INCLUDE["NET"]) {
             foreach Line in Data {
                 Line=trimsuffix(Line, " (LISTEN)")
                 Line=fields(replaceall(Line, ":", " "))
-                PortArray.push(Line[len(Line)-1])
-                ListArray.push([Line[0], Line[1], Line[len(Line)-1]])
+                push(PortArray, Line[len(Line)-1])
+                push(ListArray, [Line[0], Line[1], Line[len(Line)-1]])
             }
         }
         PortArray=uniq(PortArray)
@@ -128,7 +128,7 @@ if (!INCLUDE["NET"]) {
                 foreach Entry in ListArray {
                     if (Port == Entry[2]) {
                         Proc=Entry[0]
-                        TempArray.push(int(Entry[1]))
+                        push(TempArray, int(Entry[1]))
                     }
                 }
                 TempHash={"pids": TempArray, "proc": Proc}
@@ -141,27 +141,30 @@ if (!INCLUDE["NET"]) {
         return OfHash
     }
     
-    function integer.port2pid() {
-        return port2pid(self)
-    }
+ if (INCLUDE["USEMETHODS"]) {
 
-    function string.cidrrange() {
-        return cidrrange(self)
-    }
+        function integer.port2pid() {
+            return port2pid(self)
+        }
+
+        function string.cidrrange() {
+            return cidrrange(self)
+        }
     
-    function string.addresscount() {
-        return addresscount(self)
-    }
+        function string.addresscount() {
+            return addresscount(self)
+        }
 
-    function string.netstat() {
-        return netstat(self)
-    }
+        function string.netstat() {
+            return netstat(self)
+        }
 
-    function string.ping(count=0) {
-        return ping(self, count)
-    }
+        function string.ping(count=0) {
+            return ping(self, count)
+        }
 
-    function string.nettrans() {
-        return nettrans(self)
+        function string.nettrans() {
+            return nettrans(self)
+        }
     }
 }

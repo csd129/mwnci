@@ -85,7 +85,7 @@ if (!INCLUDE["STATS"]) {
         Highest=reverse(usort(values(UniqCount)))[0]
         foreach Key in keys(UniqCount) {
             if (UniqCount[Key] == Highest) {
-                ModeArray.push(Key)
+                push(ModeArray, Key)
             }
         }
         return (len(ModeArray) == 1) ? ModeArray[0] : ModeArray
@@ -156,28 +156,30 @@ if (!INCLUDE["STATS"]) {
         return pow(product(Array), (1.0/N))
     }
     
-    function array.mode() {
-        return mode(self)
-    }
+    if (INCLUDE("USEMETHODS"]) {
+        function array.mode() {
+            return mode(self)
+     }
 
-    function array.average() {
-        return average(self)
-    }
+        function array.average() {
+            return average(self)
+        }
 
-    function array.mean() {
-        return mean(self)
-    }
+        function array.mean() {
+            return mean(self)
+        }
 
-    function array.median() {
-        return median(self)
-    }
+        function array.median() {
+            return median(self)
+        }
 
-    function array.harmonicmean() {
-        return harmonicmean(self)
-    }
+        function array.harmonicmean() {
+            return harmonicmean(self)
+        }
 
-    function array.geomean() {
-        return geomean(self)
+        function array.geomean() {
+            return geomean(self)
+        }
     }
 }
 

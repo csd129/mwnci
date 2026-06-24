@@ -173,56 +173,58 @@ if (!INCLUDE["MATH"]) {
         return round(self)
     }
 
-    function integer.isprime() {
-        return isprime(self)
-    }
+    if (INCLUDE["USEMETHODS"]) {
+        function integer.isprime() {
+            return isprime(self)
+        }
 
-    function integer.factorial() {
-        return factorial(self)
-    }
+        function integer.factorial() {
+            return factorial(self)
+        }
 
-    function object.degrees() {
-        return degrees(self)
-    }
+        function object.degrees() {
+            return degrees(self)
+        }
 
-    function object.radians() {
-        return radians(self)
-    }
+        function object.radians() {
+            return radians(self)
+        }
 
-    function object.pow(power) {
-        return pow(self, power)
-    }
+        function object.pow(power) {
+            return pow(self, power)
+        }
 
-    function float.trunc() {
-        return trunc(self)
-    }
+        function float.trunc() {
+            return trunc(self)
+        }
 
-    function object.exp() {
-        return exp(self)
-    }
+        function object.exp() {
+            return exp(self)
+        }
 
-    function object.dim(y=0) {
-        return dim(self,y)
-    }
+        function object.dim(y=0) {
+            return dim(self,y)
+        }
 
-    function object.exp2() {
-        return exp2(self)
-    }
+        function object.exp2() {
+            return exp2(self)
+        }
 
-    function object.expm1() {
-        return expm1(self)
-    }
+        function object.expm1() {
+            return expm1(self)
+        }
 
-    function object.pow10() {
-        return pow10(self)
-    }
+        function object.pow10() {
+            return pow10(self)
+        }
 
-    function object.modf() {
-        return modf(self)
-    }
+        function object.modf() {
+            return modf(self)
+        }
 
-    function object.ceil() {
-        return ceil(self)
+        function object.ceil() {
+            return ceil(self)
+        }
     }
 }
 

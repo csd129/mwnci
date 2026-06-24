@@ -71,7 +71,9 @@ if (!INCLUDE["PWD"]) {
         return PWHash
     }
 
-    function string.getpwent() {return getpwent(self)}
-    function string.getpwnam() {return getpwnam(self)}
-    function integer.getpwuid() {return getpwuid(self)}
+    if (INCLUDE["USEMETHODS"]) {
+        function string.getpwent() {return getpwent(self)}
+        function string.getpwnam() {return getpwnam(self)}
+        function integer.getpwuid() {return getpwuid(self)}
+    }
 }
