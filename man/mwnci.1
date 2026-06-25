@@ -2,13 +2,14 @@
 .SH NAME
 mwnci \- an interactive, interpreted language
 .SH SYNOPSIS
-.B mwnci [ 
-.B \-version ] | [
-.B \-eval
+.B mwnci
+[ 
+\-version ] | [
+\-eval
 .I string
-.B ] | [[ \-x ] [
+] | [ [ \-nm ] [ \-x ] [
 .I script
-.B ]]
+]]
 .SH DESCRIPTION
 Mwnci is an interpreted, interactive language that reads mwnci commands from a file and evaluates them. If invoked with no arguments then it run interactively, reading mwnci commands from standard input  and printing command results and error messages to standard  output. It runs  until  the exit command is invoked or until it reaches end-of-file.
 .SH COMMAND LINE OPTIONS
@@ -18,6 +19,9 @@ Display the version of mwnci
 .TP
 .BI "\-eval " command
 Specify the command to execute (evaluate)
+.TP
+.B -nm
+Don't read the object-methods of builtins or functions. All variables will need to be passed as parameters within ()
 .TP
 .B -x
 Print commands and their arguments as they are executed.
