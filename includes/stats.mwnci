@@ -156,7 +156,7 @@ if (!INCLUDE["STATS"]) {
         return pow(product(Array), (1.0/N))
     }
     
-    if (INCLUDE("USEMETHODS"]) {
+    if (INCLUDE["USEMETHODS"]) {
         function array.mode() {
             return mode(self)
      }
