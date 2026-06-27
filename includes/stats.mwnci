@@ -155,11 +155,34 @@ if (!INCLUDE["STATS"]) {
         }
         return pow(product(Array), (1.0/N))
     }
-    
+
+    function percentile(Data=[], Percent=-1) {
+        Length=len(Data)
+        if (Length == 0) {
+            return 0
+        }
+        if (Length == 1) {
+            return Data[0]
+        }
+        if (Percent <= 0 || Percent > 100) {
+            return 0
+        }
+        Copy=sorted(Data)
+        rank = (float(Percent)/100.0) * float(Length-1)
+        k=int(rank)
+        f=float(rank) - float(k)
+        if (k+1 < Length) {
+            Percentile=float(Copy[k]) +f*(Copy[k+1]-Copy[k])
+        } else {
+            Percentile=float(Copy[k])
+        }
+        return Percentile
+    }
+
     if (INCLUDE["USEMETHODS"]) {
         function array.mode() {
             return mode(self)
-     }
+        }
 
         function array.average() {
             return average(self)
@@ -179,6 +202,14 @@ if (!INCLUDE["STATS"]) {
 
         function array.geomean() {
             return geomean(self)
+        }
+
+        function array.variance(Type="s") {
+            return variance(self, TYpe)
+        }
+
+        function array.percentile(Percent=-1) {
+            return percentile(self, Percent)
         }
     }
 }
