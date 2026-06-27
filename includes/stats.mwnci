@@ -207,10 +207,6 @@ if (!INCLUDE["STATS"]) {
         function array.variance(Type="s") {
             return variance(self, TYpe)
         }
-
-        function array.percentile(Percent=-1) {
-            return percentile(self, Percent)
-        }
     }
 }
 
