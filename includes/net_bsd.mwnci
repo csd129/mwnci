@@ -60,7 +60,7 @@ if (!INCLUDE["NETBSD"]) {
                     Txok=SLine[8]
                     Txerr=SLine[9]
                     Txdrp=SLine[12]
-                    DataHash={"RX-OK": Rxok, "RX-ERR": Rxerr, "RX-DRP": Rxdrp, "TX-OK": Txok, "TX-ERR": Txerr, "TX-DRP": Txdrp}
+                    DataHash={"RX-OK": int(Rxok), "RX-ERR": int(Rxerr), "RX-DRP": int(Rxdrp), "TX-OK": int(Txok), "TX-ERR": int(Txerr), "TX-DRP": int(Txdrp)}
                     TransHash=set(TransHash, Iface, DataHash)
                 }
             }
