@@ -544,13 +544,9 @@ if (!INCLUDE["MAIN"]) {
 
     function ucount(Array=[]) {
         if (!checkfunctype("ucount", "array", Array, 1)) {exit(1)}
-        CountHash={}
+        CountHash=fromkeys(Array)
         foreach Entry in Array {
-            if (!CountHash[Entry]) {
-                set(CountHash, Entry, 1)
-            } else {
-                set(CountHash, Entry, CountHash[Entry] + 1)
-            }
+            set(CountHash, Entry, CountHash[Entry] + 1)
         }
         return CountHash
     }

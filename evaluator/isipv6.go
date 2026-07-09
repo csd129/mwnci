@@ -6,9 +6,9 @@ import (
 	"net"
 )
 
-func CheckIP(args ...object.Object) object.Object {
+func Isipv6(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"checkip", args,
+		"isipv6", args,
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
@@ -21,5 +21,8 @@ func CheckIP(args ...object.Object) object.Object {
 	if ip == nil {
 		return FALSE
 	}
-	return TRUE
+	if ip.To4() == nil {
+		return TRUE
+	}
+	return FALSE
 }

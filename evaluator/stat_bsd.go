@@ -11,7 +11,7 @@ import (
 
 func Stat(args ...object.Object) object.Object {
 	if err := typing.Check(
-		"", args,
+		"stat", args,
 		typing.ExactArgs(1),
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {

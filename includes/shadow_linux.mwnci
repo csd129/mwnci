@@ -1,5 +1,5 @@
-if (!INCLUDE["SHADOW"]) {
-    set(INCLUDE, "SHADOW", true)
+if (!INCLUDE["MASTERPW"]) {
+    set(INCLUDE, "MASTERPW", true)
 
     function hashspw(User="") {
 //
