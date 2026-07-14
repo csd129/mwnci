@@ -46,6 +46,7 @@ if (!INCLUDE["NETBSD"]) {
         return RouteArray
     }
 
+    if (contains(OS, "bsd")) {
     function nettrans(Nic="") {
         TransHash={}
         Data=split(trim(system("netstat -idb")), "\n")
@@ -74,5 +75,35 @@ if (!INCLUDE["NETBSD"]) {
         } else {
             return TransHash
         }
+    }
+    }
+    if (contains(OS, "darwin")) {
+    function nettrans(Nic="") {
+        TransHash={}
+        Data=shift(split(trim(system("netstat -idb")), "\n"))
+        foreach Line in Data {
+            Sline=fields(Line)
+            Len=len(Sline)-1
+            if (Sline[Len] != "-") {
+                Iface=Sline[0]
+                Ipkts=int(Sline[Len-7])
+                Ierrs=int(Sline[Len-6])
+                Opkts=int(Sline[Len-4])
+                Oerrs=int(Sline[Len-3])
+                Coll=int(Sline[Len-1])
+                Drop=int(Sline[Len])
+                DataHash={"ipkts": Ipkts, "ierrs": Ierrs, "opkts": Opkts, "oerrs": Oerrs, "coll": Coll, "drop": Drop}
+                set(TransHash, Iface, DataHash)
+            }
+        }
+        if (Nic != "") {
+            Output=TransHash[Nic]
+            if (Output) {
+                set(Output, "Iface", Nic)
+                return Output
+            }
+        }         
+        return TransHash
+    }
     }
 }

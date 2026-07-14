@@ -16,5 +16,5 @@ show( 3 )
 show( [ 0, 1, 2,3,4,5,6,7,8,9,10] )
 show( { "Name": "Steve", "Email": "example@example.com" } )
 
-let g = fn() { return "Hello, world!" }
+g = fn() { return "Hello, world!" }
 show( g )
