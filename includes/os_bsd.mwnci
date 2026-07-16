@@ -45,7 +45,7 @@ if (!INCLUDE["OSBSD"]) {
         Result=eval(Cmd)
         if (len(Result["stderr"]) > 0) {
             println(Result["stderr"])
-            return NULL
+            return null
         }
         return int(trim(Result["stdout"]))
     }

@@ -112,8 +112,8 @@ if (!INCLUDE["MAIN"]) {
     }
 
 // Binary to Decimal
-    function bin2dec(BinaryNumber=NULL) {
-        if (BinaryNumber == NULL) {return false}
+    function bin2dec(BinaryNumber=null) {
+        if (BinaryNumber == null) {return false}
         BinaryNumber=trimprefix(string(BinaryNumber), "0b")
         if (!match("^[0-1]{1,}$", BinaryNumber)) {
             println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", BinaryNumber)
@@ -503,11 +503,11 @@ if (!INCLUDE["MAIN"]) {
         if (!checkfunctype("tr", "string", Search, 2)) {exit(1)}
         if (!checkfunctype("tr", "string", Replace, 3)) {exit(1)}
         if (len(Search) == 0) {
-            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #2 to be `STRING` got NULL")
+            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #2 to be `STRING` got `NULL`")
             exit(1)
         }
         if (len(Replace) == 0) {
-            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #3 to be `STRING` got NULL")
+            println("Error calling `tr`: ERROR: TypeError: tr() expected argument #3 to be `STRING` got `NULL`")
             exit(1)
         }
         Search=cclass(Search)
@@ -544,7 +544,7 @@ if (!INCLUDE["MAIN"]) {
 
     function ucount(Array=[]) {
         if (!checkfunctype("ucount", "array", Array, 1)) {exit(1)}
-        CountHash=fromkeys(Array)
+        CountHash=fromkeys(Array, 0)
         foreach Entry in Array {
             set(CountHash, Entry, CountHash[Entry] + 1)
         }
@@ -593,7 +593,7 @@ if (!INCLUDE["MAIN"]) {
         if (len(MyArray) > 0) {
             return MyArray[0]
         }
-        return NULL
+        return null
     }
 
     function last(MyArray=[]) {
@@ -602,7 +602,7 @@ if (!INCLUDE["MAIN"]) {
         if (Length > 0) {
             return MyArray[Length-1]
         }
-        return NULL
+        return null
     }
 
     function divmod(a=0, b=0) {
@@ -644,7 +644,7 @@ if (!INCLUDE["MAIN"]) {
         return reverse(sort(copy(Array)))
     }
 
-    function fromkeys(Array=[], Value=0) {
+    function fromkeys(Array=[], Value=null) {
         if (!checkfunctype("fromkeys", "array", Array, 1)) {exit(1)}
         Hash={}
         foreach Entry in Array {

@@ -7,7 +7,7 @@ if (!INCLUDE["NETBSD"]) {
         data=split(trim(system(CMD)), "\n")
         foreach Line in data {
             SLine=fields(Line)
-            if (SLine[5] == NULL) {SLine=push(SLine,"")}
+            if (SLine[5] == null) {SLine=push(SLine,"")}
             foreach n in [3,4] {
                 Temp=reverse(SLine[n])
                 SLine=set(SLine, n, reverse(replace(Temp, ".", ":", 1)))

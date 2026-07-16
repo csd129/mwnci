@@ -43,7 +43,7 @@ if (!INCLUDE["CERTS"]) {
 
         Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 2>&1; exit 0", TimeOut, Domain, Domain)
         Result=system(Command)
-        return contains(Result, "ERROR") ? NULL : extractcert(Result)
+        return contains(Result, "ERROR") ? null : extractcert(Result)
     }
 
     function readsitechain(Domain="", TimeOut=5) {
@@ -62,7 +62,7 @@ if (!INCLUDE["CERTS"]) {
 
         Command=sprintf("timeout %ds openssl s_client -servername %s -connect %s:443 -showcerts 2>&1; exit 0", TimeOut, Domain, Domain)
         Result=system(Command)
-        return contains(Result, "ERROR") ? NULL : extractcert(Result)
+        return contains(Result, "ERROR") ? null : extractcert(Result)
     }
 
     function certsans(File="") {
