@@ -56,6 +56,7 @@ func init() {
 	RegisterBuiltin("findfile", func(env *object.Environment, args ...object.Object) object.Object { return (FindFile(args...)) })
 	RegisterBuiltin("float", func(env *object.Environment, args ...object.Object) object.Object { return (floatFun(args...)) })
 	RegisterBuiltin("fopen", func(env *object.Environment, args ...object.Object) object.Object { return (FOpen(args...)) })
+	RegisterBuiltin("ftell", func(env *object.Environment, args ...object.Object) object.Object { return (Ftell(args...)) })
 	RegisterBuiltin("getegid", func(env *object.Environment, args ...object.Object) object.Object { return (Getegid(args...)) })
 	RegisterBuiltin("geteuid", func(env *object.Environment, args ...object.Object) object.Object { return (Geteuid(args...)) })
 	RegisterBuiltin("getgid", func(env *object.Environment, args ...object.Object) object.Object { return (Getgid(args...)) })

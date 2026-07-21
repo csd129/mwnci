@@ -99,7 +99,7 @@ if (!INCLUDE["NETBSD"]) {
         if (Nic != "") {
             Output=TransHash[Nic]
             if (Output) {
-                set(Output, "Iface", Nic)
+                set(Output, "iface", Nic)
                 return Output
             }
         }         

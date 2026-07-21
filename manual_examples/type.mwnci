@@ -1,7 +1,7 @@
 #!/usr/bin/env mwnci
 line="a string"
 number=int(10)
-real=float(1.0)
+real=1.0
 myhash={"Name": "Fred"}
 myarray=[1,2,3,4]
 println("line is: ", type(line))
