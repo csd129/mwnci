@@ -52,6 +52,7 @@ func init() {
 	RegisterBuiltin("exit", func(env *object.Environment, args ...object.Object) object.Object { return (exitFun(args...)) })
 	RegisterBuiltin("extend", func(env *object.Environment, args ...object.Object) object.Object { return (ArrExtend(args...)) })
 	RegisterBuiltin("fgetc", func(env *object.Environment, args ...object.Object) object.Object { return (Fgetc(args...)) })
+	RegisterBuiltin("fgets", func(env *object.Environment, args ...object.Object) object.Object { return (Fgets(args...)) })
 	RegisterBuiltin("fields", func(env *object.Environment, args ...object.Object) object.Object { return (Fields(args...)) })
 	RegisterBuiltin("file", func(env *object.Environment, args ...object.Object) object.Object { return (File(args...)) })
 	RegisterBuiltin("findfile", func(env *object.Environment, args ...object.Object) object.Object { return (FindFile(args...)) })
