@@ -101,7 +101,7 @@
     "entity": {
       "patterns": [
         {
-          "match": "^(\\bfunc\\b)\\s(\\w+)?\\(([a-z]+)\\s(\\*)?([a-zA-Z]+)\\)",
+          "match": "^(\\bfunction\\b)\\s(\\w+)?\\(([a-z]+)\\s(\\*)?([a-zA-Z]+)\\)",
           "captures": {
             "1": {
               "name": "keyword.function.monkey"
@@ -124,7 +124,7 @@
         },
         {
           "comment": "Function Definitions",
-          "begin": "^(\\bfunc\\b)\\s(\\w+)",
+          "begin": "^(\\bfunction\\b)\\s(\\w+)",
           "beginCaptures": {
             "1": {
               "name": "keyword.function.monkey"
@@ -150,7 +150,7 @@
         },
         {
           "comment": "Function declarations",
-          "match": "^(\\bfunc\\b)(?:\\s+(\\([^\\)]+\\)\\s+)?(\\w+)(?=\\())?",
+          "match": "^(\\bfunction\\b)(?:\\s+(\\([^\\)]+\\)\\s+)?(\\w+)(?=\\())?",
           "captures": {
             "1": {
               "name": "keyword.function.monkey"
@@ -184,7 +184,7 @@
         },
         {
           "comment": "Functions",
-          "match": "(\\bfunc\\b)|(\\w+)(?=\\()",
+          "match": "(\\bfunction\\b)|(\\w+)(?=\\()",
           "captures": {
             "1": {
               "name": "keyword.function.monkey"
@@ -231,7 +231,7 @@
       "patterns": [
         {
           "comment": "Flow control keywords",
-          "match": "\\b(break|case|continue|default|else|for|if|return|select|switch)\\b",
+          "match": "\\b(break|case|continue|default|else|foreach|if|in|return|select|switch)\\b",
           "name": "keyword.control.monkey"
         },
         {
@@ -243,7 +243,7 @@
           "name": "keyword.let.monkey"
         },
         {
-          "match": "\\bfunc\\b",
+          "match": "\\bfunction\\b",
           "name": "keyword.function.monkey"
         }
       ]
