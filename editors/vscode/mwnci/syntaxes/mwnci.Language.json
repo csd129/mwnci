@@ -93,7 +93,7 @@
         },
         {
           "comment": "Language constants",
-          "match": "\\b(true|false|null)\\b",
+          "match": "\\b(true|false|null|NULL|OS|ARCH|ARGC|ARGV|PID|PROGNAME|STDIN|STDOUT|STDERR)\\b",
           "name": "constant.language.monkey"
         }
       ]
