@@ -702,4 +702,24 @@ if (!INCLUDE["MAIN"]) {
         }
         return SctlHash
     }
+
+    function tac(File="") {
+        if (!checkfunctype("tac", "string", File, 1)) {exit(1)}
+        if (len(File) == 0) {
+            println("Error calling `tac`: ERROR: tac() argument #1 is empty")
+	    exit(1)
+        }
+	if (!isreadable(File)) {
+            println("ERROR: tac(): Can't open ", File)
+            exit(1)
+        }
+        Data=reverse(split(cat(File), "\n"))
+	Data=join(Data, "\n")
+	return Data
+    }
+
+    function stac(Line) {
+        SLine=reverse(split(Line, "\n"))
+        return join(SLine, "\n")
+    }
 }

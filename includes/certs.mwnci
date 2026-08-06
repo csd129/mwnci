@@ -237,4 +237,23 @@ if (!INCLUDE["CERTS"]) {
         }
         return JsonArray
     }
+
+    function certinfo(CertFile=null) {
+        if (!checkfunctype("certinfo", "string", CertFile, 1)) {exit(1)}
+        return system("openssl x509 -in " + CertFile + " -noout -text")
+    }
+
+    function sitecertinfo(Domain=null) {
+        if (!checkfunctype("sitecertinfo", "string", Domain, 1)) {exit(1)}
+        CERT=tmpnam("/tmp", "cert_")
+        Cert=readsitecert(Domain)
+        if (!Cert) {
+            return null
+        }
+        Cert=trim(Cert[0])
+        writetofile(CERT, "w", Cert)
+        Info=certinfo(CERT)
+        unlink(CERT)
+        return Info
+    }
 }

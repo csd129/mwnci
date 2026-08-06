@@ -110,7 +110,9 @@ if (INCLUDE["USEMETHODS"]) {
         function string.set(element=-1, value="") {return set(self, element, value)}
         function string.split(separator="") {return split(self, separator)}
         function string.splithostport() {return splithostport(self)}
+        function string.stac() {return stac(self)}
         function string.substr(start,long) {return substr(self, start, long)}
+        function string.tac() {return tac(self)}
         function string.tail(Lines=0) {return tail(self, Lines)}
         function string.tolower() {return tolower(self)}
         function string.toupper() {return toupper(self)}
