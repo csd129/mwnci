@@ -65,7 +65,7 @@ if (!INCLUDE["SYSSTATLINUX"]) {
         Data=[]
         foreach Line in Result {
             if (Line ~= /^[0-9][0-9]:/ ) {
-                if (!match("IFACE", Line)) {
+                if (!match("IFACE", Line) && !match("RESTART", Line)) {
                     SInterface=fields(Line)
                     if (match("[AP]M", SInterface[1])) {SInterface=delete(SInterface, 1)}
                         push(Data, SInterface)
