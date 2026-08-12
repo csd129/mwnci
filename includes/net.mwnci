@@ -140,8 +140,19 @@ if (!INCLUDE["NET"]) {
         }
         return OfHash
     }
+
+    function ipv6todot32(IP) {
+        if (!isipv6(IP)) {
+	    STDERR.write("ipv6todot32(): " + IP + " is not a valid IPv6 address\n")
+            exit(1)
+        }
+        ReversedIP=reverse(expandv6(IP))
+        Dotted=join(split(ReversedIP, ":"), "")
+        Dotted=join(split(Dotted, ""), ".")
+        return Dotted
+    }
     
- if (INCLUDE["USEMETHODS"]) {
+    if (INCLUDE["USEMETHODS"]) {
 
         function integer.port2pid() {
             return port2pid(self)
@@ -165,6 +176,10 @@ if (!INCLUDE["NET"]) {
 
         function string.nettrans() {
             return nettrans(self)
+        }
+
+        function string.ipv6todot32() {
+            return ipv6todot32(self)
         }
     }
 }

@@ -79,6 +79,7 @@ if (INCLUDE["USEMETHODS"]) {
         function string.contains(search) {return contains(self, search)}
         function string.cut(piv) {return cut(self, piv)}
         function string.dirpath() {return dirpath(self)}
+	function string.expandv6() {return expandv6(self)}
         function string.fields() {return fields(self)}
         function string.file(dummy) {return file(self, dummy)}
         function string.getenv() {return getenv(self)}
@@ -108,6 +109,7 @@ if (INCLUDE["USEMETHODS"]) {
         function string.rindex(item) {return rindex(self, item)}
         function string.rtrim(trimmer="") {if (trimmer == "") {return rtrim(self)} return rtrim(self, trimmer)}
         function string.set(element=-1, value="") {return set(self, element, value)}
+        function string.shrinkv6() {return shrinkv6(self)}
         function string.split(separator="") {return split(self, separator)}
         function string.splithostport() {return splithostport(self)}
         function string.stac() {return stac(self)}
