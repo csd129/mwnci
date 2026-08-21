@@ -26,16 +26,15 @@ if (!INCLUDE["NET"]) {
                 Line=fields(trim(Line))
                 if (Line[0] == "inet") {
                     IP=split(Line[1], "/")[0]
-                    if (IP != "127.0.0.1") {
-                        push(IPArray, IP)
-                    }
+                    IP=trimprefix(IP, "addr:")
+		    push(IPArray, IP)
                 }
             }
             push(IPArray, "127.0.0.1")
         }
-        return IPArray
+        return uniq(IPArray)
     }
-    
+
     function openports() {
         port_array=[]
         foreach line in netstat() {
