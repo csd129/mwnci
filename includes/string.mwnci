@@ -99,9 +99,18 @@ if (!INCLUDE["STRING"]) {
 
     function ispunct(String="") {
         if (!checkfunctype("ispunct", "string", String, 1)) {exit(1)}
-        return match("^\"!\"\#\$\%\&\'\(\)\\*\\+\,\-\.\/\:\;\<\=\>\?\@\\[\\]\^\_`\{\|\}~*$", String) ? true : false
+	if (len(String) == 0) {return false}
+        if (len(String) > 1) {
+            println("Error calling `ispunct`: ERROR: TypeError: ispunct() expected argument to be a single character")
+	    exit(1)
+        }
+        Line="\"#$%&'()*+,-./:;<=>?@[]^_`{|}~"	
+        foreach Chr in Line {
+            if (Chr == String) {return true}
+        }
+        return false
     }
-
+    
     function isspace(Text="") {
         if (!checkfunctype("isspace", "string", Text, 1)) {exit(1)}
         if (len(Text) == 0) {return false}
