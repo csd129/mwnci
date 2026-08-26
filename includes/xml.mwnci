@@ -1,0 +1,8 @@
+if (!INCLUDE["XML"]) {
+    set(INCLUDE, "XML", true)
+
+    function savexml(Filename="", Json="") {
+        Json=string(tojson(Json))
+        writetofile(Filename, "w", jsontoxml(Json))
+    }
+}

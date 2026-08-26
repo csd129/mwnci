@@ -91,6 +91,7 @@ func init() {
 	RegisterBuiltin("isreadable", func(env *object.Environment, args ...object.Object) object.Object { return (IsReadable(args...)) })
 	RegisterBuiltin("iswritable", func(env *object.Environment, args ...object.Object) object.Object { return (IsWritable(args...)) })
 	RegisterBuiltin("issorted", func(env *object.Environment, args ...object.Object) object.Object { return (Issorted(args...)) })
+	RegisterBuiltin("jsontoxml", func(env *object.Environment, args ...object.Object) object.Object { return (Funjson2xml(args...)) })
 	RegisterBuiltin("jsontoyaml", func(env *object.Environment, args ...object.Object) object.Object { return (jtoy(args...)) })
 	RegisterBuiltin("join", func(env *object.Environment, args ...object.Object) object.Object { return (Joiner(args...)) })
 	RegisterBuiltin("items", func(env *object.Environment, args ...object.Object) object.Object { return (hashItems(args...)) })
