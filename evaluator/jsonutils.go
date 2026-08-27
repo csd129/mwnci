@@ -4,9 +4,12 @@ import (
         "bytes"
         "fmt"
         "encoding/json"
+	"strings"
+	"encoding/xml"
         "sigs.k8s.io/yaml"
         "mwnci/object"
         "mwnci/typing"
+	"vimagination.zapto.org/json2xml"
 )
 
 func Isjson(args ...object.Object) object.Object {
@@ -81,4 +84,22 @@ func ytoj(args ...object.Object) object.Object {
 		return newError("%s", err.Error())
 	}
 	return &object.String{Value: string(Json)}
+}
+
+func j2x(args ...object.Object) object.Object {
+	if err := typing.Check(
+		"jsontoxml", args,
+		typing.ExactArgs(1),
+	); err != nil {
+		return newError("%s", err.Error())
+	}
+	jsonData := args[0].(*object.String).Value
+	var buf strings.Builder
+	x := xml.NewEncoder(&buf)
+	x.Indent("", "\t")
+	if err := json2xml.Convert(json.NewDecoder(strings.NewReader(jsonData)), x); err != nil {
+		return newError("%s", err.Error())
+	}
+	x.Flush()
+	return &object.String{Value: buf.String()}
 }
