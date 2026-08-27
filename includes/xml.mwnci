@@ -1,5 +1,19 @@
+include(
+    "json",
+    "yaml"
+)
+
 if (!INCLUDE["XML"]) {
     set(INCLUDE, "XML", true)
+
+    function loadxml(Filename="") {
+        if (!checkfunctype("loadxml", "string", Filename, 1)) {exit(1)}
+        if (isreadable(Filename)) {
+            Xml=trim(cat(Filename))
+            Json=xmltojson(Xml)
+            return (isjson(Json)) ? eval(Json) : null
+        }
+    }
 
     function savexml(Filename="", Json="") {
         Json=string(tojson(Json))

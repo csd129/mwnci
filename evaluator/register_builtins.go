@@ -176,6 +176,7 @@ func init() {
 	RegisterBuiltin("whoami", func(env *object.Environment, args ...object.Object) object.Object { return (Whoami(args...)) })
 	RegisterBuiltin("write", func(env *object.Environment, args ...object.Object) object.Object { return (Write(args...)) })
 	RegisterBuiltin("writefile", func(env *object.Environment, args ...object.Object) object.Object { return (WriteFile(args...)) })
+	RegisterBuiltin("xmltojson", func(env *object.Environment, args ...object.Object) object.Object { return (Funxml2json(args...)) })
 	RegisterBuiltin("yamltojson", func(env *object.Environment, args ...object.Object) object.Object { return (ytoj(args...)) })
 	RegisterBuiltin("zip", func(env *object.Environment, args ...object.Object) object.Object { return (zipFun(args...)) })
 }
