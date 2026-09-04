@@ -74,11 +74,12 @@ func ytoj(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"yamltojson", args,
 		typing.ExactArgs(1),
+		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
 		return newError("%s", err.Error())
 	}
 
-	Stringy := fmt.Sprintf("%v", &object.String{Value: args[0].String()})
+	Stringy := args[0].(*object.String).Value
 	Yaml := []byte(Stringy)
 	Json, err := yaml.YAMLToJSON(Yaml)
 	if err != nil {
@@ -91,6 +92,7 @@ func j2x(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"jsontoxml", args,
 		typing.ExactArgs(1),
+		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
 		return newError("%s", err.Error())
 	}
@@ -109,6 +111,7 @@ func Funxml2json(args ...object.Object) object.Object {
 	if err := typing.Check(
 		"xmltojson", args,
 		typing.ExactArgs(1),
+		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
 		return newError("%s", err.Error())
 	}

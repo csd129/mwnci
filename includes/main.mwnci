@@ -722,4 +722,9 @@ if (!INCLUDE["MAIN"]) {
         SLine=reverse(split(Line, "\n"))
         return join(SLine, "\n")
     }
+
+    function contains(Needle, Haystack) {
+        return (index(Needle, Haystack) == -1) ? false : true
+    }
+
 }

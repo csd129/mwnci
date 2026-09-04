@@ -1,4 +1,5 @@
 //go:build (linux || openbsd)
+
 package evaluator
 
 import (
@@ -37,11 +38,12 @@ func Stat(args ...object.Object) object.Object {
 	fileBlocks := &object.Integer{Value: int64(fileSys.(*syscall.Stat_t).Blocks)}
 	fileSize := &object.Integer{Value: int64(fileStat.Size())}
 	fileRdev := fileSys.(*syscall.Stat_t).Rdev
-	fileDev:= fileSys.(*syscall.Stat_t).Dev
+	fileDev := fileSys.(*syscall.Stat_t).Dev
 	devMajor := &object.Integer{Value: int64(fileRdev / 256)}
 	devMinor := &object.Integer{Value: int64(fileRdev % 256)}
 	fileMajor := &object.Integer{Value: int64(fileDev / 256)}
 	fileMinor := &object.Integer{Value: int64(fileDev % 256)}
+	Destination := ""
 	var (
 		fileType string
 	)
@@ -58,6 +60,7 @@ func Stat(args ...object.Object) object.Object {
 		fileType = "FIFO"
 	case syscall.S_IFLNK:
 		fileType = "LINK"
+		Destination, err = os.Readlink(file)
 	case syscall.S_IFSOCK:
 		fileType = "SOCKET"
 	default:
@@ -105,6 +108,11 @@ func Stat(args ...object.Object) object.Object {
 	key = &object.String{Value: "size"}
 	newHashPair = object.HashPair{Key: key, Value: fileSize}
 	newHash[key.HashKey()] = newHashPair
+	if Destination != "" {
+		key = &object.String{Value: "linkto"}
+		newHashPair = object.HashPair{Key: key, Value: &object.String{Value: Destination}}
+		newHash[key.HashKey()] = newHashPair
+	}
 	if fileType != "BLOCK" && fileType != "CHR" {
 		key = &object.String{Value: "major"}
 		newHashPair = object.HashPair{Key: key, Value: fileMajor}

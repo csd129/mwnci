@@ -1,11 +1,9 @@
 package evaluator
 
 import (
-	"strings"
-	"strconv"
-	"fmt"
 	"mwnci/object"
 	"mwnci/typing"
+	"strings"
 )
 
 // Index ...
@@ -46,25 +44,4 @@ func Index(args ...object.Object) object.Object {
 		"TypeError: index() expected argument #1 to be `array` or `str` got `%s`",
 		args[0].Type(),
 	)
-}
-
-func Contains(args ...object.Object) object.Object {
-	if err := typing.Check(
-		"contains", args,
-		typing.ExactArgs(2),
-	); err != nil {
-		return newError("%s", err.Error())
-	}
-
-	if args[0].Type() != object.STRING_OBJ && args[0].Type() != object.ARRAY_OBJ {
-		return newError("TypeError: contains() expected argument #1 to be `array` or `str` got `%s`", args[0].Type(),)
-	}
-
-	Result := fmt.Sprintf("%v", Index(args[0], args[1]))
-	Value,_ := strconv.Atoi(Result)
-	
-	if Value == -1 {
-		return FALSE
-	}
-	return TRUE
 }

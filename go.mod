@@ -1,6 +1,6 @@
 module mwnci
 
-go 1.25.0
+go 1.25.4
 
 require (
 	github.com/chzyer/readline v1.5.1
