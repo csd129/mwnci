@@ -1,4 +1,3 @@
-
 package evaluator
 
 import (
@@ -19,7 +18,9 @@ func Sortit(args ...object.Object) object.Object {
 	}
 
 	arr := args[0].(*object.Array)
+	if !arr.SameType(arr) {
+		return newError("TypeError: Array contents of different types")
+	}
 	sort.Sort(arr)
 	return arr
 }
-

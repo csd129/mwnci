@@ -18,7 +18,7 @@ func System(args ...object.Object) object.Object {
 
 	full_command := args[0].(*object.String).Value
 
-	out, err := exec.Command("bash", "-c", full_command).Output()
+	out, err := exec.Command("sh", "-c", full_command).Output()
 	if err != nil {
 		return newError("Failed to execute: `%s`: %s", full_command, err.Error())
 	}

@@ -3,6 +3,7 @@ package evaluator
 import (
 	"mwnci/object"
 	"mwnci/typing"
+	"sort"
 )
 
 // Index ...
@@ -15,18 +16,24 @@ func Bsearch(args ...object.Object) object.Object {
 	}
 
 	if haystack, ok := args[0].(*object.Array); ok {
+		if !sort.IsSorted(args[0].(*object.Array)) {
+			return newError("DataError: Array data not in ascending order")
+		}
+		if !haystack.SameType(haystack) {
+			return newError("TypeError: Array contents of different types")
+		}
 		needle := args[1].(object.Comparable)
 		low := 0
-		high := len(haystack.Elements)-1
+		high := len(haystack.Elements) - 1
 		for low <= high {
-			mid := (low + high)/2
+			mid := (low + high) / 2
 			if needle.Compare(haystack.Elements[mid]) == 0 {
 				return &object.Integer{Value: int64(mid)}
 			}
 			if needle.Compare(haystack.Elements[mid]) == -1 {
-				high = mid-1
+				high = mid - 1
 			} else {
-				low = mid+1
+				low = mid + 1
 			}
 		}
 		return &object.Integer{Value: int64(-1)}

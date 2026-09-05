@@ -1,4 +1,4 @@
-//go:build (linux || openbsd)
+//go:build linux || openbsd
 
 package evaluator
 
