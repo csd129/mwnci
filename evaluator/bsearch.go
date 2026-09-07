@@ -19,14 +19,12 @@ func Bsearch(args ...object.Object) object.Object {
 		if !sort.IsSorted(args[0].(*object.Array)) {
 			return newError("DataError: Array data not in ascending order")
 		}
-		if !haystack.SameType(haystack) {
-			return newError("TypeError: Array contents of different types")
-		}
+
 		needle := args[1].(object.Comparable)
 		low := 0
 		high := len(haystack.Elements) - 1
 		for low <= high {
-			mid := (low + high) / 2
+			mid := (low + high) / 2.0
 			if needle.Compare(haystack.Elements[mid]) == 0 {
 				return &object.Integer{Value: int64(mid)}
 			}

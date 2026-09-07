@@ -14,23 +14,22 @@ if (!INCLUDE["NETLINUX"]) {
         return inttoip(hex2dec(IP))
     }
 
-    function nsip6(IP) {
+    function nsip6(Tcp6) {
 //
 // LittlEndian stuff again. See Above
 //
-        IP=tolower(IP)
-        A=[]
-        foreach n in range(0,32,2) {
-            push(A, substr(IP, n, 2))
+        if (!checkfunctype("tcp6toipv6", "string", Tcp6, 1)) {exit(1)}
+        All=""
+	    Array=split(Tcp6,"")
+        Array=batch(Array, 4)
+        foreach Entry in Array {
+            Hex=sprintf("%s%s%s%s", Entry[2], Entry[3], Entry[0], Entry[1])
+            All=All+Hex+":"
         }
-        AD=sprintf("%s%s:%s%s:%s%s:%s%s:%s%s:%s%s:%s%s:%s%s", A[3], A[2], A[1], A[0], A[7], A[6], A[5], A[4], A[11], A[10], A[9], A[8], A[15], A[14], A[13], A[12])
-        AD=replaceall(AD, "0000:0000:0000", "")
-        AD=replaceall(AD, "0000:0000", "")
-        AD=replaceall(AD, "0000:", "")
-        foreach n in 1..4 {
-            AD=replaceall(AD, ":0", ":")
-        }
-        return AD
+        All=trim(All, ":")
+        Array=split(All, ":")
+        Ipv6=shrinkv6(sprintf("%s:%s:%s:%s:%s:%s:%s:%s", Array[1], Array[0], Array[3], Array[2], Array[5], Array[4], Array[7], Array[6]))
+        return Ipv6
     }
 
     function route() {
