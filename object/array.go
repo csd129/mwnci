@@ -90,9 +90,7 @@ func (ao *Array) ToInterface() interface{} {
 
 func (a *Array) Copy() *Array {
 	elements := make([]Object, len(a.Elements))
-	for i, e := range a.Elements {
-		elements[i] = e
-	}
+	copy(elements, a.Elements)
 	return &Array{Elements: elements}
 }
 
