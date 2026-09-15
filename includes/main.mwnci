@@ -727,4 +727,22 @@ if (!INCLUDE["MAIN"]) {
         return (index(Needle, Haystack) == -1) ? false : true
     }
 
+    function bsearch(Haystack=[], Needle=null) {
+        if (!checkfunctype("bsearch", "array", Haystack, 1)) {exit(1)}
+        if (len(Haystack) == 0) {return -1}
+        if (Needle == null) {
+            println("Error calling `bsearch`: ERROR: bsearch() argument #2 is empty")
+            exit(1)
+        }
+        Low=0
+        High=len(Haystack)-1
+        while (Low <= High) {
+            Mid=(Low+High)/2
+            if (Needle == Haystack[Mid]) {
+                return Mid
+            }
+            Needle < Haystack[Mid] ? High=Mid-1 : Low=Mid+1
+        }
+        return -1
+    }
 }
