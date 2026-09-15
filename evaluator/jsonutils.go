@@ -1,20 +1,21 @@
 package evaluator
 
 import (
-        "bytes"
-        "fmt"
-        "encoding/json"
-	"strings"
+	"bytes"
+	"encoding/json"
 	"encoding/xml"
-        "sigs.k8s.io/yaml"
-        "mwnci/object"
-        "mwnci/typing"
-	"vimagination.zapto.org/json2xml"
+	"fmt"
+	"mwnci/object"
+	"mwnci/typing"
+	"strings"
+
 	xj "github.com/txix-open/goxml2json"
+	"sigs.k8s.io/yaml"
+	"vimagination.zapto.org/json2xml"
 )
 
 func Isjson(args ...object.Object) object.Object {
-        if err := typing.Check(
+	if err := typing.Check(
 		"isjson", args,
 		typing.ExactArgs(1),
 	); err != nil {
@@ -124,4 +125,3 @@ func Funxml2json(args ...object.Object) object.Object {
 	}
 	return &object.String{Value: json.String()}
 }
-
