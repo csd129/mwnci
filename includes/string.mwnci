@@ -164,7 +164,7 @@ if (!INCLUDE["STRING"]) {
         }
         if (Position == 0) {
             First=""
-	    Start=len(Search)+1
+            Start=len(Search)+1
             Length=len(Text) - Start
             Second=substr(Text, Start-1, Length)
         } else {

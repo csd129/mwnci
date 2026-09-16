@@ -32,7 +32,7 @@ func versionFun(args ...object.Object) object.Object {
 }
 
 // Execute the supplied string as a program.
-func Execute(input string, DEBUG bool, NOMETHODS bool,) int {
+func Execute(input string, DEBUG bool, NOMETHODS bool) int {
 
 	env := object.NewEnvironment()
 	l := lexer.New(input)
@@ -49,10 +49,10 @@ func Execute(input string, DEBUG bool, NOMETHODS bool,) int {
 	//
 	//  Parse and evaluate our standard-library.
 	//
-	stdlib:=""
-        if NOMETHODS == true {
+	stdlib := ""
+	if NOMETHODS == true {
 		stdlib = "INCLUDE={\"USEMETHODS\": false} include(\"main\")"
-        } else {
+	} else {
 		stdlib = "INCLUDE={\"USEMETHODS\": true} include(\"main\")"
 	}
 	initL := lexer.New(stdlib)
@@ -78,7 +78,7 @@ func main() {
 	//
 	// Setup some flags.
 	//
-        
+
 	eval := flag.String("eval", "", "Code to execute.")
 	vers := flag.Bool("version", false, "Show our version and exit.")
 	debug := flag.Bool("x", false, "Show debug info.")
@@ -98,7 +98,7 @@ func main() {
 		DEBUG = true
 	}
 
-	// 
+	//
 	// Don't include methods  E.g a.string()
 	//
 	NOMETHODS := false
