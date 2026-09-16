@@ -70,7 +70,40 @@ if (!INCLUDE["PS"]) {
         }
     }
 
+    function ps() {
+        CmdHash={}
+        ProcessTable={}
+        CmdProc="ps -ax -o user,pid,ppid,%cpu,%mem,vsize,rss,tty,command"
+        Processes=shift(split(trim(system(CmdProc)), "\n"))
+        foreach Process in Processes {
+            Cmd=""
+            line=fields(Process)
+            b=shift(copy(line), 8)
+            Cmd=trim(join(b, " "))
+            CmdHash={"uid": line[0], "ppid": int(line[2]), "cpu": float(line[3]), "mem": float(line[4]), "vsize": int(line[5]), "rss": int(line[6]), "tty": line[7], "command": Cmd}
+            set(ProcessTable, int(line[1]), CmdHash)
+        }
+        return ProcessTable
+    }
+
+    function tracepid(Pid=getpid()) {
+        Parray=[]
+        P=ps()
+        PPid=P[Pid]
+        if (PPid == NULL) {
+            return PPid
+        }
+        PPid=PPid["ppid"]
+        push(Parray, PPid)
+        while (PPid != 0) {
+            PPid=P[PPid]["ppid"]
+            push(Parray, PPid)
+        }
+        return Parray
+    }
+
     if (INCLUDE["USEMETHODS"]) {
+        function integer.tracepid() {return tracepid(self)}
         function integer.getpname() {return getpname(self)}
         function string.pnametopid() {return pnametopid(self)}
         function integer.procstat() {return procstat(self)}
