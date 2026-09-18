@@ -86,8 +86,6 @@ func init() {
 	RegisterBuiltin("isipv4", func(env *object.Environment, args ...object.Object) object.Object { return (Isipv4(args...)) })
 	RegisterBuiltin("isipv6", func(env *object.Environment, args ...object.Object) object.Object { return (Isipv6(args...)) })
 	RegisterBuiltin("isjson", func(env *object.Environment, args ...object.Object) object.Object { return (Isjson(args...)) })
-	RegisterBuiltin("isreadable", func(env *object.Environment, args ...object.Object) object.Object { return (IsReadable(args...)) })
-	RegisterBuiltin("iswritable", func(env *object.Environment, args ...object.Object) object.Object { return (IsWritable(args...)) })
 	RegisterBuiltin("issorted", func(env *object.Environment, args ...object.Object) object.Object { return (Issorted(args...)) })
 	RegisterBuiltin("jsontoxml", func(env *object.Environment, args ...object.Object) object.Object { return (j2x(args...)) })
 	RegisterBuiltin("jsontoyaml", func(env *object.Environment, args ...object.Object) object.Object { return (jtoy(args...)) })

@@ -219,6 +219,34 @@ if (!INCLUDE["FILE"]) {
         return false
     }
 
+    function isreadable(Filename="") {
+        if (!checkfunctype("isreadable", "string", Filename, 1)) {exit(1)}
+        if (Filename == "") {
+            println("Error calling `isexec`: ERROR: TypeError: isreadable() expected argument #1 to be `STRING` got `NULL`")
+            exit(1)
+        }
+        if (isexist(Filename)) {
+            if (isdoable(Filename, 0)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    function iswritable(Filename="") {
+        if (!checkfunctype("iswritable", "string", Filename, 1)) {exit(1)}
+        if (Filename == "") {
+            println("Error calling `iswritable`: ERROR: TypeError: iswritable() expected argument #1 to be `STRING` got `NULL`")
+            exit(1)
+        }
+        if (isexist(Filename)) {
+            if (isdoable(Filename, 1)) {
+                return true
+            }
+        }
+        return false
+    }
+
     function isexec(Filename="") {
         if (!checkfunctype("isexec", "string", Filename, 1)) {exit(1)}
         if (Filename == "") {
