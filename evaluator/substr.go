@@ -21,10 +21,7 @@ func subStrFun(args ...object.Object) object.Object {
 	}
 	l := 0
 	if len(args) == 3 {
-		l = int(args[2].(*object.Integer).Value)
-		if l < 1 {
-			l = 1
-		}
+		l = max(int(args[2].(*object.Integer).Value), 1)
 	} else {
 		l = len(text) - i
 	}

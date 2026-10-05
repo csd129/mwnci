@@ -30,5 +30,8 @@ func Regexp(args ...object.Object) object.Object {
 			regarray = append(regarray, &object.String{Value: scanner.Text()})
 		}
 	}
+	if scanner.Err() != nil {
+		return newError("%s", scanner.Err())
+	}
 	return &object.Array{Elements: regarray}
 }
