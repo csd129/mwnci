@@ -745,4 +745,17 @@ if (!INCLUDE["MAIN"]) {
         }
         return -1
     }
+
+    function file(Filename="", Addy="") {
+        Data=stat(Filename)
+        if (len(string(Addy)) == 0) {
+            return Data["mtime"]
+        }
+        Output=sprintf("%d %d %d %s %d %d %s %d %d", Data["mtime"], Data["atime"], Data["ctime"], Data["mode"], Data["size"], Data["nlinks"], Data["type"], Data["uid"], Data["gid"])
+        return Output
+    }
+
+    function date() {
+        return asctime(time())
+    }
 }
