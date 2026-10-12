@@ -151,6 +151,32 @@ if (!INCLUDE["NET"]) {
         return Dotted
     }
     
+    function dnsdomainname() {
+        Host=hostname()
+        DName=null
+        Host_FromHost=regexp(Host, "/etc/hosts")
+        if (len(Host_FromHost) > 0) {
+            DLine=Host_FromHost[0]
+            DName=fields(DLine)[1]
+            if (contains(DName, ".")) {
+                DHost=split(DName, ".")[0]
+                DName=trimprefix(DName, DHost+".")
+            } else {
+                DName=null
+            }
+            if (!DName) {
+                DNSName=lookupcname(Host)
+                if (contains(DNSName, ".")) {
+                    DHost=split(DNSName, ".")[0]
+                    if (DHost == Host) {
+                        DName=trimprefix(DNSName, DHost+".")
+                    }
+                }
+            }
+        }
+        return DName
+    }
+
     if (INCLUDE["USEMETHODS"]) {
 
         function integer.port2pid() {
