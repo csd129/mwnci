@@ -28,7 +28,7 @@ if (!INCLUDE["MATH"]) {
 
     function ceil(Value) {
         if (!checkfunctype("ceil", "number", Value, 1)) {exit(1)}
-        return (Value > int(Value)) ? int(Value) + 1 : int(Value)
+        return (Value > int(Value)) ? trunc(Value) + 1 : trunc(Value)
     }
 
     function degrees(Radian) {
@@ -67,9 +67,9 @@ if (!INCLUDE["MATH"]) {
     function floor(Value) {
         if (!checkfunctype("floor", "number", Value, 1)) {exit(1)}
         if  (Value < 0) {
-            return (int(Value) > Value) ? int(Value)-1 : int(Value);
+            return (int(Value) > Value) ? trunc(Value)-1 : trunc(Value);
         }
-        return int(Value)
+        return trunc(Value)
     }
 
     function fmod(n=0,d=0) {
@@ -79,7 +79,7 @@ if (!INCLUDE["MATH"]) {
 	        println("Error calling `fmod`: Error: argument #2 Division by zero")
 	        exit(1)
 	    }
-        tq=float(int(n/d))
+        tq=trunc(n/d)
         return float(sprintf("%.15f", n-tq*d))
     }
 
