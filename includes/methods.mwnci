@@ -6,6 +6,7 @@ if (INCLUDE["USEMETHODS"]) {
         set(INCLUDE, "METHODS", true)
     
         function array.batch(size=1) {return batch(self, size)}
+        function array.clear() {return clear(self)}
         function array.contains(Search="") {return contains(self, Search)}
         function array.copy() {return copy(self)}
         function array.cumulative() {return cumulative(self)}
@@ -28,13 +29,15 @@ if (INCLUDE["USEMETHODS"]) {
         function array.map(fnc) {return map(self, fnc)}
         function array.max() {return max(self)}
         function array.min() {return min(self)}
+        function array.mindex(Search) {return mindex(self, Search)}
         function array.pop() {return pop(self)}
         function array.push(item) {return push(self, item)}
         function array.remove(element=-1) {return remove(self, element)}
-        function array.rest() {return rest(self)}
+        function array.rest() {return shift(self)}
         function array.rindex(item) {return rindex(self, item)}
         function array.rsort() {return rsort(self)}
         function array.rsortips() {return rsortips(self)}
+        function array.sametype() {return sametype(self)}
         function array.set(element=-1, value="") {return set(self, element, value)}
         function array.shift(num=1) {return shift(self, num)}
         function array.shuffle() {return shuffle(self)}
@@ -49,6 +52,7 @@ if (INCLUDE["USEMETHODS"]) {
         function array.uniq() {return uniq(self)}
         function array.usort() {return usort(self)}
         function float.int() {return (int(self))}
+        function hash.clear() {return clear(self)}
         function hash.copy() {return copy(self)}
         function hash.delete(key) {return delete(self, key)}
         function hash.jsontoyaml() {return jsontoyaml(self)}
@@ -102,6 +106,7 @@ if (INCLUDE["USEMETHODS"]) {
         function string.lookuptxt() {return lookuptxt(self)}
         function string.ltrim(trimmer="") {if (trimmer == "") {return ltrim(self)} return ltrim(self, trimmer)}
         function string.match(search) {return match(search, self)}
+        function string.mindex(Search) {return mindex(self, Search)}
         function string.oct2sym() {return oct2sym(self)}
         function string.ord() {return ord(self)}
         function string.repeat(count=0, separator="") {return repeat(self, count, separator)}

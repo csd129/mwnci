@@ -26,4 +26,3 @@ func Pop(args ...object.Object) object.Object {
 
 	return element
 }
-
