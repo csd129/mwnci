@@ -256,7 +256,7 @@ func evalPostfixExpression(env *object.Environment, operator string, node *ast.P
 	case "++":
 		val, ok := env.Get(node.Token.Literal)
 		if !ok {
-			return newError("%s is unknown", node.Token.Literal)
+			return newError("%s++ Syntax Error", node.Token.Literal)
 		}
 
 		switch arg := val.(type) {
@@ -264,8 +264,12 @@ func evalPostfixExpression(env *object.Environment, operator string, node *ast.P
 			v := arg.Value
 			env.Set(node.Token.Literal, &object.Integer{Value: v + 1})
 			return arg
+		case *object.Float:
+			v := arg.Value
+			env.Set(node.Token.Literal, &object.Float{Value: v + 1})
+			return arg
 		default:
-			return newError("%s is not an int", node.Token.Literal)
+			return newError("%s is not an INT or FLOAT", node.Token.Literal)
 
 		}
 	case "--":
@@ -279,8 +283,12 @@ func evalPostfixExpression(env *object.Environment, operator string, node *ast.P
 			v := arg.Value
 			env.Set(node.Token.Literal, &object.Integer{Value: v - 1})
 			return arg
+		case *object.Float:
+			v := arg.Value
+			env.Set(node.Token.Literal, &object.Float{Value: v - 1})
+			return arg
 		default:
-			return newError("%s is not an int", node.Token.Literal)
+			return newError("%s is not an INT or FLOAT", node.Token.Literal)
 		}
 	default:
 		return newError("unknown operator: %s", operator)
@@ -1272,7 +1280,7 @@ func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpressio
 	if obj == nil {
 		return newError("impossible object-call on an empty object")
 	}
-
+	MethodPrefix := string(obj.Type())
 	if method, ok := call.Call.(*ast.CallExpression); ok {
 
 		//
@@ -1324,12 +1332,10 @@ func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpressio
 		attempts := []string{}
 		attempts = append(attempts, strings.ToLower(string(obj.Type())))
 		attempts = append(attempts, "object")
-
 		//
 		// Look for "$type.name", or "object.name"
 		//
 		for _, prefix := range attempts {
-
 			//
 			// What we're attempting to execute.
 			//
@@ -1370,7 +1376,7 @@ func evalObjectCallExpression(ctx context.Context, call *ast.ObjectCallExpressio
 	//
 	// So we've got no choice but to return an error.
 	//
-	return newError("Failed to invoke method: %s", call.Call.(*ast.CallExpression).Function.String())
+	return newError("- Failed to invoke method %s(). Cannot use %s in method call", call.Call.(*ast.CallExpression).Function.String(), strings.ToUpper(MethodPrefix))
 }
 
 func objectToNativeBoolean(o object.Object) bool {
