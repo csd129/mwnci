@@ -90,19 +90,11 @@ if (!INCLUDE["MAIN"]) {
 
     function hex2dec(Hex="") {
         if (!checkfunctype("hex2dec", "string", Hex, 1)) {exit(1)}
-        HDict={"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7,
-        "8": 8, "9": 9, "A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15}
-        Hex=toupper(Hex)
-        Hex=reverse(trimprefix(Hex, "0X"))
-        Sum=0
-        foreach I, V in Hex {
-            if (!HDict[V]) {
-	        return false
-            } else {
-                Sum += HDict[V] * (16 ** I)
-            }
-        }
-        return Sum
+        Val=Hex
+        Hex=trimprefix(tolower(Hex), "0x")
+        if (ishexdigit(Hex)) {return eval("0x" + Hex)}
+        println("Error calling `hex2dec`: ERROR: TypeError: hex2dec() expected argument #1 to be a hexadecial string, got ", Val)
+        return false
     }
 
 // Rest() moved to here because buitlin shift() has replaced it 
@@ -114,17 +106,13 @@ if (!INCLUDE["MAIN"]) {
 // Binary to Decimal
     function bin2dec(BinaryNumber=null) {
         if (BinaryNumber == null) {return false}
-        BinaryNumber=trimprefix(string(BinaryNumber), "0b")
-        if (!match("^[0-1]{1,}$", BinaryNumber)) {
-            println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", BinaryNumber)
+        Val=BinaryNumber
+        BinaryNumber=trimprefix(tolower(string(BinaryNumber)), "0b")
+	if (!match("^[0-1]{1,}$", BinaryNumber)) {
+            println("Error calling `bin2dec`: ERROR: TypeError: bin2dec() expected argument #1 to be BINARY, got ", Val)
             return false
         }
-        Len=len(BinaryNumber)-1
-        Result=0
-        foreach n in 0..Len {
-            Result = Result*2 + int(BinaryNumber[n])
-        }
-        return Result
+        return eval("0b" + BinaryNumber)
     }
 
     function getblock(StartBlock, EndBlock, ArrayName) {
@@ -178,7 +166,7 @@ if (!INCLUDE["MAIN"]) {
             return Data
         }
         Lines--
-        HeadData=slice(Data, 0, Lines)
+        HeadData=slice(copy(Data), 0, Lines)
         if (IsString) {
             return(join(HeadData, "\n"))
         }
@@ -334,7 +322,7 @@ if (!INCLUDE["MAIN"]) {
         }
         End=l-1
         Start=l-Lines
-        tdata=slice(data, Start, End)
+        tdata=slice(copy(data), Start, End)
         if (IsString) {
             return(join(tdata, "\n"))
         }

@@ -10,6 +10,22 @@ if (!INCLUDE["NET"]) {
         }
     }
 
+    function iscidr(NetAddr) {
+        if (!checkfunctype("iscidr", "string", NetAddr, 1)) {exit(1)}
+        SplitAddr=split(NetAddr, "/")
+        if (len(SplitAddr) == 1) {return false}
+        IP=SplitAddr[0]
+        Range=SplitAddr[1]
+        if (isipv4(IP)) {
+            if (len(Range) == 0) {return false}
+            if (isnum(Range)) {
+                if (Range < 1 || Range > 32) {return false}
+            }
+            return true
+        }
+        return false
+    }
+
     function myip() {
         IPArray=[]
         CMD=""
