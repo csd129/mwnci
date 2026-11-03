@@ -1,11 +1,8 @@
-include(
-    "pwd",
-    "os"
-)
-
 if (!INCLUDE["SYSSTAT"]) {
     set(INCLUDE, "SYSSTAT", true)
-
+    if (!INCLUDE["PWD"]) {include("pwd")}
+    if (!INCLUDE["OS"]) {include("os")}
+    
     switch (OS) {
         case /bsd/ , /darwin/ {
             include("sysstat_bsd")

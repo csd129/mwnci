@@ -83,7 +83,7 @@ func main() {
 	vers := flag.Bool("version", false, "Show our version and exit.")
 	debug := flag.Bool("x", false, "Show debug info.")
 	nomethods := flag.Bool("nm", false, "Don't include methods.")
-	flag.Parse()
+	//	flag.Parse()
 
 	//
 	// Parse the flags
@@ -132,7 +132,7 @@ func main() {
 		input, err = os.ReadFile(flag.Args()[0])
 	} else {
 		fmt.Printf("Mwnci %s (%s %s)\n", version, distro, runtime.GOARCH)
-		repl.Start(os.Stdin, os.Stdout)
+		repl.Start(os.Stdin, os.Stdout, NOMETHODS)
 	}
 
 	if err != nil {

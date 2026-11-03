@@ -1,6 +1,6 @@
-include(
-    "os"
-)
+if (!INCLUDE["OS"]) {
+    include("os")
+}
 
 if (!INCLUDE["CERTS"]) {
     set(INCLUDE, "CERTS", true)

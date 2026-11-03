@@ -1,10 +1,7 @@
-include(
-    "json",
-    "yaml"
-)
-
 if (!INCLUDE["XML"]) {
     set(INCLUDE, "XML", true)
+    if (!INCLUDE["JSON"]) {include("json")}
+    if (!INCLUDE["YAML"]) {include("yaml")}
 
     function loadxml(Filename="") {
         if (!checkfunctype("loadxml", "string", Filename, 1)) {exit(1)}

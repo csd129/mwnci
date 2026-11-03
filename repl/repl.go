@@ -20,12 +20,17 @@ var (
 )
 
 const PROMPT = "mwnci> "
-func Start(in io.Reader, out io.Writer) {
+
+func Start(in io.Reader, out io.Writer, NOMETHODS bool) {
 	env := object.NewEnvironment()
 	homedir, _ := os.UserHomeDir()
 	historyfile := fmt.Sprintf("%s/.mwnci_history", homedir)
-
-	line := "INCLUDE={} include(\"main\")"
+	line := ""
+	if NOMETHODS == true {
+		line = "INCLUDE={\"USEMETHODS\": false} include(\"main\")"
+	} else {
+		line = "INCLUDE={\"USEMETHODS\": true} include(\"main\")"
+	}
 	l := lexer.New(line)
 	p := parser.New(l)
 	program := p.ParseProgram()

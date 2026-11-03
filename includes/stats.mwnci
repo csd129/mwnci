@@ -1,9 +1,6 @@
-include(
-    "math"
-)
-
 if (!INCLUDE["STATS"]) {
     set(INCLUDE, "STATS", true)
+    if (!INCLUDE["math"]) {include("math")}
 
     function covariance(X, Y, Type="s") {
         if (!checkfunctype("covariance", "array", X, 1)) {exit(1)}
