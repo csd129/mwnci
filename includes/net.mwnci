@@ -32,7 +32,7 @@ if (!INCLUDE["NET"]) {
         if (isexist("/sbin/ifconfig")) {
             CMD="/sbin/ifconfig -a; exit 0"
         } else {
-            if (isexist("/sbin/ip")) {  
+            if (isexist("/sbin/ip")) {
                 CMD="/sbin/ip a; exit 0"
             }
         }
@@ -62,13 +62,13 @@ if (!INCLUDE["NET"]) {
         port_array=usort(port_array)
         return port_array
     }
-    
+
     function cidrrange(cidr="") {
         if (!checkfunctype("cidrrange", "string", cidr)) {exit(1)}
         ips=listcidrips(cidr)
         return [ips[0], ips[len(ips)-1]]
     }
-    
+
     function ping(host="", timeout=0) {
         if (host == "") {
             println("Error calling `ping`: ERROR: TypeError: ping() takes expected argument #1 to be `STRING` got `NULL`")
@@ -80,14 +80,14 @@ if (!INCLUDE["NET"]) {
         cmd=sprintf("ping -c 1 -W %d %s > /dev/null && echo true || echo false", timeout, host)
         return (trim(system(cmd)) == "true") ? true : false
     }
-    
+
     function addresscount(cidr="") {
         if (!checkfunctype("addresscount", "string", cidr)) {
             exit(1)
         }
         return len(listcidrips(cidr))
     }
-    
+
     function lookupport(Port=0, Proto="tcp") {
         if (!checkfunctype("lookupport", "integer", Port, 1)) {exit(1)}
         if (!checkfunctype("lookupport", "string", Proto, 2)) {exit(1)}
@@ -118,7 +118,7 @@ if (!INCLUDE["NET"]) {
             }
         }
         return ucount(TypeList)
-    }    
+    }
 
     function port2pid(Port=0) {
         if (!checkfunctype("port2pid", "integer", Port, 1)) {exit(1)}
@@ -149,7 +149,7 @@ if (!INCLUDE["NET"]) {
                 TempHash={"pids": TempArray, "proc": Proc}
                 set(OfHash, Port, TempHash)
             }
-        }	    
+        }
         if (Port != 0 && len(OfHash) > 0) {
             return (len(OfHash[string(Port)]) > 0) ? OfHash[string(Port)] : {}
         }
@@ -166,7 +166,7 @@ if (!INCLUDE["NET"]) {
         Dotted=join(split(Dotted, ""), ".")
         return Dotted
     }
-    
+
     function dnsdomainname() {
         Host=hostname()
         DName=null
@@ -202,7 +202,7 @@ if (!INCLUDE["NET"]) {
         function string.cidrrange() {
             return cidrrange(self)
         }
-    
+
         function string.addresscount() {
             return addresscount(self)
         }

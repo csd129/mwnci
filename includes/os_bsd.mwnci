@@ -1,7 +1,7 @@
 if (!INCLUDE["OSBSD"]) {
     set(INCLUDE, "OSBSD", true)
     if (!INCLUDE["STRING"]) {include("string")}
-    
+
     function loadavg() {
         Data=fields(sysctl("vm.loadavg")["vm.loadavg"])
         delete(Data, 0)

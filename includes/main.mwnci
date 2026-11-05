@@ -97,7 +97,7 @@ if (!INCLUDE["MAIN"]) {
         return false
     }
 
-// Rest() moved to here because buitlin shift() has replaced it 
+// Rest() moved to here because buitlin shift() has replaced it
     function rest(Array) {
         if (!checkfunctype("rest", "array", Array, 1)) {exit(1)}
         return shift(Array)
@@ -601,7 +601,7 @@ if (!INCLUDE["MAIN"]) {
         Remainder=float(b) * (Num-Quotient)
         return [Quotient, Remainder]
     }
- 
+
     function get(a=[]) {
         if (!checkfunctype("get", "array", a, 1)) {exit(1)}
         if (len(a) == 0) {
@@ -630,6 +630,11 @@ if (!INCLUDE["MAIN"]) {
     function rsorted(Array=[]) {
         if (!checkfunctype("rsorted", "array", Array, 1)) {exit(1)}
         return reverse(sort(copy(Array)))
+    }
+
+    function reversed(Data) {
+        if (type(Data) == "string") {return reverse(Data)}
+        return reverse(copy(Data))
     }
 
     function fromkeys(Array=[], Value=null) {

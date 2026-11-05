@@ -4,7 +4,7 @@
 if (INCLUDE["USEMETHODS"]) {
     if (!INCLUDE["METHODS"]) {
         set(INCLUDE, "METHODS", true)
-    
+
         function array.batch(size=1) {return batch(self, size)}
         function array.clear() {return clear(self)}
         function array.contains(Search="") {return contains(self, Search)}
@@ -73,6 +73,7 @@ if (INCLUDE["USEMETHODS"]) {
         function object.int() {return int(self)}
         function object.len() {return len(self)}
         function object.reverse() {return reverse(self)}
+        function object.reversed() {return reversed(self)}	
         function object.rotl(RotAmount=1) {return rotl(self, RotAmount)}
         function object.rotr(RotAmount=1) {return rotr(self, RotAmount)}
         function object.sqrt() {return sqrt(self)}

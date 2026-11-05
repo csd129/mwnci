@@ -59,7 +59,7 @@ if (!INCLUDE["GRP"]) {
         if (!checkfunctype("getgrnam", "string", Gname, 1)) {exit(1)}
         if (Gname == "") {
            println("Error calling `getgrnam`: ERROR: TypeError: getgrnam() takes exactly 1 argument (0 given)")
-           exit(1) 
+           exit(1)
         }
     	return getgrent(Gname)
     }

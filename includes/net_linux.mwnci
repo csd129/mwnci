@@ -104,7 +104,7 @@ if (!INCLUDE["NETLINUX"]) {
         }
         return NetArray
     }
-    
+
     function nettrans(iface="") {
         if (!checkfunctype("nettrans", "string", iface, 1)) {exit(1)}
         data=split(cat("/proc/net/dev"), "\n")

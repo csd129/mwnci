@@ -60,7 +60,7 @@ if (!INCLUDE["MATH"]) {
 
     function factorial(Number=0) {
         if (!checkfunctype("factorial", "integer", Number, 1)) {exit(1)}
-        Fact =  (Number == 0) ? 1 : product(1..Number) 
+        Fact=(Number == 0) ? 1 : product(1..Number)
         return Fact
     }
 

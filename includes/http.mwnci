@@ -23,7 +23,7 @@ if (!INCLUDE["HTTP"]) {
             print("File ", filename, " exists. Overwrite(y/N)? ")
             choice=STDIN.read()
             if (!match("[yY]", choice)) {return false}
-        } 
+        }
         fh=open(filename, "w")
         fh.write(httpget(url))
         fh.close()

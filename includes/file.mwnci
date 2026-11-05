@@ -304,71 +304,71 @@ if (!INCLUDE["FILE"]) {
         function string.iswritable() {
             return iswritable(self)
         }
-    
+
         function string.isreadable() {
             return isreadable(self)
         }
-    
+
         function string.isexec() {
             return isexec(self)
         }
-    
+
         function string.isnewer(SecondFile="") {
             return isnewer(self, SecondFile)
         }
-    
+
         function string.isolder(SecondFile="") {
             return isolder(self, SecondFile)
         }
-    
+
         function string.isgroup(grp="") {
             return isgroup(self, grp)
         }
-    
+
         function string.isowner(owner="") {
             return isowner(self, owner)
         }
-    
+
         function string.isexist() {
             return isexist(self)
         }
-    
+
         function string.isblock() {
             return istype("BLOCK", self, "isblock")
         }
-    
+
         function string.isdir() {
             return istype("DIR", self, "isdir")
         }
-    
+
         function string.isempty() {
             return isempty(self)
         }
-    
+
         function string.isfifo() {
             return istype("FIFO", self, "isfifo")
         }
-    
+
         function string.isfile() {
             return istype("FILE", self, "isfile")
         }
-    
+
         function string.islink() {
             return istype("LINK", self, "islink")
         }
-    
+
         function string.issock() {
             return istype("SOCKET", self, "issock")
         }
-    
+
         function string.issetuid() {
             return issetuid(self)
         }
-    
+
         function string.issetgid() {
             return issetgid(self)
         }
-    
+
         function string.issticky() {
             return issticky(self)
         }

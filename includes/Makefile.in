@@ -5,10 +5,10 @@ GROUP=@GROUP@
 
 dummy:
 
-install: 
+install:
 	${INSTALL} -m 0755 -d  ${INCLUDEDIR}
 	${INSTALL} -C -m 0644 -o ${OWNER} -g ${GROUP} *.mwnci ${INCLUDEDIR}
 
 clean:
-	rm -f *~ \#*\#	
+	rm -f *~ \#*\#
 

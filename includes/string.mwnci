@@ -104,13 +104,13 @@ if (!INCLUDE["STRING"]) {
             println("Error calling `ispunct`: ERROR: TypeError: ispunct() expected argument to be a single character")
             exit(1)
         }
-        Line="\"#$%&'()*+,-./:;<=>?@[]^_`{|}~"	
+        Line="\"#$%&'()*+,-./:;<=>?@[]^_`{|}~"
         foreach Chr in Line {
             if (Chr == String) {return true}
         }
         return false
     }
-    
+
     function isspace(Text="") {
         if (!checkfunctype("isspace", "string", Text, 1)) {exit(1)}
         if (len(Text) == 0) {return false}
@@ -126,7 +126,7 @@ if (!INCLUDE["STRING"]) {
         if (!checkfunctype("istitle", "string", Text, 1)) {exit(1)}
         return (title(Text) == Text) ? true : false
     }
-    
+
     function isupper(Text="") {
         if (!checkfunctype("isupper", "string", Text, 1)) {exit(1)}
         return (toupper(Text) == Text) ? true : false

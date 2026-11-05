@@ -3,9 +3,9 @@ if (!INCLUDE["PS"]) {
 
     function getpname(pid=-1) {
         if (!checkfunctype("getpname", "integer", pid, 1)) {exit(1)}
-        if (pid == -1) {pid=getpid()}                                           
-        Procs=process()                                                         
-        if (!Procs[pid]) {return false}                                         
+        if (pid == -1) {pid=getpid()}
+        Procs=process()
+        if (!Procs[pid]) {return false}
         return trim(Procs[pid]["COMMAND"], "[]")
     }
 
@@ -28,7 +28,7 @@ if (!INCLUDE["PS"]) {
         }
         return ProcessTable
     }
-    
+
     function pnametopid(name="") {
         if (!checkfunctype("pnametopid", "string", name, 1)) {exit(1)}
         if (name=="") {
@@ -42,7 +42,7 @@ if (!INCLUDE["PS"]) {
         }
         return int(PID)
     }
-    
+
     function procstat(pid=-1) {
         Data={}
         Result=shift(split(trim(system("ps aux")), "\n"))

@@ -1,6 +1,6 @@
 if (!INCLUDE["PWD"]) {
     set(INCLUDE, "PWD", true)
-    
+
     function getpwent(User="") {
         FindUser=string(User)
         PasswdArray=[]
@@ -42,7 +42,7 @@ if (!INCLUDE["PWD"]) {
         }
         return getpwent(User)
     }
-    
+
     function getpwuid(Uid=-1) {
         if (!checkfunctype("getpwuid", "integer", Uid, 1)) {
             exit(1)
@@ -53,7 +53,7 @@ if (!INCLUDE["PWD"]) {
         }
 	    return getpwent(Uid)
     }
-    
+
     function hashpw() {
         PWHash={}
         FH=open("/etc/passwd")
