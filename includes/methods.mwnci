@@ -30,7 +30,7 @@ if (INCLUDE["USEMETHODS"]) {
         function array.max() {return max(self)}
         function array.min() {return min(self)}
         function array.mindex(Search) {return mindex(self, Search)}
-        function array.pop() {return pop(self)}
+        function array.pop(Pos=len(a)-1) {return pop(self, Pos)}
         function array.push(item) {return push(self, item)}
         function array.remove(element=-1) {return remove(self, element)}
         function array.rest() {return shift(self)}

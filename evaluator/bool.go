@@ -12,7 +12,7 @@ func Bool(args ...object.Object) object.Object {
 		typing.ExactArgs(1),
 	); err != nil {
 		return newError("%s", err.Error())
-	}     
+	}
 	retval:=false
 	switch args[0].(type) {
 	case *object.String:

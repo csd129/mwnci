@@ -42,6 +42,5 @@ func Mindex(args ...object.Object) object.Object {
 		}
 		return &object.Array{Elements: Results}
 	}
-	
 	return &object.Array{Elements: CountArray}
 }

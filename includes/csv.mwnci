@@ -1,0 +1,41 @@
+if (!INCLUDE["CSV"]) {
+    set(INCLUDE, "CSV", true)
+
+    function loadcsv(Filename="", Comma=",") {
+        if (!checkfunctype("loadcsv", "string", Filename, 1)) {exit(1)}
+        if (!checkfunctype("loadcsv", "string", Comma, 1)) {exit(1)}
+        if (len(Filename) == 0) {
+            println("Error calling `loadcsv`: ERROR: TypeError: loadcsv() expected argument #1 to be a filename, got NULL")
+	    exit(1)
+        }
+        if (!isreadable(Filename)) {
+            println("Error calling `loadcsv`: ERROR: FileError: loadcsv() unable to open file ", Filename)
+	    exit(1)
+        }
+        Data=splitcsv(cat(Filename), Comma)
+        return Data
+    }
+
+    function csvtojson(CsvData=[], Headers=[]) {
+        if (!checkfunctype("csvtojson", "array", CsvData, 1)) {exit(1)}
+        if (!checkfunctype("csvtojson", "array", Headers, 2)) {exit(1)}
+        Data=copy(CsvData)
+        if (len(Headers) == 0) {
+            Headers=Data[0]
+            shift(Data)
+        }
+        csvArray=[]
+        foreach i, v in Data {
+            temphash={}
+            foreach I, V in Headers {
+                Val=v[I]
+                if (isnum(Val)) {
+                    Val=float(Val)
+                }
+                set(temphash, V, Val)
+	    }
+            push(csvArray, temphash)
+        }
+        return csvArray
+    }
+}

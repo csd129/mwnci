@@ -27,7 +27,7 @@ func Sum(args ...object.Object) object.Object {
 		}
 		total += val
 	}
-	// Fix rounding error 
+	// Fix rounding error
 	round:=fmt.Sprintf("%.9f", total)
 	total,_=strconv.ParseFloat(round, 64)
 	return &object.Float{Value: total}

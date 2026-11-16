@@ -37,5 +37,4 @@ func Rev(args ...object.Object) object.Object {
 	default:
 		return newError("argument to `reverse` not supported, expected STRING or ARRAY, got=%s", args[0].Type())
 	}
-	return NULL
 }

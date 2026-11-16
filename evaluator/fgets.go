@@ -1,6 +1,6 @@
 package evaluator
 
-import ( 
+import (
 	"mwnci/object"
 	"mwnci/typing"
 	"strings"

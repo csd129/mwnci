@@ -143,6 +143,7 @@ func init() {
 	RegisterBuiltin("sort", func(env *object.Environment, args ...object.Object) object.Object { return (Sortit(args...)) })
 	RegisterBuiltin("split", func(env *object.Environment, args ...object.Object) object.Object { return (Split(args...)) })
 	RegisterBuiltin("splithostport", func(env *object.Environment, args ...object.Object) object.Object { return (SplitHP(args...)) })
+	RegisterBuiltin("splitcsv", func(env *object.Environment, args ...object.Object) object.Object { return (SplitCsv(args...)) })
 	RegisterBuiltin("sprintf", func(env *object.Environment, args ...object.Object) object.Object { return (sprintfFun(args...)) })
 	RegisterBuiltin("sqrt", func(env *object.Environment, args ...object.Object) object.Object { return (mathSqrt(args...)) })
 	RegisterBuiltin("stat", func(env *object.Environment, args ...object.Object) object.Object { return (Stat(args...)) })

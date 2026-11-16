@@ -14,6 +14,6 @@ func basenameFun(args ...object.Object) object.Object {
 		typing.WithTypes(object.STRING_OBJ),
 	); err != nil {
 		return newError("%s", err.Error())
-	}     
+	}
 	return &object.String{Value: path.Base(args[0].(*object.String).Value)}
 }

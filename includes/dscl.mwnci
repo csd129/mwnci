@@ -1,6 +1,7 @@
 if (!INCLUDE["DSCL"]) {
     set(INCLUDE, "DSCL", true)
-
+    if (!INCLUDE["STRING"]) {include("string")}
+    
     function hashdscl() {
         CMD="dscl . readall /Users GeneratedUID NFSHomeDirectory PrimaryGroupID RealName RecordName RecordType SMBRID SMBSID UniqueID UserShell 2>/dev/null"
         Data=split(trim(system(CMD)), "\n")
@@ -68,5 +69,42 @@ if (!INCLUDE["DSCL"]) {
         }
         return(PWHash)
     }
-}
 
+    function getdsclent(User="") {
+        Data=dscl2pwd()
+        FindUser=string(User)
+        if (isnum(FindUser)) {
+            User=int(User)
+            foreach Entry in keys(Data) {
+	        if (Data[Entry]["Uid"]  == User) {
+                    FindUser=Entry
+                }
+            }
+        }
+        Temp=Data[FindUser]
+        if (Temp) {set(Temp, "User", FindUser)}
+        return Temp
+    }
+
+    function getdscluid(Uid=-1) {
+        if (!checkfunctype("getdscluid", "integer", Uid, 1)) {
+            exit(1)
+        }
+        if (Uid == -1) {
+            println("Error calling `getdscluid`: ERROR: TypeError: getpwuid() takes exactly 1 argument (0 given)")
+            exit(1)
+        }
+	    return getdsclent(Uid)
+    }
+
+    function getdsclnam(Username="") {
+        if (!checkfunctype("getdsclnam", "string", Username, 1)) {
+            exit(1)
+        }
+        if (Username == "") {
+            println("Error calling `getdsclnam`: ERROR: TypeError: getpwnam() takes exactly 1 argument (0 given)")
+            exit(1)
+        }
+	    return getdsclent(Username)
+    }
+}
