@@ -6,11 +6,14 @@ if (!INCLUDE["OS"]) {
 // The next few lines will also "include"  distro specific functions
 
     switch (OS) {
-        case /bsd/ , /darwin/ {
-            include("os_bsd")
-        }
         case "linux" {
             include("os_linux")
+        }
+        case "darwin" {
+            include("os_bsd", "os_darwin")
+        }
+        case /bsd/ {
+            include("os_bsd")
         }
     }
 
@@ -34,46 +37,6 @@ if (!INCLUDE["OS"]) {
             "release": Data[2], "machine": Data[3]
         }
         return DataHash
-    }
-
-    function df() {
-        if (!checkfunctype("df", "string", Fs="", 1)) {exit(1)}
-        DiskHash={}
-        Cmd="df"
-        if (len(Fs) != 0) {
-            if (isexist(Fs)) {
-                Cmd=Cmd + " " + Fs
-            } else {
-	        return DiskHash
-            }
-        }
-        Mounted=shift(split(system(Cmd),"\n"))
-        Length=len(Mounted)-1
-        Count=0
-        while (Count <= Length) {
-            Entry=Mounted[Count]
-            Next=Mounted[Count+1]
-            if (len(Entry) > 0) {
-                SplitLine=fields(Entry)
-//
-// check for long mount length.. Disk info will be on line Count + 1
-//
-                if (len(SplitLine) == 1) {
-                    NSplitLine=fields(Next)
-                    SplitLine=extend(SplitLine, NSplitLine)
-                    Count++
-                }
-
-                if (contains(SplitLine[0], "/")) {
-                    PercentUsed=int(trimsuffix(SplitLine[4], "%"))
-                    PercentFree=100 - PercentUsed
-                    TempHash={"blocks": int(SplitLine[1]), "used": int(SplitLine[2]), "available": int(SplitLine[3]), "usedperc": PercentUsed, "freeperc": PercentFree, "mount": SplitLine[5]}
-                    set(DiskHash, SplitLine[0], TempHash)
-                }
-            }
-            Count++
-        }
-        return DiskHash
     }
 
     if (OS != "darwin") {
@@ -127,46 +90,48 @@ if (!INCLUDE["OS"]) {
             set(OsrHash, "urls", UrlHash)
             return OsrHash
         }
-    } else {
-        function osrelease() {
-            OsrHash={
-                "name": null,
-                "version": null,
-                "id": null,
-                "id_like": ["darwin", "bsd"],
-                "version_codename": null,
-                "version_id": null,
-                "pretty_name": null,
-                "ansi_color": null,
-                "cpe_name": null,
-                "build_id": null,
-                "variant": null,
-                "variant_id": null,
-                "logo": null
+
+        function df(Fs="") {
+            if (!checkfunctype("df", "string", Fs, 1)) {exit(1)}
+            DiskHash={}
+            Cmd="df -k"
+            if (len(Fs) != 0) {
+                if (isexist(Fs)) {
+                    Cmd=Cmd + " " + Fs
+                } else {
+    	        return DiskHash
+                }
             }
-            UrlHash={
-                "home": "https://apple.com",
-                "documentation": null,
-                "support": ["https:/support.apple.com", "https://discussions.apple.com"],
-                "bug_report": "https://www.apple.com/feedback.com",
-                "privacy_policy": ["https://www.apple.com/privacy", "https://www.apple.com/legal/privacy"]
-    	    }
-            Uname=uname()
-            Version=trim(system("sw_vers -productVersion"))
-            Build=trim(system("sw_vers -buildVersion"))
-            PName=trim(system("sw_vers -ProductName"))
-            CPE="cpe:2.3:o:apple:" + tolower(PName) + ":" + Version
-            set(OsrHash, "cpe_name", CPE)
-            set(OsrHash, "id", PName)
-            set(OsrHash, "name", Uname["nodename"])
-            set(OsrHash, "version_id", Uname["release"])
-            set(OsrHash, "version", Version)
-            set(OsrHash, "build_id", Build)
-            set(OsrHash, "urls", UrlHash)
-            return OsrHash
+            Mounted=shift(split(system(Cmd),"\n"))
+            Length=len(Mounted)-1
+            Count=0
+            while (Count <= Length) {
+                Entry=Mounted[Count]
+                Next=Mounted[Count+1]
+                if (len(Entry) > 0) {
+                    SplitLine=fields(Entry)
+    //
+    // check for long mount length.. Disk info will be on line Count + 1
+    //
+                    if (len(SplitLine) == 1) {
+                        NSplitLine=fields(Next)
+                        SplitLine=extend(SplitLine, NSplitLine)
+                        Count++
+                    }
+    
+                    if (contains(SplitLine[0], "/")) {
+                        PercentUsed=int(trimsuffix(SplitLine[4], "%"))
+                        PercentFree=100 - PercentUsed
+                        TempHash={"blocks": int(SplitLine[1]), "used": int(SplitLine[2]), "available": int(SplitLine[3]), "usedperc": PercentUsed, "freeperc": PercentFree, "mount": SplitLine[5]}
+                        set(DiskHash, SplitLine[0], TempHash)
+                    }
+                }
+                Count++
+            }
+            return DiskHash
         }
     }
-
+  
     function getcpu(Search="") {
         if (!checkfunctype("getcpu", "string", Search, 1)) {exit(1)}
         CpuHash={}

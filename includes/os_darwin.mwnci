@@ -1,5 +1,5 @@
 if (!INCLUDE["OSDARWIN"]) {
-    set(INLCUDE, "OSDARWIN", true)
+    set(INCLUDE, "OSDARWIN", true)
     
     function osrelease() {
         OsrHash={
@@ -37,5 +37,50 @@ if (!INCLUDE["OSDARWIN"]) {
         set(OsrHash, "build_id", Build)
         set(OsrHash, "urls", UrlHash)
         return OsrHash
+    }
+
+    function vmstat() {
+        return NULL
+    }
+
+    function df(Fs="") {
+        if (!checkfunctype("df", "string", Fs, 1)) {exit(1)}
+        DiskHash={}
+        Cmd="df -k"
+        if (len(Fs) != 0) {
+            if (isexist(Fs)) {
+                Cmd=Cmd + " " + Fs
+            } else {
+                return DiskHash
+            }
+        }
+println("Cmd=", Cmd)
+        Mounted=shift(split(system(Cmd),"\n"))
+        Length=len(Mounted)-1
+        Count=0
+        while (Count <= Length) {
+            Entry=Mounted[Count]
+            Next=Mounted[Count+1]
+            if (len(Entry) > 0) {
+                SplitLine=fields(Entry)
+//
+// check for long mount length.. Disk info will be on line Count + 1
+//
+                if (len(SplitLine) == 1) {
+                    NSplitLine=fields(Next)
+                    SplitLine=extend(SplitLine, NSplitLine)
+                    Count++
+                }
+
+                if (contains(SplitLine[0], "/")) {
+                    PercentUsed=int(trimsuffix(SplitLine[4], "%"))
+                    PercentFree=100 - PercentUsed
+                    TempHash={"blocks": int(SplitLine[1]), "used": int(SplitLine[2]), "available": int(SplitLine[3]), "usedperc": PercentUsed, "freeperc": PercentFree, "mount": SplitLine[8]}
+                    set(DiskHash, SplitLine[0], TempHash)
+                }
+            }
+            Count++
+        }
+        return DiskHash
     }
 }
