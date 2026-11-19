@@ -1,0 +1,41 @@
+if (!INCLUDE["OSDARWIN"]) {
+    set(INLCUDE, "OSDARWIN", true)
+    
+    function osrelease() {
+        OsrHash={
+            "name": null,
+            "version": null,
+            "id": null,
+            "id_like": ["darwin", "bsd"],
+            "version_codename": null,
+            "version_id": null,
+            "pretty_name": null,
+            "ansi_color": null,
+            "cpe_name": null,
+            "build_id": null,
+            "variant": null,
+            "variant_id": null,
+            "logo": null
+        }
+        UrlHash={
+            "home": "https://apple.com",
+            "documentation": null,
+            "support": ["https:/support.apple.com", "https://discussions.apple.com"],
+            "bug_report": "https://www.apple.com/feedback.com",
+            "privacy_policy": ["https://www.apple.com/privacy", "https://www.apple.com/legal/privacy"]
+        }
+        Uname=uname()
+        Version=trim(system("sw_vers -productVersion"))
+        Build=trim(system("sw_vers -buildVersion"))
+        PName=trim(system("sw_vers -ProductName"))
+        CPE="cpe:2.3:o:apple:" + tolower(PName) + ":" + Version
+        set(OsrHash, "cpe_name", CPE)
+        set(OsrHash, "id", PName)
+        set(OsrHash, "name", Uname["nodename"])
+        set(OsrHash, "version_id", Uname["release"])
+        set(OsrHash, "version", Version)
+        set(OsrHash, "build_id", Build)
+        set(OsrHash, "urls", UrlHash)
+        return OsrHash
+    }
+}
