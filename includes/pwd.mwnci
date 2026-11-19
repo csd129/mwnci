@@ -1,76 +1,83 @@
 if (!INCLUDE["PWD"]) {
     set(INCLUDE, "PWD", true)
 
-    function getpwent(User="") {
-        FindUser=string(User)
-        PasswdArray=[]
-        FileArray=regexp(FindUser, "/etc/passwd")
-        foreach Entry in FileArray {
-            UserHash={}
-            Entry=trim(Entry)
-            if (Entry[0] != "#") {
-                UserInfo=split(trim(Entry), ":")
-                Gecos=split(UserInfo[4], ",")
-                set(UserHash, "Gecos", Gecos)
-                set(UserHash, "User", UserInfo[0])
-                set(UserHash, "Uid", int(UserInfo[2]))
-                set(UserHash, "Gid", int(UserInfo[3]))
-                set(UserHash, "Home", UserInfo[5])
-                Shell=(len(UserInfo[6]) == 0) ? "/bin/sh" : UserInfo[6]
-                set(UserHash, "Shell", Shell)
-                push(PasswdArray, UserHash)
-            }
+    if (getos() == "darwin") {
+        RegExp=sprintf("^%s:", whoami())
+        InPwd=regexp(RegExp, "/etc/passwd")
+        if (len(InPwd) == 0) {
+            include("dscl")
         }
-        if (User != "") {
-            foreach Entry in PasswdArray {
-                if (Entry["User"] == FindUser || string(Entry["Uid"]) == FindUser) {
-                    return Entry
+    } else {
+        function getpwent(User="") {
+            FindUser=string(User)
+            PasswdArray=[]
+            FileArray=regexp(FindUser, "/etc/passwd")
+            foreach Entry in FileArray {
+                UserHash={}
+                Entry=trim(Entry)
+                if (Entry[0] != "#") {
+                    UserInfo=split(trim(Entry), ":")
+                    Gecos=split(UserInfo[4], ",")
+                    set(UserHash, "Gecos", Gecos)
+                    set(UserHash, "User", UserInfo[0])
+                    set(UserHash, "Uid", int(UserInfo[2]))
+                    set(UserHash, "Gid", int(UserInfo[3]))
+                    set(UserHash, "Home", UserInfo[5])
+                    Shell=(len(UserInfo[6]) == 0) ? "/bin/sh" : UserInfo[6]
+                    set(UserHash, "Shell", Shell)
+                    push(PasswdArray, UserHash)
                 }
             }
-            return {}
-        }
-	    return PasswdArray
-    }
-
-    function getpwnam(User="") {
-        if (!checkfunctype("getpwnam", "string", User, 1)) {
-            exit(1)
-        }
-        if (User == "") {
-            println("Error calling `getpwnam`: ERROR: TypeError: getpwnam() takes exactly 1 argument (0 given)")
-            exit(1)
-        }
-        return getpwent(User)
-    }
-
-    function getpwuid(Uid=-1) {
-        if (!checkfunctype("getpwuid", "integer", Uid, 1)) {
-            exit(1)
-        }
-        if (Uid == -1) {
-            println("Error calling `getpwuid`: ERROR: TypeError: getpwuid() takes exactly 1 argument (0 given)")
-            exit(1)
-        }
-	    return getpwent(Uid)
-    }
-
-    function hashpw() {
-        PWHash={}
-        FH=open("/etc/passwd")
-        while (len(Line=FH.read()) != 0) {
-            Line=string(split(Line, "#")[0])
-            if (len(Line) > 0) {
-                SplitLine=split(trim(Line),":")
-                Gecos=string(SplitLine[4])
-                Gecos=(len(Gecos) > 0 ? split(Gecos,",") : [])
-                Shell = (len(SplitLine[6]) == 0) ? "/bin/sh" : SplitLine[6]
-                NewHash={"Uid": int(SplitLine[2]), "Password": SplitLine[1], "Gid": int(SplitLine[3]), "Home": SplitLine[5], "Shell": Shell, "Gecos": Gecos}
-                set(PWHash, SplitLine[0], NewHash)
+            if (User != "") {
+                foreach Entry in PasswdArray {
+                    if (Entry["User"] == FindUser || string(Entry["Uid"]) == FindUser) {
+                        return Entry
+                    }
+                }
+                return {}
             }
+	        return PasswdArray
         }
-        return PWHash
-    }
 
+        function getpwnam(User="") {
+            if (!checkfunctype("getpwnam", "string", User, 1)) {
+                exit(1)
+            }
+            if (User == "") {
+                println("Error calling `getpwnam`: ERROR: TypeError: getpwnam() takes exactly 1 argument (0 given)")
+                exit(1)
+            }
+            return getpwent(User)
+        }
+
+        function getpwuid(Uid=-1) {
+            if (!checkfunctype("getpwuid", "integer", Uid, 1)) {
+                exit(1)
+            }
+            if (Uid == -1) {
+                println("Error calling `getpwuid`: ERROR: TypeError: getpwuid() takes exactly 1 argument (0 given)")
+                exit(1)
+            }
+	        return getpwent(Uid)
+        }
+
+        function hashpw() {
+            PWHash={}
+            FH=open("/etc/passwd")
+            while (len(Line=FH.read()) != 0) {
+                Line=string(split(Line, "#")[0])
+                if (len(Line) > 0) {
+                    SplitLine=split(trim(Line),":")
+                    Gecos=string(SplitLine[4])
+                    Gecos=(len(Gecos) > 0 ? split(Gecos,",") : [])
+                    Shell = (len(SplitLine[6]) == 0) ? "/bin/sh" : SplitLine[6]
+                    NewHash={"Uid": int(SplitLine[2]), "Password": SplitLine[1], "Gid": int(SplitLine[3]), "Home": SplitLine[5], "Shell": Shell, "Gecos": Gecos}
+                    set(PWHash, SplitLine[0], NewHash)
+                }
+            }
+            return PWHash
+        }
+    }
     if (INCLUDE["USEMETHODS"]) {
         function string.getpwent() {return getpwent(self)}
         function string.getpwnam() {return getpwnam(self)}

@@ -70,7 +70,7 @@ if (!INCLUDE["DSCL"]) {
         return(PWHash)
     }
 
-    function getdsclent(User="") {
+    function getpwent(User="") {
         Data=dscl2pwd()
         FindUser=string(User)
         if (isnum(FindUser)) {
@@ -86,25 +86,25 @@ if (!INCLUDE["DSCL"]) {
         return Temp
     }
 
-    function getdscluid(Uid=-1) {
-        if (!checkfunctype("getdscluid", "integer", Uid, 1)) {
+    function getpwuid(Uid=-1) {
+        if (!checkfunctype("getpwuid", "integer", Uid, 1)) {
             exit(1)
         }
         if (Uid == -1) {
-            println("Error calling `getdscluid`: ERROR: TypeError: getpwuid() takes exactly 1 argument (0 given)")
+            println("Error calling `getpwuid`: ERROR: TypeError: getpwuid() takes exactly 1 argument (0 given)")
             exit(1)
         }
-	    return getdsclent(Uid)
+	    return getpwent(Uid)
     }
 
-    function getdsclnam(Username="") {
-        if (!checkfunctype("getdsclnam", "string", Username, 1)) {
+    function getpwnam(Username="") {
+        if (!checkfunctype("getpwnam", "string", Username, 1)) {
             exit(1)
         }
         if (Username == "") {
-            println("Error calling `getdsclnam`: ERROR: TypeError: getpwnam() takes exactly 1 argument (0 given)")
+            println("Error calling `getpwnam`: ERROR: TypeError: getpwnam() takes exactly 1 argument (0 given)")
             exit(1)
         }
-	    return getdsclent(Username)
+	    return getpwent(Username)
     }
 }

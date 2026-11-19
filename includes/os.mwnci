@@ -76,55 +76,95 @@ if (!INCLUDE["OS"]) {
         return DiskHash
     }
 
-    function osrelease() {
-        OsrHash={
-            "name": null,
-            "version": null,
-            "id": "linux",
-            "id_like": [],
-            "version_codename": null,
-            "version_id": null,
-            "pretty_name": null,
-            "ansi_color": null,
-            "cpe_name": null,
-            "build_id": null,
-            "variant": null,
-            "variant_id": null,
-            "logo": null
-        }
-
-        UrlHash={
-            "home": null,
-            "documentation": null,
-            "support": null,
-            "bug_report": null,
-            "privacy_policy": null
-	    }
-  	    DataFile=""
-	    if (isexist("/etc/os-release")) {
-	        DataFile="/etc/os-release"
-	    } else if (isexist("/usr/lib/os-release")) {
-	        DataFile="/usr/lib/os-release"
-        }
-
-        if (DataFile == "") {
+    if (OS != "darwin") {
+        function osrelease() {
+            OsrHash={
+                "name": null,
+                "version": null,
+                "id": "linux",
+                "id_like": [],
+                "version_codename": null,
+                "version_id": null,
+                "pretty_name": null,
+                "ansi_color": null,
+                "cpe_name": null,
+                "build_id": null,
+                "variant": null,
+                "variant_id": null,
+                "logo": null
+            }
+    
+            UrlHash={
+                "home": null,
+                "documentation": null,
+                "support": null,
+                "bug_report": null,
+                "privacy_policy": null
+    	    }
+      	    DataFile=""
+    	    if (isexist("/etc/os-release")) {
+    	        DataFile="/etc/os-release"
+    	    } else if (isexist("/usr/lib/os-release")) {
+    	        DataFile="/usr/lib/os-release"
+            }
+    
+            if (DataFile == "") {
+                return OsrHash
+            }
+            Data=split(trim(cat(DataFile)), "\n")
+            foreach Line in Data {
+                Sline=split(Line, "=")
+                Key=tolower(Sline[0])
+                Value=trim(Sline[1], "\"")
+                if (match("_url", Key)) {
+                    Key=trimsuffix(Key, "_url")
+                    set(UrlHash, Key, Value)
+                } else {
+                    if (match("id_like", Key)) {Value=fields(Value)}
+                    set(OsrHash, Key, Value)
+                }
+            }
+            set(OsrHash, "urls", UrlHash)
             return OsrHash
         }
-        Data=split(trim(cat(DataFile)), "\n")
-        foreach Line in Data {
-            Sline=split(Line, "=")
-            Key=tolower(Sline[0])
-            Value=trim(Sline[1], "\"")
-            if (match("_url", Key)) {
-                Key=trimsuffix(Key, "_url")
-                set(UrlHash, Key, Value)
-            } else {
-                if (match("id_like", Key)) {Value=fields(Value)}
-                set(OsrHash, Key, Value)
+    } else {
+        function osrelease() {
+            OsrHash={
+                "name": null,
+                "version": null,
+                "id": null,
+                "id_like": ["darwin", "bsd"],
+                "version_codename": null,
+                "version_id": null,
+                "pretty_name": null,
+                "ansi_color": null,
+                "cpe_name": null,
+                "build_id": null,
+                "variant": null,
+                "variant_id": null,
+                "logo": null
             }
+            UrlHash={
+                "home": "https://apple.com",
+                "documentation": null,
+                "support": ["https:/support.apple.com", "https://discussions.apple.com"],
+                "bug_report": "https://www.apple.com/feedback.com",
+                "privacy_policy": ["https://www.apple.com/privacy", "https://www.apple.com/legal/privacy"]
+    	    }
+            Uname=uname()
+            Version=trim(system("sw_vers -productVersion"))
+            Build=trim(system("sw_vers -buildVersion"))
+            PName=trim(system("sw_vers -ProductName"))
+            CPE="cpe:2.3:o:apple:" + tolower(PName) + ":" + Version
+            set(OsrHash, "cpe_name", CPE)
+            set(OsrHash, "id", PName)
+            set(OsrHash, "name", Uname["nodename"])
+            set(OsrHash, "version_id", Uname["release"])
+            set(OsrHash, "version", Version)
+            set(OsrHash, "build_id", Build)
+            set(OsrHash, "urls", UrlHash)
+            return OsrHash
         }
-        set(OsrHash, "urls", UrlHash)
-        return OsrHash
     }
 
     function getcpu(Search="") {
