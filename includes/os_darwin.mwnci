@@ -1,5 +1,6 @@
 if (!INCLUDE["OSDARWIN"]) {
     set(INCLUDE, "OSDARWIN", true)
+    if (!INCLUDE["MATH"]) {include("math")}
     
     function osrelease() {
         OsrHash={
@@ -39,8 +40,38 @@ if (!INCLUDE["OSDARWIN"]) {
         return OsrHash
     }
 
+    function vm_stat2hash() {
+        Out=system("vm_stat")
+        Hash={}
+        Lines=shift(split(Out, "\n"))
+        foreach Line in Lines {
+            SLine=split(Line, ":")
+            if (SLine) {
+                Key=trim(SLine[0])
+                Key=trim(Key, "\"")
+                Key=replaceall(Key, " ", "_")
+                Key=replaceall(Key, "-", "_")
+                Value=trim(SLine[1])
+                Value=int(trimprefix(Value, "."))
+                set(Hash, tolower(Key), Value)
+            }
+        }
+        return Hash
+    }
+
     function vmstat() {
-        return NULL
+        StateArray=[]
+	R=int(trim(system("ps axo state | grep -c R; exit 0")))
+	U=int(trim(system("ps axo state | grep -c U; exit 0")))
+        Procs={"Block": U, "Run": R}
+	CPUs=getcpu("all")
+	Mem=memstat()
+	Vmst=vm_stat2hash()
+	CPU={"User": round(CPUs["user"]), "Sys": round(CPUs["system"]), "Idle": 100 - (round(CPUs["user"] + (CPUs["system"]))), "Wait": CPUs["iowait"], "Guest": CPUs["guest"], "Steal": CPUs["steal"]}
+	MEM={"Swap": Mem["swaptotal"], "Free": Mem["available"], "Cache": Mem["cached"], "Buff": Mem["buffers"]}
+	Swap={"SwapIn": Vmst["swapins"], "SwapTo": Vmst["swapouts"]}
+        Vmstat={"CPU": CPU, "Procs": Procs, "Memory": MEM, "Swap": Swap}
+        return Vmstat
     }
 
     function df(Fs="") {
